@@ -1,4 +1,4 @@
-package wiki;
+package time.crawler.wiki;
 
 import com.google.inject.Inject;
 import edu.uci.ics.crawler4j.crawler.Page;

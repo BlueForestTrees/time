@@ -1,4 +1,4 @@
-package wiki;
+package time.crawler.wiki;
 
 import com.google.inject.Guice;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;

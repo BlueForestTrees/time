@@ -17,8 +17,8 @@ import wiki.repo.LienRepository;
 import wiki.repo.PageRepository;
 
 @Service
-public class MapLiensService {
-	private static final Logger logger = LogManager.getLogger(MapLiensService.class);
+public class MapLiensSubService {
+	private static final Logger logger = LogManager.getLogger(MapLiensSubService.class);
 	
 	private static final int URL_MAX_LENGTH = 255;
 

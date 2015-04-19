@@ -2,7 +2,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>Histoire</groupId>
-	<artifactId>transformer</artifactId>
+	<artifactId>Transformer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Histoire</name>
 
@@ -60,8 +60,8 @@
 			<artifactId>log4j-jul</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-		
-		
+
+
 		<!-- UTIL -->
 		<dependency>
 			<groupId>joda-time</groupId>
@@ -109,20 +109,20 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
-			<!-- <exclusions>
+			<exclusions>
 				<exclusion>
 					<artifactId>jboss-logging</artifactId>
 					<groupId>org.jboss.logging</groupId>
 				</exclusion>
-			</exclusions>-->
+			</exclusions>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-search-orm</artifactId>
-			<version>${hibernate-orm.version}</version>
-		</dependency>-->
-		
-		
+		<dependency>
+			<groupId>org.jboss.logging</groupId>
+			<artifactId>jboss-logging</artifactId>
+			<version>3.2.1.Final</version>
+		</dependency>
+
+
 		<!-- MYSQL -->
 		<dependency>
 			<groupId>mysql</groupId>

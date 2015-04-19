@@ -1,5 +1,7 @@
 package wiki.config;
 
+import java.util.regex.Pattern;
+
 import org.apache.log4j.Logger;
 
 /**
@@ -25,6 +27,8 @@ public class DumperConfig {
 		this.setResumable(false);
 		this.setHelp(false);
 		this.setMaxFileSize("10MB");
+		this.setFilter(Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$"));
+		this.setSep("|¨");
 	}
 	
 	public enum StoreType{
@@ -47,6 +51,8 @@ public class DumperConfig {
 		}
 	};
 	
+	private String sep;
+	private Pattern filter;
 	private int nbPageLog;
 	private StoreType storeType;
 	private String seedUrl;
@@ -61,6 +67,20 @@ public class DumperConfig {
 	private String storagePath; 
 	private String maxFileSize;
 	
+	public String getSep() {
+		return sep;
+	}
+	
+	public void setSep(String sep) {
+		this.sep = sep;
+	}
+	public Pattern getFilter() {
+		return filter;
+	}
+	
+	public void setFilter(Pattern filter) {
+		this.filter = filter;
+	}
 	public String getMaxFileSize() {
 		return maxFileSize;
 	}

@@ -1,9 +1,5 @@
 package wiki.crawler;
 
-import java.util.regex.Pattern;
-
-import org.apache.log4j.Logger;
-
 import wiki.factory.DumperFactory;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -14,13 +10,8 @@ import edu.uci.ics.crawler4j.url.WebURL;
  * @author Slimane
  *
  */
-public class WikiCrawler extends WebCrawler {
-	static final Logger log = Logger.getLogger(WikiCrawler.class);
-	private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz))$");
-
-	public static String BASE_URL;
-	
-	private ICrawler crawler = DumperFactory.getCrawler(DumperFactory.getConfig());
+public class CrawlerAdapter extends WebCrawler {
+	private IPageHandler crawler = DumperFactory.getCrawler(DumperFactory.getConfig());
 	
 	/**
 	 * You should implement this function to specify whether the given url
@@ -28,8 +19,7 @@ public class WikiCrawler extends WebCrawler {
 	 */
 	@Override
 	public boolean shouldVisit(Page page, WebURL url) {
-		String href = url.getURL().toLowerCase();
-		return !FILTERS.matcher(href).matches() && href.startsWith(BASE_URL);
+		return crawler.shouldVisit(url.getURL());
 	}
 
 	/**

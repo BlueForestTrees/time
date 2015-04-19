@@ -25,7 +25,6 @@ public class TransformerDbConfig {
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
 		
-		System.setProperty("org.jboss.logging.provider", "log4j2");
 		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource());
 		em.setPackagesToScan(new String[] { "wiki.entity" });

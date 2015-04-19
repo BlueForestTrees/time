@@ -3,7 +3,7 @@ package wiki.controller;
 
 import org.apache.log4j.Logger;
 
-import wiki.crawler.WikiCrawler;
+import wiki.crawler.CrawlerAdapter;
 import wiki.util.Chrono;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 
@@ -33,7 +33,7 @@ public class DumperController {
 		Chrono chrono = new Chrono("Crawl");
 		chrono.start();
 		
-		crawlController.start(WikiCrawler.class, nbCrawlers);
+		crawlController.start(CrawlerAdapter.class, nbCrawlers);
 		
 		chrono.stop();
 		log.info(chrono.toString());

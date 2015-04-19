@@ -22,9 +22,6 @@ public class PageReaderService {
 	private String baseUrl;
 
 	@Autowired
-	private int baseUrlLength;
-	
-	@Autowired
 	private SmartScanner scanner;
 	
 	public String getBaseUrl() {
@@ -52,8 +49,8 @@ public class PageReaderService {
 
 		for (int i = 1; i <= nbLiensOut; i++) {
 			String lien = scanner.nextString();
-			if (lien.startsWith(baseUrl)) {
-				liens.add(lien.substring(baseUrlLength));
+			if (startWithBaseUrl(lien)) {
+				liens.add(reduceThisLink(lien));
 				if (logger.isDebugEnabled()) {
 					logger.debug("lien#" + i + "=" + lien);
 				}
@@ -63,7 +60,7 @@ public class PageReaderService {
 
 		Page page = new Page();
 		page.setLiens(liens);
-		page.setUrl(url.substring(baseUrlLength));
+		page.setUrl(reduceThisLink(url));
 		page.setDepth(depth);
 		page.setNbLiensOut(nbLiensOut);
 
@@ -72,6 +69,14 @@ public class PageReaderService {
 		}
 
 		return page;
+	}
+
+	private String reduceThisLink(String lien) {
+		return lien.substring(baseUrl.length());
+	}
+
+	private boolean startWithBaseUrl(String lien) {
+		return lien.startsWith(baseUrl);
 	}
 
 }

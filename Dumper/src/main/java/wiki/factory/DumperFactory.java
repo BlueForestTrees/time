@@ -19,12 +19,16 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 
 import wiki.config.DumperConfig;
 import wiki.controller.DumperController;
-import wiki.crawler.ArrayBlockingWriterCrawler;
-import wiki.crawler.ConcurrentWriterCrawler;
+import wiki.crawler.ArrayBlockingPageHandler;
+import wiki.crawler.BasePageHandler;
+import wiki.crawler.ConcurrentPageHandler;
 import wiki.crawler.DirectCrawler;
-import wiki.crawler.ICrawler;
-import wiki.crawler.MongoCrawler;
-import wiki.crawler.WikiCrawler;
+import wiki.crawler.IPageHandler;
+import wiki.crawler.CrawlerAdapter;
+import wiki.crawler.ThreadedHandler;
+import wiki.writer.IWriter;
+import wiki.writer.LogWriter;
+import wiki.writer.MongoWriter;
 import wiki.writer.layout.PageLayout;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
@@ -43,7 +47,7 @@ public class DumperFactory {
 		return config;
 	}
 
-	public static ICrawler getCrawler(DumperConfig config) {
+	public static IPageHandler getCrawler(DumperConfig config) {
 		switch (config.getStoreType()) {
 		default:
 		case ARRAY:
@@ -57,50 +61,68 @@ public class DumperFactory {
 		}
 	}
 
-	private static DirectCrawler directCrawler;
-	private static ICrawler getDirectInstance() {
-		if (directCrawler == null) {
-			directCrawler = new DirectCrawler();
-			directCrawler.setNbPageLog(config.getNbPageLog());
-			directCrawler.setWrite(config.isWrite());
-			directCrawler.setBaseUrl(config.getBaseUrl());
+	private static DirectCrawler directHandler;
+	private static IPageHandler getMongoInstance() {
+		if (directHandler == null) {
+			directHandler = new DirectCrawler();
+			directHandler.setNbPageLog(config.getNbPageLog());
+			directHandler.setWrite(config.isWrite());
+			directHandler.setBaseUrl(config.getBaseUrl());
+			directHandler.setFilters(config.getFilter());
+			directHandler.setWriter(getMongoWriter());
 		}
-		return directCrawler;
+		return directHandler;
+	}
+	private static IWriter getMongoWriter() {
+		MongoWriter mongoWriter = new MongoWriter();
+		return mongoWriter;
 	}
 
-	private static MongoCrawler mongoCrawler;
-
-	private static ICrawler getMongoInstance() {
-		if (mongoCrawler == null) {
-			mongoCrawler = new MongoCrawler();
-			mongoCrawler.setNbPageLog(config.getNbPageLog());
-			mongoCrawler.setWrite(config.isWrite());
+	private static IPageHandler getDirectInstance() {
+		if (directHandler == null) {
+			directHandler = new DirectCrawler();
+			directHandler.setNbPageLog(config.getNbPageLog());
+			directHandler.setWrite(config.isWrite());
+			directHandler.setBaseUrl(config.getBaseUrl());
+			directHandler.setFilters(config.getFilter());
+			directHandler.setWriter(getLogWriter());
 		}
-		return mongoCrawler;
+		return directHandler;
 	}
 
-	private static ConcurrentWriterCrawler concurrentCrawler;
+	private static ConcurrentPageHandler concurrentHandler;
 
-	private static ICrawler getConcurrentInstance() {
-		if (concurrentCrawler == null) {
-			concurrentCrawler = new ConcurrentWriterCrawler();
-			concurrentCrawler.setNbPageLog(config.getNbPageLog());
-			concurrentCrawler.setWrite(config.isWrite());
-			concurrentCrawler.start();
+	private static IPageHandler getConcurrentInstance() {
+		if (concurrentHandler == null) {
+			concurrentHandler = new ConcurrentPageHandler();
+			concurrentHandler.setNbPageLog(config.getNbPageLog());
+			concurrentHandler.setWrite(config.isWrite());
+			concurrentHandler.setFilters(config.getFilter());
+			concurrentHandler.setWriter(getLogWriter());
+			concurrentHandler.start();
 		}
-		return concurrentCrawler;
+		return concurrentHandler;
 	}
 
-	private static ArrayBlockingWriterCrawler arrayCrawler;
+	public static LogWriter getLogWriter() {
+		LogWriter writer = new LogWriter();
+		writer.setBaseUrl(config.getBaseUrl());
+		writer.setSep(config.getSep());
+		return writer;
+	}
 
-	private static ICrawler getArrayInstance() {
-		if (arrayCrawler == null) {
-			arrayCrawler = new ArrayBlockingWriterCrawler();
-			arrayCrawler.setNbPageLog(config.getNbPageLog());
-			arrayCrawler.setWrite(config.isWrite());
-			arrayCrawler.start();
+	private static ThreadedHandler arrayHandler;
+
+	private static IPageHandler getArrayInstance() {
+		if (arrayHandler == null) {
+			arrayHandler = new ArrayBlockingPageHandler();
+			arrayHandler.setNbPageLog(config.getNbPageLog());
+			arrayHandler.setWrite(config.isWrite());
+			arrayHandler.setFilters(config.getFilter());
+			arrayHandler.setWriter(getLogWriter());
+			arrayHandler.start();
 		}
-		return arrayCrawler;
+		return arrayHandler;
 	}
 
 	public static final String HISTOIRE_ARG_PREFIX = "-H";
@@ -191,7 +213,6 @@ public class DumperFactory {
 		edu.uci.ics.crawler4j.crawler.CrawlController controller = new edu.uci.ics.crawler4j.crawler.CrawlController(crawlConfig, pageFetcher, robotstxtServer);
 		controller.addSeed(seedUrl);
 
-		WikiCrawler.BASE_URL = baseUrl;
 		configureLogs(storagePath, maxFileSize);
 		DumperFactory.config = config;
 

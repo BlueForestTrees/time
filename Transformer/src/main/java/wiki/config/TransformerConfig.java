@@ -21,12 +21,7 @@ public class TransformerConfig {
 	
 	@Bean
 	public String baseUrl(){
-		return "http://http://fr.wikipedia.org/wiki/";
-	}
-	
-	@Bean
-	public int baseUrlLength(){
-		return baseUrl().length();
+		return "http://fr.wikipedia.org/wiki/";
 	}
 	
 	@Bean

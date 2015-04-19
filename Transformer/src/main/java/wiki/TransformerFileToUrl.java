@@ -14,10 +14,6 @@ public class TransformerFileToUrl {
 	
 	private static final Logger logger = LogManager.getLogger(UrlFromFileToBaseService.class);
 	
-	static{
-		System.setProperty("org.jboss.logging.provider", "log4j2");
-	}
-	
 	public static void main(String[] args) throws IOException {
 		logger.info("main");
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(TransformerConfig.class)){

@@ -16,10 +16,10 @@ public class Lien {
 	@Column(name = "id")
 	private Long id;
 	
-	@Column(name="from")
+	@Column(name="url_from")
 	private Long from;
 
-	@Column(name="to")
+	@Column(name="url_to")
 	private Long to;
 
 	public Long getId() {

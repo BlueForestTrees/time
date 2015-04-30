@@ -2,22 +2,16 @@ package wiki.test.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.regex.Pattern;
-
 import org.junit.Test;
 
-public class PhraseSplitTest {
+import wiki.tool.handler.PhraseHandler;
 
+public class PhraseHandlerTest {
 
 	@Test
-	public void testPhraseSplit() {
-		final String notEndWithThis = "av|mr|dr|jc|JC|J\\.-C";
-		final String sep = "[ \r\n]+";
-		final String splitRegex = "(?<=(?<!( ("+notEndWithThis+")))\\.)"+sep;
-		final Pattern pattern = Pattern.compile(splitRegex);
-
+	public void testGetPhrases() {
+		PhraseHandler phraseHandler = new PhraseHandler();
 		final String data = "Bla bla. Bli bli.\r\n\r\nBlou av. b mr. lou\r\nICI blou. Blu blu blu. Blo avant JC. blo LA blo blo.";
-		
 		String[] expectedPhrases = new String[]{
 				"Bla bla.",
 				"Bli bli.",
@@ -26,7 +20,7 @@ public class PhraseSplitTest {
 				"Blo avant JC. blo LA blo blo."
 		};
 		
-		String[] actualPhrases = pattern.split(data);
+		String[] actualPhrases = phraseHandler.getPhrases(data);
 		
 		assertThat(actualPhrases).isEqualTo(expectedPhrases);
 		

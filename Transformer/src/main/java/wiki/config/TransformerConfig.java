@@ -25,8 +25,13 @@ public class TransformerConfig {
 	}
 	
 	@Bean
+	public int urlMaxLength(){
+		return 255;
+	}
+	
+	@Bean
 	public Long nbPageLog(){
-		return 10000L;
+		return 1000L;
 	}
 	
 	@Bean String sep(){

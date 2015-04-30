@@ -5,46 +5,52 @@ import java.io.IOException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import wiki.component.reader.FinDuScanException;
-import wiki.util.Chrono;
+import wiki.tool.chrono.Chrono;
 
-@Service
-public class UrlFromFileToBaseService {
-	private static final Logger logger = LogManager.getLogger(UrlFromFileToBaseService.class);
-
-	@Autowired
-	private Long nbPageLog;
+public class Runner {
+	private static final Logger logger = LogManager.getLogger(Runner.class);
 
 	@Autowired
-	UrlFromFileToBaseSubService subService;
+	private Long pageSize;
 	
+	private IService service;
+
+	public void setService(IService service) {
+		this.service = service;
+	}
+
 	public void run() throws IOException {
 		logger.info("run");
 
 		long total = 0;
 		long nbLoop = 0;
-		Chrono chrono = new Chrono("Url_Base");
+		Chrono chrono = new Chrono("Page");
 		Chrono fullChrono = new Chrono("Full");
 
 		fullChrono.start();
+		
+		service.onStart();
 
 		try {
 			do {
 				nbLoop++;
 				chrono.start();
-				subService.run(nbPageLog);
-				total += nbPageLog;
+				service.run(pageSize);
+				total += pageSize;
 				chrono.stop();
 				fullChrono.stop();
-				logger.info("tot[" + total + " in " + fullChrono + "] avg[" + nbPageLog + " in " + fullChrono.toStringDividedBy(nbLoop) + " ] cur[" + nbPageLog
+				logger.info("tot[" + total + " in " + fullChrono + "] avg[" + pageSize + " in " + fullChrono.toStringDividedBy(nbLoop) + " ] cur[" + pageSize
 						+ " in " + chrono + "]");
 			} while (true);
 		} catch (FinDuScanException e) {
 			logger.info("fin du scan");
 		}
 
+		service.onEnd();
+		
 		logger.info("run end");
 	}
+
 }

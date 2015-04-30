@@ -1,7 +1,6 @@
 package wiki.service;
 
 import java.io.IOException;
-import java.util.HashSet;
 
 import javax.transaction.Transactional;
 
@@ -9,42 +8,42 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import wiki.component.reader.FinDuScanException;
+import wiki.component.util.PageMemRepo;
 import wiki.entity.Page;
 import wiki.repo.PageRepository;
 
 @Service
-public class UrlFromFileToBaseSubService {
-
-	private static final int URL_MAX_LENGTH = 255;
-
-	private HashSet<String> urlsLowerCase = new HashSet<String>();
+public class FindUrlsService implements IService{
 
 	@Autowired
 	PageRepository pageRepository;
 	
 	@Autowired
 	PageReaderService pageReader;
+	
+	@Autowired
+	PageMemRepo pageMemRepo;
 
+	@Override
+	public void onStart() {
+		
+	}
+	
+	@Override
 	@Transactional
 	public void run(long pageCount) throws IOException, FinDuScanException {
 		for (long i = 0; i < pageCount; i++) {
 			Page page = pageReader.getNextPage();
-			if(isThisPageNew(page) && thisPageUrlIsnotTooLong(page)){
+			if(pageMemRepo.isThisPageNew(page) && pageMemRepo.thisPageUrlIsnotTooLong(page)){
 				pageRepository.save(page);
-				rememberThisPage(page);
+				pageMemRepo.rememberThisPage(page);
 			}
 		}
 	}
 
-	private boolean thisPageUrlIsnotTooLong(Page page) {
-		return page.getUrl().length() <= URL_MAX_LENGTH;
-	}
 
-	private void rememberThisPage(Page page) {
-		urlsLowerCase.add(page.getUrl().toLowerCase());
-	}
-
-	private boolean isThisPageNew(Page page) {
-		return !urlsLowerCase.contains(page.getUrl().toLowerCase());
+	@Override
+	public void onEnd() {
+		
 	}
 }

@@ -30,9 +30,23 @@ public class Page {
 	@Column(name="nbLiensOut")
 	private Integer nbLiensOut;
 	
+	@Column(name="nbLiensIn")
+	private Integer nbLiensIn;
+	
 	@Transient
 	private transient List<String> liens;
 	
+	@Transient
+	private transient String text;
+	
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
 
 	public List<String> getLiens() {
 		return liens;
@@ -72,6 +86,14 @@ public class Page {
 
 	public void setNbLiensOut(Integer nbLiensOut) {
 		this.nbLiensOut = nbLiensOut;
+	}
+
+	public Integer getNbLiensIn() {
+		return nbLiensIn;
+	}
+
+	public void setNbLiensIn(Integer nbLiensIn) {
+		this.nbLiensIn = nbLiensIn;
 	}
 	
 }

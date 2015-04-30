@@ -2,9 +2,9 @@ package wiki.test;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
-import static org.assertj.core.api.Assertions.assertThat;
 
-import wiki.util.Chrono;
+import static org.assertj.core.api.Assertions.assertThat;
+import wiki.tool.chrono.Chrono;
 
 public class ChronoTest {
 	@Test

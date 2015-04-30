@@ -20,11 +20,9 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 import wiki.config.DumperConfig;
 import wiki.controller.DumperController;
 import wiki.crawler.ArrayBlockingPageHandler;
-import wiki.crawler.BasePageHandler;
 import wiki.crawler.ConcurrentPageHandler;
 import wiki.crawler.DirectCrawler;
 import wiki.crawler.IPageHandler;
-import wiki.crawler.CrawlerAdapter;
 import wiki.crawler.ThreadedHandler;
 import wiki.writer.IWriter;
 import wiki.writer.LogWriter;
@@ -86,6 +84,11 @@ public class DumperFactory {
 			directHandler.setBaseUrl(config.getBaseUrl());
 			directHandler.setFilters(config.getFilter());
 			directHandler.setWriter(getLogWriter());
+			if(config.getMaxPages() == -1){
+				directHandler.setMaxPages(1600000);
+			}else{
+				directHandler.setMaxPages(config.getMaxPages());
+			}
 		}
 		return directHandler;
 	}

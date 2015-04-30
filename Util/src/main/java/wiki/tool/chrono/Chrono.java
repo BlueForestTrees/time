@@ -1,4 +1,4 @@
-package wiki.util;
+package wiki.tool.chrono;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -34,6 +34,15 @@ public class Chrono {
 
 		PeriodFormatterBuilder builder = new PeriodFormatterBuilder().printZeroAlways();
 
+		if(period.getYears() > 0){
+			builder.appendYears().appendSeparator(" an, ");
+		}
+		if(period.getMonths() > 0){
+			builder.appendMonths().appendSeparator(" mois, ");
+		}
+		if(period.getDays() > 0){
+			builder.appendDays().appendSeparator(" jours, ");
+		}
 		if (period.getHours() > 0) {
 			builder.appendHours().appendSeparator("h:");
 		}
@@ -41,8 +50,12 @@ public class Chrono {
 		if (period.getMinutes() > 0 || period.getHours() > 0) {
 			builder.appendMinutes().appendSeparator("m:");
 		}
+		
+		if (period.getSeconds() > 0) {
+			builder.appendSeconds().appendSeparator("s:");
+		}
 
-		PeriodFormatter minutesAndSeconds = builder.appendSeconds().appendLiteral("s").toFormatter();
+		PeriodFormatter minutesAndSeconds = builder.appendMillis3Digit().appendLiteral("ms").toFormatter();
 
 		return minutesAndSeconds.print(period);
 	}
@@ -71,5 +84,13 @@ public class Chrono {
 	public void withStop(DateTime stop) {
 		this.stop = stop;
 	}
-
+	
+	public String getRemaining(long done, long total){
+		float progressRatio = (float)total / (float)done;
+		stop();
+		Duration progressDuration = getDuration();
+		Duration totalDuration = new Duration((long)(progressDuration.getMillis() * progressRatio));
+		return toStringFromDuration(totalDuration.minus(progressDuration));
+	}
+	
 }

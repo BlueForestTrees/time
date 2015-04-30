@@ -4,7 +4,7 @@ package wiki.controller;
 import org.apache.log4j.Logger;
 
 import wiki.crawler.CrawlerAdapter;
-import wiki.util.Chrono;
+import wiki.tool.chrono.Chrono;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 
 public class DumperController {

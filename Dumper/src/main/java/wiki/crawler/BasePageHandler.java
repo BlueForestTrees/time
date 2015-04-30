@@ -2,7 +2,7 @@ package wiki.crawler;
 
 import java.util.regex.Pattern;
 
-import wiki.util.Chrono;
+import wiki.tool.chrono.Chrono;
 import wiki.writer.IWriter;
 
 public abstract class BasePageHandler implements IPageHandler {

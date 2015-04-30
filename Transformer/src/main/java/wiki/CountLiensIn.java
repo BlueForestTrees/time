@@ -7,18 +7,21 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import wiki.config.TransformerConfig;
-import wiki.service.UrlFromFileToBaseService;
+import wiki.service.CountLiensService;
+import wiki.service.Runner;
 
 
-public class TransformerFileToUrl {
+public class CountLiensIn {
 	
-	private static final Logger logger = LogManager.getLogger(UrlFromFileToBaseService.class);
+	private static final Logger logger = LogManager.getLogger(CountLiensIn.class);
 	
 	public static void main(String[] args) throws IOException {
 		logger.info("main");
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(TransformerConfig.class)){
-			UrlFromFileToBaseService transformService = (UrlFromFileToBaseService)ctx.getBean(UrlFromFileToBaseService.class);
-			transformService.run();
+			Runner runner = ctx.getBean(Runner.class);	
+			CountLiensService service = ctx.getBean(CountLiensService.class);
+			runner.setService(service);
+			runner.run();
 		}
 		logger.info("main end");
 	}

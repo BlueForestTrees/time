@@ -7,23 +7,23 @@ import org.apache.log4j.Logger;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import wiki.config.TransformerConfig;
-import wiki.service.MapLiensService;
+import wiki.service.FindPhrasesService;
+import wiki.service.IService;
+import wiki.service.Runner;
 
+public class FindPhrases {
 
-public class TransformerMapLiens {
-	
-	private static final Logger logger = LogManager.getLogger(TransformerMapLiens.class);
-	
-	static{
-		System.setProperty("org.jboss.logging.provider", "log4j2");
-	}
+private static final Logger logger = LogManager.getLogger(CountLiensIn.class);
 	
 	public static void main(String[] args) throws IOException {
 		logger.info("main");
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(TransformerConfig.class)){
-			MapLiensService mapLiensService = (MapLiensService)ctx.getBean(MapLiensService.class);
-			mapLiensService.run();
+			Runner runner = ctx.getBean(Runner.class);	
+			IService service = ctx.getBean(FindPhrasesService.class);
+			runner.setService(service);
+			runner.run();
 		}
 		logger.info("main end");
 	}
+
 }

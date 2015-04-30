@@ -24,15 +24,6 @@ public class PageReaderService {
 	@Autowired
 	private SmartScanner scanner;
 	
-	public String getBaseUrl() {
-		return baseUrl;
-	}
-
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
-
-
 	public Page getNextPage() throws IOException, FinDuScanException {
 		String url = scanner.nextString();
 		int depth = scanner.nextInt();
@@ -63,6 +54,7 @@ public class PageReaderService {
 		page.setUrl(reduceThisLink(url));
 		page.setDepth(depth);
 		page.setNbLiensOut(nbLiensOut);
+		page.setText(text);
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("text=" + text.substring(0, 50) + "[...]" + text.substring(text.length() - 50));

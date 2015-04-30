@@ -2,7 +2,7 @@ package wiki.crawler;
 
 import org.apache.log4j.Logger;
 
-import wiki.util.Chrono;
+import wiki.tool.chrono.Chrono;
 import wiki.writer.IWriter;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -11,6 +11,7 @@ public class DirectCrawler extends BasePageHandler{
 
 	private final static Logger log = Logger.getLogger(DirectCrawler.class);
 	private IWriter writer;
+	private int pageTotal;
 
 	public IWriter getWriter() {
 		return writer;
@@ -40,7 +41,7 @@ public class DirectCrawler extends BasePageHandler{
 				nbLog++;
 				chrono.stop();
 				fullChrono.stop();
-				log.debug("["+fullChrono+"]["+ fullChrono.toStringDividedBy(nbLog) +"/"+nbPageLog+"p] page#" + pageCount + " " + chrono);
+				log.debug("#" + pageCount + ", Total:"+fullChrono+", Moy:"+ fullChrono.toStringDividedBy(nbLog) +", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal));
 				chrono.start();
 			}
 		}
@@ -49,6 +50,10 @@ public class DirectCrawler extends BasePageHandler{
 
 	public void end() {
 
+	}
+
+	public void setMaxPages(int maxPages) {
+		this.pageTotal = maxPages;
 	}
 
 }

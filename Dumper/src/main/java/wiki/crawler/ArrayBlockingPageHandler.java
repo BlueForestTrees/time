@@ -4,7 +4,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import org.apache.log4j.Logger;
 
-import wiki.util.Chrono;
+import wiki.tool.chrono.Chrono;
 import wiki.writer.IWriter;
 import edu.uci.ics.crawler4j.crawler.Page;
 

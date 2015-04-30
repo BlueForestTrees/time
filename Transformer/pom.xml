@@ -20,6 +20,7 @@
 		<spring-jpa-data.version>1.7.2.RELEASE</spring-jpa-data.version>
 		<cglib.version>2.2.2</cglib.version>
 		<util.version>0.0.1-SNAPSHOT</util.version>
+		<joda.version>2.7</joda.version>
 	</properties>
 
 

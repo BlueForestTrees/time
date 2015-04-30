@@ -42,7 +42,10 @@ public class PhraseHandler {
 	}
 	
 	public void handlePageBy(Page page, String[] phrasesArray, PhraseFinder finder){
-		List<Phrase> phrases = finder.findPhrase(phrasesArray, page);
+		List<Phrase> phrases = finder.findPhrase(phrasesArray);
+		for(Phrase phrase : phrases){
+			phrase.setPageId(page.getId());
+		}
 		phraseRepository.save(phrases);	
 	}
 	

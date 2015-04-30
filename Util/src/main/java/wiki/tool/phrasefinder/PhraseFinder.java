@@ -5,9 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import wiki.entity.Page;
 import wiki.entity.Phrase;
-import wiki.tool.parser.EnAnneeParser;
+import wiki.tool.parser.AnneeParser;
 import wiki.tool.parser.IParser;
 import wiki.tool.parser.JCParser;
 import wiki.tool.parser.MilliardParser;
@@ -19,11 +18,11 @@ public enum PhraseFinder {
 		MILLION(getPattern("MILLION"), new MillionParser()),
 		JC(getPattern("JC"), new JCParser()),
 		ROMAN(getPattern("ROMAN"), new RomanParser()),
-		ENANNEE(getPattern("ENANNEE"), new EnAnneeParser()),
-		ANNEE2DOT(getPattern("ANNEE2DOT"), new RomanParser()
+		ENANNEE(getPattern("ENANNEE"), new AnneeParser()),
+		ANNEE2DOT(getPattern("ANNEE2DOT"), new AnneeParser()
 	);
 
-	private final static String group = "?<nbGroup>";
+	private final static String group = "?<bite>";
 	private final Pattern pattern;
 	private final IParser parser;
 	
@@ -32,26 +31,25 @@ public enum PhraseFinder {
 		this.parser = parser;
 	}
 
-	private static Pattern getPattern(String casString) {
-		PhraseFinder cas = PhraseFinder.valueOf(casString);
-		switch (cas) {
-		case MILLIARD:
+	private static Pattern getPattern(String type) {
+		switch (type) {
+		case "MILLIARD":
 			return Pattern.compile("(il y a( environ)? ("+group+"\\d{1,}(,\\d{1,})?) milliards d'années)");
-		case MILLION:
+		case "MILLION":
 			return Pattern.compile("(il y a( environ)? ("+group+"\\d{1,}(,\\d{1,})?) millions d'années)");
-		case JC:
+		case "JC":
 			return Pattern.compile("(vers|environ) (("+group+"\\d{4})( ans)? (avant|av.) J.-C.)");
-		case ROMAN:
+		case "ROMAN":
 			return Pattern.compile("( ("+group+"[ixvlcdmIXVLCDM]+)e siècle)");
-		case ENANNEE:
-			return Pattern.compile("([Ee]n ("+group+"\\d{4}))");
-		case ANNEE2DOT:
-			return Pattern.compile("(("+group+"\\d{4}) :)");
+		case "ENANNEE":
+			return Pattern.compile("([Ee]n ("+group+"(-)?\\d{4}))");
+		case "ANNEE2DOT":
+			return Pattern.compile("(("+group+"(-)?\\d{4}) :)");
 		}
 		return null;
 	}
 
-	public List<Phrase> findPhrase(String[] phrases, Page page) {
+	public List<Phrase> findPhrase(String[] phrases) {
 		List<Phrase> result = new ArrayList<>();
 		for (String phraseString : phrases) {
 			Matcher matcher = pattern.matcher(phraseString);
@@ -59,7 +57,6 @@ public enum PhraseFinder {
 				final String number = matcher.group(group);
 				Long date = parser.from(number);
 				Phrase phrase = new Phrase();
-				phrase.setPageId(page.getId());
 				phrase.setText(phraseString);
 				phrase.setType(this);
 				phrase.setDate(date);

@@ -4,8 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.junit.Test;
 
@@ -67,7 +65,12 @@ public class PhraseFinderTest extends BaseTest {
 	
 	@Test
 	public void testFindDate(){
-		assertThat(PhraseFinder.JC.findPhrase(phrases, page));
+		assertThat(PhraseFinder.JC.findPhrase(phrases)).hasSize(2);
+		assertThat(PhraseFinder.ANNEE2DOT.findPhrase(phrases)).hasSize(1);
+		assertThat(PhraseFinder.ENANNEE.findPhrase(phrases)).hasSize(1);
+		assertThat(PhraseFinder.MILLIARD.findPhrase(phrases)).hasSize(1);
+		assertThat(PhraseFinder.MILLION.findPhrase(phrases)).hasSize(1);
+		assertThat(PhraseFinder.ROMAN.findPhrase(phrases)).hasSize(2);
 	}
 	
 }

@@ -3,9 +3,10 @@ package wiki.util;
 import org.junit.Test;
 
 import wiki.tool.parser.AnneeParser;
+import wiki.tool.parser.JCParser;
 import wiki.tool.parser.MilliardParser;
 import wiki.tool.parser.MillionParser;
-import wiki.tool.parser.RomainParser;
+import wiki.tool.parser.RomanParser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ParserTest {
@@ -55,12 +56,23 @@ public class ParserTest {
 	
 	@Test
 	public void testRomainParser(){
-		RomainParser parser = new RomainParser();
+		RomanParser parser = new RomanParser();
 		String valueS = "xvi"; 
 		Long valueL = parser.from(valueS);
 		String valueS2 = parser.to(valueL);
 		
 		assertThat(valueS2).isEqualTo("au XVIe siècle");
 		assertThat(valueL).isEqualTo(582800L);
+	}
+	
+	@Test
+	public void testJCParser(){
+		JCParser parser = new JCParser();
+		String valueS = "65";
+		Long valueL = parser.from(valueS);
+		String valueS2 = parser.to(valueL);
+		
+		assertThat(valueS2).isEqualTo("en -65 av. JC");
+		assertThat(valueL).isEqualTo(-23676L);
 	}
 }

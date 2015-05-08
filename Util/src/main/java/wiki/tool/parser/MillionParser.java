@@ -4,7 +4,7 @@ public class MillionParser implements IParser{
 
 	@Override
 	public Long from(String value) {
-		return -(long)(Double.parseDouble(value) * 364250000L);
+		return -(long)(Double.parseDouble(value.replace(',', '.')) * 364250000L);
 	}
 
 	@Override

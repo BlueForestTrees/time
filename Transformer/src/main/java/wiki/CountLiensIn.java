@@ -20,7 +20,7 @@ public class CountLiensIn {
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(TransformerConfig.class)){
 			Runner runner = ctx.getBean(Runner.class);	
 			CountLiensService service = ctx.getBean(CountLiensService.class);
-			runner.setService(service);
+			//runner.setService(service);
 			runner.run();
 		}
 		logger.info("main end");

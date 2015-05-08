@@ -15,7 +15,8 @@ public class PhraseHandlerTest {
 		String[] expectedPhrases = new String[]{
 				"Bla bla.",
 				"Bli bli.",
-				"Blou av. b mr. lou\r\nICI blou.",
+				"Blou av. b mr. lou",
+				"ICI blou.",
 				"Blu blu blu.",
 				"Blo avant JC. blo LA blo blo."
 		};

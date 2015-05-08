@@ -10,13 +10,13 @@ import org.springframework.context.annotation.Import;
 import wiki.component.reader.SmartScanner;
 
 @Configuration
-@ComponentScan({"wiki.service", "wiki.component"})
+@ComponentScan({"wiki.service", "wiki.component", "wiki.tool"})
 @Import(TransformerDbConfig.class)
 public class TransformerConfig {
 	
 	@Bean
 	public String path(){
-		return "e:/histoire/pages";
+		return "h:/histoire/pages";
 	}
 	
 	@Bean
@@ -30,8 +30,13 @@ public class TransformerConfig {
 	}
 	
 	@Bean
-	public Long nbPageLog(){
-		return 1000L;
+	public Long pageSize(){
+		return 5000L;
+	}
+	
+	@Bean
+	public Long pageTotal(){
+		return 1800000L;
 	}
 	
 	@Bean String sep(){

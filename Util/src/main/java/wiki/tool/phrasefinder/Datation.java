@@ -13,7 +13,7 @@ import wiki.tool.parser.MilliardParser;
 import wiki.tool.parser.MillionParser;
 import wiki.tool.parser.RomanParser;
 
-public enum PhraseFinder {
+public enum Datation {
 		MILLIARD(getPattern("MILLIARD"), new MilliardParser()),
 		MILLION(getPattern("MILLION"), new MillionParser()),
 		JC(getPattern("JC"), new JCParser()),
@@ -22,11 +22,12 @@ public enum PhraseFinder {
 		ANNEE2DOT(getPattern("ANNEE2DOT"), new AnneeParser()
 	);
 
-	private final static String group = "?<bite>";
+	private final static String groupName = "g";
+	private final static String group = "?<"+groupName+">";
 	private final Pattern pattern;
 	private final IParser parser;
 	
-	private PhraseFinder(Pattern pattern, IParser parser) {
+	private Datation(Pattern pattern, IParser parser) {
 		this.pattern = pattern;
 		this.parser = parser;
 	}
@@ -34,9 +35,9 @@ public enum PhraseFinder {
 	private static Pattern getPattern(String type) {
 		switch (type) {
 		case "MILLIARD":
-			return Pattern.compile("(il y a( environ)? ("+group+"\\d{1,}(,\\d{1,})?) milliards d'années)");
+			return Pattern.compile("(il y a( environ)? ("+group+"\\d{1,}([,\\.]\\d{1,})?) milliards d'années)");
 		case "MILLION":
-			return Pattern.compile("(il y a( environ)? ("+group+"\\d{1,}(,\\d{1,})?) millions d'années)");
+			return Pattern.compile("(il y a( environ)? ("+group+"\\d{1,}([,\\.]\\d{1,})?) millions d'années)");
 		case "JC":
 			return Pattern.compile("(vers|environ) (("+group+"\\d{4})( ans)? (avant|av.) J.-C.)");
 		case "ROMAN":
@@ -53,8 +54,8 @@ public enum PhraseFinder {
 		List<Phrase> result = new ArrayList<>();
 		for (String phraseString : phrases) {
 			Matcher matcher = pattern.matcher(phraseString);
-			if (matcher.find()) {
-				final String number = matcher.group(group);
+			while (matcher.find()) {
+				final String number = matcher.group(groupName);
 				Long date = parser.from(number);
 				Phrase phrase = new Phrase();
 				phrase.setText(phraseString);

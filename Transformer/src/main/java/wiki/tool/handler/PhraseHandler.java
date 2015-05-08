@@ -6,10 +6,11 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import wiki.component.util.PageMemRepo;
 import wiki.entity.Page;
 import wiki.entity.Phrase;
 import wiki.repo.PhraseRepository;
-import wiki.tool.phrasefinder.PhraseFinder;
+import wiki.tool.phrasefinder.Datation;
 
 
 @Component
@@ -17,10 +18,11 @@ public class PhraseHandler {
 	
 	@Autowired
 	PhraseRepository phraseRepository;
+
+	@Autowired
+	PageMemRepo pageMemRepo;
 	
-	private final String notEndWithThis = "av|mr|dr|jc|JC|J\\.-C";
-	private final String sep = "[ \r\n]+";
-	private final String splitRegex = "(?<=(?<!( ("+notEndWithThis+")))\\.)"+sep;
+	private final String splitRegex = "((?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))\\.) +)|([\r\n\t]+)";
 	private final Pattern pattern = Pattern.compile(splitRegex);
 	
 	
@@ -33,20 +35,25 @@ public class PhraseHandler {
 		final String text = page.getText();
 		final String[] phrases = getPhrases(text);
 		
-		handlePageBy(page, phrases, PhraseFinder.MILLIARD);
-		handlePageBy(page, phrases, PhraseFinder.MILLION);
-		handlePageBy(page, phrases, PhraseFinder.ANNEE2DOT);
-		handlePageBy(page, phrases, PhraseFinder.ENANNEE);
-		handlePageBy(page, phrases, PhraseFinder.JC);
-		handlePageBy(page, phrases, PhraseFinder.ROMAN);
+		handlePageBy(page, phrases, Datation.MILLIARD);
+		handlePageBy(page, phrases, Datation.MILLION);
+		//handlePageBy(page, phrases, Datation.ANNEE2DOT);
+		//handlePageBy(page, phrases, Datation.ENANNEE);
+		handlePageBy(page, phrases, Datation.JC);
+		handlePageBy(page, phrases, Datation.ROMAN);
 	}
 	
-	public void handlePageBy(Page page, String[] phrasesArray, PhraseFinder finder){
+	public void handlePageBy(Page page, String[] phrasesArray, Datation finder){
 		List<Phrase> phrases = finder.findPhrase(phrasesArray);
 		for(Phrase phrase : phrases){
-			phrase.setPageId(page.getId());
+			if(pageMemRepo.keepThisPhrase(phrase)){
+				System.out.println("__"+phrase.getType()+"___"+page.getUrl()+"_______");
+				System.out.println(phrase.getText());
+				System.out.println("_________________________________________________");
+			}
+			//phrase.setPageId(page.getId());
 		}
-		phraseRepository.save(phrases);	
+		//phraseRepository.save(phrases);	
 	}
 	
 }

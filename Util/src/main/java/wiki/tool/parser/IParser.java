@@ -1,6 +1,6 @@
 package wiki.tool.parser;
 
 public interface IParser {
-	Long from(String value);
-	String to(Long value);
+	Long from(final String value);
+	String to(final Long value);
 }

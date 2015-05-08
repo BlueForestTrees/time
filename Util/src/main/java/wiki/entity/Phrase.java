@@ -6,7 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import wiki.tool.phrasefinder.PhraseFinder;
+import wiki.tool.phrasefinder.Datation;
 
 
 @Entity(name = "phrase")
@@ -25,7 +25,7 @@ public class Phrase {
 	//@Field(index=Index.YES)
 	private long date;
 	
-	private PhraseFinder type;
+	private Datation datation;
 
 
 	public Long getPageId() {
@@ -60,11 +60,11 @@ public class Phrase {
 		this.id = id;
 	}
 	
-	public PhraseFinder getType() {
-		return type;
+	public Datation getType() {
+		return datation;
 	}
 	
-	public void setType(PhraseFinder type) {
-		this.type = type;
+	public void setType(Datation type) {
+		this.datation = type;
 	}
 }

@@ -43,7 +43,7 @@ public class RomanParser implements IParser{
              }
           }
 
-          return arabic * 36425;
+          return (arabic - 1) * 36425;
 
        }
 

@@ -34,7 +34,7 @@ public class FindUrlsService implements IService{
 	public void run(long pageCount) throws IOException, FinDuScanException {
 		for (long i = 0; i < pageCount; i++) {
 			Page page = pageReader.getNextPage();
-			if(pageMemRepo.isThisPageNew(page) && pageMemRepo.thisPageUrlIsnotTooLong(page)){
+			if(pageMemRepo.isPageValid(page)){
 				pageRepository.save(page);
 				pageMemRepo.rememberThisPage(page);
 			}

@@ -15,6 +15,7 @@ public class FindPhrases {
 private static final Logger logger = LogManager.getLogger(CountLiensIn.class);
 	
 	public static void main(String[] args) throws IOException {
+		//TODO exclure la section note et reference
 		logger.info("main");
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(TransformerConfig.class)){
 			Runner runner = ctx.getBean(Runner.class);	

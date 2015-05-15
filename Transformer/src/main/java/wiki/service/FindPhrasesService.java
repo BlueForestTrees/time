@@ -43,14 +43,12 @@ public class FindPhrasesService {
 	public void run(long pageCount) throws IOException, FinDuScanException {
 		for (long i = 0; i < pageCount; i++) {
 			Page page = pageReader.getNextPage();
-			if (pageMemRepo.isThisPageNew(page)) {
-				if (pageMemRepo.thisPageUrlIsnotTooLong(page)) {
+			if (pageMemRepo.isPageValid(page)) {
 					//page.setId(pageRepository.getIdByUrl(page.getUrl()));
 
-					phraseHandler.handlePhrase(page);
+					phraseHandler.handle(page);
 
-					//pageMemRepo.rememberThisPage(page);
-				}
+					pageMemRepo.rememberThisPage(page);
 			}
 		}
 	}

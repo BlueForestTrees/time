@@ -50,7 +50,7 @@ public class CountLiensService implements IService {
 		
 		for (long i = 0; i < pageCount; i++) {
 			Page fromPage = pageReader.getNextPage();
-			if(pageMemRepo.isThisPageNew(fromPage) && pageMemRepo.thisPageUrlIsnotTooLong(fromPage)){
+			if(pageMemRepo.isPageValid(fromPage)){
 				for(String lienOut : fromPage.getLiens()){
 					Long toId = pageRepository.getIdByUrl(lienOut);
 					if(toId != null){

@@ -16,21 +16,25 @@ public class PageMemRepo {
 	@Autowired
 	private int urlMaxLength;
 	
-	public boolean thisPageUrlIsnotTooLong(Page page) {
-		return page.getUrl().length() <= urlMaxLength;
-	}
-
 	public void rememberThisPage(Page page) {
-		urlsLowerCase.add(page.getUrl().toLowerCase().replace("-", "_"));
+		urlsLowerCase.add(normalizedUrl(page));
 	}
 
-	public boolean isThisPageNew(Page page) {
-		return !urlsLowerCase.contains(page.getUrl().toLowerCase());
+	public String normalizedUrl(Page page){
+		return page.getUrl().toLowerCase().replace("-", "_");
+	}
+	
+	public boolean isPageValid(Page page){
+		boolean startWithPortail = page.getUrl().startsWith("Portail:");
+		boolean urlTooLong = page.getUrl().length() > urlMaxLength;
+		boolean isNew = !urlsLowerCase.contains(normalizedUrl(page));
+		
+		return isNew && !urlTooLong && !startWithPortail;
 	}
 	
 	public boolean keepThisPhrase(Phrase phrase){
 		boolean startWithCatogories = phrase.getText().startsWith("Catégories :");
 		boolean tooLong = phrase.getText().length() > 1000;
-		return !tooLong && !startWithCatogories;
+		return tooLong && !startWithCatogories;
 	}
 }

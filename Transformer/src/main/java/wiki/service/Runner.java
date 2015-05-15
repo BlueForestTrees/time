@@ -49,7 +49,7 @@ public class Runner {
 				log.debug("#" + pageCount + ", Total:"+fullChrono+", Moy:"+ fullChrono.toStringDividedBy(pageSize) +", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal ));
 			} while (true);
 		} catch (FinDuScanException e) {
-			log.info("fin du scan");
+			log.info("fin du scan (" + pageCount + " pages)");
 		}
 
 		service.onEnd();

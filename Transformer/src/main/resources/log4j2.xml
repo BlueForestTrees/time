@@ -17,12 +17,6 @@
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="StdFile"/>
 		</Root>
-		<Logger name="wiki" level="debug"/>
-		<Logger name="wiki.reader" level="info"/>
-		<Logger name="wiki.reader.PageReader" level="debug"/>
 		<Logger name="wiki.service.Runner" level="debug"/>
-		<Logger name="wiki.service" level="info"/>
-		<Logger name="org" level="info"/>
-		<Logger name="org.springframework.transaction" level="debug"/>
 	</Loggers>
 </Configuration>

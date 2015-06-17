@@ -30,7 +30,7 @@ public class Runner {
 		log.info("run");
 
 		long pageCount = 0;
-		long nbLoop = 0;
+		long phraseCount = 0;
 		Chrono chrono = new Chrono("Page");
 		Chrono fullChrono = new Chrono("Full");
 
@@ -40,13 +40,12 @@ public class Runner {
 
 		try {
 			do {
-				nbLoop++;
 				chrono.start();
-				service.run(pageSize);
+				phraseCount+=service.run(pageSize);
 				pageCount += pageSize;
 				chrono.stop();
 				fullChrono.stop();
-				log.debug("#" + pageCount + ", Total:"+fullChrono+", Moy:"+ fullChrono.toStringDividedBy(pageSize) +", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal ));
+				log.debug("#" + pageCount + ", Total:"+fullChrono+", Moy:"+ fullChrono.toStringDividedBy(pageSize) +", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal ) + " phrase#"+phraseCount);
 			} while (true);
 		} catch (FinDuScanException e) {
 			log.info("fin du scan (" + pageCount + " pages)");

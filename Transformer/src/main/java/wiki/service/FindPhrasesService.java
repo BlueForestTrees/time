@@ -40,17 +40,19 @@ public class FindPhrasesService {
 	}
 
 	@Transactional
-	public void run(long pageCount) throws IOException, FinDuScanException {
+	public long run(long pageCount) throws IOException, FinDuScanException {
+		long phraseCount = 0;
 		for (long i = 0; i < pageCount; i++) {
 			Page page = pageReader.getNextPage();
 			if (pageMemRepo.isPageValid(page)) {
-					//page.setId(pageRepository.getIdByUrl(page.getUrl()));
+					page.setId(pageRepository.getIdByUrl(page.getUrl()));
 
-					phraseHandler.handle(page);
+					phraseCount+=phraseHandler.handle(page);
 
 					pageMemRepo.rememberThisPage(page);
 			}
 		}
+		return phraseCount;
 	}
 
 	public void onEnd() {

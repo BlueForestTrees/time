@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Import;
 
 
 @Configuration
-@ComponentScan({"wiki.service","wiki.factory"})
+@ComponentScan({"wiki.service"})
 @Import(DbConfig.class)
 public class ComponentConfig {
 	

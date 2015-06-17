@@ -4,7 +4,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
-import wiki.config.AppConfig;
+import wiki.config.ComponentConfig;
 import wiki.config.WebConfig;
 
 public class WebAppInitializer extends AbstractDispatcherServletInitializer {
@@ -27,7 +27,7 @@ public class WebAppInitializer extends AbstractDispatcherServletInitializer {
 	protected WebApplicationContext createRootApplicationContext() {
 		AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
 
-		webContext.register(AppConfig.class);
+		webContext.register(ComponentConfig.class);
 
 		return webContext;
 	}

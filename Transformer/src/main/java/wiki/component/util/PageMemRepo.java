@@ -34,7 +34,7 @@ public class PageMemRepo {
 	
 	public boolean keepThisPhrase(Phrase phrase){
 		boolean startWithCatogories = phrase.getText().startsWith("Catégories :");
-		boolean tooLong = phrase.getText().length() > 1000;
-		return tooLong && !startWithCatogories;
+		//boolean tooLong = phrase.getText().length() > 1000;
+		return !startWithCatogories;
 	}
 }

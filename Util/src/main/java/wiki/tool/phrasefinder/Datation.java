@@ -59,7 +59,7 @@ public enum Datation {
 				Long date = parser.from(number);
 				Phrase phrase = new Phrase();
 				phrase.setText(phraseString);
-				phrase.setType(this);
+				//phrase.setType(this);
 				phrase.setDate(date);
 				result.add(phrase);
 			}

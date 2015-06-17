@@ -1,10 +1,11 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>Histoire</groupId>
-  <artifactId>Util</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  
-  <properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>Histoire</groupId>
+	<artifactId>Util</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
 		<assertj.version>2.0.0</assertj.version>
@@ -19,22 +20,28 @@
 		<cglib.version>2.2.2</cglib.version>
 		<util.version>0.0.1-SNAPSHOT</util.version>
 		<joda.version>2.7</joda.version>
+		<domain.version>0.0.1-SNAPSHOT</domain.version>
 	</properties>
-  
-  <dependencies>
-  <dependency>
+
+	<dependencies>
+		<dependency>
+			<groupId>Histoire</groupId>
+			<artifactId>Domain</artifactId>
+			<version>${domain.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${joda.version}</version>
+		</dependency>
+		<!-- TEST -->
+		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
 			<version>${assertj.version}</version>
 			<scope>test</scope>
 		</dependency>
-  
-  	<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-			<version>${joda.version}</version>
-		</dependency>
-		
+
 		<!-- LOGGING -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -70,8 +77,8 @@
 			<artifactId>log4j-jul</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-		
-			<!-- SPRING -->
+
+		<!-- SPRING -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -103,8 +110,8 @@
 			<artifactId>spring-data-jpa</artifactId>
 			<version>${spring-jpa-data.version}</version>
 		</dependency>
-		
-				<!-- HIBERNATE -->
+
+		<!-- HIBERNATE -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
@@ -121,10 +128,10 @@
 			<artifactId>jboss-logging</artifactId>
 			<version>3.2.1.Final</version>
 		</dependency>
-  </dependencies>
-  
-  
-  <build>
+	</dependencies>
+
+
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -137,5 +144,5 @@
 			</plugin>
 		</plugins>
 	</build>
-  
+
 </project>

@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import wiki.tool.phrasefinder.Datation;
-
 
 @Entity(name = "phrase")
 @Table(name = "phrase")
@@ -64,7 +62,7 @@ public class Phrase {
 		return datation;
 	}
 	
-	public void setType(Datation type) {
-		this.datation = type;
+	public void setType(Datation datation) {
+		this.datation = datation;
 	}
 }

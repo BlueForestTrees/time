@@ -2,16 +2,38 @@ package wiki.test.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Arrays;
-
 import org.assertj.core.api.Condition;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import wiki.config.DateFinderConfig;
 import wiki.entity.Phrase;
-import wiki.test.BaseTest;
-import wiki.tool.phrasefinder.Datation;
+import wiki.tool.phrasefinder.DateFinder;
 
-public class PhraseFinderTest extends BaseTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes = DateFinderConfig.class)
+public class DateFinderTest{
+	
+	@Autowired
+	private DateFinder milliardFinder;
+	
+	@Autowired
+	private DateFinder millionFinder;
+	
+	@Autowired
+	private DateFinder jcFinder;
+	
+	@Autowired
+	private DateFinder romanFinder;
+	
+	@Autowired
+	private DateFinder enanneFinder;
+	
+	@Autowired
+	private DateFinder annee2DotFinder;
 
 	private String[] phrases = {
 			"L'invention de la roue est estimée située vers 3500 avant J.-C. à Sumer en basse Mésopotamie.",
@@ -27,13 +49,13 @@ public class PhraseFinderTest extends BaseTest {
 	public void testFindDate() {
 		
 		
-		assertThat(Datation.JC.findPhrase(phrases)).haveExactly(1, withDate(-3500))
-												   .haveExactly(1, withDate(-2000));
-		assertThat(Datation.ANNEE2DOT.findPhrase(phrases)).haveExactly(1, withDate(1777));
-		assertThat(Datation.ENANNEE.findPhrase(phrases)).haveExactly(1, withDate(1571));
-		assertThat(Datation.MILLIARD.findPhrase(phrases)).haveExactly(1, withDate(-2400000000L));
-		assertThat(Datation.MILLION.findPhrase(phrases)).haveExactly(1, withDate(-65000000));
-		assertThat(Datation.ROMAN.findPhrase(phrases)).haveExactly(1, withDate(1500))
+		assertThat(jcFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(-3500))
+												   		.haveExactly(1, withDate(-2000));
+		assertThat(annee2DotFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(1777));
+		assertThat(enanneFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(1571));
+		assertThat(milliardFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(-2400000000L));
+		assertThat(millionFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(-65000000));
+		assertThat(romanFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(1500))
 													  .haveExactly(1, withDate(2000));
 	}
 
@@ -45,7 +67,4 @@ public class PhraseFinderTest extends BaseTest {
 		};
 	}
 
-	private String[] getText(Phrase[] phrases) {
-		return Arrays.stream(phrases).map(p -> p.getText()).toArray(String[]::new);
-	}
 }

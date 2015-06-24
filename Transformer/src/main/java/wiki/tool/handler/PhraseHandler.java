@@ -10,9 +10,8 @@ import org.springframework.stereotype.Component;
 import wiki.component.util.PageMemRepo;
 import wiki.entity.Page;
 import wiki.entity.Phrase;
-import wiki.repo.PageRepository;
 import wiki.repo.PhraseRepository;
-import wiki.tool.phrasefinder.Datation;
+import wiki.tool.phrasefinder.DateFinder;
 
 @Component
 public class PhraseHandler {
@@ -23,6 +22,24 @@ public class PhraseHandler {
 	@Autowired
 	PageMemRepo pageMemRepo;
 
+	@Autowired
+	private DateFinder milliardFinder;
+	
+	@Autowired
+	private DateFinder millionFinder;
+	
+	@Autowired
+	private DateFinder jcFinder;
+	
+	@Autowired
+	private DateFinder romanFinder;
+	
+	@Autowired
+	private DateFinder enanneFinder;
+	
+	@Autowired
+	private DateFinder annee2DotFinder;
+
 	private final String splitByNoteRegex = "Notes et références";
 	private final Pattern splitByNote = Pattern.compile(splitByNoteRegex);
 
@@ -31,6 +48,7 @@ public class PhraseHandler {
 
 	private final String splitParagraphRegex = "[\r\n\t]+";
 	private final Pattern splitParagraphPattern = Pattern.compile(splitParagraphRegex);
+
 
 	public String[] getPhrases(final String text) {
 		return splitPhrasePattern.split(text);
@@ -63,20 +81,20 @@ public class PhraseHandler {
 
 				final String[] phrases = getPhrases(paragraph);
 
-				count+=handlePage(page, phrases, Datation.MILLIARD);
-				count+=handlePage(page, phrases, Datation.MILLION);
+				count+=handlePage(page, phrases, milliardFinder);
+				count+=handlePage(page, phrases, millionFinder);
 				// handlePageBy(page, phrases, Datation.ANNEE2DOT);
 				// handlePageBy(page, phrases, Datation.ENANNEE);
-				count+=handlePage(page, phrases, Datation.JC);
+				count+=handlePage(page, phrases, jcFinder);
 				//count+=handlePage(page, phrases, Datation.ROMAN);
 			}
 		}
 		return count;
 	}
 
-	public long handlePage(Page page, String[] phrasesArray, Datation finder) {
+	public long handlePage(Page page, String[] phrasesArray, DateFinder finder) {
 		long count = 0;
-		List<Phrase> phrases = finder.findPhrase(phrasesArray);
+		List<Phrase> phrases = finder.findPhrasesWithDates(phrasesArray);
 		for (Phrase phrase : phrases) {
 			if (pageMemRepo.keepThisPhrase(phrase)) {
 				phrase.setPageId(page.getId());

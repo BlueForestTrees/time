@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import javax.transaction.Transactional;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +16,6 @@ import wiki.tool.handler.PhraseHandler;
 
 @Service
 public class FindPhrasesService {
-	private static final Logger logger = LogManager.getLogger(FindPhrasesService.class);
 
 	@Autowired
 	PageRepository pageRepository;

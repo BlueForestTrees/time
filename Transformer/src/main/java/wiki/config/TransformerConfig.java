@@ -11,7 +11,7 @@ import wiki.component.reader.SmartScanner;
 
 @Configuration
 @ComponentScan({"wiki.service", "wiki.component", "wiki.tool"})
-@Import(TransformerDbConfig.class)
+@Import({TransformerDbConfig.class, DateFinderConfig.class})
 public class TransformerConfig {
 	
 	@Bean

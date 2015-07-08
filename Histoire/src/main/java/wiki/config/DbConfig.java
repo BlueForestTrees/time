@@ -22,14 +22,17 @@ public class DbConfig {
 	
 	@Bean
 	public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
-		LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+		final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
 		em.setDataSource(dataSource());
 		em.setPackagesToScan(new String[] { "wiki.entity" });
-		
 
-		JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
 		em.setJpaVendorAdapter(vendorAdapter);
-		em.setJpaProperties(additionalProperties());
+		
+		final Properties jpaProperties = new Properties();
+		jpaProperties.setProperty("hibernate.hbm2ddl.auto", "update");
+		jpaProperties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+		em.setJpaProperties(jpaProperties);
 
 		return em;
 	}
@@ -56,12 +59,5 @@ public class DbConfig {
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
 		return new PersistenceExceptionTranslationPostProcessor();
 	}
-
-	Properties additionalProperties() {
-		Properties properties = new Properties();
-		properties.setProperty("hibernate.hbm2ddl.auto", "update");
-		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
-		return properties;
-	}	
 
 }

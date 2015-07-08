@@ -6,10 +6,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.NumericField;
+import org.hibernate.search.annotations.Store;
+
 
 @Entity(name = "phrase")
 @Table(name = "phrase")
-//@Indexed
+@Indexed
 public class Phrase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,10 +24,11 @@ public class Phrase {
 	
 	private Long pageId;
 	
-	//@Field(index=Index.YES, analyze=Analyze.YES)
+	@Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
 	private String text;
 	
-	//@Field(index=Index.YES)
+	@NumericField
+	@Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
 	private long date;
 	
 	private Datation datation;

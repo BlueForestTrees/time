@@ -6,19 +6,22 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.SortField.Type;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import wiki.entity.Phrase;
+import wiki.enums.Sort;
 
 @Service
 public class PhraseService {
@@ -26,31 +29,54 @@ public class PhraseService {
 	@PersistenceContext(type = PersistenceContextType.EXTENDED)
 	private EntityManager entityManager;
 
-	@SuppressWarnings("unchecked")
+	@Autowired
+	private int pageSize;
+
 	@Transactional
-	public List<Phrase> find(long date, short pageSize, String word) {
+	public List<Phrase> find(Long date, String word, Sort sort) {
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		final QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
-		final Query dateQuery = qb.range().onField("date").above(date).createQuery();
-		
-		if(!StringUtils.isEmpty(word)){
-			final Query wordQuery = qb.keyword().onFields("text").matching(word).createQuery();
-			//TODO créer plusieurs méthodes pour tout les cas de figure et construire les requêtes ailleurs
-		}
-		
-		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(dateQuery, Phrase.class);
-		final Sort sort = new Sort(new SortField("date", Type.LONG));
 
-		fullTextQuery.setSort(sort);
+		return getResultList(fullTextEntityManager, getAndQuery(getWordQuery(word, qb), getDateQuery(date, qb)), sort);
+	}
+
+
+	private BooleanQuery getAndQuery(final Query... queries) {
+		final BooleanQuery andQuery = new BooleanQuery();
+		for(Query query : queries){
+			if(query != null){
+				andQuery.add(query, Occur.MUST);
+			}
+		}
+		return andQuery;
+	}
+	
+	private Query getDateQuery(Long date, final QueryBuilder qb) {
+		if(date == null){
+			return null;
+		}
+		return qb.range().onField("date").above(date).createQuery();
+	}
+
+	private Query getWordQuery(String word, final QueryBuilder qb) {
+		if(StringUtils.isEmpty(word)){
+			return null;
+		}
+		return qb.keyword().onFields("text").matching(word).createQuery();
+	}
+	private List<Phrase> getResultList(final FullTextEntityManager fullTextEntityManager, final Query query, final Sort sort) {
+		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
+		fullTextQuery.setSort(new org.apache.lucene.search.Sort(new SortField("date", Type.LONG, sort == Sort.asc)));
 		fullTextQuery.setMaxResults(pageSize);
 
+		@SuppressWarnings("unchecked")
 		final List<Phrase> result = (List<Phrase>) fullTextQuery.getResultList();
 
 		return result;
 	}
+
 	
-	
-	public String rebuildIndex() {
+	public String reIndex() {
 		String result = null;
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		try {

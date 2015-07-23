@@ -21,7 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import wiki.entity.Phrase;
-import wiki.enums.Sort;
+import wiki.enums.Sens;
 
 @Service
 public class PhraseService {
@@ -33,11 +33,11 @@ public class PhraseService {
 	private int pageSize;
 
 	@Transactional
-	public List<Phrase> find(Long date, String word, Sort sort) {
+	public List<Phrase> find(Long date, String word, Sens sens) {
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		final QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
 
-		return getResultList(fullTextEntityManager, getAndQuery(getWordQuery(word, qb), getDateQuery(date, qb)), sort);
+		return getResultList(fullTextEntityManager, getAndQuery(getWordQuery(word, qb), getDateQuery(date, qb, sens)), sens);
 	}
 
 
@@ -51,11 +51,15 @@ public class PhraseService {
 		return andQuery;
 	}
 	
-	private Query getDateQuery(Long date, final QueryBuilder qb) {
+	private Query getDateQuery(Long date, final QueryBuilder qb, Sens sens) {
 		if(date == null){
 			return null;
 		}
-		return qb.range().onField("date").above(date).createQuery();
+		if(sens == Sens.apres){
+			return qb.range().onField("date").above(date).createQuery();
+		}else{
+			return qb.range().onField("date").below(date).createQuery();
+		}
 	}
 
 	private Query getWordQuery(String word, final QueryBuilder qb) {
@@ -64,9 +68,9 @@ public class PhraseService {
 		}
 		return qb.keyword().onFields("text").matching(word).createQuery();
 	}
-	private List<Phrase> getResultList(final FullTextEntityManager fullTextEntityManager, final Query query, final Sort sort) {
+	private List<Phrase> getResultList(final FullTextEntityManager fullTextEntityManager, final Query query, Sens sens) {
 		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
-		fullTextQuery.setSort(new org.apache.lucene.search.Sort(new SortField("date", Type.LONG, sort == Sort.asc)));
+		fullTextQuery.setSort(new org.apache.lucene.search.Sort(new SortField("date", Type.LONG, sens == Sens.avant)));
 		fullTextQuery.setMaxResults(pageSize);
 
 		@SuppressWarnings("unchecked")

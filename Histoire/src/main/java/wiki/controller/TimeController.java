@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import wiki.entity.Phrase;
-import wiki.enums.Sort;
+import wiki.enums.Sens;
 import wiki.service.PhraseService;
 
 @RestController
@@ -21,13 +21,13 @@ public class TimeController {
 	@Autowired
 	private PhraseService phraseService;
 
-	@RequestMapping(value="/time/find/{sort}", method = RequestMethod.GET)
+	@RequestMapping(value="/time/find/{sens}", method = RequestMethod.GET)
 	public List<Phrase> find(
 			@RequestParam(value = "date", required=false) Long date,
 			@RequestParam(value = "word", required=false) String word,
-			@PathVariable Sort sort) throws Exception {
+			@PathVariable Sens sens) throws Exception {
 		
-		return phraseService.find(date, word, sort);
+		return phraseService.find(date, word, sens);
 	}
 	
 	@RequestMapping(value="/time/reindex", method = RequestMethod.GET)

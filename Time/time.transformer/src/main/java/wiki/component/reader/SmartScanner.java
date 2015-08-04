@@ -1,0 +1,91 @@
+package wiki.component.reader;
+
+import java.io.IOException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Scanner;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+public class SmartScanner {
+
+	private static final Logger logger = LogManager.getLogger(SmartScanner.class);
+
+	private final List<Path> entries;
+
+	private Scanner scanner;
+	private String delimiter;
+	private int scannerIndex;
+
+	public SmartScanner(String path) throws IOException {
+		logger.info("construction de smartScanner sur " + path);
+		scanner = null;
+		scannerIndex = 0;
+		Path dir = FileSystems.getDefault().getPath(path);
+		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+			entries = new ArrayList<Path>();
+			for (Path entry : stream) {
+				logger.info(entry.toString());
+				entries.add(entry);
+			}
+		}
+		firstScanner();
+	}
+
+	private void firstScanner() throws IOException {
+		Path entry = entries.get(scannerIndex);
+		logger.debug("going to file " + entry);
+		scanner = new Scanner(entry);
+		scannerIndex++;
+
+	}
+
+	private void nextScanner() throws IOException, FinDuScanException {
+		scanner.close();
+		try {
+			firstScanner();
+		} catch (IndexOutOfBoundsException e) {
+			throw new FinDuScanException("fin du scan");
+		}
+		setDelimiter(delimiter);
+	}
+
+	public void setDelimiter(String delimiter) {
+		this.delimiter = delimiter;
+		scanner.useDelimiter(delimiter);
+	}
+
+	public String nextString() throws IOException, FinDuScanException {
+		try {
+			String data = scanner.next();
+			return data;
+		} catch (NoSuchElementException e) {
+			nextScanner();
+			String data = scanner.next();
+			return data;
+		}
+	}
+
+	public int nextInt() throws IOException, FinDuScanException {
+		try {
+			int data = scanner.nextInt();
+			return data;
+		} catch (InputMismatchException e) {
+			String content = scanner.next();
+			logger.error("nextInt incorrect: " + content, e);
+			throw e;
+		} catch (NoSuchElementException e) {
+			nextScanner();
+			int data = scanner.nextInt();
+			return data;
+		}
+	}
+
+}

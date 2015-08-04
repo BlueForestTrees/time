@@ -26,10 +26,12 @@ public class DateFinder {
 		for (String phraseString : phrases) {
 			final Matcher matcher = pattern.matcher(phraseString);
 			while (matcher.find()) {
+				//TODO tester le strong sur la date
+				final String dateExtract = matcher.group();
 				final String number = matcher.group("g");
 				final Long date = parser.from(number);
 				final Phrase phrase = new Phrase();
-				phrase.setText(phraseString);
+				phrase.setText(phraseString.replace(dateExtract, "<strong>"+dateExtract+"</strong>"));
 				phrase.setType(datation);
 				phrase.setDate(date);
 				result.add(phrase);

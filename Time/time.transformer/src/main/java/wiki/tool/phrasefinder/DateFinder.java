@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import time.repo.Datation;
-import time.repo.Phrase;
+import time.repo.bean.Datation;
+import time.repo.bean.Phrase;
 import wiki.tool.parser.IParser;
 
 public class DateFinder {

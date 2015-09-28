@@ -5,8 +5,8 @@ import java.util.HashSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import time.repo.Page;
-import time.repo.Phrase;
+import time.repo.bean.Page;
+import time.repo.bean.Phrase;
 
 @Component
 public class PageMemRepo {

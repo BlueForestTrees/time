@@ -1,4 +1,4 @@
-package time.repo;
+package time.repo.bean;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Facet;
+import org.hibernate.search.annotations.FacetEncodingType;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
@@ -27,6 +29,15 @@ public class Phrase {
 	@Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
 	private String text;
 	
+	/**
+	 * TODO voir SimpleFacetsExample
+	 * doc.add(new FacetField("Publish Date", "2010", "10", "15"));
+	 * utiliser un champ pour tout les niveaux avec un 'path'
+	 */
+	@Field(analyze = Analyze.NO)
+	@Facet(encoding = FacetEncodingType.STRING)
+	private long dateByTen;
+
 	@NumericField
 	@Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
 	private long date;
@@ -72,5 +83,13 @@ public class Phrase {
 	
 	public void setType(Datation datation) {
 		this.datation = datation;
+	}
+	
+	public long getDateByTen() {
+		return dateByTen;
+	}
+
+	public void setDateByTen(long dateByTen) {
+		this.dateByTen = dateByTen;
 	}
 }

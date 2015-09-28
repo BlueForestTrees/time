@@ -1,4 +1,4 @@
-package time.repo;
+package time.repo.bean;
 
 public enum Datation {
 		MILLIARD,

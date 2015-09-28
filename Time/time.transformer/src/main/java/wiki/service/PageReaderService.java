@@ -9,9 +9,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import time.repo.bean.Page;
 import wiki.component.reader.FinDuScanException;
 import wiki.component.reader.SmartScanner;
-import time.repo.Page;
 
 @Service
 public class PageReaderService {

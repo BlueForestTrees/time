@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import time.repo.Page;
+import time.repo.bean.Page;
 
 @Repository
 public interface PageRepository  extends JpaRepository<Page, Long>{

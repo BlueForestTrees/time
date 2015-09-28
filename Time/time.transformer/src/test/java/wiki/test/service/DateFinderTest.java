@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import wiki.config.DateFinderConfig;
-import time.repo.Phrase;
+import time.repo.bean.Phrase;
 import wiki.tool.phrasefinder.DateFinder;
 
 @RunWith(SpringJUnit4ClassRunner.class)

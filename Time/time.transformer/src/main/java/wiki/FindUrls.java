@@ -19,7 +19,7 @@ public class FindUrls {
 		logger.info("main");
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(TransformerConfig.class)){
 			Runner runner = ctx.getBean(Runner.class);	
-			FindUrlsService service = ctx.getBean(FindUrlsService.class);
+			//FindUrlsService service = ctx.getBean(FindUrlsService.class);
 			//runner.setService(service);
 			runner.run();
 		}

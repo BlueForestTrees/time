@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import time.repo.Datation;
+import time.repo.bean.Datation;
 import wiki.tool.parser.AnneeParser;
 import wiki.tool.parser.IParser;
 import wiki.tool.parser.JCParser;

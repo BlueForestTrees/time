@@ -2,14 +2,16 @@ package wiki.service;
 
 import java.io.IOException;
 
-import javax.transaction.Transactional;
+
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import time.repo.bean.Page;
 import wiki.component.reader.FinDuScanException;
 import wiki.component.util.PageMemRepo;
-import time.repo.Page;
 import wiki.repo.PageRepository;
 
 @Service

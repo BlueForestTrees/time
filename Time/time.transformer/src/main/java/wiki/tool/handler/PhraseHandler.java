@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import time.repo.bean.Page;
+import time.repo.bean.Phrase;
 import wiki.component.util.PageMemRepo;
-import time.repo.Page;
-import time.repo.Phrase;
 import wiki.repo.PhraseRepository;
 import wiki.tool.phrasefinder.DateFinder;
 

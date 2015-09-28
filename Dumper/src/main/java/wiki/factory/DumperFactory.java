@@ -198,7 +198,7 @@ public class DumperFactory {
 		Integer politenessDelay = config.getDelay();
 		Integer maxPagesToFetch = config.getMaxPages();
 		String crawlStorageFolder = config.getCrawlPath();
-		String baseUrl = config.getBaseUrl();
+		//String baseUrl = config.getBaseUrl();
 		boolean resumable = config.isResumable();
 		int nbCrawler = config.getNbCrawlers();
 		String storagePath = config.getStoragePath();

@@ -7,10 +7,18 @@ import org.hibernate.search.query.facet.Facet;
 import org.springframework.stereotype.Component;
 
 import time.web.bean.FacetDTO;
+import time.web.bean.FacetsDTO;
 
 @Component
 public class FacetTransformer {
-	public List<FacetDTO> facetToFacetDTO(List<Facet> facets){
+	
+	public FacetsDTO toFacetsDTO(List<Facet> facets){
+		final FacetsDTO facetsDTO = new FacetsDTO();
+		facetsDTO.setFacets(toFacetDTO(facets));
+		return facetsDTO;
+	}
+	
+	public List<FacetDTO> toFacetDTO(List<Facet> facets){
 		return facets.stream().map(elt -> facetToFacetDTO(elt)).collect(Collectors.toList());
 	}
 	

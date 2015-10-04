@@ -25,7 +25,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import time.repo.bean.Phrase;
-import time.web.bean.FacetDTO;
+import time.web.bean.FacetsDTO;
+import time.web.enums.Scale;
 import time.web.enums.Sens;
 import time.web.transformer.FacetTransformer;
 
@@ -55,20 +56,28 @@ public class PhraseService {
 	}
 
 	@Transactional
-	public List<Facet> timeFacets() {
+	public List<Facet> timeFacets(Scale scale, String word, Long page) {
+		//Factories
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-		final QueryBuilder builder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
-		final FacetingRequest phraseFacetingRequest = builder.facet()
+		final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
+		
+		//Facet query
+		final FacetingRequest phraseFacetingRequest = queryBuilder.facet()
 			    .name("phrases")
-			    .onField("dateByTen")
+			    .onField(scale.getField())
 			    .discrete()
 			    .orderedBy(FacetSortOrder.FIELD_VALUE)
 			    .includeZeroCounts(false)
 			    .createFacetingRequest();
 		
-		// create a fulltext query
-		final Query luceneQuery = builder.all().createQuery();
-		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(luceneQuery, Phrase.class);
+		// Query
+		Query query = null;
+		if (!StringUtils.isEmpty(word)) {
+			query = queryBuilder.keyword().onFields("text").matching(word).createQuery();
+		}else{
+			query = queryBuilder.all().createQuery();
+		}
+		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
 		
 		// retrieve facet manager and apply faceting request
 		final FacetManager facetManager = fullTextQuery.getFacetManager();
@@ -80,41 +89,25 @@ public class PhraseService {
 
 	@Transactional
 	public List<Phrase> find(Long date, String word, Sens sens, Long page) {
+		//Factories
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-		final QueryBuilder qb = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
-		return getResultList(fullTextEntityManager, getAndQuery(getWordQuery(word, qb), getDateQuery(date, qb, sens)), sens, page);
-	}
-
-	private BooleanQuery getAndQuery(final Query... queries) {
-		final BooleanQuery.Builder andQuery = new BooleanQuery.Builder();
-		for (Query query : queries) {
-			if (query != null) {
-				andQuery.add(query, Occur.MUST);
-			}
-		}
-		return andQuery.build();
-	}
-
-	private Query getDateQuery(Long date, final QueryBuilder qb, Sens sens) {
-		if (date == null) {
-			return null;
-		}
+		final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
+		
+		//Query
+		Query dateQuery = null;
 		if (sens == Sens.apres) {
-			return qb.range().onField("date").above(date).createQuery();
+			dateQuery = queryBuilder.range().onField("date").above(date).createQuery();
 		} else {
-			return qb.range().onField("date").below(date).createQuery();
+			dateQuery = queryBuilder.range().onField("date").below(date).createQuery();
 		}
-	}
-
-	private Query getWordQuery(String word, final QueryBuilder qb) {
-		if (StringUtils.isEmpty(word)) {
-			return null;
+		Query wordQuery = null;
+		if (!StringUtils.isEmpty(word)) {
+			wordQuery = queryBuilder.keyword().onFields("text").matching(word).createQuery();
 		}
-		return qb.keyword().onFields("text").matching(word).createQuery();
-	}
-
-	private List<Phrase> getResultList(final FullTextEntityManager fullTextEntityManager, final Query query, Sens sens, Long page) {
+		final BooleanQuery query = getAndQuery(wordQuery, dateQuery);
 		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
+		
+		//Query settings
 		fullTextQuery.setSort(new org.apache.lucene.search.Sort(new SortField("date", Type.LONG, sens == Sens.avant)));
 		fullTextQuery.setMaxResults(pageSize);
 		if (page != null) {
@@ -128,9 +121,18 @@ public class PhraseService {
 		return result;
 	}
 
-	public List<FacetDTO> timeFacetsDTO() {
-		final List<Facet> facets = timeFacets();
-		return facetTransformer.facetToFacetDTO(facets);
+	public FacetsDTO timeFacetsDTO( Scale scale, String word, Long page) {
+		final List<Facet> timeFacets = timeFacets(scale, word, page);
+		return facetTransformer.toFacetsDTO(timeFacets);
 	}
 
+	private BooleanQuery getAndQuery(final Query... queries) {
+		final BooleanQuery.Builder andQuery = new BooleanQuery.Builder();
+		for (Query query : queries) {
+			if (query != null) {
+				andQuery.add(query, Occur.MUST);
+			}
+		}
+		return andQuery.build();
+	}
 }

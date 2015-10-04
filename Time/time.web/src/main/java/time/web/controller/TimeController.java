@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import time.repo.bean.Phrase;
-import time.web.bean.FacetDTO;
+import time.web.bean.FacetsDTO;
+import time.web.enums.Scale;
 import time.web.enums.Sens;
 import time.web.service.PhraseService;
 
@@ -22,24 +23,28 @@ public class TimeController {
 	@Autowired
 	private PhraseService phraseService;
 
-	@RequestMapping(value="/find/{sens}", method = RequestMethod.GET)
-	public List<Phrase> find(
-			@RequestParam(value = "date", required=false) Long date,
-			@RequestParam(value = "word", required=false) String word,
-			@RequestParam(value = "page", required=false) Long page,
-			@PathVariable Sens sens) throws Exception {
-		
+	@RequestMapping(value = "/find/{sens}", method = RequestMethod.GET)
+	public List<Phrase> find(@RequestParam(value = "date", required = false) Long date, @RequestParam(value = "word", required = false) String word,
+			@RequestParam(value = "page", required = false) Long page, @PathVariable Sens sens) throws Exception {
+
 		return phraseService.find(date, word, sens, page);
 	}
-	
-	@RequestMapping(value="/reindex", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/reindex", method = RequestMethod.GET)
 	public String rebuildIndex() {
 		return phraseService.reIndex();
 	}
-	
-	@RequestMapping(value="/facets", method = RequestMethod.GET)
-	public List<FacetDTO> facets() {
-		return phraseService.timeFacetsDTO();
+
+	/**
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/facets", method = RequestMethod.GET)
+	public FacetsDTO facets10(@RequestParam(value = "scale", required = false) Scale scale,
+							  @RequestParam(value = "word", required = false) String word, 
+							  @RequestParam(value = "page", required = false) Long page) {
+		return phraseService.timeFacetsDTO(scale, word, page);
 	}
-	
+
+
 }

@@ -56,7 +56,8 @@ public class PhraseService {
 	}
 
 	@Transactional
-	public List<Facet> timeFacets(Scale scale, String word, Long page) {
+	public List<Facet> getTimeFacets(Scale scale, String word, Long page) {
+		//TODO faire marcher la pagination
 		//Factories
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
@@ -122,8 +123,8 @@ public class PhraseService {
 	}
 
 	public FacetsDTO timeFacetsDTO( Scale scale, String word, Long page) {
-		final List<Facet> timeFacets = timeFacets(scale, word, page);
-		return facetTransformer.toFacetsDTO(timeFacets);
+		final List<Facet> timeFacets = getTimeFacets(scale, word, page);
+		return facetTransformer.toFacetsDTO(timeFacets, page, scale);
 	}
 
 	private BooleanQuery getAndQuery(final Query... queries) {

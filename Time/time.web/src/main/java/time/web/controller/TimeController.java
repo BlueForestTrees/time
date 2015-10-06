@@ -40,9 +40,9 @@ public class TimeController {
 	 * @return
 	 */
 	@RequestMapping(value = "/facets", method = RequestMethod.GET)
-	public FacetsDTO facets10(@RequestParam(value = "scale", required = false) Scale scale,
-							  @RequestParam(value = "word", required = false) String word, 
-							  @RequestParam(value = "page", required = false) Long page) {
+	public FacetsDTO facets(@RequestParam(value = "scale", required = true) Scale scale,
+							  @RequestParam(value = "word", required = false, defaultValue = "") String word, 
+							  @RequestParam(value = "page", required = false, defaultValue = "0") Long page) {
 		return phraseService.timeFacetsDTO(scale, word, page);
 	}
 

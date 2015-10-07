@@ -16,6 +16,9 @@ private static final Logger logger = LogManager.getLogger(CountLiensIn.class);
 	
 	public static void main(String[] args) throws IOException {
 		//TODO exclure la section note et reference
+		//TODO séparer domaine et repo?
+		//TODO ajouter service d'ajout/flush de phrases
+		//TODO brancher le crawler+transformer+loader
 		logger.info("main");
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(TransformerConfig.class)){
 			Runner runner = ctx.getBean(Runner.class);	

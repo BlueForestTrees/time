@@ -57,8 +57,6 @@ public class PhraseService {
 
 	@Transactional
 	public List<Facet> getTimeFacets(Scale scale, String word, Long page) {
-		//TODO faire marcher la pagination
-		//Factories
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
 		
@@ -69,6 +67,7 @@ public class PhraseService {
 			    .discrete()
 			    .orderedBy(FacetSortOrder.FIELD_VALUE)
 			    .includeZeroCounts(false)
+			    .maxFacetCount(pageSize)
 			    .createFacetingRequest();
 		
 		// Query
@@ -79,6 +78,11 @@ public class PhraseService {
 			query = queryBuilder.all().createQuery();
 		}
 		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
+		fullTextQuery.setMaxResults(pageSize);
+		if (page != null) {
+			int startPosition = (int) (long) (page * pageSize);
+			fullTextQuery.setFirstResult(startPosition);
+		}
 		
 		// retrieve facet manager and apply faceting request
 		final FacetManager facetManager = fullTextQuery.getFacetManager();

@@ -3,7 +3,6 @@ package time.web.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,11 +22,13 @@ public class TimeController {
 	@Autowired
 	private PhraseService phraseService;
 
-	@RequestMapping(value = "/find/{sens}", method = RequestMethod.GET)
-	public List<Phrase> find(@RequestParam(value = "date", required = false) Long date, @RequestParam(value = "word", required = false) String word,
-			@RequestParam(value = "page", required = false) Long page, @PathVariable Sens sens) throws Exception {
+	@RequestMapping(value = "/find", method = RequestMethod.GET)
+	public List<Phrase> find(@RequestParam(value = "date", required = false) Long date, 
+			@RequestParam(value = "word", required = false) String word,
+			@RequestParam(value = "page", required = false) Long page,
+			@RequestParam(value = "sens", required = false) String sens) throws Exception {
 
-		return phraseService.find(date, word, sens, page);
+		return phraseService.find(date, word, Sens.valueOf(sens), page);
 	}
 
 	@RequestMapping(value = "/reindex", method = RequestMethod.GET)
@@ -41,10 +42,9 @@ public class TimeController {
 	 */
 	@RequestMapping(value = "/facets", method = RequestMethod.GET)
 	public FacetsDTO facets(@RequestParam(value = "scale", required = true) Scale scale,
-							  @RequestParam(value = "word", required = false, defaultValue = "") String word, 
-							  @RequestParam(value = "page", required = false, defaultValue = "0") Long page) {
+			@RequestParam(value = "word", required = false, defaultValue = "") String word,
+			@RequestParam(value = "page", required = false, defaultValue = "0") Long page) {
 		return phraseService.timeFacetsDTO(scale, word, page);
 	}
-
 
 }

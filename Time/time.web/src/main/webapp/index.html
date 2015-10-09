@@ -2,89 +2,13 @@
 	<head>
 		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 	
-		<script>
-		
-			var date = 0;
-			var word = "";
-			var page = 0;
-			var sens = "avant";
-		
-			$( document ).ready(function() {
-				$(".loadingMark").hide();
-				$(".reindexingMark").hide();
-				$(".facetingMark").hide();
-			});
-		
-			function searchBtClick() {
-				var date = $(".dateInput").val();
-				$(".dateInput").empty();
-				search(date);
-				addHistoryButton(date);
-			}
-			
-			function withDate(date){
-				this.date = date;
-				search();
-			}
-			
-			function search(){
-				$(".loadingMark").show();
-				word = $(".wordInput").val();
-				var jqxhr = $.get("find/"+$("input:checked").val(),  { date :  date, word : word})
-				.done(function(data) {
-					$(".loadingMark").hide();
-					dataIsComing(data);
-				}).fail(function() {
-				});
-			}
-			
-			function reindexBtClick(){
-				$(".reindexingMark").show();
-				var jqxhr = $.get("reindex/")
-				.done(function(data) {
-					$(".reindexingMark").hide();
-				}).fail(function() {
-				});
-			}
-			
-			function facetsBtClick(){
-				$(".facetingMark").show();
-				var jqxhr = $.get("facets/")
-				.done(function(data) {
-					$(".facetingMark").hide();
-				}).fail(function() {
-				});
-			}
-			
-			function addHistoryButton(date){
-				if(date != ""){
-					$(".historyBts").append("<input type='button' onClick='search("+date+");' value='"+date+"'/>");
-				}
-			}
-			
-			function dataIsComing(data){
-				$('.phrases').empty();				
-				for(phraseIndex in data){
-					$(".phrases").append(asParagraph(data[phraseIndex]));
-				}
-			}
-			
-			function asParagraph(phrase){
-				return "<p>"+phrase.date + " => " + phrase.text+"</p>"
-			}
-			
-			function page(page){
-				this.page = page;
-				search();
-			}
-			
-		</script>
+		<script src="./index.js"></script>
 	</head>
 	<body>
 		<INPUT type= "radio" name="sens" value="avant" checked> avant
 		<INPUT type= "radio" name="sens" value="apres"> apres
 		<input type="text" class="dateInput"/> date
-		<input type="text" class="wordInput"/> mot
+		<input type="text" class="wordInput" value="civilisation"/> mot
 		<input type="button" onClick="searchBtClick()" value="OK"/>
 		<input type="button" onClick="reindexBtClick()" value="Re-index"/>
 		<input type="button" onClick="facetsBtClick()" value="Facets"/>

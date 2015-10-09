@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+	<Appenders>
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+		</Console>
+		<RollingRandomAccessFile name="StdFile" fileName="/log/histoire/dumper/log.txt" 
+					 filePattern="/log/histoire/dumper/log.txt.%i" immediateFlush="true" append="false">
+			<PatternLayout>
+				<pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+			</PatternLayout>
+			<SizeBasedTriggeringPolicy size="20 MB" />
+		</RollingRandomAccessFile>
+	</Appenders>
+	<Loggers>
+		<Root level="error">
+		</Root>
+		<Logger name="org.apache.http" level="error">
+			<AppenderRef ref="StdFile"/>
+		</Logger>
+		<Logger name="edu.uci.ics.crawler4j" level="info">
+			<AppenderRef ref="StdFile"/>
+		</Logger>
+		<Logger name="wiki" level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="StdFile"/>
+		</Logger>
+		<Logger name="wiki.crawler" level="debug">
+		</Logger>
+	</Loggers>
+</Configuration>

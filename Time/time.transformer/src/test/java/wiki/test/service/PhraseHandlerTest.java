@@ -11,11 +11,12 @@ public class PhraseHandlerTest {
 	@Test
 	public void testGetPhrases() {
 		PhraseHandler phraseHandler = new PhraseHandler();
-		final String data = "Bla bla. Bli bli.\r\n\r\nBlou av. b mr. lou\r\nICI blou. Blu blu blu. Blo avant JC. blo LA blo blo.";
+		//TODO gérer les \r\n
+		final String data = "Bla bla. Bli bli. Blou av. b mr. lou. ICI blou. Blu blu blu. Blo avant JC. blo LA blo blo.";
 		String[] expectedPhrases = new String[]{
 				"Bla bla.",
 				"Bli bli.",
-				"Blou av. b mr. lou",
+				"Blou av. b mr. lou.",
 				"ICI blou.",
 				"Blu blu blu.",
 				"Blo avant JC. blo LA blo blo."

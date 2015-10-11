@@ -59,10 +59,10 @@ public class ParserTest {
 		RomanParser parser = new RomanParser();
 		String valueS = "xvi"; 
 		Long valueL = parser.from(valueS);
+		assertThat(valueL).isEqualTo(546375L);
+
 		String valueS2 = parser.to(valueL);
-		
 		assertThat(valueS2).isEqualTo("au XVIe siècle");
-		assertThat(valueL).isEqualTo(582800L);
 	}
 	
 	@Test

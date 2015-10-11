@@ -7,8 +7,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import time.tool.chrono.Chrono;
 import wiki.component.reader.FinDuScanException;
-import wiki.tool.chrono.Chrono;
 
 @Component
 public class Runner {

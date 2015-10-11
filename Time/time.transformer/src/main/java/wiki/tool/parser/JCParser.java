@@ -10,7 +10,7 @@ public class JCParser implements IParser {
 	}
 
 	@Override
-	public String to(Long value) {
+	public String to(long value) {
 		return anneeParser.to(value);
 	}
 

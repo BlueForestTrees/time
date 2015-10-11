@@ -8,7 +8,7 @@ public class AnneeParser implements IParser{
 	}
 
 	@Override
-	public String to(Long value) {
+	public String to(long value) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("en ");
 		sb.append(Math.round(value / 364.25));

@@ -4,11 +4,10 @@ import java.util.List;
 
 import org.apache.lucene.demo.facet.SimpleFacetsExample;
 import org.apache.lucene.facet.FacetResult;
-import org.junit.Test;
 
 public class TestFacets {
 
-	@Test
+//	@Test
 	public void test() throws Exception {
 	    System.out.println("Facet counting example:");
 	    System.out.println("-----------------------");

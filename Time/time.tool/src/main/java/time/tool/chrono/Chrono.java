@@ -1,4 +1,4 @@
-package wiki.tool.chrono;
+package time.tool.chrono;
 
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
@@ -19,6 +19,7 @@ public class Chrono {
 	public Chrono(String name) {
 		super();
 		this.name = name;
+		start();
 	}
 
 	public void start() {
@@ -35,27 +36,31 @@ public class Chrono {
 		PeriodFormatterBuilder builder = new PeriodFormatterBuilder().printZeroAlways();
 
 		if(period.getYears() > 0){
-			builder.appendYears().appendSeparator(" an, ");
+			builder.appendYears().appendLiteral(" an").appendSeparator(", ");
 		}
 		if(period.getMonths() > 0){
-			builder.appendMonths().appendSeparator(" mois, ");
+			builder.appendMonths().appendLiteral(" mois").appendSeparator(", ");
 		}
 		if(period.getDays() > 0){
-			builder.appendDays().appendSeparator(" jours, ");
+			builder.appendDays().appendLiteral(" jours").appendSeparator(", ");
 		}
 		if (period.getHours() > 0) {
-			builder.appendHours().appendSeparator("h:");
+			builder.appendHours().appendLiteral("h").appendSeparator(":");
 		}
 
 		if (period.getMinutes() > 0 || period.getHours() > 0) {
-			builder.appendMinutes().appendSeparator("m:");
+			builder.appendMinutes().appendLiteral("m").appendSeparator(":");
 		}
 		
 		if (period.getSeconds() > 0) {
-			builder.appendSeconds().appendSeparator("s:");
+			builder.appendSeconds().appendLiteral("s").appendSeparator(":");
+		}
+		
+		if(period.getMillis() > 0){
+			builder.appendMillis3Digit().appendLiteral("ms");
 		}
 
-		PeriodFormatter minutesAndSeconds = builder.appendMillis3Digit().appendLiteral("ms").toFormatter();
+		PeriodFormatter minutesAndSeconds = builder.toFormatter();
 
 		return minutesAndSeconds.print(period);
 	}

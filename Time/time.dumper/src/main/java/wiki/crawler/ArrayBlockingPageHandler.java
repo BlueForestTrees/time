@@ -4,7 +4,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import org.apache.log4j.Logger;
 
-import wiki.tool.chrono.Chrono;
+import time.tool.chrono.Chrono;
 import edu.uci.ics.crawler4j.crawler.Page;
 
 public class ArrayBlockingPageHandler extends ThreadedHandler {

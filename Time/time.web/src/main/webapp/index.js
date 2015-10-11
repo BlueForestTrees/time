@@ -1,90 +1,113 @@
-var date = 0;
-var word = "";
-var page = 0;
-var sens = "avant";
+var scales = {
+	ONE : {
+		multiplier : 1,
+		value : "ONE"
+	},
+	TEN : {
+		sublevel : "ONE",
+		multiplier : 10,
+		value : "TEN"
+	},
+	TEN3 : {
+		sublevel : "TEN",
+		multiplier : 10000
+	},
+	TEN6 : {
+		sublevel : "TEN3",
+		multiplier : 10000000
+	},
+	TEN9 : {
+		sublevel : "TEN6",
+		label : "TEN9",
+		multiplier : 10000000000
+	},
+};
 
 $(document).ready(function() {
-	$(".loadingMark").hide();
+
+	$(".phrasesMark").hide();
 	$(".reindexingMark").hide();
-	$(".facetingMark").hide();
+
+	goFacetsAll();
+	
+	$( ".filtrerBt" ).click(function() {
+		goFacetsAll();
+	});
 });
 
-function searchBtClick() {
-	var date = $(".dateInput").val();
-	$(".dateInput").empty();
-	search(date);
-	addHistoryButton(date);
-}
-
-function withDate(date) {
-	this.date = date;
-	search();
-}
-
-function search() {
-	$(".loadingMark").show();
-	word = $(".wordInput").val();
-	var sens = $("input:checked").val();
-	var jqxhr = $.get("find/", {
-		date : date,
-		word : word,
-		sens : sens
-	}).done(function(data) {
-		$(".loadingMark").hide();
-		dataIsComing(data);
-	}).fail(function() {
-	});
-}
-
-function reindexBtClick() {
-	$(".reindexingMark").show();
-	var jqxhr = $.get("reindex/").done(function(data) {
-		$(".reindexingMark").hide();
-	}).fail(function() {
-	});
-}
-
-function facetsBtClick() {
-	$(".facetingMark").show();
-	word = $(".wordInput").val();
-	var jqxhr = $.get("facets/", {
-		scale : "TEN",
-		word : word,
-		page : 0
-	}).done(function(data) {
+function goFacetsAll(){
+	$.get("facets/", {
+		scale : scales.TEN9.label,
+		word : $(".wordInput").val()
+	}).done(function(facetgroup) {
 		$(".facetingMark").hide();
-		facetsIsComing(data);
-	}).fail(function() {
+		facetsIsComing(facetgroup);
 	});
 }
 
-function addHistoryButton(date) {
-	if (date != "") {
-		$(".historyBts").append("<input type='button' onClick='search(" + date + ");' value='" + date + "'/>");
+
+function goFacets(scale, bucket) {
+	$(".facetingMark").show();
+	$.get("facets/", {
+		scale : scale,
+		bucket : bucket,
+		word : $(".wordInput").val()
+	}).done(function(facetgroup) {
+		$(".facetingMark").hide();
+		facetsIsComing(facetgroup);
+	});
+}
+function facetsIsComing(facetgroup) {
+	var scale = facetgroup.scale;
+	var facetsDiv = $(".facets"+scale);
+	facetsDiv.empty();
+	
+	var sublevel = scales[scale].sublevel;
+	while(sublevel != undefined){
+		$(".facets"+sublevel).empty();
+		sublevel = scales[sublevel].sublevel;
+	}
+	$('.phrases').empty();
+	
+	
+	for (facetIndex in facetgroup.facets) {
+		facetsDiv.append(facetToHtml(facetgroup.facets[facetIndex], scale));
 	}
 }
 
-function dataIsComing(data) {
-	$('.phrases').empty();
-	for (phraseIndex in data) {
-		$(".phrases").append(asParagraph(data[phraseIndex]));
-	}
-}
-function facetsIsComing(data) {
-	$('.phrases').empty();
-	for (facetIndex in data.facets) {
-		$(".phrases").append(asParagraphFacet(data.facets[facetIndex]));
+function facetToHtml(facet, scale) {
+	var bucket = facet.date;
+	var subscale = scales[scale].sublevel;
+	if (scale == scales.TEN.value) {
+		return "<p onclick='goPhrases(\"" + subscale + "\"," + bucket + ")'>" + facet.date + " => " + facet.count + "</p>";
+	} else {
+		return "<p onclick='goFacets(\"" + subscale + "\"," + bucket + ")'>" + facet.date + " => " + facet.count + "</p>";
 	}
 }
 
-function asParagraph(phrase) {
+
+
+
+
+function goPhrases(scale, bucket) {
+	$(".phrasesMark").show();
+	
+	$.get("phrases/", {
+		scale : scale,
+		bucket : bucket,
+		word : $(".wordInput").val()
+	}).done(function(phrases) {
+		$(".phrasesMark").hide();
+		phrasesIsComing(phrases);
+	});
+}
+function phrasesIsComing(phrases) {
+	$('.phrases').empty();
+	for (facetIndex in phrases) {
+		$(".phrases").append(phrasesToHtml(phrases[facetIndex]));
+	}
+}
+function phrasesToHtml(phrase) {
+	//+ phrase.id + " => " 
 	return "<p>" + phrase.date + " => " + phrase.text + "</p>"
-}
-function asParagraphFacet(facet) {
-	return "<p>" + facet.date + " => " + facet.count + "</p>"
-}
-
-function page(page) {
-	this.page = page;
-	search();
 }

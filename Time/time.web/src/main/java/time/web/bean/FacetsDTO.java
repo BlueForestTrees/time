@@ -2,16 +2,18 @@ package time.web.bean;
 
 import java.util.List;
 
+import time.web.enums.Scale;
+
 public class FacetsDTO {
 	
-	private Long page;
+	private Scale scale;
 	
-	public Long getPage() {
-		return page;
+	public Scale getScale() {
+		return scale;
 	}
 
-	public void setPage(Long page) {
-		this.page = page;
+	public void setScale(Scale scale) {
+		this.scale = scale;
 	}
 
 	private List<FacetDTO> facets;
@@ -23,4 +25,15 @@ public class FacetsDTO {
 	public void setFacets(List<FacetDTO> facets) {
 		this.facets = facets;
 	}
+	
+	private Long bucket;
+
+	public void setBucket(Long bucket) {
+		this.bucket = bucket;
+	}
+
+	public Long getBucket() {
+		return bucket;
+	}
+
 }

@@ -3,8 +3,8 @@ package wiki.controller;
 
 import org.apache.log4j.Logger;
 
+import time.tool.chrono.Chrono;
 import wiki.crawler.CrawlerAdapter;
-import wiki.tool.chrono.Chrono;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 
 public class DumperController {

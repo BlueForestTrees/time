@@ -6,13 +6,13 @@ public class RomanParser implements IParser{
                                              50,   40,   10,    9,    5,    4,    1 };
        private static final String[] letters = { "M",  "CM",  "D",  "CD", "C",  "XC",
                                            "L",  "XL",  "X",  "IX", "V",  "IV", "I" };
-       public String to(Long value) {
-    	  value = value / 36425;
+       public String to(final long nbJours) {
+    	  long nbSiecles = 1 + nbJours / 36425;
           String result = "";
           for (int i = 0; i < numbers.length; i++) {
-             while (value >= numbers[i]) {
+             while (nbSiecles >= numbers[i]) {
                 result += letters[i];
-                value -= numbers[i];
+                nbSiecles -= numbers[i];
              }
           }
           return "au " + result + "e siècle";

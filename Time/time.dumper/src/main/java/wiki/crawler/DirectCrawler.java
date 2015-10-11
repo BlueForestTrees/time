@@ -2,7 +2,7 @@ package wiki.crawler;
 
 import org.apache.log4j.Logger;
 
-import wiki.tool.chrono.Chrono;
+import time.tool.chrono.Chrono;
 import wiki.writer.IWriter;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;

@@ -1,10 +1,10 @@
-package wiki.test;
+package time.tool;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import wiki.tool.chrono.Chrono;
+import time.tool.chrono.Chrono;
 
 public class ChronoTest {
 	@Test

@@ -13,10 +13,11 @@ import time.web.enums.Scale;
 @Component
 public class FacetTransformer {
 	
-	public FacetsDTO toFacetsDTO(List<Facet> facets, long page, Scale scale){
+	public FacetsDTO toFacetsDTO(final List<Facet> facets, final Scale scale, final Long bucket){
 		final FacetsDTO facetsDTO = new FacetsDTO();
 		facetsDTO.setFacets(toFacetDTO(facets, scale));
-		facetsDTO.setPage(page);
+		facetsDTO.setBucket(bucket);
+		facetsDTO.setScale(scale);
 		return facetsDTO;
 	}
 	
@@ -26,7 +27,8 @@ public class FacetTransformer {
 	
 	public FacetDTO toFacetDTO(Facet facet, Scale scale){
 		final FacetDTO facetDTO = new FacetDTO();
-		facetDTO.setDate(new Long(facet.getValue())*scale.getMultiplier());
+		//facetDTO.setDate(new Long(facet.getValue())*scale.getMultiplier());
+		facetDTO.setDate(new Long(facet.getValue()));
 		facetDTO.setCount(facet.getCount());
 		return facetDTO;
 	}

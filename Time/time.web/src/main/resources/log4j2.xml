@@ -10,5 +10,6 @@
 			<AppenderRef ref="Console"/>
 		</Root>
 		<Logger name="org.hibernate.search" level="DEBUG"/>
+		<Logger name="time" level="DEBUG"/>
 	</Loggers>
 </Configuration>

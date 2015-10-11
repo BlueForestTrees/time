@@ -8,7 +8,7 @@ public class MilliardParser implements IParser{
 	}
 
 	@Override
-	public String to(final Long value) {
+	public String to(final long value) {
 		return "il y a " + value / -364250000000L + " milliards d'années";
 	}
 

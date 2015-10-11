@@ -1,33 +1,27 @@
-<html>
-	<head>
-		<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-	
-		<script src="./index.js"></script>
-	</head>
-	<body>
-		<INPUT type= "radio" name="sens" value="avant" checked> avant
-		<INPUT type= "radio" name="sens" value="apres"> apres
-		<input type="text" class="dateInput"/> date
-		<input type="text" class="wordInput" value="civilisation"/> mot
-		<input type="button" onClick="searchBtClick()" value="OK"/>
-		<input type="button" onClick="reindexBtClick()" value="Re-index"/>
-		<input type="button" onClick="facetsBtClick()" value="Facets"/>
-		<input type="button" class="loadingMark" value="loading..."/>
-		<input type="button" class="reindexingMark" value="reindexing..."/>
-		<input type="button" class="facetingMark" value="faceting..."/>
-		<div class="historyBts">
-			<input type="button" onclick="withDate(-1000000);" value="-1000000">
-			<input type="button" onclick="withDate(-364250);" value="-364250">
-			<input type="button" onclick="withDate(-364248);" value="-364248">
-			<input type="button" onclick="withDate(-364);" value="-364">
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script src="./index.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+
+	<input type="text" class="wordInput"/>
+	<input type="button" class="filtrerBt" value="filtrer" /> 
+
+	<div class="container-fluid">
+		<input type="button" class="phrasesMark" value="loading..." /> 
+		<input type="button" class="reindexingMark" value="reindexing..." />
+		<input type="button" class="facetingMark" value="faceting..." />
+
+		<div class="row">
+			<div class="facetsTEN9 col-md-1"></div>
+			<div class="facetsTEN6 col-md-1"></div>
+			<div class="facetsTEN3 col-md-1"></div>
+			<div class="facetsTEN col-md-1"></div>
+			<div class="phrases"></div>
 		</div>
-		<div class="pageBts">
-			<input type="button" onclick="page(0);" value="0">
-			<input type="button" onclick="page(1);" value="1">
-			<input type="button" onclick="page(2);" value="2">
-			<input type="button" onclick="page(3);" value="3">
-		</div>
-		<div class="phrases">
-		</div>
-	</body>
+	</div>
+</body>
 </html>

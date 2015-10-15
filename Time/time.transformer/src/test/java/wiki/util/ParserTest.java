@@ -2,11 +2,11 @@ package wiki.util;
 
 import org.junit.Test;
 
-import wiki.tool.parser.AnneeParser;
-import wiki.tool.parser.JCParser;
-import wiki.tool.parser.MilliardParser;
-import wiki.tool.parser.MillionParser;
-import wiki.tool.parser.RomanParser;
+import time.transformer.tool.parser.AnneeParser;
+import time.transformer.tool.parser.JCParser;
+import time.transformer.tool.parser.MilliardParser;
+import time.transformer.tool.parser.MillionParser;
+import time.transformer.tool.parser.RomanParser;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ParserTest {

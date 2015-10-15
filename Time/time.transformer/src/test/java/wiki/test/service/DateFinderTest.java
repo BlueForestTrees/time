@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import wiki.config.DateFinderConfig;
 import time.repo.bean.Phrase;
-import wiki.tool.phrasefinder.DateFinder;
+import time.transformer.config.DateFinderConfig;
+import time.transformer.tool.phrasefinder.DateFinder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DateFinderConfig.class)

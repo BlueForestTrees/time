@@ -17,6 +17,7 @@
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="StdFile"/>
 		</Root>
-		<Logger name="wiki.service.Runner" level="debug"/>
+		<Logger name="time.transformer.service.Runner" level="debug"/>
+		<Logger name="time" level="info"/>
 	</Loggers>
 </Configuration>

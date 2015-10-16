@@ -1,5 +1,6 @@
 package time.dumper.crawler;
 
+import java.util.Arrays;
 import java.util.regex.Pattern;
 
 import time.dumper.writer.IWriter;
@@ -16,16 +17,17 @@ public abstract class BasePageHandler implements IPageHandler {
 	protected Chrono fullChrono;
 	protected long nbLog;
 	protected IWriter writer;
-
+	private String[] toExclude = new String[]{"spécial:", "sp%c3%a9cial:", "discussion_wikipédia:", "discussion_wikip%c3%a9dia:", "cat%c3%a9gorie:", "catégorie:",
+			"utilisateur:","projet:","discussion_projet:","aide:","wikipédia:","wikip%c3%a9dia:"};
 
 	public Pattern getFilters() {
 		return filters;
 	}
-	
+
 	public void setFilters(Pattern filters) {
 		this.filters = filters;
 	}
-	
+
 	public IWriter getWriter() {
 		return writer;
 	}
@@ -69,10 +71,13 @@ public abstract class BasePageHandler implements IPageHandler {
 	@Override
 	public boolean shouldVisit(String url) {
 		final String href = url.toLowerCase();
-		if(href.startsWith(baseUrl)){
-			if(!filters.matcher(href).matches()){
-				if(href.indexOf("Sp%C3%A9cial:") == -1){//TODO ne marche pas.
+		if (href.startsWith(baseUrl)) {
+			if (!filters.matcher(href).matches()) {
+				if (!Arrays.stream(toExclude).anyMatch(term -> href.contains(term))) {
+					System.out.println("oui" + href);
 					return true;
+				} else {
+					System.out.println("non" + href);
 				}
 			}
 		}

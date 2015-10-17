@@ -9,7 +9,7 @@ public class PhraseFilter {
 
 	public boolean keepThisPhrase(Phrase phrase){
 		boolean startWithCatogories = phrase.getText().startsWith("Catégories :");
-		//boolean tooLong = phrase.getText().length() > 1000;
-		return !startWithCatogories;
+		boolean tooLong = phrase.getText().length() > 1000;
+		return !startWithCatogories && !tooLong;
 	}
 }

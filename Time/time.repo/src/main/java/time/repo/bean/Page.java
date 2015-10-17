@@ -18,19 +18,19 @@ public class Page {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
+	@Column
 	private Long id;
 
-	@Column(name = "url")
+	@Column
 	private String url;
 	
-	@Column(name="depth")
+	@Column
 	private Integer depth;
 	
-	@Column(name="nbLiensOut")
+	@Column
 	private Integer nbLiensOut;
 	
-	@Column(name="nbLiensIn")
+	@Column
 	private Integer nbLiensIn;
 	
 	@Transient

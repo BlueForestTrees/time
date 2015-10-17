@@ -14,15 +14,15 @@ public class DumperConfig {
 	final Logger log = Logger.getLogger(DumperConfig.class);
 	
 	public DumperConfig(){
-		this.setMaxPages(10000);
-		this.setStoragePath("D:/Time/data/pagesnew");
+		this.setMaxPages(-1);
+		this.setStoragePath("C:/Time/data/pages");
 		this.setNbPageLog(1000);
 		this.setWrite(true);
 		this.setStoreType(StoreType.DIRECT);
 		this.setSeedUrl("http://fr.wikipedia.org/wiki/Portail:Accueil");
 		this.setDelay(1);
 		this.setNbCrawlers(50);
-		this.setCrawlPath("D:/Time/crawldata");
+		this.setCrawlPath("C:/Time/crawldata");
 		this.setBaseUrl("https://fr.wikipedia.org/wiki");
 		this.setResumable(false);
 		this.setHelp(false);
@@ -47,7 +47,7 @@ public class DumperConfig {
 			}else if(value.equals("direct")){
 				return DIRECT;
 			}
-			throw new RuntimeException(value + " not a storageType. Use array, concurrent or mongo.");
+			throw new RuntimeException(value + " not a storageType. Use array, concurrent, direct or mongo.");
 		}
 	};
 	

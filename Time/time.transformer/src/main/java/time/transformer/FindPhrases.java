@@ -12,7 +12,7 @@ import time.transformer.service.Runner;
 
 public class FindPhrases {
 
-private static final Logger logger = LogManager.getLogger(CountLiensIn.class);
+private static final Logger logger = LogManager.getLogger(FindPhrases.class);
 	
 	public static void main(String[] args) throws IOException {
 		logger.info("main");

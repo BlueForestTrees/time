@@ -30,7 +30,7 @@ public class TransformerConfig {
 	
 	@Bean
 	public Long pageTotal(){
-		return 2000000L;
+		return 3700000L;
 	}
 	
 	@Bean String sep(){

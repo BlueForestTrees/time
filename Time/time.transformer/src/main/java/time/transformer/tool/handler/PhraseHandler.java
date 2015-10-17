@@ -41,7 +41,7 @@ public class PhraseHandler {
 	@Autowired
 	private DateFinder annee2DotFinder;
 
-	private final String[] excludeAfter = new String[]{"Notes et références[","Bibliographie[", "Liens externes[", "Bibliographie[", "Annexes["};
+	private final String[] excludeAfter = new String[] { "Notes et références[", "Bibliographie[", "Liens externes[", "Bibliographie[", "Annexes[" };
 
 	private final String splitPhraseRegex = "(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))\\.) +";
 	private final Pattern splitPhrasePattern = Pattern.compile(splitPhraseRegex);
@@ -75,20 +75,13 @@ public class PhraseHandler {
 		for (Phrase phrase : phrases) {
 			if (phraseFilter.keepThisPhrase(phrase)) {
 				phrase.setPageId(page.getId());
-				if(phrase.getText().length() > 1000){
-					System.out.println("pause");
-					//TODO exclure les pages Spécial: dans l'url
-				}
 				phraseRepository.save(phrase);
-				// System.out.println(phrase.getType() + "___" +
-				// pageMemRepo.normalizedUrl(page));
-				// System.out.println(phrase.getText());
 				count++;
 			}
 		}
 		return count;
 	}
-	
+
 	public String[] getPhrases(final String text) {
 		return splitPhrasePattern.split(text);
 	}
@@ -98,15 +91,17 @@ public class PhraseHandler {
 	}
 
 	/**
-	 * Renvoie le texte de 0 à la première position trouvée parmi {@link #excludeAfter}
+	 * Renvoie le texte de 0 à la première position trouvée parmi
+	 * {@link #excludeAfter}
+	 * 
 	 * @param text
 	 * @return
 	 */
 	public String getCleanText(final String text) {
 		final OptionalInt whereToCut = Arrays.stream(excludeAfter).mapToInt(term -> text.indexOf(term)).filter(v -> v > 0).min();
-		if(whereToCut.isPresent()){
-			return text.substring(0,whereToCut.getAsInt());
-		}else{
+		if (whereToCut.isPresent()) {
+			return text.substring(0, whereToCut.getAsInt());
+		} else {
 			return text;
 		}
 	}

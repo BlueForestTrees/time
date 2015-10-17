@@ -18,7 +18,7 @@ public abstract class BasePageHandler implements IPageHandler {
 	protected long nbLog;
 	protected IWriter writer;
 	private String[] toExclude = new String[]{"spécial:", "sp%c3%a9cial:", "discussion_wikipédia:", "discussion_wikip%c3%a9dia:", "cat%c3%a9gorie:", "catégorie:",
-			"utilisateur:","projet:","discussion_projet:","aide:","wikipédia:","wikip%c3%a9dia:"};
+			"utilisateur:","projet:","discussion_projet:","aide:","wikipédia:","wikip%c3%a9dia:", "fichier:"};
 
 	public Pattern getFilters() {
 		return filters;
@@ -74,10 +74,7 @@ public abstract class BasePageHandler implements IPageHandler {
 		if (href.startsWith(baseUrl)) {
 			if (!filters.matcher(href).matches()) {
 				if (!Arrays.stream(toExclude).anyMatch(term -> href.contains(term))) {
-					System.out.println("oui" + href);
 					return true;
-				} else {
-					System.out.println("non" + href);
 				}
 			}
 		}

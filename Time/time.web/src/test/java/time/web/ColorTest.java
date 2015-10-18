@@ -6,34 +6,20 @@ import static org.assertj.core.api.Assertions.*;
 public class ColorTest {
 	
 	int min = 1;
-	int max = 100;
+	int middle = 500;
+	int max = 1000;
 
 	@Test
 	public void minTest() {
-		final String expected = "#FFFF00";
-		final String actual = getColor(1);
-		assertThat(actual).isEqualTo(expected);
+		final int expectedRed = 255;
+		final int actualRed = getRed(50);
+		assertThat(actualRed).isEqualTo(expectedRed);
 	}
 	
-	@Test
-	public void middleTest() {
-		final String expected = "#FFFF00";
-		final String actual = getColor(1);
-		assertThat(actual).isEqualTo(expected);
-	}
-	
-	@Test
-	public void maxTest() {
-		final String expected = "#FFFF00";
-		final String actual = getColor(1);
-		assertThat(actual).isEqualTo(expected);
-	}
 
-	public String getColor(int value){
-		final String red = "FF";
-		final String green = "FF";
-		final String blue = "00";
-		return "#" + red + green + blue;
+
+	public int getRed(int value){
+		return 255 - ();
 	}
 	
 }

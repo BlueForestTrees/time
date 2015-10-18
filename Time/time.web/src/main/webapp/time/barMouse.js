@@ -13,12 +13,12 @@
 		$(this.bar.canvas).mouseup($.proxy(this.onMouseUp,this));
 	};
 	BarMouse.prototype.onMouseDown = function(e){
-		this.mouse.x = e.pageX - this.offsetLeft;
+		this.mouse.x = e.clientX;
 		this.mouseDown = true;
 	}
 	BarMouse.prototype.onMouseMove = function(e){
 		if (this.mouseDown) {
-			var x = e.pageX - this.offsetLeft;
+			var x = e.clientX;
 			var deltaX = x - this.mouse.x;
 			this.mouse = {x:x,deltaX:deltaX};
 			this.move(this.mouse.deltaX);
@@ -26,7 +26,7 @@
 	};
 	BarMouse.prototype.onMouseUp = function(e){
 		this.mouseDown = false;
-		var x = e.pageX - this.offsetLeft;
+		var x = e.clientX;
 		var deltaX = x - this.mouse.x;
 		this.mouse = {x:x,deltaX:deltaX};
 		this.softstop = this.mouse.deltaX*3;
@@ -40,9 +40,9 @@
 
 	BarMouse.prototype.softStop = function(){
 		if(!this.mouseDown && Math.abs(this.softstop) > 1){
-			this.move(softstop);
+			this.move(this.softstop);
 			this.softstop *= 0.85;
-			setTimeout(this.softStop, 20);
+			setTimeout($.proxy(this.softStop,this), 20);
 		}
 	}
 	

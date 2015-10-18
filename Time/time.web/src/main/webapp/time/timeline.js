@@ -5,9 +5,9 @@
 		this.barmouse = new Time.BarMouse(this.bar1, this.drawer);
 		
 		this.drawer.resize(this.bar1);
-		$(window).resize(function() {
+		$(window).resize($.proxy(function() {
 			this.drawer.resize(this.bar1);
-		});
+		},this));
 		
 		this.barmouse.installMouse();
 	}

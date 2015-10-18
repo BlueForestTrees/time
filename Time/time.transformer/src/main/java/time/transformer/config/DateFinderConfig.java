@@ -37,7 +37,7 @@ public class DateFinderConfig {
 	}
 	@Bean
 	public DateFinder romanFinder(){
-		final Pattern pattern = Pattern.compile("( (?<g>[ixvlcdmIXVLCDM]+)e siècle)");
+		final Pattern pattern = Pattern.compile("( (?<g>[ixvlcmIXVLCM]+)e siècle)");
 		final IParser parser = new RomanParser();
 		return new DateFinder(pattern, parser);
 	}
@@ -52,5 +52,12 @@ public class DateFinderConfig {
 		final Pattern pattern = Pattern.compile("((?<g>(-)?\\d{4}) :)");
 		final IParser parser = new AnneeParser();
 		return new DateFinder(pattern, parser);
+	}
+	
+	@Bean
+	public DateFinder[] finders(){
+		return new DateFinder[]{
+				milliardFinder(), millionFinder(), jcFinder(), romanFinder(), enanneFinder(), annee2DotFinder()
+		};
 	}
 }

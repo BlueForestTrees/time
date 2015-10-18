@@ -18,6 +18,11 @@ public class DateFinder {
 		this.parser = parser;
 	}
 
+	/**
+	 * Renvoie une {@link List<Phrase>} de Phrase detectées.
+	 * @param phrases
+	 * @return
+	 */
 	public List<Phrase> findPhrasesWithDates(String[] phrases) {
 		final List<Phrase> result = new ArrayList<>();
 		for (String phraseString : phrases) {
@@ -38,5 +43,12 @@ public class DateFinder {
 		}
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return parser.getClass().getName();
+	}
+	
+	
 
 }

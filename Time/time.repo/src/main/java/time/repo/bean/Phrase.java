@@ -6,9 +6,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Facet;
+import org.hibernate.search.annotations.FacetEncodingType;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Index;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.NumericField;
+import org.hibernate.search.annotations.Store;
+
 @Entity(name = "phrase")
 @Table(name = "phrase")
-//@Indexed
+@Indexed
 public class Phrase {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,7 +25,7 @@ public class Phrase {
 
 	private Long pageId;
 
-	//@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private String text;
 
 	/**
@@ -24,24 +33,24 @@ public class Phrase {
 	 * "2010", "10", "15")); utiliser un champ pour tout les niveaux avec un
 	 * 'path' Voir les dates avec résolution jour avec java.time
 	 */
-	//@Field(analyze = Analyze.NO)
-	//@Facet(encoding = FacetEncodingType.STRING)
+	@Field(analyze = Analyze.NO)
+	@Facet(encoding = FacetEncodingType.STRING)
 	private long dateByTen;
 
-	//@Field(analyze = Analyze.NO)
-	//@Facet(encoding = FacetEncodingType.STRING)
+	@Field(analyze = Analyze.NO)
+	@Facet(encoding = FacetEncodingType.STRING)
 	private long dateByTen3;
 
-	//@Field(analyze = Analyze.NO)
-	//@Facet(encoding = FacetEncodingType.STRING)
+	@Field(analyze = Analyze.NO)
+	@Facet(encoding = FacetEncodingType.STRING)
 	private long dateByTen6;
 
-	//@Field(analyze = Analyze.NO)
-	//@Facet(encoding = FacetEncodingType.STRING)
+	@Field(analyze = Analyze.NO)
+	@Facet(encoding = FacetEncodingType.STRING)
 	private long dateByTen9;
 
-	//@NumericField
-	//@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
+	@NumericField
+	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private long date;
 
 	public long getDate() {

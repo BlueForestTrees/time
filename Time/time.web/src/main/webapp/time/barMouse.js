@@ -18,9 +18,9 @@
 	}
 	BarMouse.prototype.onMouseMove = function(e){
 		if (this.mouseDown) {
-			var x = e.clientX;
-			var deltaX = x - this.mouse.x;
-			this.mouse = {x:x,deltaX:deltaX};
+			var currentX = e.clientX;
+			var moveX = currentX - this.mouse.x;
+			this.mouse = {x:currentX,deltaX:moveX};
 			this.move(this.mouse.deltaX);
 		}
 	};

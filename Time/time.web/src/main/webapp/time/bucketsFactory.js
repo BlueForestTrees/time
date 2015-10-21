@@ -10,7 +10,7 @@
 	BucketsFactory.prototype.generateBuckets = function(nbBuckets) {
 		var buckets = [];
 		for (var i = 0; i < nbBuckets; i++) {
-			var x = (Math.random() - 0.333) * 3000; // -1000 à 2000
+			var x = parseInt((Math.random() - 0.333) * 3000); // -1000 à 2000
 			var count = parseInt(Math.random()*1000);
 			var r = this.getRed(count);
 			var g = this.getGreen(count);

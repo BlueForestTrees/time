@@ -20,6 +20,13 @@
 			};
 			buckets.push(bucket);
 		}
+		buckets.sort(function compare(a, b) {
+			  	if (a.x < b.x)
+				     return -1;
+				  if (a.x > b.x)
+				     return 1;
+				  return 0;
+				});
 		return buckets;
 	};
 	

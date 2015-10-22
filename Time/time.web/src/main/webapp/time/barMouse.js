@@ -1,9 +1,10 @@
 
 (function(){
-	function BarMouse(bar, drawer){
+	function BarMouse(bar, drawer, bucketSelect){
 		this.bar = bar;
 		this.drawer = drawer;
 		this.mouse = {previousX:null, down:false, move:false};
+		this.bucketSelect = bucketSelect;
 	}
 	BarMouse.prototype.installMouse = function(){
 		$(this.bar.canvas).mousedown($.proxy(this.onMouseDown,this));
@@ -32,8 +33,10 @@
 	};
 	
 	BarMouse.prototype.onMouseClick = function(e){
-		this.bar.searchBucketAt(e.clientX);
-		
+		var bucket = this.bar.searchBucketAt(e.clientX);
+		if(bucket){
+			this.bucketSelect(bucket);
+		}
 	}
 	
 	BarMouse.prototype.move = function(x){

@@ -2,17 +2,13 @@
 	function Timeline(){
 		this.drawer = new Time.BarDrawer();
 		this.bars = [
-					new Time.Bar(this.drawer, this.bucketSelect),
-					new Time.Bar(this.drawer, this.bucketSelect),
-					new Time.Bar(this.drawer, this.bucketSelect),
-					new Time.Bar(this.drawer, this.bucketSelect),
-					new Time.Bar(this.drawer, this.bucketSelect)
+					new Time.Bar(Scale.ONE, this.drawer),
+					new Time.Bar(Scale.TEN, this.drawer),
+					new Time.Bar(Scale.TEN3, this.drawer),
+					new Time.Bar(Scale.TEN6, this.drawer),
+					new Time.Bar(Scale.TEN9, this.drawer)
 		             ];
 	}
-	
-	Timeline.prototype.bucketSelect = function(bucket){
-		console.log(bucket);
-	};
 	
 	Time.Timeline = Timeline;
 })();

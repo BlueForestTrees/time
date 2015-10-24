@@ -1,22 +1,24 @@
 
 (function(){
-	function BarMouse(bar, drawer, bucketSelect){
-		this.bar = bar;
+	function BarMouse(drawer){
 		this.drawer = drawer;
-		this.mouse = {previousX:null, down:false, move:false};
-		this.bucketSelect = bucketSelect;
+		this.mouse = {previousX:null, bar:null, move:false, bucketSelect : null};
 	}
-	BarMouse.prototype.installMouse = function(){
-		$(this.bar.canvas).mousedown($.proxy(this.onMouseDown,this));
-		$(this.bar.canvas).mousemove($.proxy(this.onMouseMove,this));
-		$(this.bar.canvas).mouseup($.proxy(this.onMouseUp,this));
+
+	BarMouse.prototype.installMouse = function(bar, bucketSelect){
+		$(bar.canvas).mousedown($.proxy(this.onMouseDown,this, bar, bucketSelect));
+		//move et up seront global
+		$(bar.canvas).mousemove($.proxy(this.onMouseMove,this));
+		$(bar.canvas).mouseup($.proxy(this.onMouseUp,this));
 	};
-	BarMouse.prototype.onMouseDown = function(e){
-		this.mouse.down = true;
-		this.mouse.previousX = e.clientX;//stocke en previous pour le prochain move.
+	BarMouse.prototype.onMouseDown = function(bar, bucketSelect, event){
+		this.mouse.bar = bar;
+		this.mouse.previousX = event.clientX;
+		this.mouse.bucketSelect = bucketSelect;
 	}
 	BarMouse.prototype.onMouseMove = function(e){
-		if (this.mouse.down) {
+		if (this.mouse.bar) {
+			//la recup du X se fera par rapport au composant
 			var currentX = e.clientX;
 			this.move(currentX - this.mouse.previousX);
 			this.mouse.previousX = currentX;
@@ -29,19 +31,19 @@
 		}else{
 			this.mouse.move = false;			
 		}
-		this.mouse.down = false;
+		this.mouse.bar = null;
 	};
 	
 	BarMouse.prototype.onMouseClick = function(e){
-		var bucket = this.bar.searchBucketAt(e.clientX);
+		var bucket = this.mouse.bar.searchBucketAt(e.clientX);
 		if(bucket){
-			this.bucketSelect(bucket);
+			this.mouse.bucketSelect(bucket, this.mouse.bar);
 		}
 	}
 	
 	BarMouse.prototype.move = function(x){
-		this.bar.viewport.x += x;
-		this.drawer.draw(this.bar);
+		this.mouse.bar.viewport.x += x;
+		this.drawer.draw(this.mouse.bar);
 	}
 	
 	Time.BarMouse = BarMouse;

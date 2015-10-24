@@ -1,18 +1,13 @@
 (function(){
-	function Bar(scale, drawer){
+	//todo supprimer drawer
+	function Bar(scale, bucketSelect){
 		this.scale = scale;
 		this.viewport = new Time.Viewport(0);
 		this.buckets = new Time.BucketsFactory().generateBuckets(1000);
 		this.context = new Time.CanvasFactory().build(25);
 		this.canvas = this.context.canvas;
-		this.drawer = drawer;
-		this.barmouse = new Time.BarMouse(this, this.drawer, $.proxy(this.bucketSelect,this));
-		this.drawer.resize(this);
-		$(window).resize($.proxy(function() {
-			this.drawer.resize(this);
-		},this));
-		this.barmouse.installMouse();
 		this.amplitude = 5;
+		this.callbackBucketSelect = bucketSelect;
 	}
 	
 	Bar.prototype.searchBucketAt = function(xView){
@@ -47,11 +42,6 @@
 			j++;
 		}
 		return found-middle;
-	};
-	
-	Bar.prototype.bucketSelect = function(bucket){
-		console.log(this);
-		console.log(bucket);
 	};
 	
 	Time.Bar = Bar;

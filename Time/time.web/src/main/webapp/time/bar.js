@@ -1,13 +1,11 @@
 (function(){
-	//todo supprimer drawer
-	function Bar(scale, bucketSelect){
+	function Bar(scale){
 		this.scale = scale;
 		this.viewport = new Time.Viewport(0);
-		this.buckets = new Time.BucketsFactory().generateBuckets(1000);
+		this.buckets = []; //new Time.BucketsFactory().generateBuckets(1000);
 		this.context = new Time.CanvasFactory().build(25);
 		this.canvas = this.context.canvas;
 		this.amplitude = 5;
-		this.callbackBucketSelect = bucketSelect;
 	}
 	
 	Bar.prototype.searchBucketAt = function(xView){

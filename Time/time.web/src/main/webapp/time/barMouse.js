@@ -1,50 +1,56 @@
-
-(function(){
-	function BarMouse(drawer){
+(function() {
+	function BarMouse(drawer) {
 		this.drawer = drawer;
-		this.mouse = {previousX:null, bar:null, move:false, bucketSelect : null};
 	}
 
-	BarMouse.prototype.installMouse = function(bar, bucketSelect){
-		$(bar.canvas).mousedown($.proxy(this.onMouseDown,this, bar, bucketSelect));
-		//move et up seront global
-		$(bar.canvas).mousemove($.proxy(this.onMouseMove,this));
-		$(bar.canvas).mouseup($.proxy(this.onMouseUp,this));
-	};
-	BarMouse.prototype.onMouseDown = function(bar, bucketSelect, event){
-		this.mouse.bar = bar;
-		this.mouse.previousX = event.clientX;
-		this.mouse.bucketSelect = bucketSelect;
-	}
-	BarMouse.prototype.onMouseMove = function(e){
-		if (this.mouse.bar) {
-			//la recup du X se fera par rapport au composant
-			var currentX = e.clientX;
-			this.move(currentX - this.mouse.previousX);
-			this.mouse.previousX = currentX;
-			this.mouse.move = true;
-		}
-	};
-	BarMouse.prototype.onMouseUp = function(e){
-		if(!this.mouse.move){
-			this.onMouseClick(e);
-		}else{
-			this.mouse.move = false;			
-		}
-		this.mouse.bar = null;
+	BarMouse.prototype.installMouse = function(bar, bucketSelect) {
+		var data = {
+				previousX : null,
+				deltaX : null,
+				bar : bar,
+				move : false,
+				bucketSelect : bucketSelect,
+				drawer : this.drawer
+			};
+		$(bar.canvas).on('mousedown.barmouse', data, $.proxy(this.onMouseDown, this));
 	};
 	
-	BarMouse.prototype.onMouseClick = function(e){
-		var bucket = this.mouse.bar.searchBucketAt(e.clientX);
-		if(bucket){
-			this.mouse.bucketSelect(bucket, this.mouse.bar);
+	BarMouse.prototype.onMouseDown = function(event) {
+		event.data.previousX = event.clientX;
+		$(window).on('mousemove.barmouse', event.data, $.proxy(this.onMouseMove, this));
+		$(window).on('mouseup.barmouse', event.data, $.proxy(this.onMouseUp, this));
+	}
+	
+	BarMouse.prototype.onMouseMove = function(event) {
+		var previousX = event.data.previousX;
+		var currentX = event.clientX;
+		event.data.deltaX = currentX - previousX;
+		this.moveBar(event);
+		event.data.previousX = currentX;
+		event.data.move = true;
+	};
+	
+	BarMouse.prototype.onMouseUp = function(event) {
+		if (!event.data.move) {
+			this.onMouseClick(event);
+		}
+		event.data.move = false;
+
+		$(window).off('mousemove.barmouse');
+		$(window).off('mouseup.barmouse');
+	};
+
+	BarMouse.prototype.onMouseClick = function(event) {
+		var bucket = event.data.bar.searchBucketAt(event.clientX);
+		if (bucket) {
+			event.data.bucketSelect(bucket, event.data.bar);
 		}
 	}
-	
-	BarMouse.prototype.move = function(x){
-		this.mouse.bar.viewport.x += x;
-		this.drawer.draw(this.mouse.bar);
+
+	BarMouse.prototype.moveBar = function(event) {
+		event.data.bar.viewport.x += event.data.deltaX;
+		event.data.drawer.draw(event.data.bar);
 	}
-	
+
 	Time.BarMouse = BarMouse;
 })();

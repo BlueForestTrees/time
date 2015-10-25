@@ -49,6 +49,7 @@
 		//TODO pouvoir cliquer sur un bucket
 		//TODO au clic de bucket charger la bar du dessous
 		//TODO gérer les buckets en tuiles?
+//Todo ajouter des phrases sympas sur ten9. Dans 3 milliard d'années etc.
 		this.bars[Scale.TEN9].buckets = buckets;
 		this.drawer.draw(this.bars[Scale.TEN9]);
 	};

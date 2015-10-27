@@ -9,10 +9,22 @@
 	}
 	
 	Bar.prototype.searchBucketAt = function(xView){
-		var imageData = this.context.getImageData(xView-1-this.amplitude, 10, 2*this.amplitude + 1, 1);
-		var xViewFound = this.searchIn(imageData);
-		var xBucket = xViewFound + xView - this.viewport.x;
-		return this.getBucketAt(xBucket);
+		//console.clear();
+		
+		var imageData = this.context.getImageData(xView-this.amplitude, 10, 2*this.amplitude, 1);
+		var xViewFound = this.searchIn(imageData, xView);
+		if(xViewFound !== null){			
+			var xBucket = xViewFound + xView - this.viewport.x;
+			var bucket = this.getBucketAt(xBucket);
+			//console.log("look at " ,xView);
+			//console.log("xBucket : ",xBucket);
+			//console.log("selectedBucket : ",bucket);
+			return bucket;
+		}else{
+			return null;
+		}
+		
+		
 	};
 	
 	Bar.prototype.getBucketAt = function(xBucket){
@@ -25,21 +37,33 @@
 		return null;
 	}
 	
-	Bar.prototype.searchIn = function(imageData){
-		var middle = this.amplitude + 1;
+	Bar.prototype.searchIn = function(imageData, xView){
+		var middle = this.amplitude;
 		var data = imageData.data;
 		var found = null;
 		for(var i = 0, j = 0; i < data.length; i+=4){
-			if(data[i] > 0 || data[i+1] > 0 || data[i+2] > 0){
+			if(data[i] < 255 || data[i+1] < 255 || data[i+2] < 255){
 				if(found == null){
 					found = j;
 				}else if(Math.abs(j - middle) < Math.abs(found - middle)){
 					found = j;
 				}
 			}
+						
+			/*var xBucket = j-middle + xView - this.viewport.x;
+			var bucket = this.getBucketAt(xBucket);
+			if(bucket){
+				console.log((j-middle), "    ", data[i],data[i+1],data[i+2] , '>>', bucket);				
+			}else{
+				console.log((j-middle), data[i],data[i+1],data[i+2]);
+			}*/
+			
 			j++;
 		}
-		return found-middle;
+		
+		//console.log("returned: ", found ? found-middle : null);
+		
+		return found ? found-middle : null;
 	};
 	
 	Time.Bar = Bar;

@@ -31,31 +31,34 @@
 		}
 		
 		//INIT DATA
-		this.bars[Scale.TEN9].viewport.x = 900;
-		this.data.getFacets(Scale.TEN9, '', $.proxy(this.onBuckets,this))
+		var bar = this.bars[Scale.TEN9];
+		bar.viewport.x = 1000;
+		this.data.getFacets(bar.scale,null,'', $.proxy(this.onBuckets,this, bar))
 		
 	}
 	
 	Timeline.prototype.onBucketSelect = function(bucket, bar){
-		//this.drawer.hide(Scale.sublevel(bar.scale));
+		this.drawer.hide(Scale.sublevel(bar.scale));
+		this.drawer.clearText();
+		//affiche les phrase
 		if(bucket.count < 50){
-			this.data.getPhrases(bar.scale, bucket.x,'', $.proxy(this.onPhrases,this));
+			this.data.getPhrases(Scale.sublevel(bar.scale), bucket.x,'', $.proxy(this.onPhrases,this));
+		//niveau de detail++
+		}else{
+			//TODO continuer
+			var subBar = this.bars[Scale.sublevel(bar.scale)];
+			this.data.getFacets(subBar.scale, bucket.date, '', $.proxy(this.onBuckets,this, subBar));
 		}
 	}
 	
-	Timeline.prototype.onBuckets = function(facetsDTO){
-		var buckets = this.bucketFactory.getBuckets(facetsDTO);
-		console.log(buckets);
-		//TODO pouvoir cliquer sur un bucket
-		//TODO au clic de bucket charger la bar du dessous
-		//TODO gérer les buckets en tuiles?
-		this.bars[Scale.TEN9].buckets = buckets;
-		this.drawer.draw(this.bars[Scale.TEN9]);
+	Timeline.prototype.onBuckets = function(bar, facetsDTO){
+		bar.buckets = this.bucketFactory.getBuckets(facetsDTO);
+		this.drawer.showBar(bar);
+		this.drawer.draw(bar);
 	};
 	
 	Timeline.prototype.onPhrases = function(phrases){
-		//TODO au clic sur un bucket qui a peu de count, virer les sousbarres et mettre les phrases
-		console.log(phrases);
+		this.drawer.setPhrases(phrases);
 	};
 	
 	Time.Timeline = Timeline;

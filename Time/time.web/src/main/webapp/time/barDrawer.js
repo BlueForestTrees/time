@@ -1,13 +1,14 @@
-(function(){
-	function BarDrawer(bars){
+(function() {
+	function BarDrawer(bars) {
 		this.bars = bars;
 	}
-	BarDrawer.prototype.resize = function(bar){
+	BarDrawer.prototype.resize = function(bar) {
 		bar.canvas.width = window.innerWidth - 2;
 		this.draw(bar);
 	};
-	BarDrawer.prototype.draw = function(bar){
-		bar.context.clearRect(0, 0, bar.canvas.width, bar.canvas.height);
+	BarDrawer.prototype.draw = function(bar) {
+		bar.context.fillStyle = 'rgb(255,255,255)';
+		bar.context.fillRect(0, 0, bar.canvas.width, bar.canvas.height);
 		var nbBuckets = bar.buckets.length;
 		for (var i = 0; i < nbBuckets; i++) {
 			var bucket = bar.buckets[i];
@@ -15,18 +16,31 @@
 			bar.context.fillRect(bar.viewport.x + bucket.x, 0, 1, bar.canvas.height);
 		}
 	};
-	
-	/*BarDrawer.prototype.hide = function(scale){
-		do{
+
+	BarDrawer.prototype.hide = function(scale) {
+		do {
 			var bar = this.bars[scale];
-			this.hideBar(bar);	
+			this.hideBar(bar);
 			scale = Scale.sublevel(scale);
-		}while(scale);
+		} while (scale);
 	};
-	
-	BarDrawer.prototype.hideBar = function(bar){
-		//console.log("hide scale " + bar.scale);
-	};*/
-	
+
+	BarDrawer.prototype.hideBar = function(bar) {
+		$(bar.canvas).hide();
+	};
+	BarDrawer.prototype.showBar = function(bar) {
+		$(bar.canvas).show();
+	};
+
+	BarDrawer.prototype.clearText = function() {
+		$('.phrases').empty();
+	};
+	BarDrawer.prototype.setPhrases = function(phrases) {
+		this.clearText();
+		for (facetIndex in phrases) {
+			$(".phrases").append("<p>" + phrases[facetIndex].text + "</p>");
+		}
+	};
+
 	Time.BarDrawer = BarDrawer;
 })();

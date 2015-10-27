@@ -13,6 +13,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.NumericField;
+import org.hibernate.search.annotations.SortableField;
 import org.hibernate.search.annotations.Store;
 
 @Entity(name = "phrase")
@@ -50,6 +51,7 @@ public class Phrase {
 	private long dateByTen9;
 
 	@NumericField
+	@SortableField
 	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
 	private long date;
 

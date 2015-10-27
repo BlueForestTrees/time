@@ -33,6 +33,8 @@
 	BarMouse.prototype.onMouseUp = function(event) {
 		if (!event.data.move) {
 			this.onMouseClick(event);
+		}else{
+			console.log(event.data.bar.viewport.x);
 		}
 		event.data.move = false;
 
@@ -41,7 +43,8 @@
 	};
 
 	BarMouse.prototype.onMouseClick = function(event) {
-		var bucket = event.data.bar.searchBucketAt(event.clientX);
+		//-1 hack pour la bordure de 1px
+		var bucket = event.data.bar.searchBucketAt(event.clientX-1);
 		if (bucket) {
 			event.data.bucketSelect(bucket, event.data.bar);
 		}

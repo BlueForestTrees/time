@@ -1,17 +1,17 @@
 package time.web.bean;
 
 /**
- * A cette [date], il y a [count] references.
+ * Dans ce [bucket], il y a [count] phrases.
  * @author slim
  *
  */
 public class FacetDTO {
-	private long date;
-	public long getDate() {
-		return date;
+	private long bucket;
+	public long getBucket() {
+		return bucket;
 	}
-	public void setDate(long date) {
-		this.date = date;
+	public void setBucket(long bucket) {
+		this.bucket = bucket;
 	}
 	private long count;
 	

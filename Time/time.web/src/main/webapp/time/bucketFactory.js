@@ -38,8 +38,7 @@
 	BucketFactory.prototype.getBuckets = function(facetsDTO){
 		for (var i = 0; i < facetsDTO.facets.length; i++) {
 			var facet = facetsDTO.facets[i];
-			facet.x = facet.date;
-			console.log(facet.x);
+			facet.x = facet.bucket;
 			facet.color = this.getColor(facet.count);
 		}
 		facetsDTO.facets.sort(function compare(a, b) {

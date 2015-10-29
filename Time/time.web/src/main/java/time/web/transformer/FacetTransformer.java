@@ -28,7 +28,7 @@ public class FacetTransformer {
 	public FacetDTO toFacetDTO(Facet facet, Scale scale){
 		final FacetDTO facetDTO = new FacetDTO();
 		//facetDTO.setDate(new Long(facet.getValue())*scale.getMultiplier());
-		facetDTO.setDate(new Long(facet.getValue()));
+		facetDTO.setBucket(new Long(facet.getValue()));
 		facetDTO.setCount(facet.getCount());
 		return facetDTO;
 	}

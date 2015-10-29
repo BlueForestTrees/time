@@ -34,7 +34,7 @@
 		if (!event.data.move) {
 			this.onMouseClick(event);
 		}else{
-			console.log(event.data.bar.viewport.x);
+			console.log("viewport : ",event.data.bar.viewport.x);
 		}
 		event.data.move = false;
 
@@ -44,7 +44,8 @@
 
 	BarMouse.prototype.onMouseClick = function(event) {
 		//-1 hack pour la bordure de 1px
-		var bucket = event.data.bar.searchBucketAt(event.clientX-1);
+		var mouseX = event.clientX-1;
+		var bucket = event.data.bar.searchBucketAt(mouseX);
 		if (bucket) {
 			event.data.bucketSelect(bucket, event.data.bar);
 		}

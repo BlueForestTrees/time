@@ -8,23 +8,21 @@
 		this.amplitude = 5;
 	}
 	
-	Bar.prototype.searchBucketAt = function(xView){
-		//console.clear();
-		
-		var imageData = this.context.getImageData(xView-this.amplitude, 10, 2*this.amplitude, 1);
-		var xViewFound = this.searchIn(imageData, xView);
-		if(xViewFound !== null){			
-			var xBucket = xViewFound + xView - this.viewport.x;
-			var bucket = this.getBucketAt(xBucket);
-			//console.log("look at " ,xView);
-			//console.log("xBucket : ",xBucket);
-			//console.log("selectedBucket : ",bucket);
+	Bar.prototype.searchBucketAt = function(mouseX){
+		var searchedBucketX= mouseX - this.viewport.x;		
+		var imageData = this.context.getImageData(mouseX-this.amplitude, 10, 2*this.amplitude, 1);
+		var offset = this.searchIn(imageData, mouseX);
+		console.clear();
+		if(offset !== null){			
+			var bucket = this.getBucketAt(offset + searchedBucketX);
+			
+			console.log(this.scale,", date:", Scale.date(this.scale, bucket.bucket),", bucket: ", bucket);
+			
 			return bucket;
 		}else{
+			console.log(this.scale,", date:", Scale.date(this.scale, searchedBucketX),", bucket: ", searchedBucketX);
 			return null;
 		}
-		
-		
 	};
 	
 	Bar.prototype.getBucketAt = function(xBucket){
@@ -49,15 +47,6 @@
 					found = j;
 				}
 			}
-						
-			/*var xBucket = j-middle + xView - this.viewport.x;
-			var bucket = this.getBucketAt(xBucket);
-			if(bucket){
-				console.log((j-middle), "    ", data[i],data[i+1],data[i+2] , '>>', bucket);				
-			}else{
-				console.log((j-middle), data[i],data[i+1],data[i+2]);
-			}*/
-			
 			j++;
 		}
 		

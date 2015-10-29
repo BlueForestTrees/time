@@ -34,21 +34,22 @@
 		var bar = this.bars[Scale.TEN9];
 		bar.viewport.x = 1000;
 		this.data.getFacets(bar.scale,null,'', $.proxy(this.onBuckets,this, bar))
-		
+		this.drawer.hide(Scale.sublevel(bar.scale));
 	}
 	
 	Timeline.prototype.onBucketSelect = function(bucket, bar){
 		this.drawer.hide(Scale.sublevel(bar.scale));
 		this.drawer.clearText();
-		//affiche les phrase
-		if(bucket.count < 50){
-			this.data.getPhrases(Scale.sublevel(bar.scale), bucket.x,'', $.proxy(this.onPhrases,this));
+		//affiche les phrases
+		//if(bucket.count < 50){
+		//	this.data.getPhrases(Scale.sublevel(bar.scale), bucket.x,'', $.proxy(this.onPhrases,this));
 		//niveau de detail++
-		}else{
-			//TODO continuer
+		//}else{
 			var subBar = this.bars[Scale.sublevel(bar.scale)];
-			this.data.getFacets(subBar.scale, bucket.date, '', $.proxy(this.onBuckets,this, subBar));
-		}
+			subBar.viewport.x = bucket.bucket * 1000;
+			console.log("viewport : " + subBar.viewport.x);
+			this.data.getFacets(subBar.scale, bucket.bucket, '', $.proxy(this.onBuckets,this, subBar));
+		//}
 	}
 	
 	Timeline.prototype.onBuckets = function(bar, facetsDTO){

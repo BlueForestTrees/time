@@ -1,15 +1,15 @@
 (function(){
 	function Bar(scale){
 		this.scale = scale;
-		this.viewport = new Time.Viewport(0);
-		this.buckets = []; //new Time.BucketsFactory().generateBuckets(1000);
+		this.viewport = new Time.Viewport();
+		this.buckets = [];
 		this.context = new Time.CanvasFactory().build(25);
 		this.canvas = this.context.canvas;
 		this.amplitude = 5;
 	}
 	
 	Bar.prototype.searchBucketAt = function(mouseX){
-		var searchedBucketX= mouseX - this.viewport.x;		
+		var searchedBucketX= mouseX - this.viewport.delta();		
 		var imageData = this.context.getImageData(mouseX-this.amplitude, 10, 2*this.amplitude, 1);
 		var offset = this.searchIn(imageData, mouseX);
 		console.clear();
@@ -49,8 +49,6 @@
 			}
 			j++;
 		}
-		
-		//console.log("returned: ", found ? found-middle : null);
 		
 		return found ? found-middle : null;
 	};

@@ -22,11 +22,9 @@
 	}
 	
 	BarMouse.prototype.onMouseMove = function(event) {
-		var previousX = event.data.previousX;
-		var currentX = event.clientX;
-		event.data.deltaX = currentX - previousX;
-		this.moveBar(event);
-		event.data.previousX = currentX;
+		event.data.bar.viewport.local += event.clientX - event.data.previousX;
+		event.data.drawer.draw(event.data.bar);
+		event.data.previousX = event.clientX;
 		event.data.move = true;
 	};
 	
@@ -34,7 +32,7 @@
 		if (!event.data.move) {
 			this.onMouseClick(event);
 		}else{
-			console.log("viewport : ",event.data.bar.viewport.x);
+			console.log("viewport : ",event.data.bar.viewport.delta());
 		}
 		event.data.move = false;
 
@@ -49,11 +47,6 @@
 		if (bucket) {
 			event.data.bucketSelect(bucket, event.data.bar);
 		}
-	}
-
-	BarMouse.prototype.moveBar = function(event) {
-		event.data.bar.viewport.x += event.data.deltaX;
-		event.data.drawer.draw(event.data.bar);
 	}
 
 	Time.BarMouse = BarMouse;

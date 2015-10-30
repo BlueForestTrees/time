@@ -31,14 +31,15 @@
 			this.barmouse.installMouse(bar, onBucketSelectCall);
 		}
 		
-		//INIT DATA
+		//INIT BAR 1
 		var bar = this.bars[Scale.TEN9];
-		bar.viewport.x = 1000;
 		this.data.getFacets(this.filter, bar.scale,null, $.proxy(this.onBuckets,this, bar))
-		this.drawer.hide(Scale.sublevel(bar.scale));
+		this.drawer.hide(Scale.sub(bar.scale));
 		
+		//TODO chien-chat recherche les deux
 		//FILTRE
 		$("#filtreInput").keypress($.proxy(this.onFiltreKeyPress,this));
+		$("input[type='text']").on("click", function () {$(this).select();});
 	}
 	
 	Timeline.prototype.onFiltreKeyPress = function(e){
@@ -49,29 +50,27 @@
 	
 	Timeline.prototype.onFiltreEnter = function(){
 		this.filter = $("#filtreInput").val();
-		console.log(this.filter);
 		var bar = this.bars[Scale.TEN9];
 		this.data.getFacets(this.filter, bar.scale,null, $.proxy(this.onBuckets,this, bar))
-		this.drawer.hide(Scale.sublevel(bar.scale));
+		this.drawer.hide(Scale.sub(bar.scale));
 		this.drawer.clearText();
 	};
 	
 	Timeline.prototype.onBucketSelect = function(bucket, bar){
-		this.drawer.hide(Scale.sublevel(bar.scale));
+		this.drawer.hide(Scale.sub(bar.scale));
 		this.drawer.clearText();
 		//affiche les phrases
-		if(bucket.count < 50){
-			this.data.getPhrases(this.filter, Scale.sublevel(bar.scale), bucket.x, $.proxy(this.onPhrases,this));
+		if(bucket.count < 50 || bar.scale === Scale.TEN){
+			this.data.getPhrases(this.filter, Scale.sub(bar.scale), bucket.x, $.proxy(this.onPhrases,this));
 		//niveau de detail++
 		}else{
-			var subBar = this.bars[Scale.sublevel(bar.scale)];
-			subBar.viewport.x = bucket.bucket * 1000;
-			console.log("viewport : " + subBar.viewport.x);
+			var subBar = this.bars[Scale.sub(bar.scale)];
 			this.data.getFacets(this.filter, subBar.scale, bucket.bucket, $.proxy(this.onBuckets,this, subBar));
 		}
 	};
 	
 	Timeline.prototype.onBuckets = function(bar, facetsDTO){
+		bar.viewport.local = -Scale.firstSubBucket(Scale.up(bar.scale), facetsDTO.parentBucket);
 		bar.buckets = this.bucketFactory.getBuckets(facetsDTO);
 		this.drawer.showBar(bar);
 		this.drawer.draw(bar);

@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import time.repo.bean.Phrase;
-import time.web.bean.FacetsDTO;
+import time.web.bean.BucketsDTO;
 import time.web.enums.Scale;
 import time.web.enums.Sens;
-import time.web.service.FacetService;
+import time.web.service.BucketService;
 import time.web.service.IndexService;
 import time.web.service.PhraseService;
 
@@ -25,7 +25,7 @@ public class TimeController {
 	private IndexService indexService;
 	
 	@Autowired
-	private FacetService facetService;
+	private BucketService bucketService;
 	
 	@Autowired
 	private PhraseService phraseService;
@@ -35,11 +35,11 @@ public class TimeController {
 		return indexService.reIndex();
 	}
 	
-	@RequestMapping(value = "/facets", method = RequestMethod.GET)
-	public FacetsDTO facets(@RequestParam(value = "scale", required = true) Scale scale,
-			@RequestParam(value = "bucket", required = false) Long bucket,
-			@RequestParam(value = "word", required = false, defaultValue = "") String word){
-		return facetService.timeFacetsDTO(scale, bucket, word);
+	@RequestMapping(value = "/subbuckets", method = RequestMethod.GET)
+	public BucketsDTO facets(@RequestParam(value = "scale", required = true) Scale scale,
+			@RequestParam(value = "bucket", required = false) Long parentBucket,
+			@RequestParam(value = "filter", required = false, defaultValue = "") String word){
+		return bucketService.getSubBuckets(scale, parentBucket, word);
 	}
 
 	@RequestMapping(value = "/phrases", method = RequestMethod.GET)

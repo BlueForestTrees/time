@@ -13,7 +13,7 @@
 		for (var i = 0; i < nbBuckets; i++) {
 			var bucket = bar.buckets[i];
 			bar.context.fillStyle = bucket.color;
-			bar.context.fillRect(bar.viewport.x + bucket.x, 0, 1, bar.canvas.height);
+			bar.context.fillRect(bar.viewport.delta() + bucket.x, 0, 1, bar.canvas.height);
 		}
 	};
 
@@ -21,7 +21,7 @@
 		do {
 			var bar = this.bars[scale];
 			this.hideBar(bar);
-			scale = Scale.sublevel(scale);
+			scale = Scale.sub(scale);
 		} while (scale);
 	};
 

@@ -19,19 +19,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import time.repo.bean.Phrase;
-import time.web.bean.FacetsDTO;
+import time.web.bean.BucketsDTO;
 import time.web.enums.Scale;
 import time.web.tool.QueryHelper;
-import time.web.transformer.FacetTransformer;
+import time.web.transformer.BucketTransformer;
 
 @Service
-public class FacetService {
+public class BucketService {
 
 	@PersistenceContext(type = PersistenceContextType.EXTENDED)
 	private EntityManager entityManager;
 
 	@Autowired
-	private FacetTransformer facetTransformer;
+	private BucketTransformer facetTransformer;
 
 	@Autowired
 	private QueryHelper queryHelper;
@@ -42,15 +42,15 @@ public class FacetService {
 	 * @param scale
 	 *            le niveau de la recherche voir {@link Scale}
 	 * @param bucket
-	 * @param word
+	 * @param filter
 	 * @return les facets demandés
 	 */
 	@Transactional
-	public List<Facet> getTimeFacets(final Scale scale, final Long bucket, final String word) {
+	public List<Facet> getTimeFacets(final Scale scale, final Long bucket, final String filter) {
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
 		final FacetingRequest facetingRequest = getFacetingRequest(scale, queryBuilder);
-		final Query query = queryHelper.getQuery(scale, bucket, word, queryBuilder);
+		final Query query = queryHelper.getQuery(scale, bucket, filter, queryBuilder);
 		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
 		final FacetManager facetManager = fullTextQuery.getFacetManager();
 		facetManager.enableFaceting(facetingRequest);
@@ -69,9 +69,9 @@ public class FacetService {
 		return queryBuilder.facet().name("phrases").onField(scale.getField()).discrete().includeZeroCounts(false).createFacetingRequest();
 	}
 
-	public FacetsDTO timeFacetsDTO(Scale scale, Long bucket, String word) {
-		final List<Facet> timeFacets = getTimeFacets(scale, bucket, word);
-		return facetTransformer.toFacetsDTO(timeFacets, scale, bucket);
+	public BucketsDTO getSubBuckets(final Scale scale, final Long parentBucket, final String filter) {
+		final List<Facet> timeFacets = getTimeFacets(scale, parentBucket, filter);
+		return facetTransformer.toBucketsDTO(timeFacets, scale, parentBucket);
 	}
 
 }

@@ -7,7 +7,7 @@
 		this.maxColor = 255;
 		this.middleColor = this.minColor + (this.maxColor - this.minColor) / 2;
 	}
-	BucketFactory.prototype.generateBuckets = function(nbBuckets) {
+	/*BucketFactory.prototype.generateBuckets = function(nbBuckets) {
 		var buckets = [];
 		for (var i = 0; i < nbBuckets; i++) {
 			var x = parseInt((Math.random() - 0.333) * 3000); // -1000 à 2000
@@ -27,7 +27,7 @@
 				  return 0;
 				});
 		return buckets;
-	};
+	};*/
 	
 	BucketFactory.prototype.getColor = function(count){
 		var r = this.getRed(count);
@@ -35,20 +35,18 @@
 		return 'rgb('+r+','+g+',0)';
 	};
 	
-	BucketFactory.prototype.getBuckets = function(facetsDTO){
-		for (var i = 0; i < facetsDTO.facets.length; i++) {
-			var facet = facetsDTO.facets[i];
+	BucketFactory.prototype.getBuckets = function(bucketsDTO){
+		for (var i = 0; i < bucketsDTO.subbuckets.length; i++) {
+			var facet = bucketsDTO.subbuckets[i];
 			facet.x = facet.bucket;
 			facet.color = this.getColor(facet.count);
 		}
-		facetsDTO.facets.sort(function compare(a, b) {
-												  	if (a.x < b.x)
-													     return -1;
-													  if (a.x > b.x)
-													     return 1;
+		bucketsDTO.subbuckets.sort(function compare(a, b) {
+												  	if (a.x < b.x)return -1;
+													if (a.x > b.x)return 1;
 													  return 0;
 													});
-		return facetsDTO.facets;
+		return bucketsDTO.subbuckets;
 	};
 	
 	BucketFactory.prototype.getGreen = function(count){

@@ -5,7 +5,7 @@ package time.web.bean;
  * @author slim
  *
  */
-public class FacetDTO {
+public class BucketDTO {
 	private long bucket;
 	public long getBucket() {
 		return bucket;

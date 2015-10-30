@@ -35,10 +35,10 @@
 	BarDrawer.prototype.clearText = function() {
 		$('.phrases').empty();
 	};
-	BarDrawer.prototype.setPhrases = function(phrases) {
+	BarDrawer.prototype.setPhrases = function(phrases, filter) {
 		this.clearText();
 		for (facetIndex in phrases) {
-			$(".phrases").append("<p>" + phrases[facetIndex].text + "</p>");
+			$(".phrases").append(("<p>" + phrases[facetIndex].text + "</p>").replace(filter,'<strong>'+filter+'</strong>'));
 		}
 	};
 

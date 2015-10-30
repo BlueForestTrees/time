@@ -4,20 +4,20 @@
 
 	}
 
-	Data.prototype.getFacets = function(scale, bucket, word, callback) {
+	Data.prototype.getFacets = function(filter, scale, bucket, callback) {
 		var params = {
 			scale : scale,
-			word : word,
+			word : filter,
 			bucket : bucket
 		};
 		$.get("facets", params).done(callback);
 	}
 
-	Data.prototype.getPhrases = function(scale, bucket, word, callback) {
+	Data.prototype.getPhrases = function(filter, scale, bucket, callback) {
 		var params = {
 			scale : scale,
 			bucket : bucket,
-			word : word
+			word : filter
 		};
 		$.get("phrases", params).done(callback);
 	}

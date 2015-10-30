@@ -10,6 +10,7 @@
 		this.barmouse = new Time.BarMouse(this.drawer);
 		this.data = new Time.Data();
 		this.bucketFactory = new Time.BucketFactory();
+		this.filter = '';
 		
 		//DRAWER
 		for(var scale in this.bars){
@@ -33,24 +34,35 @@
 		//INIT DATA
 		var bar = this.bars[Scale.TEN9];
 		bar.viewport.x = 1000;
-		this.data.getFacets(bar.scale,null,'', $.proxy(this.onBuckets,this, bar))
+		this.data.getFacets(this.filter, bar.scale,null, $.proxy(this.onBuckets,this, bar))
 		this.drawer.hide(Scale.sublevel(bar.scale));
+		
+		//FILTRE
+		$(".filtrerBt").on('click',$.proxy(this.onFiltreClick,this));
 	}
+	
+	Timeline.prototype.onFiltreClick = function(){
+		this.filter = $(".filtreInput").val();
+		var bar = this.bars[Scale.TEN9];
+		this.data.getFacets(this.filter, bar.scale,null, $.proxy(this.onBuckets,this, bar))
+		this.drawer.hide(Scale.sublevel(bar.scale));
+		this.drawer.clearText();
+	};
 	
 	Timeline.prototype.onBucketSelect = function(bucket, bar){
 		this.drawer.hide(Scale.sublevel(bar.scale));
 		this.drawer.clearText();
 		//affiche les phrases
-		//if(bucket.count < 50){
-		//	this.data.getPhrases(Scale.sublevel(bar.scale), bucket.x,'', $.proxy(this.onPhrases,this));
+		if(bucket.count < 50){
+			this.data.getPhrases(this.filter, Scale.sublevel(bar.scale), bucket.x, $.proxy(this.onPhrases,this));
 		//niveau de detail++
-		//}else{
+		}else{
 			var subBar = this.bars[Scale.sublevel(bar.scale)];
 			subBar.viewport.x = bucket.bucket * 1000;
 			console.log("viewport : " + subBar.viewport.x);
-			this.data.getFacets(subBar.scale, bucket.bucket, '', $.proxy(this.onBuckets,this, subBar));
-		//}
-	}
+			this.data.getFacets(this.filter, subBar.scale, bucket.bucket, $.proxy(this.onBuckets,this, subBar));
+		}
+	};
 	
 	Timeline.prototype.onBuckets = function(bar, facetsDTO){
 		bar.buckets = this.bucketFactory.getBuckets(facetsDTO);
@@ -59,7 +71,7 @@
 	};
 	
 	Timeline.prototype.onPhrases = function(phrases){
-		this.drawer.setPhrases(phrases);
+		this.drawer.setPhrases(phrases, this.filter);
 	};
 	
 	Time.Timeline = Timeline;

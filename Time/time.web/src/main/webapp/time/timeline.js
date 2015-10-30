@@ -38,11 +38,18 @@
 		this.drawer.hide(Scale.sublevel(bar.scale));
 		
 		//FILTRE
-		$(".filtrerBt").on('click',$.proxy(this.onFiltreClick,this));
+		$("#filtreInput").keypress($.proxy(this.onFiltreKeyPress,this));
 	}
 	
-	Timeline.prototype.onFiltreClick = function(){
-		this.filter = $(".filtreInput").val();
+	Timeline.prototype.onFiltreKeyPress = function(e){
+		if (e.which == 13) {
+			this.onFiltreEnter();
+		}
+	}
+	
+	Timeline.prototype.onFiltreEnter = function(){
+		this.filter = $("#filtreInput").val();
+		console.log(this.filter);
 		var bar = this.bars[Scale.TEN9];
 		this.data.getFacets(this.filter, bar.scale,null, $.proxy(this.onBuckets,this, bar))
 		this.drawer.hide(Scale.sublevel(bar.scale));

@@ -15,11 +15,11 @@ public class FindPhrases {
 private static final Logger logger = LogManager.getLogger(FindPhrases.class);
 	
 	public static void main(String[] args) throws IOException {
-		logger.info("main");
+		logger.info("FindPhrases start");
 		try(AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(FindPhrasesConfig.class)){
 			((Runner)ctx.getBean(Runner.class)).run();
 		}
-		logger.info("main end");
+		logger.info("FindPhrases end");
 	}
 
 }

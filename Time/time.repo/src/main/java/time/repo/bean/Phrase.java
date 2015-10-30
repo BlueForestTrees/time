@@ -1,5 +1,6 @@
 package time.repo.bean;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,6 +28,7 @@ public class Phrase {
 	private Long pageId;
 
 	@Field(index = Index.YES, analyze = Analyze.YES, store = Store.NO)
+	@Column(length = 4000)
 	private String text;
 
 	/**

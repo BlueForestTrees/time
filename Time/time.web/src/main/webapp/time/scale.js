@@ -44,7 +44,10 @@
 		return this.details[scale].up;
 	};
 	Escale.prototype.date = function(scale, bucket){
-		return this.multiplier(scale)*bucket;
+		var multiplier = this.multiplier(scale);
+		var date = multiplier*bucket / 364.25;
+		//return this.multiplier(scale)+" * "+bucket+" / 364.25 = " + date;
+		return date;
 	};
 	Escale.prototype.firstSubBucket = function(scale, bucket){
 		if(scale){

@@ -8,22 +8,24 @@
 		this.amplitude = 5;
 	}
 	
-	Bar.prototype.searchBucketAt = function(mouseX){
-		var searchedBucketX= mouseX - this.viewport.delta();		
-		var imageData = this.context.getImageData(mouseX-this.amplitude, 10, 2*this.amplitude, 1);
-		var offset = this.searchIn(imageData, mouseX);
+	Bar.prototype.searchBucketAt = function(mousePosition){
+		var searchedBucketPosition = this.getBucketPosition(mousePosition);		
+		var imageData = this.context.getImageData(mousePosition-this.amplitude, 10, 2*this.amplitude, 1);
+		var offset = this.searchIn(imageData, mousePosition);
 		console.clear();
 		if(offset !== null){			
-			var bucket = this.getBucketAt(offset + searchedBucketX);
-			
+			var bucket = this.getBucketAt(offset + searchedBucketPosition);
 			console.log(this.scale,", date:", Scale.date(this.scale, bucket.bucket),", bucket: ", bucket);
-			
 			return bucket;
 		}else{
-			console.log(this.scale,", date:", Scale.date(this.scale, searchedBucketX),", bucket: ", searchedBucketX);
+			console.log(this.scale,", date:", Scale.date(this.scale, searchedBucketPosition),", bucket: ", searchedBucketPosition);
 			return null;
 		}
 	};
+	
+	Bar.prototype.getBucketPosition = function(mousePosition){
+		return mousePosition - this.viewport.delta();
+	}
 	
 	Bar.prototype.getBucketAt = function(xBucket){
 		for(var i = 0; i < this.buckets.length; i++){

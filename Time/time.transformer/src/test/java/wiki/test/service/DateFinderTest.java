@@ -40,7 +40,8 @@ public class DateFinderTest {
 
 	@Test
 	public void testFindDate() {
-		final String[] phrases = { "L'invention de la roue est estimée située vers 3500 avant J.-C. à Sumer en basse Mésopotamie.",
+		final String[] phrases = { "Néolithique, soit vers 4500 av. J.-C. Il s’agit",
+				"L'invention de la roue est estimée située vers 3500 avant J.-C. à Sumer en basse Mésopotamie.",
 				"Les roues à rayons et à jantes, plus légères, seraient apparues environ 2000 ans av. J.-C..",
 				"Les revolvers existent depuis au moins le xvie siècle.",
 				"Au XXIe siècle, la montre se porte majoritairement au poignet, généralement du bras gauche, et est dite à montre-bracelet.",
@@ -49,7 +50,7 @@ public class DateFinderTest {
 				"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.",
 				"La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre." };
 
-		assertThat(jcFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(-3500)).haveExactly(1, withDate(-2000));
+		assertThat(jcFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(-4500)).haveExactly(1, withDate(-3500)).haveExactly(1, withDate(-2000));
 		assertThat(annee2DotFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(1777));
 		assertThat(enanneFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(1571));
 		assertThat(milliardFinder.findPhrasesWithDates(phrases)).haveExactly(1, withDate(-2400000000L));

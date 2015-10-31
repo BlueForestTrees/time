@@ -7,7 +7,7 @@
 		this.bars[Scale.TEN] = new Time.Bar(Scale.TEN);
 		this.bars[Scale.ONE] = new Time.Bar(Scale.ONE);
 		this.drawer = new Time.BarDrawer(this.bars);
-		this.barmouse = new Time.BarMouse(this.drawer);
+		this.mouse = new Time.Mouse(this.drawer);
 		this.data = new Time.Data();
 		this.bucketFactory = new Time.BucketFactory();
 		this.filter = '';
@@ -28,7 +28,7 @@
 		var onBucketSelectCall = $.proxy(this.onBucketSelect,this);
 		for(var scale in this.bars){
 			var bar = this.bars[scale];
-			this.barmouse.installMouse(bar, onBucketSelectCall);
+			this.mouse.install(bar, onBucketSelectCall);
 		}
 		
 		//INIT BAR 1

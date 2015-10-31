@@ -11,8 +11,6 @@ public class PhraseHandlerTest {
 	@Test
 	public void testGetPhrases() {
 		final PhraseHandler phraseHandler = new PhraseHandler();
-		// TODO gérer les \r\n
-		//TODO le siècle phrases à virer (l)
 		final String data = "Bla bla. Bli bli. Blou av. b mr. lou. ICI blou. Blu blu blu. Blo avant JC. blo LA blo blo.";
 		String[] expectedPhrases = new String[] { "Bla bla.", "Bli bli.", "Blou av. b mr. lou.", "ICI blou.", "Blu blu blu.", "Blo avant JC. blo LA blo blo." };
 

@@ -31,11 +31,6 @@ public class Phrase {
 	@Column(length = 4000)
 	private String text;
 
-	/**
-	 * TODO voir SimpleFacetsExample doc.add(new FacetField("Publish Date",
-	 * "2010", "10", "15")); utiliser un champ pour tout les niveaux avec un
-	 * 'path' Voir les dates avec résolution jour avec java.time
-	 */
 	@Field(analyze = Analyze.NO)
 	@Facet(encoding = FacetEncodingType.STRING)
 	private long dateByTen;

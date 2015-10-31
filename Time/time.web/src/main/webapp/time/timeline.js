@@ -36,7 +36,6 @@
 		this.data.getFacets(this.filter, bar.scale,null, $.proxy(this.onBuckets,this, bar))
 		this.drawer.hide(Scale.sub(bar.scale));
 		
-		//TODO chien-chat recherche les deux
 		//FILTRE
 		$("#filtreInput").keypress($.proxy(this.onFiltreKeyPress,this));
 		$("input[type='text']").on("click", function () {$(this).select();});

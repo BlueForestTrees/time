@@ -39,7 +39,6 @@ public class FindPhrasesLuceneModule implements IModule {
 			Page page = pageReader.getNextPage();
 			if (pageFilter.isValidPage(page)) {
 				if(pageFilter.isNewPage(page)){
-					//TODO remplacer le phrase handler par un lucene/elasticsearch
 					phraseCount += phraseHandler.handle(page);					
 				}
 				pageFilter.rememberThisPage(page);

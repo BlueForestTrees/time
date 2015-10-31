@@ -5,7 +5,7 @@
 		this.buckets = [];
 		this.context = new Time.CanvasFactory().build(25);
 		this.canvas = this.context.canvas;
-		this.amplitude = 5;
+		this.amplitude = 10;
 	}
 	
 	Bar.prototype.searchBucketAt = function(mousePosition){

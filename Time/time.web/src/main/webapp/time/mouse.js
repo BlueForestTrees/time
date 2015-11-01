@@ -20,8 +20,8 @@
 		var bar = event.data.bar;
 		var mousePosition = this.getMousePosition(event);
 		var bucketPosition = bar.getBucketPosition(mousePosition);
-		var date = Scale.date(bar.scale, bucketPosition);
-		console.log(date);
+		var toolTipText = Scale.getTooltipText(bar.scale, bucketPosition);
+		console.log(toolTipText);
 	};
 	
 	Mouse.prototype.onMouseDown = function(event) {

@@ -31,6 +31,11 @@
 				multiplier : 10000000000
 			}
 		};
+		this.echelles = {
+			milliard : 1000000000,
+			million : 1000000,
+			millier : 1000
+		};
 	}
 	
 	Escale.prototype.multiplier = function(scale){
@@ -43,16 +48,76 @@
 	Escale.prototype.up = function(scale){
 		return this.details[scale].up;
 	};
-	Escale.prototype.date = function(scale, bucket){
-		var multiplier = this.multiplier(scale);
-		var date = multiplier*bucket / 364.25;
-		//return this.multiplier(scale)+" * "+bucket+" / 364.25 = " + date;
-		return date;
+	Escale.prototype.getTooltipText = function(scale, bucket){
+		
+		var years = this.getYears(scale, bucket);
+		var absYears = Math.abs(years);
+		var negative = years < 0;
+		var echelle = this.getEchelle(absYears);
+		
+		switch(echelle){
+		//Il y a [3] milliard(s) d'année(s)
+		case this.echelles.milliard:
+			return (negative ? "il y a " : "dans ") + this.prepare(years, this.echelles.milliard) + " milliards d'années";
+		case this.echelles.million:
+			return (negative ? "il y a " : "dans ") + this.prepare(years, this.echelles.million) + " millions d'années";
+		default:
+			return (negative ? "il y a " : "dans ") + this.prepare(years, this.echelles.millier) + " ans";
+		break;
+		}
+		
+				/*
+		if(scale === this.TEN9){
+			var milliard = bucket / 364.25 * 10
+			var milliardRound = Math.round(milliard);
+			if(milliardRound < 0){
+				if(milliardRound > -4){
+					return "il y a " + Math.abs(Math.round(milliard*10)/10) + " milliards d'années";
+				}else{					
+					return "il y a " + Math.abs(milliardRound) + " milliards d'années";
+				}
+			}else if(milliardRound === 0){
+				if(milliard < 0){					
+					var million = milliard * 1000;
+					var millionRound = Math.abs(Math.round(million));
+					return "il y a " + millionRound + " millions d'années";
+				}else{
+					var million = milliard * 1000;
+					var millionRound = Math.abs(Math.round(million));
+					return "dans " + millionRound + " millions d'années";
+				}
+			}else{
+				return "dans " + milliardRound + " milliards d'années";
+			}
+		}else{			
+			var multiplier = this.multiplier(scale);
+			var yearsCompTo0 = multiplier * bucket / 364.25;
+			return yearsCompTo0 + " années / JC";
+		}*/
 	};
+	
+	Escale.prototype.getEchelle = function(years){
+		if (parseInt(years / this.echelles.milliard) > 0){
+			return this.echelles.milliard;
+		}else if(parseInt(years / this.echelles.million) > 0){
+			return this.echelles.million;
+		}else {
+			return this.echelles.millier;
+		}
+	}
+	
+	Escale.prototype.prepare = function(value, echelle){
+		var decimals = 1;//mettre à 10 pour avoir une décimale
+		return Math.abs(Math.round(value/echelle*decimals)/decimals);
+	}
+	
+	Escale.prototype.getYears = function(scale, bucket){
+		return this.multiplier(scale) * bucket / 364.25;
+	}
+	
 	Escale.prototype.firstSubBucket = function(scale, bucket){
 		if(scale){
 			var multiplierDelta = this.multiplier(scale) / this.multiplier(this.sub(scale));
-			console.log("scale : ", scale, ", bucket : ", bucket, ", multiplierDelta : ", multiplierDelta);
 			return multiplierDelta*bucket;			
 		}else{
 			return 0;

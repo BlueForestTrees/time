@@ -15,10 +15,10 @@
 		console.clear();
 		if(offset !== null){			
 			var bucket = this.getBucketAt(offset + searchedBucketPosition);
-			console.log(this.scale,", date:", Scale.date(this.scale, bucket.bucket),", bucket: ", bucket);
+			console.log(this.scale,", date:", Scale.getTooltipText(this.scale, bucket.bucket),", bucket: ", bucket);
 			return bucket;
 		}else{
-			console.log(this.scale,", date:", Scale.date(this.scale, searchedBucketPosition),", bucket: ", searchedBucketPosition);
+			console.log(this.scale,", date:", Scale.getTooltipText(this.scale, searchedBucketPosition),", bucket: ", searchedBucketPosition);
 			return null;
 		}
 	};

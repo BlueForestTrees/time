@@ -12,13 +12,13 @@
 		var searchedBucketPosition = this.getBucketPosition(mousePosition);		
 		var imageData = this.context.getImageData(mousePosition-this.amplitude, 10, 2*this.amplitude, 1);
 		var offset = this.searchIn(imageData, mousePosition);
-		console.clear();
+		//console.clear();
 		if(offset !== null){			
 			var bucket = this.getBucketAt(offset + searchedBucketPosition);
-			console.log(this.scale,", date:", Scale.getTooltipText(this.scale, bucket.bucket),", bucket: ", bucket);
+			//console.log(this.scale,", date:", Scale.getTooltipText(this.scale, bucket.bucket),", bucket: ", bucket);
 			return bucket;
 		}else{
-			console.log(this.scale,", date:", Scale.getTooltipText(this.scale, searchedBucketPosition),", bucket: ", searchedBucketPosition);
+			//console.log(this.scale,", date:", Scale.getTooltipText(this.scale, searchedBucketPosition),", bucket: ", searchedBucketPosition);
 			return null;
 		}
 	};

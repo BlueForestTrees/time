@@ -33,12 +33,12 @@
 	};
 
 	BarDrawer.prototype.clearText = function() {
-		$('.phrases').empty();
+		$('#phrases').empty();
 	};
 	BarDrawer.prototype.setPhrases = function(phrases, filter) {
 		this.clearText();
 		for (facetIndex in phrases) {
-			$(".phrases").append(("<p>" + phrases[facetIndex].text + "</p>").replace(filter,'<strong>'+filter+'</strong>'));
+			$('#phrases').append(("<p>" + phrases[facetIndex].text + "</p>").replace(filter,'<strong>'+filter+'</strong>'));
 		}
 	};
 

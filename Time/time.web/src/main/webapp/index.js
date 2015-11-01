@@ -67,7 +67,7 @@ function facetsIsComing(facetgroup) {
 		$(".facets"+sublevel).empty();
 		sublevel = scales[sublevel].sublevel;
 	}
-	$('.phrases').empty();
+	$('#phrases').empty();
 	
 	
 	for (facetIndex in facetgroup.facets) {
@@ -102,9 +102,9 @@ function goPhrases(scale, bucket) {
 	});
 }
 function phrasesIsComing(phrases) {
-	$('.phrases').empty();
+	$('#phrases').empty();
 	for (facetIndex in phrases) {
-		$(".phrases").append(phrasesToHtml(phrases[facetIndex]));
+		$("#phrases").append(phrasesToHtml(phrases[facetIndex]));
 	}
 }
 function phrasesToHtml(phrase) {

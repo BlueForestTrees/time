@@ -25,10 +25,11 @@
 		},this));
 		
 		//BARMOUSE
+		this.mouse.install($.proxy(this.onFilterSelect,this));
 		var onBucketSelectCall = $.proxy(this.onBucketSelect,this);
 		for(var scale in this.bars){
 			var bar = this.bars[scale];
-			this.mouse.install(bar, onBucketSelectCall);
+			this.mouse.installBar(bar, onBucketSelectCall);
 		}
 		
 		//INIT BAR 1
@@ -49,10 +50,7 @@
 	
 	Timeline.prototype.onFiltreEnter = function(){
 		this.filter = $("#filtreInput").val();
-		var bar = this.bars[Scale.TEN9];
-		this.data.getFacets(this.filter, bar.scale,null, $.proxy(this.onBuckets,this, bar))
-		this.drawer.hide(Scale.sub(bar.scale));
-		this.drawer.clearText();
+		this.filterNow();
 	};
 	
 	Timeline.prototype.onBucketSelect = function(bucket, bar){
@@ -77,6 +75,19 @@
 	
 	Timeline.prototype.onPhrases = function(phrases){
 		this.drawer.setPhrases(phrases, this.filter);
+	};
+	
+	Timeline.prototype.onFilterSelect = function(filter){
+		this.filter = filter;
+		$("#filtreInput").val(this.filter);
+		this.filterNow();
+	}
+	
+	Timeline.prototype.filterNow = function(){
+		var bar = this.bars[Scale.TEN9];
+		this.data.getFacets(this.filter, bar.scale,null, $.proxy(this.onBuckets,this, bar));
+		this.drawer.hide(Scale.sub(bar.scale));
+		this.drawer.clearText();
 	};
 	
 	Time.Timeline = Timeline;

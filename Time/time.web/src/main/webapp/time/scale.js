@@ -34,7 +34,8 @@
 		this.echelles = {
 			milliard : 1000000000,
 			million : 1000000,
-			millier : 1000
+			millier : 1000,
+			un : 1
 		};
 	}
 	
@@ -49,66 +50,42 @@
 		return this.details[scale].up;
 	};
 	Escale.prototype.getTooltipText = function(scale, bucket){
-		
 		var years = this.getYears(scale, bucket);
-		var absYears = Math.abs(years);
-		var negative = years < 0;
-		var echelle = this.getEchelle(absYears);
+		var echelle = this.getEchelle(years);
 		
 		switch(echelle){
-		//Il y a [3] milliard(s) d'année(s)
 		case this.echelles.milliard:
-			return (negative ? "il y a " : "dans ") + this.prepare(years, this.echelles.milliard) + " milliards d'années";
+			return Math.round(years / this.echelles.milliard) + " milliards d'années";
 		case this.echelles.million:
-			return (negative ? "il y a " : "dans ") + this.prepare(years, this.echelles.million) + " millions d'années";
-		default:
-			return (negative ? "il y a " : "dans ") + this.prepare(years, this.echelles.millier) + " ans";
+			return this.dec(years / this.echelles.million) + " millions d'années";
+		case this.echelles.millier:
+		case this.echelles.un:
+			var negative = years < 0;
+			var roundYears = Math.round(years);
+			
+			if(roundYears === 0)return "de nos jours";
+			if(negative)		return roundYears + " av. JC";
+			else 				return "en " + roundYears;
 		break;
 		}
-		
-				/*
-		if(scale === this.TEN9){
-			var milliard = bucket / 364.25 * 10
-			var milliardRound = Math.round(milliard);
-			if(milliardRound < 0){
-				if(milliardRound > -4){
-					return "il y a " + Math.abs(Math.round(milliard*10)/10) + " milliards d'années";
-				}else{					
-					return "il y a " + Math.abs(milliardRound) + " milliards d'années";
-				}
-			}else if(milliardRound === 0){
-				if(milliard < 0){					
-					var million = milliard * 1000;
-					var millionRound = Math.abs(Math.round(million));
-					return "il y a " + millionRound + " millions d'années";
-				}else{
-					var million = milliard * 1000;
-					var millionRound = Math.abs(Math.round(million));
-					return "dans " + millionRound + " millions d'années";
-				}
-			}else{
-				return "dans " + milliardRound + " milliards d'années";
-			}
-		}else{			
-			var multiplier = this.multiplier(scale);
-			var yearsCompTo0 = multiplier * bucket / 364.25;
-			return yearsCompTo0 + " années / JC";
-		}*/
+	};
+	
+	Escale.prototype.dec = function(value){
+		var decimals = Math.abs(value) < 10 ? 10 : 1;
+		return Math.round(value*decimals)/decimals;
 	};
 	
 	Escale.prototype.getEchelle = function(years){
-		if (parseInt(years / this.echelles.milliard) > 0){
+		years = Math.abs(Math.round(years));
+		if (Math.round(years / this.echelles.milliard) > 0){
 			return this.echelles.milliard;
-		}else if(parseInt(years / this.echelles.million) > 0){
+		}else if(Math.round(years / this.echelles.million) > 0){
 			return this.echelles.million;
-		}else {
+		}else if(Math.round(years / this.echelles.millier) > 0){
 			return this.echelles.millier;
+		}else{
+			return this.echelles.un;
 		}
-	}
-	
-	Escale.prototype.prepare = function(value, echelle){
-		var decimals = 1;//mettre à 10 pour avoir une décimale
-		return Math.abs(Math.round(value/echelle*decimals)/decimals);
 	}
 	
 	Escale.prototype.getYears = function(scale, bucket){

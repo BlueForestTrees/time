@@ -16,59 +16,59 @@ import time.transformer.component.reader.SmartScanner;
 @Service
 public class PageReaderService {
 
-	private static final Logger logger = LogManager.getLogger(PageReaderService.class);
-	
-	@Autowired
-	private String baseUrl;
+    private static final Logger logger = LogManager.getLogger(PageReaderService.class);
 
-	@Autowired
-	private SmartScanner scanner;
-	
-	public Page getNextPage() throws IOException, FinDuScanException {
-		String url = scanner.nextString();
-		int depth = scanner.nextInt();
-		String title = scanner.nextString();
-		int nbLiensOut = scanner.nextInt();
-		List<String> liens = new ArrayList<String>();
+    @Autowired
+    private String baseUrl;
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("url=" + url);
-			logger.debug("depth=" + depth);
-			logger.debug("title=" + title);
-			logger.debug("nbLiensOut=" + nbLiensOut);
-		}
+    @Autowired
+    private SmartScanner scanner;
 
-		for (int i = 1; i <= nbLiensOut; i++) {
-			String lien = scanner.nextString();
-			if (startWithBaseUrl(lien)) {
-				liens.add(reduceThisLink(lien));
-				if (logger.isDebugEnabled()) {
-					logger.debug("lien#" + i + "=" + lien);
-				}
-			}
-		}
-		String text = scanner.nextString();
+    public Page getNextPage() throws IOException, FinDuScanException {
+        String url = scanner.nextString();
+        int depth = scanner.nextInt();
+        String title = scanner.nextString();
+        int nbLiensOut = scanner.nextInt();
+        List<String> liens = new ArrayList<String>();
 
-		Page page = new Page();
-		page.setLiens(liens);
-		page.setUrl(reduceThisLink(url));
-		page.setDepth(depth);
-		page.setNbLiensOut(nbLiensOut);
-		page.setPageContent(text);
+        if (logger.isDebugEnabled()) {
+            logger.debug("url=" + url);
+            logger.debug("depth=" + depth);
+            logger.debug("title=" + title);
+            logger.debug("nbLiensOut=" + nbLiensOut);
+        }
 
-		if (logger.isDebugEnabled()) {
-			logger.debug("text=" + text.substring(0, 50) + "[...]" + text.substring(text.length() - 50));
-		}
+        for (int i = 1; i <= nbLiensOut; i++) {
+            String lien = scanner.nextString();
+            if (startWithBaseUrl(lien)) {
+                liens.add(reduceThisLink(lien));
+                if (logger.isDebugEnabled()) {
+                    logger.debug("lien#" + i + "=" + lien);
+                }
+            }
+        }
+        String text = scanner.nextString();
 
-		return page;
-	}
+        Page page = new Page();
+        page.setLiens(liens);
+        page.setUrl(reduceThisLink(url));
+        page.setDepth(depth);
+        page.setNbLiensOut(nbLiensOut);
+        page.setPageContent(text);
 
-	private String reduceThisLink(String lien) {
-		return lien.substring(baseUrl.length());
-	}
+        if (logger.isDebugEnabled()) {
+            logger.debug("text=" + text.substring(0, 50) + "[...]" + text.substring(text.length() - 50));
+        }
 
-	private boolean startWithBaseUrl(String lien) {
-		return lien.startsWith(baseUrl);
-	}
+        return page;
+    }
+
+    private String reduceThisLink(String lien) {
+        return lien.substring(baseUrl.length());
+    }
+
+    private boolean startWithBaseUrl(String lien) {
+        return lien.startsWith(baseUrl);
+    }
 
 }

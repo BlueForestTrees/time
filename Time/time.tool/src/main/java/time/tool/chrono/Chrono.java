@@ -8,95 +8,95 @@ import org.joda.time.format.PeriodFormatterBuilder;
 
 public class Chrono {
 
-	private String name;
-	private DateTime start;
-	private DateTime stop;
+    private String name;
+    private DateTime start;
+    private DateTime stop;
 
-	
-	public Chrono(String name) {
-		super();
-		this.name = name;
-		start();
-	}
-	
-	public String getName() {
-		return name;
-	}
+    public Chrono(String name) {
+        super();
+        this.name = name;
+        start();
+    }
 
-	public void start() {
-		start = DateTime.now();
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void stop() {
-		stop = DateTime.now();
-	}
+    public void start() {
+        start = DateTime.now();
+    }
 
-	public String toStringFromDuration(Duration duration) {
-		Period period = duration.toPeriod();
+    public void stop() {
+        stop = DateTime.now();
+    }
 
-		PeriodFormatterBuilder builder = new PeriodFormatterBuilder().printZeroAlways();
+    public String toStringFromDuration(Duration duration) {
+        Period period = duration.toPeriod();
 
-		if(period.getYears() > 0){
-			builder.appendYears().appendLiteral(" an").appendSeparator(", ");
-		}
-		if(period.getMonths() > 0){
-			builder.appendMonths().appendLiteral(" mois").appendSeparator(", ");
-		}
-		if(period.getDays() > 0){
-			builder.appendDays().appendLiteral(" jours").appendSeparator(", ");
-		}
-		if (period.getHours() > 0) {
-			builder.appendHours().appendLiteral("h").appendSeparator(":");
-		}
+        PeriodFormatterBuilder builder = new PeriodFormatterBuilder().printZeroAlways();
 
-		if (period.getMinutes() > 0 || period.getHours() > 0) {
-			builder.appendMinutes().appendLiteral("m").appendSeparator(":");
-		}
-		
-		if (period.getSeconds() > 0) {
-			builder.appendSeconds().appendLiteral("s").appendSeparator(":");
-		}
-		
-		if(period.getMillis() > 0){
-			builder.appendMillis3Digit().appendLiteral("ms");
-		}
+        if (period.getYears() > 0) {
+            builder.appendYears().appendLiteral(" an").appendSeparator(", ");
+        }
+        if (period.getMonths() > 0) {
+            builder.appendMonths().appendLiteral(" mois").appendSeparator(", ");
+        }
+        if (period.getDays() > 0) {
+            builder.appendDays().appendLiteral(" jours").appendSeparator(", ");
+        }
+        if (period.getHours() > 0) {
+            builder.appendHours().appendLiteral("h").appendSeparator(":");
+        }
 
-		PeriodFormatter minutesAndSeconds = builder.toFormatter();
+        if (period.getMinutes() > 0 || period.getHours() > 0) {
+            builder.appendMinutes().appendLiteral("m").appendSeparator(":");
+        }
 
-		return minutesAndSeconds.print(period);
-	}
+        if (period.getSeconds() > 0) {
+            builder.appendSeconds().appendLiteral("s").appendSeparator(":");
+        }
 
-	public Duration getDuration() {
-		return Duration.millis(stop.getMillis() - start.getMillis());
-	}
+        if (period.getMillis() > 0) {
+            builder.appendMillis3Digit().appendLiteral("ms");
+        }
 
-	public Duration dividedBy(Long dividand) {
-		return getDuration().dividedBy(dividand);
-	}
+        PeriodFormatter minutesAndSeconds = builder.toFormatter();
 
-	public String toStringDividedBy(Long dividand) {
-		return toStringFromDuration(dividedBy(dividand));
-	}
+        return minutesAndSeconds.print(period);
+    }
 
-	@Override
-	public String toString() {
-		Duration duration = getDuration();
-		return toStringFromDuration(duration);
-	}
+    public Duration getDuration() {
+        return Duration.millis(stop.getMillis() - start.getMillis());
+    }
 
-	public void withStart(DateTime start) {
-		this.start = start;
-	}
-	public void withStop(DateTime stop) {
-		this.stop = stop;
-	}
-	
-	public String getRemaining(long done, long total){
-		float progressRatio = (float)total / (float)done;
-		stop();
-		Duration progressDuration = getDuration();
-		Duration totalDuration = new Duration((long)(progressDuration.getMillis() * progressRatio));
-		return toStringFromDuration(totalDuration.minus(progressDuration));
-	}
-	
+    public Duration dividedBy(Long dividand) {
+        return getDuration().dividedBy(dividand);
+    }
+
+    public String toStringDividedBy(Long dividand) {
+        return toStringFromDuration(dividedBy(dividand));
+    }
+
+    @Override
+    public String toString() {
+        Duration duration = getDuration();
+        return toStringFromDuration(duration);
+    }
+
+    public void withStart(DateTime start) {
+        this.start = start;
+    }
+
+    public void withStop(DateTime stop) {
+        this.stop = stop;
+    }
+
+    public String getRemaining(long done, long total) {
+        float progressRatio = (float) total / (float) done;
+        stop();
+        Duration progressDuration = getDuration();
+        Duration totalDuration = new Duration((long) (progressDuration.getMillis() * progressRatio));
+        return toStringFromDuration(totalDuration.minus(progressDuration));
+    }
+
 }

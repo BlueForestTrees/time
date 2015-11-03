@@ -5,7 +5,7 @@
 	<artifactId>time</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
+
 	<modules>
 		<module>time.repo</module>
 		<module>time.tool</module>
@@ -70,8 +70,8 @@
 				<artifactId>lucene-core</artifactId>
 				<version>${lucene.version}</version>
 			</dependency>
-			
-			
+
+
 
 			<dependency>
 				<groupId>javax.servlet</groupId>

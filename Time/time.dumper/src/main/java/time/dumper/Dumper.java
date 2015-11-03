@@ -7,24 +7,24 @@ import time.dumper.controller.DumperController;
 import time.dumper.factory.DumperFactory;
 
 public class Dumper {
-	static final Logger log = Logger.getLogger(Dumper.class);
+    static final Logger log = Logger.getLogger(Dumper.class);
 
-	public static void main(String[] args) throws Exception {
-		System.setProperty( "file.encoding", "UTF-8" );
-		
-		DumperFactory factory = new DumperFactory();
-		DumperConfig config = factory.fromArguments(args);
+    public static void main(String[] args) throws Exception {
+        System.setProperty("file.encoding", "UTF-8");
 
-		if (config.isHelp()) {
-			log.info("configuration du crawler" + config.getConfAsString());
-		} else {
-			log.info("démarrage du crawler" + config.getConfAsString());
-			
-			DumperController dumpController = factory.buildController(config);
-			dumpController.start();
+        DumperFactory factory = new DumperFactory();
+        DumperConfig config = factory.fromArguments(args);
 
-			log.info("fin du crawler" + config.getConfAsString());
-		}
-	}
+        if (config.isHelp()) {
+            log.info("configuration du crawler" + config.getConfAsString());
+        } else {
+            log.info("démarrage du crawler" + config.getConfAsString());
+
+            DumperController dumpController = factory.buildController(config);
+            dumpController.start();
+
+            log.info("fin du crawler" + config.getConfAsString());
+        }
+    }
 
 }

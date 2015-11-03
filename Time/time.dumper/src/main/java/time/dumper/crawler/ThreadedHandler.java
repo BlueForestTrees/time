@@ -2,29 +2,29 @@ package time.dumper.crawler;
 
 public abstract class ThreadedHandler extends BasePageHandler implements Runnable {
 
-	private Thread thread;
-	
-	private boolean end;
+    private Thread thread;
 
-	public ThreadedHandler() {
-		super();
-		end = false;
-	}
+    private boolean end;
 
-	public void start() {
-		if(thread != null)
-			return;
-		thread = new Thread(this);
-		thread.start();
-	}
-	
-	public boolean isEnd(){
-		return end;
-	}
-	
-	@Override
-	public void end() {
-		end  = true;
-	}
+    public ThreadedHandler() {
+        super();
+        end = false;
+    }
+
+    public void start() {
+        if (thread != null)
+            return;
+        thread = new Thread(this);
+        thread.start();
+    }
+
+    public boolean isEnd() {
+        return end;
+    }
+
+    @Override
+    public void end() {
+        end = true;
+    }
 
 }

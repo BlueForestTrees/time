@@ -24,44 +24,43 @@ import time.web.enums.Scale;
 import time.web.enums.Sens;
 import time.web.tool.QueryHelper;
 
-
 @Service
 public class PhraseService {
 
-	@PersistenceContext(type = PersistenceContextType.EXTENDED)
-	private EntityManager entityManager;
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    private EntityManager entityManager;
 
-	@Autowired
-	private int pageSize;
-	
-	@Autowired
-	private QueryHelper queryHelper;
-	
-	private static final Logger LOG = LoggerFactory.getLogger(PhraseService.class);
-	
-	@Transactional
-	public List<Phrase> find(final Scale scale, final Long bucket, final String word, final Sens sens, final Long page) {
-		LOG.debug("find...");
-		//Factories
-		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-		final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
-		
-		final Query query = queryHelper.getQuery(scale, bucket, word, queryBuilder);
-		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
-		
-		//Query settings
-		fullTextQuery.setSort(new org.apache.lucene.search.Sort(new SortField("date", Type.LONG, sens == Sens.AVANT)));
-		fullTextQuery.setMaxResults(pageSize);
-		if (page != null) {
-			int startPosition = (int) (page * pageSize);
-			fullTextQuery.setFirstResult(startPosition);
-		}
+    @Autowired
+    private int pageSize;
 
-		@SuppressWarnings("unchecked")
-		final List<Phrase> result = (List<Phrase>) fullTextQuery.getResultList();
+    @Autowired
+    private QueryHelper queryHelper;
 
-		LOG.debug("find   done");
-		return result;
-	}
+    private static final Logger LOG = LoggerFactory.getLogger(PhraseService.class);
+
+    @Transactional
+    public List<Phrase> find(final Scale scale, final Long bucket, final String word, final Sens sens, final Long page) {
+        LOG.debug("find...");
+        // Factories
+        final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
+        final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
+
+        final Query query = queryHelper.getQuery(scale, bucket, word, queryBuilder);
+        final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
+
+        // Query settings
+        fullTextQuery.setSort(new org.apache.lucene.search.Sort(new SortField("date", Type.LONG, sens == Sens.AVANT)));
+        fullTextQuery.setMaxResults(pageSize);
+        if (page != null) {
+            int startPosition = (int) (page * pageSize);
+            fullTextQuery.setFirstResult(startPosition);
+        }
+
+        @SuppressWarnings("unchecked")
+        final List<Phrase> result = (List<Phrase>) fullTextQuery.getResultList();
+
+        LOG.debug("find   done");
+        return result;
+    }
 
 }

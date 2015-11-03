@@ -9,61 +9,61 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 public class LogWriter implements IWriter {
-	private static final Logger LOG = Logger.getLogger("pagestore");
-	private String sep;
-	private String baseUrl;
-	public String getSep() {
-		return sep;
-	}
+    private static final Logger LOG = Logger.getLogger("pagestore");
+    private String sep;
+    private String baseUrl;
 
-	public void setSep(String sep) {
-		this.sep = sep;
-	}
+    public String getSep() {
+        return sep;
+    }
 
-	
-	public String getBaseUrl() {
-		return baseUrl;
-	}
+    public void setSep(String sep) {
+        this.sep = sep;
+    }
 
-	public void setBaseUrl(String baseUrl) {
-		this.baseUrl = baseUrl;
-	}
+    public String getBaseUrl() {
+        return baseUrl;
+    }
 
-	@Override
-	public void writePage(Page page) {
-		StringBuilder sb = new StringBuilder();
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
 
-		HtmlParseData htmlData = (HtmlParseData) page.getParseData();
-		final WebURL webURL = page.getWebURL();
-		final String url = webURL.getURL();
-		final short depth = webURL.getDepth();
-		final String title = htmlData.getTitle();
-		final Set<WebURL> liens = htmlData.getOutgoingUrls();
-		final String text = htmlData.getText();
-		int nbLiens = 0;
-		StringBuilder sbLiens = new StringBuilder();
-		for (WebURL webUrl : liens) {
-			String lien = webUrl.getURL();
-			if (lien.startsWith(baseUrl)) {
-				sbLiens.append(lien);
-				sbLiens.append(sep);
-				nbLiens++;
-			}
-		}
+    @Override
+    public void writePage(Page page) {
+        StringBuilder sb = new StringBuilder();
 
-		sb.append(url);
-		sb.append(sep);
-		sb.append(String.valueOf(depth));
-		sb.append(sep);
-		sb.append(title);
-		sb.append(sep);
-		sb.append(String.valueOf(nbLiens));
-		sb.append(sep);
-		sb.append(sbLiens.toString());
-		sb.append(text);
-		sb.append(sep);
+        HtmlParseData htmlData = (HtmlParseData) page.getParseData();
+        final WebURL webURL = page.getWebURL();
+        final String url = webURL.getURL();
+        final short depth = webURL.getDepth();
+        final String title = htmlData.getTitle();
+        final Set<WebURL> liens = htmlData.getOutgoingUrls();
+        final String text = htmlData.getText();
+        int nbLiens = 0;
+        StringBuilder sbLiens = new StringBuilder();
+        for (WebURL webUrl : liens) {
+            String lien = webUrl.getURL();
+            if (lien.startsWith(baseUrl)) {
+                sbLiens.append(lien);
+                sbLiens.append(sep);
+                nbLiens++;
+            }
+        }
 
-		LOG.info(sb.toString());
-	}
+        sb.append(url);
+        sb.append(sep);
+        sb.append(String.valueOf(depth));
+        sb.append(sep);
+        sb.append(title);
+        sb.append(sep);
+        sb.append(String.valueOf(nbLiens));
+        sb.append(sep);
+        sb.append(sbLiens.toString());
+        sb.append(text);
+        sb.append(sep);
+
+        LOG.info(sb.toString());
+    }
 
 }

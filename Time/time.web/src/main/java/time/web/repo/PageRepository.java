@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import time.repo.bean.Page;
 
 @Repository
-public interface PageRepository  extends JpaRepository<Page, Long>{
-	public Page findByUrl(String url);
+public interface PageRepository extends JpaRepository<Page, Long> {
+    public Page findByUrl(String url);
 }

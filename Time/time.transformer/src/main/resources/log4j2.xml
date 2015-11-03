@@ -2,10 +2,12 @@
 <Configuration status="warn">
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
-			<PatternLayout pattern="Log4J2 %d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n" />
+			<PatternLayout
+				pattern="Log4J2 %d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n" />
 		</Console>
-		<RollingRandomAccessFile name="StdFile" fileName="/log/histoire/transformer/log.txt" 
-					 filePattern="/log/histoire/transformer/log.txt.%i" immediateFlush="true" append="false">
+		<RollingRandomAccessFile name="StdFile"
+			fileName="/log/histoire/transformer/log.txt" filePattern="/log/histoire/transformer/log.txt.%i"
+			immediateFlush="true" append="false">
 			<PatternLayout>
 				<pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
 			</PatternLayout>
@@ -15,9 +17,9 @@
 	<Loggers>
 		<Root level="error">
 			<AppenderRef ref="Console" />
-			<AppenderRef ref="StdFile"/>
+			<AppenderRef ref="StdFile" />
 		</Root>
-		<Logger name="time.transformer.service.Runner" level="debug"/>
-		<Logger name="time" level="info"/>
+		<Logger name="time.transformer.service.Runner" level="debug" />
+		<Logger name="time" level="info" />
 	</Loggers>
 </Configuration>

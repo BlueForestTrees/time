@@ -16,39 +16,39 @@ import time.transformer.tool.handler.PhraseHandler;
 @Service
 public class FindPhrasesLuceneModule implements IModule {
 
-	private static final Logger log = LogManager.getLogger(FindPhrasesLuceneModule.class);
+    private static final Logger log = LogManager.getLogger(FindPhrasesLuceneModule.class);
 
-	@Autowired
-	PageReaderService pageReader;
+    @Autowired
+    PageReaderService pageReader;
 
-	@Autowired
-	PageFilter pageFilter;
+    @Autowired
+    PageFilter pageFilter;
 
-	@Autowired
-	PhraseHandler phraseHandler;
+    @Autowired
+    PhraseHandler phraseHandler;
 
-	@Transactional
-	public void onStart() {
-		log.info("onStart()");
-	}
+    @Transactional
+    public void onStart() {
+        log.info("onStart()");
+    }
 
-	@Transactional
-	public long run(long pageCount) throws IOException, FinDuScanException {
-		long phraseCount = 0;
-		for (long i = 0; i < pageCount; i++) {
-			Page page = pageReader.getNextPage();
-			if (pageFilter.isValidPage(page)) {
-				if(pageFilter.isNewPage(page)){
-					phraseCount += phraseHandler.handle(page);					
-				}
-				pageFilter.rememberThisPage(page);
-			}
-		}
-		return phraseCount;
-	}
+    @Transactional
+    public long run(long pageCount) throws IOException, FinDuScanException {
+        long phraseCount = 0;
+        for (long i = 0; i < pageCount; i++) {
+            Page page = pageReader.getNextPage();
+            if (pageFilter.isValidPage(page)) {
+                if (pageFilter.isNewPage(page)) {
+                    phraseCount += phraseHandler.handle(page);
+                }
+                pageFilter.rememberThisPage(page);
+            }
+        }
+        return phraseCount;
+    }
 
-	public void onEnd() {
-		log.info("onEnd()");
-	}
+    public void onEnd() {
+        log.info("onEnd()");
+    }
 
 }

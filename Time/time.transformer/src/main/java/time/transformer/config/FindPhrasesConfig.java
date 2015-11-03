@@ -8,16 +8,16 @@ import time.transformer.service.FindPhrasesModule;
 import time.transformer.service.IModule;
 
 @Configuration
-@Import({TransformerConfig.class})
+@Import({ TransformerConfig.class })
 public class FindPhrasesConfig {
-	
-	@Bean
-	public IModule module(){
-		return new FindPhrasesModule();
-	}
-	
-	@Bean
-	public Long pageSize(){
-		return 100L;
-	}
+
+    @Bean
+    public IModule module() {
+        return new FindPhrasesModule();
+    }
+
+    @Bean
+    public Long pageSize() {
+        return 100L;
+    }
 }

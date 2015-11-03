@@ -21,37 +21,30 @@ import time.web.service.PhraseService;
 @ResponseBody
 public class TimeController {
 
-	@Autowired
-	private IndexService indexService;
-	
-	@Autowired
-	private BucketService bucketService;
-	
-	@Autowired
-	private PhraseService phraseService;
+    @Autowired
+    private IndexService indexService;
 
-	@RequestMapping(value = "/reindex", method = RequestMethod.GET)
-	public String rebuildIndex() {
-		return indexService.reIndex();
-	}
-	
-	@RequestMapping(value = "/subbuckets", method = RequestMethod.GET)
-	public BucketsDTO facets(@RequestParam(value = "scale", required = true) Scale scale,
-			@RequestParam(value = "bucket", required = false) Long parentBucket,
-			@RequestParam(value = "filter", required = false, defaultValue = "") String word){
-		return bucketService.getSubBuckets(scale, parentBucket, word);
-	}
+    @Autowired
+    private BucketService bucketService;
 
-	@RequestMapping(value = "/phrases", method = RequestMethod.GET)
-	public List<Phrase> find(
-			@RequestParam(value = "scale", required = true) Scale scale,
-			@RequestParam(value = "bucket", required = false) Long bucket,
-			@RequestParam(value = "word", required = false) String word,
-			@RequestParam(value = "page", required = false) Long page,
-			@RequestParam(value = "sens", required = false) Sens sens) {
+    @Autowired
+    private PhraseService phraseService;
 
-		return phraseService.find(scale, bucket, word, sens, page);
-	}
+    @RequestMapping(value = "/reindex", method = RequestMethod.GET)
+    public String rebuildIndex() {
+        return indexService.reIndex();
+    }
 
+    @RequestMapping(value = "/subbuckets", method = RequestMethod.GET)
+    public BucketsDTO facets(@RequestParam(value = "scale", required = true) Scale scale, @RequestParam(value = "bucket", required = false) Long parentBucket, @RequestParam(value = "filter", required = false, defaultValue = "") String word) {
+        return bucketService.getSubBuckets(scale, parentBucket, word);
+    }
+
+    @RequestMapping(value = "/phrases", method = RequestMethod.GET)
+    public List<Phrase> find(@RequestParam(value = "scale", required = true) Scale scale, @RequestParam(value = "bucket", required = false) Long bucket, @RequestParam(value = "word", required = false) String word, @RequestParam(value = "page", required = false) Long page,
+            @RequestParam(value = "sens", required = false) Sens sens) {
+
+        return phraseService.find(scale, bucket, word, sens, page);
+    }
 
 }

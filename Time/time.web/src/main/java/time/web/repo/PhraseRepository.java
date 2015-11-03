@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import time.repo.bean.Phrase;
 
 @Repository
-public interface PhraseRepository  extends JpaRepository<Phrase, Long>{
-	
+public interface PhraseRepository extends JpaRepository<Phrase, Long> {
+
 }

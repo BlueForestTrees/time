@@ -12,45 +12,44 @@ import time.transformer.component.reader.FinDuScanException;
 
 @Component
 public class Runner {
-	private static final Logger LOG = LogManager.getLogger(Runner.class);
+    private static final Logger LOG = LogManager.getLogger(Runner.class);
 
-	@Autowired
-	private Long pageSize;
-	@Autowired
-	private long pageTotal;
-	
-	@Autowired
-	private IModule module;
+    @Autowired
+    private Long pageSize;
+    @Autowired
+    private long pageTotal;
 
+    @Autowired
+    private IModule module;
 
-	public void run() throws IOException {
-		LOG.info("run");
+    public void run() throws IOException {
+        LOG.info("run");
 
-		long pageCount = 0;
-		long phraseCount = 0;
-		Chrono chrono = new Chrono("Page");
-		Chrono fullChrono = new Chrono("Full");
+        long pageCount = 0;
+        long phraseCount = 0;
+        Chrono chrono = new Chrono("Page");
+        Chrono fullChrono = new Chrono("Full");
 
-		fullChrono.start();
-		
-		module.onStart();
+        fullChrono.start();
 
-		try {
-			do {
-				chrono.start();
-				phraseCount+=module.run(pageSize);
-				pageCount += pageSize;
-				chrono.stop();
-				fullChrono.stop();
-				LOG.debug("#" + pageCount + ", Total:"+fullChrono+", Moy:"+ fullChrono.toStringDividedBy(pageSize) +", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal ) + " phrase#"+phraseCount);
-			} while (true);
-		} catch (FinDuScanException e) {
-			LOG.info("fin du scan (" + pageCount + " pages)");
-		}
+        module.onStart();
 
-		module.onEnd();
-		
-		LOG.info("run end");
-	}
+        try {
+            do {
+                chrono.start();
+                phraseCount += module.run(pageSize);
+                pageCount += pageSize;
+                chrono.stop();
+                fullChrono.stop();
+                LOG.debug("#" + pageCount + ", Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(pageSize) + ", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal) + " phrase#" + phraseCount);
+            } while (true);
+        } catch (FinDuScanException e) {
+            LOG.info("fin du scan (" + pageCount + " pages)");
+        }
+
+        module.onEnd();
+
+        LOG.info("run end");
+    }
 
 }

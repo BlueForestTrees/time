@@ -44,11 +44,16 @@ public class FindPhrasesModule implements IModule {
 
 	@Transactional
 	public long run(long pageCount) throws IOException, FinDuScanException {
+		System.out.println();
+		System.out.println();
+		System.out.println("NEW DATA PAGE");
+		System.out.println();
+		System.out.println();
 		long phraseCount = 0;
 		for (long i = 0; i < pageCount; i++) {
 			Page page = pageReader.getNextPage();
 			if (pageFilter.isValidPage(page)) {
-				if(pageFilter.isNewPage(page)){
+				if(pageFilter.isNewPage(page)){					
 					page = pageRepository.save(page);
 				}else{
 					page.setId(pageRepository.getIdByUrl(page.getUrl()));

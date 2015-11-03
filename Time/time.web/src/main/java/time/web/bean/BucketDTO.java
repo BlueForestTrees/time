@@ -7,13 +7,14 @@ package time.web.bean;
  */
 public class BucketDTO {
 	private long bucket;
+	private long count;
+
 	public long getBucket() {
 		return bucket;
 	}
 	public void setBucket(long bucket) {
 		this.bucket = bucket;
 	}
-	private long count;
 	
 	public long getCount() {
 		return count;

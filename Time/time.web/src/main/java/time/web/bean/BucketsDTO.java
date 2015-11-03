@@ -7,6 +7,11 @@ import time.web.enums.Scale;
 public class BucketsDTO {
 	
 	private Scale scale;
+	//le bucket parent
+	private Long parentBucket;
+	//les buckets enfants
+	private List<BucketDTO> subbuckets;
+
 	public Scale getScale() {
 		return scale;
 	}
@@ -14,8 +19,6 @@ public class BucketsDTO {
 		this.scale = scale;
 	}
 
-	//les buckets enfants
-	private List<BucketDTO> subbuckets;
 	public List<BucketDTO> getSubbuckets() {
 		return subbuckets;
 	}
@@ -24,8 +27,6 @@ public class BucketsDTO {
 	}
 	
 	
-	//le bucket parent
-	private Long parentBucket;
 	public void setParentBucket(Long parentBucket) {
 		this.parentBucket = parentBucket;
 	}

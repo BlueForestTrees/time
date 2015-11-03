@@ -37,11 +37,11 @@ public class PhraseService {
 	@Autowired
 	private QueryHelper queryHelper;
 	
-	private static Logger log = LoggerFactory.getLogger(PhraseService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(PhraseService.class);
 	
 	@Transactional
 	public List<Phrase> find(final Scale scale, final Long bucket, final String word, final Sens sens, final Long page) {
-		log.debug("find...");
+		LOG.debug("find...");
 		//Factories
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
@@ -50,17 +50,17 @@ public class PhraseService {
 		final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
 		
 		//Query settings
-		fullTextQuery.setSort(new org.apache.lucene.search.Sort(new SortField("date", Type.LONG, sens == Sens.avant)));
-		//fullTextQuery.setMaxResults(pageSize);
+		fullTextQuery.setSort(new org.apache.lucene.search.Sort(new SortField("date", Type.LONG, sens == Sens.AVANT)));
+		fullTextQuery.setMaxResults(pageSize);
 		if (page != null) {
-			//int startPosition = (int) (long) (page * pageSize);
-			//fullTextQuery.setFirstResult(startPosition);
+			int startPosition = (int) (page * pageSize);
+			fullTextQuery.setFirstResult(startPosition);
 		}
 
 		@SuppressWarnings("unchecked")
 		final List<Phrase> result = (List<Phrase>) fullTextQuery.getResultList();
 
-		log.debug("find   done");
+		LOG.debug("find   done");
 		return result;
 	}
 

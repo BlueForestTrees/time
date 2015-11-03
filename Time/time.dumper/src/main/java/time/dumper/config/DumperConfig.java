@@ -2,18 +2,32 @@ package time.dumper.config;
 
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-
 /**
  * Regroupe l'ensemble du paramétrage d'un dump.
+ * 
  * @author Slimane
  *
  */
 public class DumperConfig {
 	
-	final Logger log = Logger.getLogger(DumperConfig.class);
-	
-	public DumperConfig(){
+	private String sep;
+	private Pattern filter;
+	private String[] excludeFilter;
+	private int nbPageLog;
+	private StoreType storeType;
+	private String seedUrl;
+	private int nbCrawlers;
+	private int delay;
+	private int maxPages;
+	private String crawlPath;
+	private boolean resumable;
+	private String baseUrl;
+	private boolean write;
+	private boolean help;
+	private String storagePath;
+	private String maxFileSize;
+
+	public DumperConfig() {
 		this.setMaxPages(-1);
 		this.setStoragePath("C:/Time/data/pages");
 		this.setNbPageLog(1000);
@@ -30,44 +44,22 @@ public class DumperConfig {
 		this.setFilter(Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$"));
 		this.setSep("|¨");
 	}
-	
-	public enum StoreType{
-		ARRAY,
-		CONCURRENT,
-		MONGO,
-		DIRECT;
-		
-		public static StoreType fromString(String value){
-			if(value.equals("array")){
+
+	public enum StoreType {
+		ARRAY, MONGO, DIRECT;
+
+		public static StoreType fromString(String value) {
+			if (value.equals("array")) {
 				return ARRAY;
-			}else if(value.equals("concurrent")){
-				return CONCURRENT;
-			}else if(value.equals("mongo")){
+			} else if (value.equals("mongo")) {
 				return MONGO;
-			}else if(value.equals("direct")){
+			} else if (value.equals("direct")) {
 				return DIRECT;
 			}
 			throw new RuntimeException(value + " not a storageType. Use array, concurrent, direct or mongo.");
 		}
 	};
-	
-	private String sep;
-	private Pattern filter;
-	private String[] excludeFilter;
-	private int nbPageLog;
-	private StoreType storeType;
-	private String seedUrl;
-	private int nbCrawlers;
-	private int delay;
-	private int maxPages;
-	private String crawlPath;
-	private boolean resumable;
-	private String baseUrl;
-	private boolean write;
-	private boolean help;
-	private String storagePath; 
-	private String maxFileSize;
-	
+
 	public String[] getExcludeFilter() {
 		return excludeFilter;
 	}
@@ -75,21 +67,23 @@ public class DumperConfig {
 	public void setExcludeFilter(String[] excludeFilter) {
 		this.excludeFilter = excludeFilter;
 	}
-	
+
 	public String getSep() {
 		return sep;
 	}
-	
+
 	public void setSep(String sep) {
 		this.sep = sep;
 	}
+
 	public Pattern getFilter() {
 		return filter;
 	}
-	
+
 	public void setFilter(Pattern filter) {
 		this.filter = filter;
 	}
+
 	public String getMaxFileSize() {
 		return maxFileSize;
 	}
@@ -194,26 +188,26 @@ public class DumperConfig {
 		this.resumable = resumable;
 	}
 
-	public String getConfAsString(){
+	public String getConfAsString() {
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("\n");
 		sb.append("\n----------CRAWL CONFIG-------------");
-		sb.append("\nseedUrl="+getSeedUrl());
-		sb.append("\nnbCrawlers="+getNbCrawlers());
-		sb.append("\nmaxPages="+getMaxPages());
-		sb.append("\ndelay="+getDelay());
-		sb.append("\ncrawlPath="+getCrawlPath());
-		sb.append("\nbaseUrl="+getBaseUrl());
-		sb.append("\nstoreType="+getStoreType());
-		sb.append("\nnbPageLog="+getNbPageLog());
-		sb.append("\nresumable="+isResumable());
-		sb.append("\nwrite="+isWrite());
-		sb.append("\nstoragePath="+getStoragePath());
-		sb.append("\nmaxFileSize="+getMaxFileSize());
+		sb.append("\nseedUrl=" + getSeedUrl());
+		sb.append("\nnbCrawlers=" + getNbCrawlers());
+		sb.append("\nmaxPages=" + getMaxPages());
+		sb.append("\ndelay=" + getDelay());
+		sb.append("\ncrawlPath=" + getCrawlPath());
+		sb.append("\nbaseUrl=" + getBaseUrl());
+		sb.append("\nstoreType=" + getStoreType());
+		sb.append("\nnbPageLog=" + getNbPageLog());
+		sb.append("\nresumable=" + isResumable());
+		sb.append("\nwrite=" + isWrite());
+		sb.append("\nstoragePath=" + getStoragePath());
+		sb.append("\nmaxFileSize=" + getMaxFileSize());
 		sb.append("\n--------END CRAWL CONFIG-----------");
 		sb.append("\n");
-		
+
 		return sb.toString();
 	}
 

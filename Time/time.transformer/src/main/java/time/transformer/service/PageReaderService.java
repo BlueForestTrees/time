@@ -54,7 +54,7 @@ public class PageReaderService {
 		page.setUrl(reduceThisLink(url));
 		page.setDepth(depth);
 		page.setNbLiensOut(nbLiensOut);
-		page.setText(text);
+		page.setPageContent(text);
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("text=" + text.substring(0, 50) + "[...]" + text.substring(text.length() - 50));

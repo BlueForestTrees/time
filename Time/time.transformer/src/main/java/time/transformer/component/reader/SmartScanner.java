@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 
 public class SmartScanner {
 
-	private static final Logger logger = LogManager.getLogger(SmartScanner.class);
+	private static final Logger LOG = LogManager.getLogger(SmartScanner.class);
 
 	private final List<Path> entries;
 
@@ -25,14 +25,14 @@ public class SmartScanner {
 	private int scannerIndex;
 
 	public SmartScanner(String path) throws IOException {
-		logger.info("construction de smartScanner sur " + path);
+		LOG.info("construction de smartScanner sur " + path);
 		scanner = null;
 		scannerIndex = 0;
 		Path dir = FileSystems.getDefault().getPath(path);
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 			entries = new ArrayList<Path>();
 			for (Path entry : stream) {
-				logger.info(entry.toString());
+				LOG.info(entry.toString());
 				entries.add(entry);
 			}
 		}
@@ -41,10 +41,9 @@ public class SmartScanner {
 
 	private void firstScanner() throws IOException {
 		Path entry = entries.get(scannerIndex);
-		logger.debug("going to file " + entry);
+		LOG.info("going to file " + entry);
 		scanner = new Scanner(entry);
 		scannerIndex++;
-
 	}
 
 	private void nextScanner() throws IOException, FinDuScanException {
@@ -79,7 +78,7 @@ public class SmartScanner {
 			return data;
 		} catch (InputMismatchException e) {
 			String content = scanner.next();
-			logger.error("nextInt incorrect: " + content, e);
+			LOG.error("nextInt incorrect: " + content, e);
 			throw e;
 		} catch (NoSuchElementException e) {
 			nextScanner();

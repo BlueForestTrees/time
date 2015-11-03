@@ -27,8 +27,8 @@ public class QueryHelper {
 		final Query textFilter = StringUtils.isEmpty(word) ? null : queryBuilder.keyword().onField("text").matching(word).createQuery();
 		final Query bucketFilter = (scale.getParent() == null || bucket == null) ? null : queryBuilder.keyword().onField(scale.getParent().getField()).matching(bucket).createQuery();
 		final Query finalQuery = getAndQuery(textFilter, bucketFilter);
-		final Query result = finalQuery != null ? finalQuery : queryBuilder.all().createQuery();
-		return result;
+		
+		return finalQuery != null ? finalQuery : queryBuilder.all().createQuery();
 	}
 	
 	public BooleanQuery getAndQuery(final Query... queries) {

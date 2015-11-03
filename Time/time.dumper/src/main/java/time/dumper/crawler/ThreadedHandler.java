@@ -12,7 +12,8 @@ public abstract class ThreadedHandler extends BasePageHandler implements Runnabl
 	}
 
 	public void start() {
-		if(thread != null)return;
+		if(thread != null)
+			return;
 		thread = new Thread(this);
 		thread.start();
 	}
@@ -20,6 +21,8 @@ public abstract class ThreadedHandler extends BasePageHandler implements Runnabl
 	public boolean isEnd(){
 		return end;
 	}
+	
+	@Override
 	public void end() {
 		end  = true;
 	}

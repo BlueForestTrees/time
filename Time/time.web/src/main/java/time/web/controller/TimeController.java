@@ -48,7 +48,7 @@ public class TimeController {
 			@RequestParam(value = "bucket", required = false) Long bucket,
 			@RequestParam(value = "word", required = false) String word,
 			@RequestParam(value = "page", required = false) Long page,
-			@RequestParam(value = "sens", required = false) Sens sens) throws Exception {
+			@RequestParam(value = "sens", required = false) Sens sens) {
 
 		return phraseService.find(scale, bucket, word, sens, page);
 	}

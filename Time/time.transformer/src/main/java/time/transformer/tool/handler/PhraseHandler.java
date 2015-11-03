@@ -51,7 +51,7 @@ public class PhraseHandler {
 
 	public long handle(Page page) {
 		long count = 0;
-		final String text = getCleanText(page.getText());
+		final String text = getCleanText(page.getPageContent());
 
 		final String[] paragraphs = getParagraphs(text);
 
@@ -75,6 +75,9 @@ public class PhraseHandler {
 		for (Phrase phrase : phrases) {
 			if (phraseFilter.keepThisPhrase(phrase)) {
 				phrase.setPageId(page.getId());
+				
+				System.out.println("\""+phrase.getText()+"\",");
+				
 				phraseRepository.save(phrase);
 				count++;
 			}

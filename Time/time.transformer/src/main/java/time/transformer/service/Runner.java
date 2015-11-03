@@ -12,7 +12,7 @@ import time.transformer.component.reader.FinDuScanException;
 
 @Component
 public class Runner {
-	private static final Logger log = LogManager.getLogger(Runner.class);
+	private static final Logger LOG = LogManager.getLogger(Runner.class);
 
 	@Autowired
 	private Long pageSize;
@@ -24,7 +24,7 @@ public class Runner {
 
 
 	public void run() throws IOException {
-		log.info("run");
+		LOG.info("run");
 
 		long pageCount = 0;
 		long phraseCount = 0;
@@ -42,15 +42,15 @@ public class Runner {
 				pageCount += pageSize;
 				chrono.stop();
 				fullChrono.stop();
-				log.debug("#" + pageCount + ", Total:"+fullChrono+", Moy:"+ fullChrono.toStringDividedBy(pageSize) +", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal ) + " phrase#"+phraseCount);
+				LOG.debug("#" + pageCount + ", Total:"+fullChrono+", Moy:"+ fullChrono.toStringDividedBy(pageSize) +", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal ) + " phrase#"+phraseCount);
 			} while (true);
 		} catch (FinDuScanException e) {
-			log.info("fin du scan (" + pageCount + " pages)");
+			LOG.info("fin du scan (" + pageCount + " pages)");
 		}
 
 		module.onEnd();
 		
-		log.info("run end");
+		LOG.info("run end");
 	}
 
 }

@@ -9,7 +9,7 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 public class LogWriter implements IWriter {
-	private final static Logger pagesLogger = Logger.getLogger("pagestore");
+	private static final Logger LOG = Logger.getLogger("pagestore");
 	private String sep;
 	private String baseUrl;
 	public String getSep() {
@@ -33,7 +33,7 @@ public class LogWriter implements IWriter {
 	public void writePage(Page page) {
 		StringBuilder sb = new StringBuilder();
 
-		HtmlParseData htmlData = ((HtmlParseData) page.getParseData());
+		HtmlParseData htmlData = (HtmlParseData) page.getParseData();
 		final WebURL webURL = page.getWebURL();
 		final String url = webURL.getURL();
 		final short depth = webURL.getDepth();
@@ -63,7 +63,7 @@ public class LogWriter implements IWriter {
 		sb.append(text);
 		sb.append(sep);
 
-		pagesLogger.info(sb.toString());
+		LOG.info(sb.toString());
 	}
 
 }

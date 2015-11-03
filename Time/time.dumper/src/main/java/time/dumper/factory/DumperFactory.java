@@ -20,7 +20,6 @@ import org.apache.logging.log4j.core.config.LoggerConfig;
 import time.dumper.config.DumperConfig;
 import time.dumper.controller.DumperController;
 import time.dumper.crawler.ArrayBlockingPageHandler;
-import time.dumper.crawler.ConcurrentPageHandler;
 import time.dumper.crawler.DirectCrawler;
 import time.dumper.crawler.IPageHandler;
 import time.dumper.crawler.ThreadedHandler;
@@ -50,8 +49,6 @@ public class DumperFactory {
 		default:
 		case ARRAY:
 			return getArrayInstance();
-		case CONCURRENT:
-			return getConcurrentInstance();
 		case MONGO:
 			return getMongoInstance();
 		case DIRECT:
@@ -87,20 +84,6 @@ public class DumperFactory {
 			directHandler.setMaxPages(config.getMaxPages());
 		}
 		return directHandler;
-	}
-
-	private static ConcurrentPageHandler concurrentHandler;
-
-	private static IPageHandler getConcurrentInstance() {
-		if (concurrentHandler == null) {
-			concurrentHandler = new ConcurrentPageHandler();
-			concurrentHandler.setNbPageLog(config.getNbPageLog());
-			concurrentHandler.setWrite(config.isWrite());
-			concurrentHandler.setFilters(config.getFilter());
-			concurrentHandler.setWriter(getLogWriter());
-			concurrentHandler.start();
-		}
-		return concurrentHandler;
 	}
 
 	public static LogWriter getLogWriter() {

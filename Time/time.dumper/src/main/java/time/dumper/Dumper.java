@@ -10,6 +10,8 @@ public class Dumper {
 	static final Logger log = Logger.getLogger(Dumper.class);
 
 	public static void main(String[] args) throws Exception {
+		System.setProperty( "file.encoding", "UTF-8" );
+		
 		DumperFactory factory = new DumperFactory();
 		DumperConfig config = factory.fromArguments(args);
 

@@ -38,6 +38,7 @@
 		<cglib.version>2.2.2</cglib.version>
 		<log4j-web.version>2.3</log4j-web.version>
 		<jackson.version>1.9.13</jackson.version>
+		<lucene.version>5.3.1</lucene.version>
 	</properties>
 
 	<dependencyManagement>
@@ -58,6 +59,19 @@
 				<version>${cglib.version}</version>
 				<!--<scope>runtime</scope> -->
 			</dependency>
+
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-queryparser</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-core</artifactId>
+				<version>${lucene.version}</version>
+			</dependency>
+			
+			
 
 			<dependency>
 				<groupId>javax.servlet</groupId>

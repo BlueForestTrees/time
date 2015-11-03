@@ -1,5 +1,6 @@
 package time.repo.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -11,10 +12,14 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 
-
 @Entity(name = "page")
 @Table(name = "page")
-public class Page {
+public class Page implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1591695335410659944L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,15 +42,15 @@ public class Page {
 	private transient List<String> liens;
 	
 	@Transient
-	private transient String text;
+	private transient String pageContent;
 	
 
-	public String getText() {
-		return text;
+	public String getPageContent() {
+		return pageContent;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setPageContent(String text) {
+		this.pageContent = text;
 	}
 
 	public List<String> getLiens() {

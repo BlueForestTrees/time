@@ -9,17 +9,18 @@ import org.joda.time.format.PeriodFormatterBuilder;
 public class Chrono {
 
 	private String name;
-	public String getName() {
-		return name;
-	}
-
 	private DateTime start;
 	private DateTime stop;
 
+	
 	public Chrono(String name) {
 		super();
 		this.name = name;
 		start();
+	}
+	
+	public String getName() {
+		return name;
 	}
 
 	public void start() {

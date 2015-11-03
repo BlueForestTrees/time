@@ -9,45 +9,46 @@ import edu.uci.ics.crawler4j.crawler.Page;
 
 public class ArrayBlockingPageHandler extends ThreadedHandler {
 
-	
-	private final static Logger log = Logger.getLogger(ArrayBlockingPageHandler.class);
-	public final static ArrayBlockingQueue<Page> pages = new ArrayBlockingQueue<Page>(100);
+	protected static final ArrayBlockingQueue<Page> pages = new ArrayBlockingQueue<Page>(100);
+	private static final Logger LOG = Logger.getLogger(ArrayBlockingPageHandler.class);
 
+	@Override
 	public void visit(Page page) {
 		try {
 			pages.put(page);
 		} catch (InterruptedException e) {
-			log.error("ArrayBlockingWriterCrawler:pages.put(page);", e);
+			LOG.error("ArrayBlockingWriterCrawler:pages.put(page);", e);
 		}
 	}
 
+	@Override
 	public void run() {
-		log.info("demarrage");
+		LOG.info("demarrage");
 		pageCount = 0;
 		Chrono chrono = null;
-		if (log.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			chrono = new Chrono("Writer");
 			chrono.start();
 		}
 
-		while (!isEnd() || pages.size() > 0) {
+		while (!isEnd() || pages.isEmpty()) {
 			try {
 				Page page = pages.take();
 				writer.writePage(page);
 				pageCount++;
-				if (log.isDebugEnabled() && (pageCount % nbPageLog == 0)) {
+				if (LOG.isDebugEnabled() && (pageCount % nbPageLog == 0)) {
 					chrono.stop();
-					log.debug("["+pages.size()+"] page#" + pageCount + ": " + chrono.toString());
+					LOG.debug("[" + pages.size() + "] page#" + pageCount + ": " + chrono.toString());
 					chrono.start();
 				}
 			} catch (InterruptedException e) {
-				log.error("Writer:pages.take();", e);
+				LOG.error("Writer:pages.take();", e);
 			}
 		}
-		if (log.isDebugEnabled()) {
+		if (LOG.isDebugEnabled()) {
 			chrono.stop();
-			log.debug("page#" + pageCount + ": " + chrono.toString());
+			LOG.debug("page#" + pageCount + ": " + chrono.toString());
 		}
-		log.info("arret");
+		LOG.info("arret");
 	}
 }

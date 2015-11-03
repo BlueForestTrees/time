@@ -17,21 +17,21 @@ public class IndexService {
 	@PersistenceContext(type = PersistenceContextType.EXTENDED)
 	private EntityManager entityManager;
 
-	private static Logger log = LoggerFactory.getLogger(IndexService.class);
+	private static final Logger LOG = LoggerFactory.getLogger(IndexService.class);
 	
 	public String reIndex() {
-		log.debug("reIndex...");
+		LOG.debug("reIndex...");
 		String result = null;
 		final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
 		try {
 			fullTextEntityManager.createIndexer().startAndWait();
 			result = "OK";
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			LOG.error("fullTextEntityManager.createIndexer().startAndWait();", e);
 			result = e.getMessage();
 		}
 		
-		log.debug("reIndex   done.");
+		LOG.debug("reIndex   done.");
 		return result;
 	}
 }

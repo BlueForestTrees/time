@@ -2,213 +2,221 @@ package time.dumper.config;
 
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
+
 /**
  * Regroupe l'ensemble du paramétrage d'un dump.
- * 
  * @author Slimane
  *
  */
 public class DumperConfig {
 
-    private String sep;
-    private Pattern filter;
-    private String[] excludeFilter;
-    private int nbPageLog;
-    private StoreType storeType;
-    private String seedUrl;
-    private int nbCrawlers;
-    private int delay;
-    private int maxPages;
-    private String crawlPath;
-    private boolean resumable;
-    private String baseUrl;
-    private boolean write;
-    private boolean help;
-    private String storagePath;
-    private String maxFileSize;
+	private static final Logger logger = Logger.getLogger(DumperConfig.class);
+	
+	public DumperConfig(){
+		this.setMaxPages(-1);
+		this.setStoragePath("C:/Time/data/pages");
+		this.setNbPageLog(1000);
+		this.setWrite(true);
+		this.setStoreType(StoreType.DIRECT);
+		this.setSeedUrl("http://fr.wikipedia.org/wiki/Portail:Accueil");
+		this.setDelay(1);
+		this.setNbCrawlers(50);
+		this.setCrawlPath("C:/Time/crawldata");
+		this.setBaseUrl("https://fr.wikipedia.org/wiki");
+		this.setResumable(false);
+		this.setHelp(false);
+		this.setMaxFileSize("100MB");
+		this.setFilter(Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$"));
+		this.setSep("|¨");
+	}
+	
+	public enum StoreType{
+		ARRAY,
+		CONCURRENT,
+		MONGO,
+		DIRECT;
+		
+		public static StoreType fromString(String value){
+			switch(value){
+				case "array":
+					return ARRAY;
+				case "concurrent":
+					return CONCURRENT;
+				case "mongo":
+					return MONGO;
+				case "direct":
+					return DIRECT;
+				default:
+					throw new RuntimeException(value + " not a storageType. Use array, concurrent, direct or mongo.");
+			}
+		}
+	};
+	
+	private String sep;
+	private Pattern filter;
+	private String[] excludeFilter;
+	private int nbPageLog;
+	private StoreType storeType;
+	private String seedUrl;
+	private int nbCrawlers;
+	private int delay;
+	private int maxPages;
+	private String crawlPath;
+	private boolean resumable;
+	private String baseUrl;
+	private boolean write;
+	private boolean help;
+	private String storagePath; 
+	private String maxFileSize;
+	
+	public String[] getExcludeFilter() {
+		return excludeFilter;
+	}
 
-    public DumperConfig() {
-        this.setMaxPages(-1);
-        this.setStoragePath("C:/Time/data/pages");
-        this.setNbPageLog(1000);
-        this.setWrite(true);
-        this.setStoreType(StoreType.DIRECT);
-        this.setSeedUrl("http://fr.wikipedia.org/wiki/Portail:Accueil");
-        this.setDelay(1);
-        this.setNbCrawlers(50);
-        this.setCrawlPath("C:/Time/crawldata");
-        this.setBaseUrl("https://fr.wikipedia.org/wiki");
-        this.setResumable(false);
-        this.setHelp(false);
-        this.setMaxFileSize("100MB");
-        this.setFilter(Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$"));
-        this.setSep("|¨");
-    }
+	public void setExcludeFilter(String[] excludeFilter) {
+		this.excludeFilter = excludeFilter;
+	}
+	
+	public String getSep() {
+		return sep;
+	}
+	
+	public void setSep(String sep) {
+		this.sep = sep;
+	}
+	public Pattern getFilter() {
+		return filter;
+	}
+	
+	public void setFilter(Pattern filter) {
+		this.filter = filter;
+	}
+	public String getMaxFileSize() {
+		return maxFileSize;
+	}
 
-    public enum StoreType {
-        ARRAY, MONGO, DIRECT;
+	public void setMaxFileSize(String maxFileSize) {
+		this.maxFileSize = maxFileSize;
+	}
 
-        public static StoreType fromString(String value) {
-            if (value.equals("array")) {
-                return ARRAY;
-            } else if (value.equals("mongo")) {
-                return MONGO;
-            } else if (value.equals("direct")) {
-                return DIRECT;
-            }
-            throw new RuntimeException(value + " not a storageType. Use array, concurrent, direct or mongo.");
-        }
-    };
+	public String getStoragePath() {
+		return storagePath;
+	}
 
-    public String[] getExcludeFilter() {
-        return excludeFilter;
-    }
+	public void setStoragePath(String storagePath) {
+		this.storagePath = storagePath;
+	}
 
-    public void setExcludeFilter(String[] excludeFilter) {
-        this.excludeFilter = excludeFilter;
-    }
+	public boolean isHelp() {
+		return help;
+	}
 
-    public String getSep() {
-        return sep;
-    }
+	public void setHelp(boolean help) {
+		this.help = help;
+	}
 
-    public void setSep(String sep) {
-        this.sep = sep;
-    }
+	public boolean isWrite() {
+		return write;
+	}
 
-    public Pattern getFilter() {
-        return filter;
-    }
+	public void setWrite(boolean write) {
+		this.write = write;
+	}
 
-    public void setFilter(Pattern filter) {
-        this.filter = filter;
-    }
+	public String getBaseUrl() {
+		return baseUrl;
+	}
 
-    public String getMaxFileSize() {
-        return maxFileSize;
-    }
+	public void setBaseUrl(String baseUrl) {
+		this.baseUrl = baseUrl;
+	}
 
-    public void setMaxFileSize(String maxFileSize) {
-        this.maxFileSize = maxFileSize;
-    }
+	public int getNbPageLog() {
+		return nbPageLog;
+	}
 
-    public String getStoragePath() {
-        return storagePath;
-    }
+	public void setNbPageLog(int nbPageLog) {
+		this.nbPageLog = nbPageLog;
+	}
 
-    public void setStoragePath(String storagePath) {
-        this.storagePath = storagePath;
-    }
+	public StoreType getStoreType() {
+		return storeType;
+	}
 
-    public boolean isHelp() {
-        return help;
-    }
+	public void setStoreType(StoreType storeType) {
+		this.storeType = storeType;
+	}
 
-    public void setHelp(boolean help) {
-        this.help = help;
-    }
+	public String getSeedUrl() {
+		return seedUrl;
+	}
 
-    public boolean isWrite() {
-        return write;
-    }
+	public void setSeedUrl(String seedUrl) {
+		this.seedUrl = seedUrl;
+	}
 
-    public void setWrite(boolean write) {
-        this.write = write;
-    }
+	public int getNbCrawlers() {
+		return nbCrawlers;
+	}
 
-    public String getBaseUrl() {
-        return baseUrl;
-    }
+	public void setNbCrawlers(int nbCrawlers) {
+		this.nbCrawlers = nbCrawlers;
+	}
 
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
+	public int getDelay() {
+		return delay;
+	}
 
-    public int getNbPageLog() {
-        return nbPageLog;
-    }
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
 
-    public void setNbPageLog(int nbPageLog) {
-        this.nbPageLog = nbPageLog;
-    }
+	public int getMaxPages() {
+		return maxPages;
+	}
 
-    public StoreType getStoreType() {
-        return storeType;
-    }
+	public void setMaxPages(int maxPages) {
+		this.maxPages = maxPages;
+	}
 
-    public void setStoreType(StoreType storeType) {
-        this.storeType = storeType;
-    }
+	public String getCrawlPath() {
+		return crawlPath;
+	}
 
-    public String getSeedUrl() {
-        return seedUrl;
-    }
+	public void setCrawlPath(String crawlPath) {
+		this.crawlPath = crawlPath;
+	}
 
-    public void setSeedUrl(String seedUrl) {
-        this.seedUrl = seedUrl;
-    }
+	public boolean isResumable() {
+		return resumable;
+	}
 
-    public int getNbCrawlers() {
-        return nbCrawlers;
-    }
+	public void setResumable(boolean resumable) {
+		this.resumable = resumable;
+	}
 
-    public void setNbCrawlers(int nbCrawlers) {
-        this.nbCrawlers = nbCrawlers;
-    }
+	public String getConfAsString(){
+		StringBuilder sb = new StringBuilder();
 
-    public int getDelay() {
-        return delay;
-    }
-
-    public void setDelay(int delay) {
-        this.delay = delay;
-    }
-
-    public int getMaxPages() {
-        return maxPages;
-    }
-
-    public void setMaxPages(int maxPages) {
-        this.maxPages = maxPages;
-    }
-
-    public String getCrawlPath() {
-        return crawlPath;
-    }
-
-    public void setCrawlPath(String crawlPath) {
-        this.crawlPath = crawlPath;
-    }
-
-    public boolean isResumable() {
-        return resumable;
-    }
-
-    public void setResumable(boolean resumable) {
-        this.resumable = resumable;
-    }
-
-    public String getConfAsString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("\n");
-        sb.append("\n----------CRAWL CONFIG-------------");
-        sb.append("\nseedUrl=" + getSeedUrl());
-        sb.append("\nnbCrawlers=" + getNbCrawlers());
-        sb.append("\nmaxPages=" + getMaxPages());
-        sb.append("\ndelay=" + getDelay());
-        sb.append("\ncrawlPath=" + getCrawlPath());
-        sb.append("\nbaseUrl=" + getBaseUrl());
-        sb.append("\nstoreType=" + getStoreType());
-        sb.append("\nnbPageLog=" + getNbPageLog());
-        sb.append("\nresumable=" + isResumable());
-        sb.append("\nwrite=" + isWrite());
-        sb.append("\nstoragePath=" + getStoragePath());
-        sb.append("\nmaxFileSize=" + getMaxFileSize());
-        sb.append("\n--------END CRAWL CONFIG-----------");
-        sb.append("\n");
-
-        return sb.toString();
-    }
+		sb.append("\n");
+		sb.append("\n----------CRAWL CONFIG-------------");
+		sb.append("\nseedUrl="+getSeedUrl());
+		sb.append("\nnbCrawlers="+getNbCrawlers());
+		sb.append("\nmaxPages="+getMaxPages());
+		sb.append("\ndelay="+getDelay());
+		sb.append("\ncrawlPath="+getCrawlPath());
+		sb.append("\nbaseUrl="+getBaseUrl());
+		sb.append("\nstoreType="+getStoreType());
+		sb.append("\nnbPageLog="+getNbPageLog());
+		sb.append("\nresumable="+isResumable());
+		sb.append("\nwrite="+isWrite());
+		sb.append("\nstoragePath="+getStoragePath());
+		sb.append("\nmaxFileSize="+getMaxFileSize());
+		sb.append("\n--------END CRAWL CONFIG-----------");
+		sb.append("\n");
+		
+		return sb.toString();
+	}
 
 }

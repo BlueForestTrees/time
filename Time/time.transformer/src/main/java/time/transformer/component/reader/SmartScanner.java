@@ -63,27 +63,23 @@ public class SmartScanner {
 
     public String nextString() throws IOException, FinDuScanException {
         try {
-            String data = scanner.next();
-            return data;
+            return scanner.next();
         } catch (NoSuchElementException e) {
             nextScanner();
-            String data = scanner.next();
-            return data;
+            return  scanner.next();
         }
     }
 
     public int nextInt() throws IOException, FinDuScanException {
         try {
-            int data = scanner.nextInt();
-            return data;
+            return scanner.nextInt();
         } catch (InputMismatchException e) {
             String content = scanner.next();
             LOG.error("nextInt incorrect: " + content, e);
             throw e;
         } catch (NoSuchElementException e) {
             nextScanner();
-            int data = scanner.nextInt();
-            return data;
+            return scanner.nextInt();
         }
     }
 

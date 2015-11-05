@@ -5,6 +5,7 @@ public class RomanParser implements IParser {
     private static final int[] numbers = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
     private static final String[] letters = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
 
+    @Override
     public String to(final long nbJours) {
         long nbSiecles = 1 + nbJours / 36425;
         String result = "";
@@ -18,20 +19,21 @@ public class RomanParser implements IParser {
 
     }
 
-    public Long from(String roman) {
-        roman = roman.toUpperCase();
+    @Override
+    public Long from(final String roman) {
+        final String romanUp = roman.toUpperCase();
 
         int i = 0;
         Long arabic = 0L;
 
-        while (i < roman.length()) {
-            char letter = roman.charAt(i);
+        while (i < romanUp.length()) {
+            char letter = romanUp.charAt(i);
             int number = letterToNumber(letter);
             i++;
-            if (i == roman.length()) {
+            if (i == romanUp.length()) {
                 arabic += number;
             } else {
-                int nextNumber = letterToNumber(roman.charAt(i));
+                int nextNumber = letterToNumber(romanUp.charAt(i));
                 if (nextNumber > number) {
                     arabic += (nextNumber - number);
                     i++;

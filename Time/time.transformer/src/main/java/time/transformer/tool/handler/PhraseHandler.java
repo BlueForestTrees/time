@@ -41,13 +41,11 @@ public class PhraseHandler {
     @Autowired
     private DateFinder annee2DotFinder;
 
-    private final String[] excludeAfter = new String[] { "Notes et références[", "Bibliographie[", "Liens externes[", "Bibliographie[", "Annexes[" };
+    private static final String[] excludeAfter = new String[] { "Notes et références[", "Bibliographie[", "Liens externes[", "Bibliographie[", "Annexes[" };
 
-    private final String splitPhraseRegex = "(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))\\.) +";
-    private final Pattern splitPhrasePattern = Pattern.compile(splitPhraseRegex);
+    private static final Pattern splitPhrasePattern = Pattern.compile("(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))\\.) +");
 
-    private final String splitParagraphRegex = "[\r\n\t]+";
-    private final Pattern splitParagraphPattern = Pattern.compile(splitParagraphRegex);
+    private final Pattern splitParagraphPattern = Pattern.compile("[\r\n\t]+");
 
     public long handle(Page page) {
         long count = 0;
@@ -75,9 +73,6 @@ public class PhraseHandler {
         for (Phrase phrase : phrases) {
             if (phraseFilter.keepThisPhrase(phrase)) {
                 phrase.setPageId(page.getId());
-
-                System.out.println("\"" + phrase.getText() + "\",");
-
                 phraseRepository.save(phrase);
                 count++;
             }

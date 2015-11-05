@@ -11,8 +11,6 @@ import org.apache.log4j.Logger;
  */
 public class DumperConfig {
 
-	private static final Logger logger = Logger.getLogger(DumperConfig.class);
-	
 	public DumperConfig(){
 		this.setMaxPages(-1);
 		this.setStoragePath("C:/Time/data/pages");

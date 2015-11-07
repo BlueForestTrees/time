@@ -9,13 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import time.repo.bean.Page;
 import time.transformer.component.filter.PageFilter;
 import time.transformer.component.reader.FinDuScanException;
-import time.transformer.repo.PageRepository;
 
 @Service
 public class FindUrlsService implements IModule {
-
-    @Autowired
-    PageRepository pageRepository;
 
     @Autowired
     PageReaderService pageReader;
@@ -34,7 +30,8 @@ public class FindUrlsService implements IModule {
         for (long i = 0; i < pageCount; i++) {
             Page page = pageReader.getNextPage();
             if (pageMemRepo.isValidNewPage(page)) {
-                pageRepository.save(page);
+                //TODO lucene 
+                //pageRepository.save(page);
                 pageMemRepo.rememberThisPage(page);
             }
         }

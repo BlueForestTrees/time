@@ -6,7 +6,7 @@ import time.transformer.component.reader.FinDuScanException;
 
 public interface IModule {
 
-    public void onStart();
+    public void onStart() throws IOException;
 
     public long run(long pageCount) throws IOException, FinDuScanException;
 

@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import time.repo.bean.Page;
 import time.transformer.component.filter.PageFilter;
 import time.transformer.component.reader.FinDuScanException;
-import time.transformer.repo.PageRepository;
 
 @Service
 public class CountLiensService implements IModule {
@@ -22,9 +21,6 @@ public class CountLiensService implements IModule {
 
     @Autowired
     private String path;
-
-    @Autowired
-    PageRepository pageRepository;
 
     @Autowired
     PageReaderService pageReader;
@@ -52,8 +48,9 @@ public class CountLiensService implements IModule {
             Page fromPage = pageReader.getNextPage();
             if (pageMemRepo.isValidNewPage(fromPage)) {
                 for (String lienOut : fromPage.getLiens()) {
-                    Long toId = pageRepository.getIdByUrl(lienOut);
-                    if (toId != null) {
+                    //TODO replace lucene
+                    //Long toId = pageRepository.getIdByUrl(lienOut);
+                    /*if (toId != null) {
                         Long toIdCount = liensCount.get(toId);
                         if (toIdCount == null) {
                             liensCount.put(toId, 1L);
@@ -61,7 +58,7 @@ public class CountLiensService implements IModule {
                             toIdCount++;
                         }
                         nbLiensTrouves++;
-                    }
+                    }*/
                     nbLiens++;
                 }
                 pageMemRepo.rememberThisPage(fromPage);
@@ -79,7 +76,8 @@ public class CountLiensService implements IModule {
         liensCount.forEach(new BiConsumer<Long, Long>() {
             @Override
             public void accept(Long toId, Long toIdCount) {
-                pageRepository.updateNbLiensIn(toId, toIdCount);
+                //TODO lucene
+                //pageRepository.updateNbLiensIn(toId, toIdCount);
             }
         });
         logger.info("save liensCount done");

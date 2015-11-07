@@ -12,12 +12,23 @@ import time.transformer.service.IModule;
 public class FindPhrasesConfig {
 
     @Bean
+    public String indexPath(){
+        return "/Time/data/phrases";
+    }
+    
+    @Bean
     public IModule module() {
         return new FindPhrasesModule();
     }
 
     @Bean
     public Long pageSize() {
-        return 100L;
+        return 1000L;
     }
+    
+    @Bean
+    public Long maxPhrasesToFetch(){
+        return 100000L;
+    }
+    
 }

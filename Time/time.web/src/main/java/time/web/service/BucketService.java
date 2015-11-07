@@ -1,11 +1,18 @@
 package time.web.service;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 
+import org.apache.lucene.facet.FacetResult;
+import org.apache.lucene.facet.Facets;
+import org.apache.lucene.facet.FacetsCollector;
+import org.apache.lucene.facet.sortedset.SortedSetDocValuesFacetCounts;
+import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
+import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -27,14 +34,23 @@ import time.web.transformer.BucketTransformer;
 @Service
 public class BucketService {
 
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
-    private EntityManager entityManager;
-
     @Autowired
     private BucketTransformer facetTransformer;
 
     @Autowired
+    private int pageSize;
+    
+    @Autowired
+    private IndexSearcher indexSearcher;  
+    
+    @Autowired
+    private SortedSetDocValuesReaderState readerState;
+
+    @Autowired
     private QueryHelper queryHelper;
+    
+    @Autowired
+    private FacetsCollector facetsCollector;
 
     /**
      * Création d'une requête de facets
@@ -44,18 +60,15 @@ public class BucketService {
      * @param bucket
      * @param filter
      * @return les facets demandés
+     * @throws IOException 
      */
-    @Transactional
-    public List<Facet> getTimeFacets(final Scale scale, final Long bucket, final String filter) {
-        final FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-        final QueryBuilder queryBuilder = fullTextEntityManager.getSearchFactory().buildQueryBuilder().forEntity(Phrase.class).get();
-        final FacetingRequest facetingRequest = getFacetingRequest(scale, queryBuilder);
-        final Query query = queryHelper.getQuery(scale, bucket, filter, queryBuilder);
-        final FullTextQuery fullTextQuery = fullTextEntityManager.createFullTextQuery(query, Phrase.class);
-        final FacetManager facetManager = fullTextQuery.getFacetManager();
-        facetManager.enableFaceting(facetingRequest);
+    public List<FacetResult> getTimeFacets(final Scale scale, final Long bucketValue, final String term) throws IOException {
+        final String bucketName = scale.getField();
+        
+        FacetsCollector.search(indexSearcher, queryHelper.getQuery(term, bucketName, bucketValue), 10, facetsCollector);
+        Facets facets = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
 
-        return facetManager.getFacets("phrases");
+        return facets.getAllDims(10);
     }
 
     /**
@@ -70,7 +83,7 @@ public class BucketService {
     }
 
     public BucketsDTO getSubBuckets(final Scale scale, final Long parentBucket, final String filter) {
-        final List<Facet> timeFacets = getTimeFacets(scale, parentBucket, filter);
+        final List<FacetResult> timeFacets = getTimeFacets(scale, parentBucket, filter);
         return facetTransformer.toBucketsDTO(timeFacets, scale, parentBucket);
     }
 

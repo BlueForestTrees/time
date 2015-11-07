@@ -10,17 +10,21 @@ import time.transformer.config.FindPhrasesConfig;
 import time.transformer.service.Runner;
 
 public class FindPhrases {
-
-    private static final Logger logger = LogManager.getLogger(FindPhrases.class);
+    
+    private static final Logger LOG = LogManager.getLogger(FindPhrases.class);
+    
+    private FindPhrases(){
+        
+    }
 
     public static void main(String[] args) throws IOException {
         System.setProperty("file.encoding", "UTF-8");
 
-        logger.info("FindPhrases start");
+        LOG.info("FindPhrases start");
         try (AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(FindPhrasesConfig.class)) {
             ((Runner) ctx.getBean(Runner.class)).run();
         }
-        logger.info("FindPhrases end");
+        LOG.info("FindPhrases end");
     }
 
 }

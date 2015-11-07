@@ -4,13 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
-import time.transformer.tool.handler.PhraseHandler;
+import time.transformer.service.FindPhrasesModule;
 
 public class PhraseHandlerTest {
 
 	@Test
 	public void testGetPhrases() {
-		final PhraseHandler phraseHandler = new PhraseHandler();
+		final FindPhrasesModule phraseHandler = new FindPhrasesModule();
 		final String data = "Bla bla. Bli bli. Blou av. b mr. lou. ICI blou. Blu blu blu. Blo avant JC. blo LA blo blo.";
 		String[] expectedPhrases = new String[] { "Bla bla.", "Bli bli.", "Blou av. b mr. lou.", "ICI blou.", "Blu blu blu.", "Blo avant JC. blo LA blo blo." };
 
@@ -25,7 +25,7 @@ public class PhraseHandlerTest {
 		final String text = "lksddjfhmooriejfmqorf,lmrBibliographie[,qoeirgpiorjfqùormkjfqùpoierzjfoqiregnmoqesjngqerugjshn";
 		final String expected = "lksddjfhmooriejfmqorf,lmr";
 
-		final PhraseHandler phraseHandler = new PhraseHandler();
+		final FindPhrasesModule phraseHandler = new FindPhrasesModule();
 		final String actual = phraseHandler.getCleanText(text);
 
 		assertThat(actual).isEqualTo(expected);
@@ -36,7 +36,7 @@ public class PhraseHandlerTest {
 		final String text = "lksddjfhmooriejfmqorf,lmr,qoeirgpiorjfqùormkjfqùpoierzjfoqiregnmoqesjngqerugjshn";
 		final String expected = "lksddjfhmooriejfmqorf,lmr,qoeirgpiorjfqùormkjfqùpoierzjfoqiregnmoqesjngqerugjshn";
 
-		final PhraseHandler phraseHandler = new PhraseHandler();
+		final FindPhrasesModule phraseHandler = new FindPhrasesModule();
 		final String actual = phraseHandler.getCleanText(text);
 
 		assertThat(actual).isEqualTo(expected);
@@ -47,7 +47,7 @@ public class PhraseHandlerTest {
 		final String text = "lksddjfhmooriejfmqorf,lmr,Liens externes[qoeirgpiorjfqùormkjfqLiens externes[ùpoierzjfoqiregBibliographie[nmoqesjngqerugjshn";
 		final String expected = "lksddjfhmooriejfmqorf,lmr,";
 
-		final PhraseHandler phraseHandler = new PhraseHandler();
+		final FindPhrasesModule phraseHandler = new FindPhrasesModule();
 		final String actual = phraseHandler.getCleanText(text);
 
 		assertThat(actual).isEqualTo(expected);
@@ -58,7 +58,7 @@ public class PhraseHandlerTest {
 		final String text = "lksddjfhmooriejfmqorf,lmNotes et références[r,Liens externes[qoeirgpiorjfqùormkjfqLiens externes[ùpoierzjfoqiregBibliographie[nmoqesjngqerugjshn";
 		final String expected = "lksddjfhmooriejfmqorf,lm";
 
-		final PhraseHandler phraseHandler = new PhraseHandler();
+		final FindPhrasesModule phraseHandler = new FindPhrasesModule();
 		final String actual = phraseHandler.getCleanText(text);
 
 		assertThat(actual).isEqualTo(expected);

@@ -1,49 +1,38 @@
 package time.web.tool;
 
-import java.util.Arrays;
-
+import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.MatchAllDocsQuery;
+import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
-import org.hibernate.search.query.dsl.QueryBuilder;
+import org.apache.lucene.search.TermQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
-import time.web.enums.Scale;
 
 @Component
 public class QueryHelper {
 
-    /**
-     * La requete fulltext sur laquelle sera généré les facets.
-     * 
-     * @param scale
-     * @param bucket
-     * @param word
-     * @param queryBuilder
-     * @return
-     */
-    public Query getQuery(final Scale scale, final Long bucket, final String word, final QueryBuilder queryBuilder) {
-        final Query textFilter = StringUtils.isEmpty(word) ? null : queryBuilder.keyword().onField("text").matching(word).createQuery();
-        final Query bucketFilter = (scale.getParent() == null || bucket == null) ? null : queryBuilder.keyword().onField(scale.getParent().getField()).matching(bucket).createQuery();
-        final Query finalQuery = getAndQuery(textFilter, bucketFilter);
-
-        return finalQuery != null ? finalQuery : queryBuilder.all().createQuery();
-    }
-
-    public BooleanQuery getAndQuery(final Query... queries) {
-
-        if (Arrays.stream(queries).allMatch(o -> o == null)) {
-            return null;
+    public Query getQuery(String term, String bucketName, Long bucketValue){
+        boolean noBucket = StringUtils.isEmpty(bucketName) || bucketValue == null;
+        boolean noTerm = StringUtils.isEmpty(term);
+        
+        if(noBucket && noTerm){
+            return new MatchAllDocsQuery();
         }
-
-        final BooleanQuery.Builder andQuery = new BooleanQuery.Builder();
-        for (Query query : queries) {
-            if (query != null) {
-                andQuery.add(query, Occur.MUST);
-            }
+        
+        TermQuery textQuery = noTerm ? null : new TermQuery(new Term("text", term));
+        Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(bucketName, bucketValue, bucketValue, true, true);
+        
+        
+        BooleanQuery.Builder builder = new BooleanQuery.Builder();
+        if(textQuery != null){
+            builder.add(textQuery, Occur.MUST);
         }
-
-        return andQuery.build();
+        if(bucketQuery != null){
+            builder.add(bucketQuery, Occur.MUST);
+        }
+        return builder.build();
     }
+    
 }

@@ -18,6 +18,8 @@ public class Runner {
     private Long pageSize;
     @Autowired
     private long pageTotal;
+    @Autowired
+    private long maxPhrasesToFetch;
 
     @Autowired
     private IModule module;
@@ -42,7 +44,7 @@ public class Runner {
                 chrono.stop();
                 fullChrono.stop();
                 LOG.debug("#" + pageCount + ", Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(pageSize) + ", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal) + " phrase#" + phraseCount);
-            } while (true);
+            } while (maxPhrasesToFetch == -1L || (phraseCount < maxPhrasesToFetch));
         } catch (FinDuScanException e) {
             LOG.info("fin du scan (" + pageCount + " pages)");
         }

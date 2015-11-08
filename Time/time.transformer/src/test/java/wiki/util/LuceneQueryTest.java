@@ -13,7 +13,6 @@ import org.apache.lucene.facet.sortedset.SortedSetDocValuesFacetCounts;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -31,9 +30,9 @@ public class LuceneQueryTest {
 
     //String term = "civilisation";
     String term;
-    //String bucketName = "dateByTen9";
-    String bucketName;
-    Long bucketValue = 0L;
+    String bucketName = "dateByTen6";
+    //String bucketName;
+    Long bucketValue = -167L;
     //String bucketValue;
     
     @Test
@@ -56,16 +55,17 @@ public class LuceneQueryTest {
     }
     
     @Test
-    public void testLuceneDoc() throws IOException, ParseException{
+    public void testLuceneDoc() throws IOException{
         String indexPath = "/Time/data/phrases";
         FSDirectory indexDir = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
         DirectoryReader indexReader = DirectoryReader.open(indexDir);
         IndexSearcher searcher = new IndexSearcher(indexReader);
 
         
-        Query query = getQuery(term, bucketName, bucketValue);
+        Query query = getQuery(null, "dateByTen9", -138L);
         
         TopDocs docs = searcher.search(query,10);
+        System.out.println(docs.totalHits);
         for(ScoreDoc scoreDoc : docs.scoreDocs){
             Document doc = searcher.doc(scoreDoc.doc);
             System.out.println(doc);

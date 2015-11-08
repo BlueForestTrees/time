@@ -6,9 +6,9 @@ package time.web.bean;
  * @author slim
  *
  */
-public class BucketDTO {
+public class Bucket {
     private long bucket;
-    private long count;
+    private int count;
 
     public long getBucket() {
         return bucket;
@@ -18,11 +18,11 @@ public class BucketDTO {
         this.bucket = bucket;
     }
 
-    public long getCount() {
+    public int getCount() {
         return count;
     }
 
-    public void setCount(long count) {
+    public void setCount(int count) {
         this.count = count;
     }
 }

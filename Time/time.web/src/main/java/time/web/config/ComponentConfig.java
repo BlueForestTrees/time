@@ -7,11 +7,12 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan({ "time.web" })
-@Import(DbConfig.class)
+@Import(LuceneConfig.class)
 public class ComponentConfig {
 
     @Bean
     public int pageSize() {
         return 5;
     }
+    
 }

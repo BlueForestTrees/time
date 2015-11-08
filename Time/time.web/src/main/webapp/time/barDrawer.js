@@ -1,46 +1,45 @@
 (function() {
-	function BarDrawer(bars) {
-		this.bars = bars;
-	}
-	BarDrawer.prototype.resize = function(bar) {
-		bar.canvas.width = window.innerWidth - 2;
-		this.draw(bar);
-	};
-	BarDrawer.prototype.draw = function(bar) {
-		bar.context.fillStyle = 'rgb(255,255,255)';
-		bar.context.fillRect(0, 0, bar.canvas.width, bar.canvas.height);
-		var nbBuckets = bar.buckets.length;
-		for (var i = 0; i < nbBuckets; i++) {
-			var bucket = bar.buckets[i];
-			bar.context.fillStyle = bucket.color;
-			bar.context.fillRect(bar.viewport.delta() + bucket.x, 0, 1, bar.canvas.height);
-		}
-	};
+    function barDrawer(bars) {
+        this.bars = bars;
+    }
+    barDrawer.prototype.resize = function(bar) {
+        bar.canvas.width = window.innerWidth - 2;
+        this.draw(bar);
+    };
+    barDrawer.prototype.draw = function(bar) {
+        bar.context.fillStyle = 'rgb(255,255,255)';
+        bar.context.fillRect(0, 0, bar.canvas.width, bar.canvas.height);
+        var nbBuckets = bar.buckets.length;
+        for (var i = 0; i < nbBuckets; i++) {
+            var bucket = bar.buckets[i];
+            bar.context.fillStyle = bucket.color;
+            bar.context.fillRect(bar.viewport.delta() + bucket.x, 0, 1, bar.canvas.height);
+        }
+    };
 
-	BarDrawer.prototype.hide = function(scale) {
-		do {
-			var bar = this.bars[scale];
-			this.hideBar(bar);
-			scale = Scale.sub(scale);
-		} while (scale);
-	};
+    barDrawer.prototype.hide = function(barIndex) {
+        while (barIndex < this.bars.length) {
+            this.hideBar(this.bars[barIndex]);
+            barIndex++;
+        }
+    };
 
-	BarDrawer.prototype.hideBar = function(bar) {
-		$(bar.canvas).hide();
-	};
-	BarDrawer.prototype.showBar = function(bar) {
-		$(bar.canvas).show();
-	};
+    barDrawer.prototype.hideBar = function(bar) {
+        $(bar.canvas).hide();
+    };
+    barDrawer.prototype.showBar = function(bar) {
+        $(bar.canvas).show();
+    };
 
-	BarDrawer.prototype.clearText = function() {
-		$('#phrases').empty();
-	};
-	BarDrawer.prototype.setPhrases = function(phrases, filter) {
-		this.clearText();
-		for (facetIndex in phrases) {
-			$('#phrases').append(("<p>" + phrases[facetIndex].text + "</p>").replace(filter,'<strong>'+filter+'</strong>'));
-		}
-	};
+    barDrawer.prototype.clearText = function() {
+        $('#phrases').empty();
+    };
+    barDrawer.prototype.setPhrases = function(phrases, filter) {
+        //this.clearText();
+        phrases.phraseList.forEach(function(phrase) {
+            $('#phrases').append(("<p>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
+        });
+    };
 
-	Time.BarDrawer = BarDrawer;
+    Time.BarDrawer = barDrawer;
 })();

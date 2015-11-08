@@ -1,90 +1,76 @@
 package time.web.service;
 
 import java.io.IOException;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 
 import org.apache.lucene.facet.FacetResult;
 import org.apache.lucene.facet.Facets;
 import org.apache.lucene.facet.FacetsCollector;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesFacetCounts;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MatchAllDocsQuery;
+import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
-import org.hibernate.search.jpa.FullTextEntityManager;
-import org.hibernate.search.jpa.FullTextQuery;
-import org.hibernate.search.jpa.Search;
-import org.hibernate.search.query.dsl.QueryBuilder;
-import org.hibernate.search.query.engine.spi.FacetManager;
-import org.hibernate.search.query.facet.Facet;
-import org.hibernate.search.query.facet.FacetingRequest;
+import org.apache.lucene.search.TermQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
-import time.repo.bean.Phrase;
-import time.web.bean.BucketsDTO;
+import time.web.bean.Buckets;
 import time.web.enums.Scale;
-import time.web.tool.QueryHelper;
 import time.web.transformer.BucketTransformer;
 
 @Service
 public class BucketService {
 
     @Autowired
-    private BucketTransformer facetTransformer;
+    private int pageSize;
 
     @Autowired
-    private int pageSize;
-    
-    @Autowired
-    private IndexSearcher indexSearcher;  
-    
+    private IndexSearcher indexSearcher;
+
     @Autowired
     private SortedSetDocValuesReaderState readerState;
-
-    @Autowired
-    private QueryHelper queryHelper;
     
+    @Autowired
+    private BucketTransformer bucketTransformer;
+
     @Autowired
     private FacetsCollector facetsCollector;
 
-    /**
-     * Création d'une requête de facets
-     * 
-     * @param scale
-     *            le niveau de la recherche voir {@link Scale}
-     * @param bucket
-     * @param filter
-     * @return les facets demandés
-     * @throws IOException 
-     */
-    public List<FacetResult> getTimeFacets(final Scale scale, final Long bucketValue, final String term) throws IOException {
+    public Buckets getBuckets(final Scale scale, final Long bucketValue, final String term) throws IOException {
         final String bucketName = scale.getField();
+
+        FacetsCollector.search(indexSearcher, getQuery(term, bucketName, bucketValue), 10, facetsCollector);
+        Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
+
+        FacetResult facets = facetsCounter.getTopChildren(10000, bucketName);
         
-        FacetsCollector.search(indexSearcher, queryHelper.getQuery(term, bucketName, bucketValue), 10, facetsCollector);
-        Facets facets = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
-
-        return facets.getAllDims(10);
+        return bucketTransformer.toBucketsDTO(facets, scale, bucketValue);
     }
 
-    /**
-     * La requete des facets, il s'agit d'un count(*) groupby(scale)
-     * 
-     * @param scale
-     * @param queryBuilder
-     * @return
-     */
-    protected FacetingRequest getFacetingRequest(final Scale scale, final QueryBuilder queryBuilder) {
-        return queryBuilder.facet().name("phrases").onField(scale.getField()).discrete().includeZeroCounts(false).createFacetingRequest();
-    }
+    public Query getQuery(String term, String bucketName, Long bucketValue) {
+        boolean noBucket = StringUtils.isEmpty(bucketName) || bucketValue == null;
+        boolean noTerm = StringUtils.isEmpty(term);
 
-    public BucketsDTO getSubBuckets(final Scale scale, final Long parentBucket, final String filter) {
-        final List<FacetResult> timeFacets = getTimeFacets(scale, parentBucket, filter);
-        return facetTransformer.toBucketsDTO(timeFacets, scale, parentBucket);
+        if (noBucket && noTerm) {
+            return new MatchAllDocsQuery();
+        }
+
+        TermQuery textQuery = noTerm ? null : new TermQuery(new Term("text", term));
+        Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(bucketName, bucketValue, bucketValue, true, true);
+
+        BooleanQuery.Builder builder = new BooleanQuery.Builder();
+        if (textQuery != null) {
+            builder.add(textQuery, Occur.MUST);
+        }
+        if (bucketQuery != null) {
+            builder.add(bucketQuery, Occur.MUST);
+        }
+        return builder.build();
     }
 
 }

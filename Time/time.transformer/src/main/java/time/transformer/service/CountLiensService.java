@@ -9,7 +9,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import time.repo.bean.Page;
 import time.transformer.component.filter.PageFilter;
@@ -36,7 +35,6 @@ public class CountLiensService implements IModule {
     }
 
     @Override
-    @Transactional
     public long run(long pageCount) throws IOException, FinDuScanException {
         logger.info("run");
 
@@ -69,7 +67,6 @@ public class CountLiensService implements IModule {
         return nbPages;
     }
 
-    @Transactional
     @Override
     public void onEnd() {
         logger.info("save liensCount...");

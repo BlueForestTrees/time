@@ -2,8 +2,6 @@ package time.dumper.config;
 
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
-
 /**
  * Regroupe l'ensemble du paramétrage d'un dump.
  * @author Slimane

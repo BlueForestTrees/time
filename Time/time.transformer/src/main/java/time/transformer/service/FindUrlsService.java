@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import time.repo.bean.Page;
 import time.transformer.component.filter.PageFilter;
@@ -25,13 +24,12 @@ public class FindUrlsService implements IModule {
     }
 
     @Override
-    @Transactional
     public long run(long pageCount) throws IOException, FinDuScanException {
         for (long i = 0; i < pageCount; i++) {
             Page page = pageReader.getNextPage();
             if (pageMemRepo.isValidNewPage(page)) {
-                //TODO lucene 
-                //pageRepository.save(page);
+                // TODO lucene
+                // pageRepository.save(page);
                 pageMemRepo.rememberThisPage(page);
             }
         }

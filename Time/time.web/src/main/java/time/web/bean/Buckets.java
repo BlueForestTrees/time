@@ -4,13 +4,13 @@ import java.util.List;
 
 import time.web.enums.Scale;
 
-public class BucketsDTO {
+public class Buckets {
 
     private Scale scale;
     // le bucket parent
     private Long parentBucket;
     // les buckets enfants
-    private List<BucketDTO> subbuckets;
+    private List<Bucket> subbuckets;
 
     public Scale getScale() {
         return scale;
@@ -20,11 +20,11 @@ public class BucketsDTO {
         this.scale = scale;
     }
 
-    public List<BucketDTO> getSubbuckets() {
+    public List<Bucket> getSubbuckets() {
         return subbuckets;
     }
 
-    public void setSubbuckets(List<BucketDTO> subbuckets) {
+    public void setSubbuckets(List<Bucket> subbuckets) {
         this.subbuckets = subbuckets;
     }
 

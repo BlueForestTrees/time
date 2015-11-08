@@ -11,7 +11,7 @@ import time.transformer.component.reader.SmartScanner;
 
 @Configuration
 @ComponentScan({ "time.transformer.service", "time.transformer.component", "time.transformer.tool" })
-@Import({ TransformerDbConfig.class, DateFinderConfig.class })
+@Import({ DateFinderConfig.class })
 public class TransformerConfig {
     @Bean
     public String path() {

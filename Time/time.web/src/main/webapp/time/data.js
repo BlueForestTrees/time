@@ -1,27 +1,30 @@
 (function() {
 
-	function Data() {
+    function data() {
 
-	}
+    }
 
-	Data.prototype.getFacets = function(filter, scale, bucket, callback) {
-		var params = {
-			scale : scale,
-			filter : filter,
-			bucket : bucket
-		};
-		$.get("subbuckets", params).done(callback);
-	}
+    data.prototype.getBuckets = function(filter, scale, bucket, callback) {
+        var params = {
+            scale : scale,
+            filter : filter,
+            bucket : bucket
+        };
+        $.get("buckets", params).done(callback);
+    };
 
-	Data.prototype.getPhrases = function(filter, scale, bucket, callback) {
-		var params = {
-			scale : scale,
-			bucket : bucket,
-			filter : filter
-		};
-		$.get("phrases", params).done(callback);
-	}
+    data.prototype.getPhrases = function(filter, scale, bucket, last, callback) {
+        var params = {
+            scale : scale,
+            bucket : bucket,
+            filter : filter
+        };
+        if(last){
+            params.last = last;
+        }
+        $.post("phrases", params).done(callback);
+    };
 
-	Time.Data = Data;
+    Time.Data = data;
 
 })();

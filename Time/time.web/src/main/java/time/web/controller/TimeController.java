@@ -1,7 +1,9 @@
 package time.web.controller;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.lucene.search.ScoreDoc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,7 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import time.repo.bean.Phrase;
-import time.web.bean.BucketsDTO;
+import time.repo.bean.ScoreDocDTO;
+import time.web.bean.Buckets;
+import time.web.bean.Phrases;
 import time.web.enums.Scale;
 import time.web.enums.Sens;
 import time.web.service.BucketService;
@@ -35,16 +39,21 @@ public class TimeController {
         return indexService.reIndex();
     }
 
-    @RequestMapping(value = "/subbuckets", method = RequestMethod.GET)
-    public BucketsDTO facets(@RequestParam(value = "scale", required = true) Scale scale, @RequestParam(value = "bucket", required = false) Long parentBucket, @RequestParam(value = "filter", required = false, defaultValue = "") String word) {
-        return bucketService.getSubBuckets(scale, parentBucket, word);
-    }
+    @RequestMapping(value = "/buckets", method = RequestMethod.GET)
+    public Buckets getBuckets(@RequestParam(value = "scale", required = true) Scale scale, 
+            @RequestParam(value = "bucket", required = false) Long bucket, 
+            @RequestParam(value = "filter", required = false, defaultValue = "") String filter) throws IOException {
+        return bucketService.getBuckets(scale, bucket, filter);
+    }    
+    
+    @RequestMapping(value = "/phrases", method = RequestMethod.POST)
+    public Phrases find(@RequestParam(value = "scale", required = true) Scale scale, 
+            @RequestParam(value = "bucket", required = false) Long bucket, 
+            @RequestParam(value = "word", required = false) String word, 
+            @RequestParam(value = "last", required = false) ScoreDocDTO last,
+            @RequestParam(value = "sens", required = false) Sens sens) throws IOException {
 
-    @RequestMapping(value = "/phrases", method = RequestMethod.GET)
-    public List<Phrase> find(@RequestParam(value = "scale", required = true) Scale scale, @RequestParam(value = "bucket", required = false) Long bucket, @RequestParam(value = "word", required = false) String word, @RequestParam(value = "page", required = false) Long page,
-            @RequestParam(value = "sens", required = false) Sens sens) {
-
-        return phraseService.find(scale, bucket, word, sens, page);
+        return phraseService.find(scale, bucket, word, last);
     }
 
 }

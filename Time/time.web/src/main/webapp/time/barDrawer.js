@@ -39,6 +39,7 @@
         phrases.phraseList.forEach(function(phrase) {
             $('#phrases').append(("<p>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
         });
+        $('#phrases').append("<p>   -   -   -   -   -   -   -   -   -   -   -   -   </p>");
     };
 
     Time.BarDrawer = barDrawer;

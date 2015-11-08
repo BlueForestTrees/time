@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import time.repo.bean.Phrase;
-import time.repo.bean.ScoreDocDTO;
 import time.web.bean.Phrases;
 import time.web.enums.Scale;
 import time.web.exception.LuceneRuntimeException;
@@ -42,14 +41,14 @@ public class PhraseService {
 
     @Autowired
     private FacetsCollector facetsCollector;
-
-    public Phrases find(final Scale scale, final Long bucketValue, final String term, final ScoreDocDTO after) throws IOException {
+    
+    public Phrases find(final Scale scale, final Long bucketValue, final String term, final Integer doc, final Float score, Integer lastIndex) throws IOException {
         final String bucketName = scale.getField();
+        final ScoreDoc after = lastIndex == null ? null : new ScoreDoc(doc, score);
 
         Query query = getQuery(term, bucketName, bucketValue);
-        TopDocs search = indexSearcher.searchAfter(toScoreDoc(after), query, pageSize);
-
-        return toPhrases(search);
+        TopDocs search = indexSearcher.searchAfter(after, query, pageSize);
+        return toPhrases(search, lastIndex);
     }
 
     public Query getQuery(String term, String bucketName, Long bucketValue) {
@@ -73,34 +72,25 @@ public class PhraseService {
         return builder.build();
     }
 
-    protected Phrases toPhrases(final TopDocs searchResult) {
+    protected Phrases toPhrases(final TopDocs searchResult, Integer lastIndex) {
         final Phrases phrases = new Phrases();
+        final int nbPhrasesFound = searchResult.scoreDocs.length;
 
         final List<Phrase> phraseList = Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> getPhrase(scoreDoc)).collect(Collectors.toList());
 
         phrases.setPhraseList(phraseList);
 
-        ScoreDoc scoreDoc = searchResult.scoreDocs[searchResult.scoreDocs.length - 1];
+        ScoreDoc lastScoreDoc = searchResult.scoreDocs[nbPhrasesFound-1];
 
-        phrases.setLastScoreDoc(toScoreDocDTO(scoreDoc));
+        Integer newLastIndex = lastIndex == null ? nbPhrasesFound-1 : lastIndex + nbPhrasesFound;
+        if(newLastIndex == searchResult.totalHits-1){
+            newLastIndex = null;
+        }
+        phrases.setDoc(lastScoreDoc.doc);
+        phrases.setScore(lastScoreDoc.score);
+        phrases.setLastIndex(newLastIndex);
 
         return phrases;
-    }
-
-    protected ScoreDoc toScoreDoc(ScoreDocDTO scoreDTO) {
-        if (scoreDTO == null)
-            return null;
-        return new ScoreDoc(scoreDTO.getDoc(), scoreDTO.getScore(), scoreDTO.getShardIndex());
-    }
-
-    protected ScoreDocDTO toScoreDocDTO(ScoreDoc scoreDoc) {
-        ScoreDocDTO dto = new ScoreDocDTO();
-
-        dto.setDoc(scoreDoc.doc);
-        dto.setScore(scoreDoc.score);
-        dto.setShardIndex(scoreDoc.shardIndex);
-
-        return dto;
     }
 
     protected Phrase getPhrase(ScoreDoc scoreDoc) {

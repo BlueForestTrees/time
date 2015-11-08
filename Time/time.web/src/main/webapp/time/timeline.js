@@ -50,7 +50,7 @@
         this.drawer.clearText();
         // affiche les phrases
         if (bucket.count < 50 || bar.scale === Scale.TEN) {
-            this.data.getPhrases(this.filter, bar.scale, bucket.x, null, $.proxy(this.onPhrases, this, bar.scale, bucket.x));
+            this.data.getPhrases(this.filter, bar.scale, bucket.x, null, null,null, $.proxy(this.onPhrases, this, bar.scale, bucket.x));
             // niveau de detail++
         } else {
             var subBar = this.bars[this.bars.indexOf(bar) + 1];
@@ -67,8 +67,8 @@
 
     timeline.prototype.onPhrases = function(scale, xBucket, phrases) {
         this.drawer.setPhrases(phrases, this.filter);
-        if(phrases.lastScoreDoc){
-            this.data.getPhrases(this.filter, scale, xBucket, phrases.lastScoreDoc, $.proxy(this.onPhrases, this, scale, xBucket));
+        if(phrases.lastIndex){
+            this.data.getPhrases(this.filter, scale, xBucket, phrases.doc, phrases.score, phrases.lastIndex, $.proxy(this.onPhrases, this, scale, xBucket));
         }
     };
 
@@ -80,7 +80,7 @@
 
     timeline.prototype.onFilter = function() {
         var bar = this.bars[0];
-        this.data.getFacets(this.filter, bar.scale, null, $.proxy(this.onBuckets, this, bar));
+        this.data.getBuckets(this.filter, bar.scale, null, $.proxy(this.onBuckets, this, bar));
         this.drawer.hide(Scale.sub(bar.scale));
         this.drawer.clearText();
     };

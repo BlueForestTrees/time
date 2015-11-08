@@ -72,16 +72,36 @@ public class LuceneQueryTest {
         }
     }
     
+    @Test
+    public void testSearchAfter() throws IOException{
+        String indexPath = "/Time/data/somephrases";
+        FSDirectory indexDir = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
+        DirectoryReader indexReader = DirectoryReader.open(indexDir);
+        IndexSearcher searcher = new IndexSearcher(indexReader);
+
+        
+        TopDocs result = searcher.searchAfter(null, new MatchAllDocsQuery(), 10);
+        display(result);
+        
+        ScoreDoc after = result.scoreDocs[result.scoreDocs.length-1];
+        TopDocs result2 = searcher.searchAfter(after, new MatchAllDocsQuery(), 10);
+        display(result2);
+        
+        ScoreDoc after2 = copy(result2.scoreDocs[result.scoreDocs.length-1]);
+        TopDocs result3 = searcher.searchAfter(after2, new MatchAllDocsQuery(), 10);
+        display(result3);
+    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    private void display(TopDocs result) {
+        System.out.println(result.scoreDocs);
+    }
+
+    private ScoreDoc copy(ScoreDoc scoreDoc) {
+        ScoreDoc result = new ScoreDoc(scoreDoc.doc, scoreDoc.score);
+        
+        return result;
+    }
+
     public Query getQuery(String term, String bucketName, Long bucketValue){
         boolean noBucket = StringUtils.isEmpty(bucketName) || bucketValue == null;
         boolean noTerm = StringUtils.isEmpty(term);

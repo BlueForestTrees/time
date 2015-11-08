@@ -1,9 +1,7 @@
 package time.web.controller;
 
 import java.io.IOException;
-import java.util.List;
 
-import org.apache.lucene.search.ScoreDoc;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,8 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import time.repo.bean.Phrase;
-import time.repo.bean.ScoreDocDTO;
 import time.web.bean.Buckets;
 import time.web.bean.Phrases;
 import time.web.enums.Scale;
@@ -46,14 +42,16 @@ public class TimeController {
         return bucketService.getBuckets(scale, bucket, filter);
     }    
     
-    @RequestMapping(value = "/phrases", method = RequestMethod.POST)
+    @RequestMapping(value = "/phrases", method = RequestMethod.GET)
     public Phrases find(@RequestParam(value = "scale", required = true) Scale scale, 
             @RequestParam(value = "bucket", required = false) Long bucket, 
             @RequestParam(value = "word", required = false) String word, 
-            @RequestParam(value = "last", required = false) ScoreDocDTO last,
+            @RequestParam(value="doc", required=false)Integer doc,
+            @RequestParam(value="score", required=false)Float score,
+            @RequestParam(value="lastIndex", required=false)Integer lastIndex,
             @RequestParam(value = "sens", required = false) Sens sens) throws IOException {
 
-        return phraseService.find(scale, bucket, word, last);
+        return phraseService.find(scale, bucket, word, doc, score, lastIndex);
     }
 
 }

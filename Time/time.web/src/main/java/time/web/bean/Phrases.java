@@ -3,20 +3,36 @@ package time.web.bean;
 import java.util.List;
 
 import time.repo.bean.Phrase;
-import time.repo.bean.ScoreDocDTO;
 
 public class Phrases {
 
     private List<Phrase> phraseList;
+    private Integer doc;
+    private Float score;
+    private Integer lastIndex;
 
-    private ScoreDocDTO lastScoreDoc;
-    
-    public ScoreDocDTO getLastScoreDoc() {
-        return lastScoreDoc;
+    public Integer getLastIndex() {
+        return lastIndex;
     }
 
-    public void setLastScoreDoc(ScoreDocDTO lastScoreDoc) {
-        this.lastScoreDoc = lastScoreDoc;
+    public void setLastIndex(Integer lastIndex) {
+        this.lastIndex = lastIndex;
+    }
+
+    public Integer getDoc() {
+        return doc;
+    }
+
+    public void setDoc(Integer doc) {
+        this.doc = doc;
+    }
+
+    public Float getScore() {
+        return score;
+    }
+
+    public void setScore(Float score) {
+        this.score = score;
     }
 
     public List<Phrase> getPhraseList() {

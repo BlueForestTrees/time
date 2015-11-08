@@ -15,7 +15,7 @@ import time.transformer.component.reader.SmartScanner;
 public class TransformerConfig {
     @Bean
     public String path() {
-        return "c:/time/data";
+        return "c:/time/data/rawpages";
     }
 
     @Bean

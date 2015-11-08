@@ -13,16 +13,16 @@
         $.get("buckets", params).done(callback);
     };
 
-    data.prototype.getPhrases = function(filter, scale, bucket, last, callback) {
+    data.prototype.getPhrases = function(filter, scale, bucket, doc, score, lastIndex, callback) {
         var params = {
             scale : scale,
             bucket : bucket,
-            filter : filter
+            filter : filter,
+            doc : doc,
+            score : score,
+            lastIndex : lastIndex
         };
-        if(last){
-            params.last = last;
-        }
-        $.post("phrases", params).done(callback);
+        $.get("phrases", params).done(callback);
     };
 
     Time.Data = data;

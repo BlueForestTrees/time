@@ -4,6 +4,11 @@ html, body {
 	margin: 0px;
 }
 
+.bar {
+	position : fixed;
+	top : 0;
+}
+
 /* FILTER */
 input[type="text"] {
 	width: 100%;

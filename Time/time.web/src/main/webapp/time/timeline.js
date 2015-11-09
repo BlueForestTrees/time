@@ -46,7 +46,7 @@
     };
 
     timeline.prototype.onBucketSelect = function(bucket, bar) {
-        this.drawer.hide(Scale.sub(bar.scale));
+        this.drawer.hide(this.bars.indexOf(bar)+1);
         this.drawer.clearText();
         // affiche les phrases
         if (bucket.count < 50 || bar.scale === Scale.TEN) {
@@ -79,9 +79,9 @@
     };
 
     timeline.prototype.onFilter = function() {
+        this.drawer.hide(0);
         var bar = this.bars[0];
         this.data.getBuckets(this.filter, bar.scale, null, $.proxy(this.onBuckets, this, bar));
-        this.drawer.hide(Scale.sub(bar.scale));
         this.drawer.clearText();
     };
 

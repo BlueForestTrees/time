@@ -35,7 +35,6 @@
         $('#phrases').empty();
     };
     barDrawer.prototype.setPhrases = function(phrases, filter) {
-        //this.clearText();
         phrases.phraseList.forEach(function(phrase) {
             $('#phrases').append(("<p>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
         });

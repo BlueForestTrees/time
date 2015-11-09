@@ -38,20 +38,20 @@ public class TimeController {
     @RequestMapping(value = "/buckets", method = RequestMethod.GET)
     public Buckets getBuckets(@RequestParam(value = "scale", required = true) Scale scale, 
             @RequestParam(value = "bucket", required = false) Long bucket, 
-            @RequestParam(value = "filter", required = false, defaultValue = "") String filter) throws IOException {
+            @RequestParam(value = "filter", required = false) String filter) throws IOException {
         return bucketService.getBuckets(scale, bucket, filter);
     }    
     
     @RequestMapping(value = "/phrases", method = RequestMethod.GET)
     public Phrases find(@RequestParam(value = "scale", required = true) Scale scale, 
             @RequestParam(value = "bucket", required = false) Long bucket, 
-            @RequestParam(value = "word", required = false) String word, 
+            @RequestParam(value = "filter", required = false) String filter, 
             @RequestParam(value="doc", required=false)Integer doc,
             @RequestParam(value="score", required=false)Float score,
             @RequestParam(value="lastIndex", required=false)Integer lastIndex,
             @RequestParam(value = "sens", required = false) Sens sens) throws IOException {
 
-        return phraseService.find(scale, bucket, word, doc, score, lastIndex);
+        return phraseService.find(scale, bucket, filter, doc, score, lastIndex);
     }
 
 }

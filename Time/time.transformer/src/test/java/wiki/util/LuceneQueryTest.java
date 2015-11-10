@@ -28,16 +28,16 @@ import org.springframework.util.StringUtils;
 
 public class LuceneQueryTest {
 
-    //String term = "civilisation";
-    String term;
-    String bucketName = "dateByTen6";
-    //String bucketName;
+    String term = "chien";
+    //String term;
+    //String bucketName = "dateByTen6";
+    String bucketName;
     Long bucketValue = -167L;
     //String bucketValue;
     
     @Test
     public void testLuceneFacets() throws IOException {
-        String indexPath = "/Time/data/phrases";
+        String indexPath = "/Time/data/allphrases";
         FSDirectory indexDir = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
         DirectoryReader indexReader = DirectoryReader.open(indexDir);
         IndexSearcher searcher = new IndexSearcher(indexReader);

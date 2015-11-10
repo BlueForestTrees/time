@@ -19,7 +19,8 @@ import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import time.repo.bean.Phrase;
+import time.repo.bean.FullPhrase;
+import time.repo.bean.SortableLongField;
 
 @Component
 public class LuceneStorage implements IStorage {
@@ -47,11 +48,11 @@ public class LuceneStorage implements IStorage {
     }
 
     @Override
-    public void store(Phrase phrase) throws IOException {
+    public void store(FullPhrase phrase) throws IOException {
 
         final Document doc = new Document();
         doc.add(new TextField("text", phrase.getText(), Store.YES));
-        doc.add(new LongField("date", phrase.getDate(), Store.YES));
+        doc.add(new SortableLongField("date", phrase.getDate(), Store.YES));
         
         doc.add(new LongField("dateByTen", phrase.getDateByTen(), Store.NO));
         doc.add(new LongField("dateByTen3", phrase.getDateByTen3(), Store.NO));

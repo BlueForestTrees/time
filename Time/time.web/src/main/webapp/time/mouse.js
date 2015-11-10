@@ -10,7 +10,7 @@
         };
         $('#phrases').on('dblclick.Textes', data, $.proxy(this.onPhrasesDblClick, this));
     };
-    
+
     mouse.prototype.installBar = function(bar, bucketSelect) {
         var data = {
             previousX : null,
@@ -26,12 +26,11 @@
 
     /* VIEWPORTTOOLTIP */
     mouse.prototype.onmouseTooltip = function(event) {
-        /*
-         * var bar = event.data.bar; var mousePosition =
-         * this.getmousePosition(event); var bucketPosition =
-         * bar.getBucketPosition(mousePosition); var toolTipText =
-         * Scale.getTooltipText(bar.scale, bucketPosition);
-         */
+        var bar = event.data.bar;
+        var mousePosition = this.getmousePosition(event);
+        var bucketPosition = bar.getBucketPosition(mousePosition);
+        var toolTipText = Scale.getTooltipText(bar.scale, bucketPosition);
+        $("#tooltip").text(toolTipText);
     };
 
     /* VIEWPORT */

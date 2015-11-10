@@ -1,27 +1,24 @@
 package time.web.service;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.lucene.facet.FacetResult;
 import org.apache.lucene.facet.Facets;
 import org.apache.lucene.facet.FacetsCollector;
+import org.apache.lucene.facet.LabelAndValue;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesFacetCounts;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MatchAllDocsQuery;
-import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
+import time.web.bean.Bucket;
 import time.web.bean.Buckets;
 import time.web.enums.Scale;
-import time.web.transformer.BucketTransformer;
 
 @Service
 public class BucketService {
@@ -36,41 +33,39 @@ public class BucketService {
     private SortedSetDocValuesReaderState readerState;
     
     @Autowired
-    private BucketTransformer bucketTransformer;
-
-    @Autowired
-    private FacetsCollector facetsCollector;
+    private QueryService queryService;
 
     public Buckets getBuckets(final Scale scale, final Long bucketValue, final String term) throws IOException {
         final String bucketName = scale.getField();
-
-        FacetsCollector.search(indexSearcher, getQuery(term, bucketName, bucketValue), 10, facetsCollector);
-        Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
-
-        FacetResult facets = facetsCounter.getTopChildren(10000, bucketName);
+        final FacetsCollector facetsCollector = new FacetsCollector();
+        final Query query = queryService.getQuery(term, bucketName, bucketValue);
+        FacetsCollector.search(indexSearcher, query, 10, facetsCollector);
+        final Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
+        final FacetResult facets = facetsCounter.getTopChildren(10000, bucketName);
         
-        return bucketTransformer.toBucketsDTO(facets, scale, bucketValue);
+        return toBucketsDTO(facets, scale, bucketValue);
+    }
+    
+    protected Buckets toBucketsDTO(final FacetResult facetResult, final Scale scale, final Long parentBucket) {
+        final Buckets bucketsDTO = new Buckets();
+        bucketsDTO.setSubbuckets(toBucketsDTO(facetResult));
+        bucketsDTO.setParentBucket(parentBucket);
+        bucketsDTO.setScale(scale);
+        return bucketsDTO;
     }
 
-    public Query getQuery(String term, String bucketName, Long bucketValue) {
-        boolean noBucket = StringUtils.isEmpty(bucketName) || bucketValue == null;
-        boolean noTerm = StringUtils.isEmpty(term);
-
-        if (noBucket && noTerm) {
-            return new MatchAllDocsQuery();
+    protected List<Bucket> toBucketsDTO(final FacetResult facetResult) {
+        if(facetResult == null){
+            return Arrays.asList();
         }
+        return Arrays.stream(facetResult.labelValues).map(elt -> toBucketDTO(elt)).collect(Collectors.toList());
+    }
 
-        TermQuery textQuery = noTerm ? null : new TermQuery(new Term("text", term));
-        Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(bucketName, bucketValue, bucketValue, true, true);
-
-        BooleanQuery.Builder builder = new BooleanQuery.Builder();
-        if (textQuery != null) {
-            builder.add(textQuery, Occur.MUST);
-        }
-        if (bucketQuery != null) {
-            builder.add(bucketQuery, Occur.MUST);
-        }
-        return builder.build();
+    protected Bucket toBucketDTO(LabelAndValue facet) {
+        final Bucket facetDTO = new Bucket();
+        facetDTO.setBucket(new Long(facet.label));
+        facetDTO.setCount((int) facet.value);
+        return facetDTO;
     }
 
 }

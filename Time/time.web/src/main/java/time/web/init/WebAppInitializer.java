@@ -1,4 +1,4 @@
-package time.web;
+package time.web.init;
 
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;

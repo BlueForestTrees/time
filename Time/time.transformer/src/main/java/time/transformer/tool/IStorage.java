@@ -2,10 +2,10 @@ package time.transformer.tool;
 
 import java.io.IOException;
 
-import time.repo.bean.Phrase;
+import time.repo.bean.FullPhrase;
 
 public interface IStorage {
-    void store(Phrase phrase) throws IOException;
+    void store(FullPhrase phrase) throws IOException;
 
     void end() throws IOException;
 

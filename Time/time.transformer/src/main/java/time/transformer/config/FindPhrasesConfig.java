@@ -13,7 +13,7 @@ public class FindPhrasesConfig {
 
     @Bean
     public String indexPath(){
-        return "/Time/data/somephrases";
+        return "/Time/data/allphrases";
     }
     
     @Bean
@@ -28,7 +28,7 @@ public class FindPhrasesConfig {
     
     @Bean
     public Long maxPhrasesToFetch(){
-        return 50000L;
+        return -1L;
     }
     
 }

@@ -3,7 +3,6 @@ package time.web.config;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 
-import org.apache.lucene.facet.FacetsCollector;
 import org.apache.lucene.facet.sortedset.DefaultSortedSetDocValuesReaderState;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
 import org.apache.lucene.index.DirectoryReader;
@@ -40,8 +39,4 @@ public class LuceneConfig {
         return new DefaultSortedSetDocValuesReaderState(directoryReader());
     }
     
-    @Bean
-    public FacetsCollector facetsCollector(){
-        return new FacetsCollector();
-    }
 }

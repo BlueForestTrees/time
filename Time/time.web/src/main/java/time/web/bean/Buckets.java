@@ -36,4 +36,9 @@ public class Buckets {
         return parentBucket;
     }
 
+    @Override
+    public String toString() {
+        return "Buckets [scale=" + scale + ", parentBucket=" + parentBucket + ", subbuckets=" + subbuckets + "]";
+    }
+
 }

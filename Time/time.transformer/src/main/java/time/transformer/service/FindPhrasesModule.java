@@ -11,8 +11,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import time.repo.bean.FullPhrase;
 import time.repo.bean.Page;
-import time.repo.bean.Phrase;
 import time.transformer.component.filter.PageFilter;
 import time.transformer.component.filter.PhraseFilter;
 import time.transformer.component.reader.FinDuScanException;
@@ -104,8 +104,8 @@ public class FindPhrasesModule implements IModule {
     
     protected long handlePage(String[] phrasesArray, DateFinder finder) throws IOException {
         long count = 0;
-        List<Phrase> phrases = finder.findPhrasesWithDates(phrasesArray);
-        for (Phrase phrase : phrases) {
+        List<FullPhrase> phrases = finder.findPhrasesWithDates(phrasesArray);
+        for (FullPhrase phrase : phrases) {
             if (phraseFilter.keepThisPhrase(phrase)) {
                 storage.store(phrase);
                 count++;

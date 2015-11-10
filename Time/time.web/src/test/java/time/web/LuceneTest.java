@@ -1,16 +1,9 @@
-package wiki.util;
+package time.web;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
-import java.util.List;
 
 import org.apache.lucene.document.Document;
-import org.apache.lucene.facet.FacetResult;
-import org.apache.lucene.facet.Facets;
-import org.apache.lucene.facet.FacetsCollector;
-import org.apache.lucene.facet.sortedset.DefaultSortedSetDocValuesReaderState;
-import org.apache.lucene.facet.sortedset.SortedSetDocValuesFacetCounts;
-import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -24,34 +17,33 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StringUtils;
 
-public class LuceneQueryTest {
+import time.web.bean.Buckets;
+import time.web.config.ComponentConfig;
+import time.web.enums.Scale;
+import time.web.service.BucketService;
 
-    String term = "chien";
-    //String term;
-    //String bucketName = "dateByTen6";
-    String bucketName;
-    Long bucketValue = -167L;
-    //String bucketValue;
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(classes={ComponentConfig.class})
+public class LuceneTest {
     
-    @Test
-    public void testLuceneFacets() throws IOException {
-        String indexPath = "/Time/data/allphrases";
-        FSDirectory indexDir = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
-        DirectoryReader indexReader = DirectoryReader.open(indexDir);
-        IndexSearcher searcher = new IndexSearcher(indexReader);
-        SortedSetDocValuesReaderState readerState = new DefaultSortedSetDocValuesReaderState(indexReader);
-        FacetsCollector facetsCollector = new FacetsCollector();
-        
-        
-        FacetsCollector.search(searcher, getQuery(term, bucketName, bucketValue), 10, facetsCollector);
-        Facets facets = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
+    @Autowired
+    BucketService bucketService;
 
-        List<FacetResult> allDims = facets.getAllDims(10);
-        System.out.println(allDims);
+    @Test
+    public void testGetBuckets() throws IOException{
+        final Scale scale = Scale.TEN3;//TEN6 lui renvoie plein de result sur le bucket enfant 0
+        final Long bucketValue = 0L;
+        final String term = "vivre";
         
-        indexReader.close();
+        final Buckets buckets = bucketService.getBuckets(scale, bucketValue, term);
+        
+        System.out.println(buckets);
     }
     
     @Test

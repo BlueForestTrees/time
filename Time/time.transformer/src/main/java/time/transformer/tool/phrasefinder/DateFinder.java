@@ -35,10 +35,6 @@ public class DateFinder {
                 final FullPhrase phrase = new FullPhrase();
                 phrase.setText(phraseString.replace(dateExtract, "<strong>" + dateExtract + "</strong>"));
                 phrase.setDate(date);
-                phrase.setDateByTen(date / 10L);
-                phrase.setDateByTen3(date / 10000L);
-                phrase.setDateByTen6(date / 10000000L);
-                phrase.setDateByTen9(date / 10000000000L);
                 result.add(phrase);
             }
         }

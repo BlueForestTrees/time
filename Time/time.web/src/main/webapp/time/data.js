@@ -4,11 +4,10 @@
 
     }
 
-    data.prototype.getBuckets = function(filter, scale, bucket, callback) {
+    data.prototype.getBuckets = function(filter, scale, callback) {
         var params = {
             scale : scale,
-            filter : filter,
-            bucket : bucket
+            filter : filter
         };
         $.get("buckets", params).done(callback);
     };

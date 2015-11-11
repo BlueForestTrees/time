@@ -15,12 +15,12 @@
     };
 
     bucketFactory.prototype.getBuckets = function(bucketsDTO) {
-        for (var i = 0; i < bucketsDTO.subbuckets.length; i++) {
-            var facet = bucketsDTO.subbuckets[i];
+        for (var i = 0; i < bucketsDTO.buckets.length; i++) {
+            var facet = bucketsDTO.buckets[i];
             facet.x = facet.bucket;
             facet.color = this.getColor(facet.count);
         }
-        return bucketsDTO.subbuckets;
+        return bucketsDTO.buckets;
     };
 
     bucketFactory.prototype.getGreen = function(count) {

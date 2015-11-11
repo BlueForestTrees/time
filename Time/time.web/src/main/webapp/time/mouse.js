@@ -61,6 +61,7 @@
     mouse.prototype.onmouseClick = function(event) {
         var mousePosition = this.getmousePosition(event);
         var bucket = event.data.bar.searchBucketAt(mousePosition);
+        console.log("click on ", bucket);
         if (bucket) {
             event.data.bucketSelect(bucket, event.data.bar);
         }

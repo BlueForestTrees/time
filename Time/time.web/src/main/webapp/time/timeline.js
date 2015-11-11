@@ -23,7 +23,7 @@
 
         // INIT BAR 0
         var topbar = this.bars[0];
-        this.data.getBuckets(this.filter, topbar.scale, null, $.proxy(this.onBuckets, this, topbar));
+        this.data.getBuckets(this.filter, topbar.scale, $.proxy(this.onBuckets, this, topbar, null));
         this.drawer.hide(1);
 
         // FILTRE
@@ -54,12 +54,13 @@
             // niveau de detail++
         } else {
             var subBar = this.bars[this.bars.indexOf(bar) + 1];
-            this.data.getBuckets(this.filter, subBar.scale, bucket.bucket, $.proxy(this.onBuckets, this, subBar));
+            var parentBucket= bucket.bucket;
+            this.data.getBuckets(this.filter, subBar.scale, $.proxy(this.onBuckets, this, subBar, parentBucket));
         }
     };
 
-    timeline.prototype.onBuckets = function(bar, bucketsDTO) {
-        bar.viewport.local = -Scale.firstSubBucket(Scale.up(bar.scale), bucketsDTO.parentBucket);
+    timeline.prototype.onBuckets = function(bar, bucket, bucketsDTO) {
+        bar.viewport.local = -Scale.firstSubBucket(Scale.up(bar.scale), bucket);
         bar.buckets = this.bucketFactory.getBuckets(bucketsDTO);
         this.drawer.showBar(bar);
         this.drawer.draw(bar);
@@ -81,7 +82,7 @@
     timeline.prototype.onFilter = function() {
         this.drawer.hide(0);
         var bar = this.bars[0];
-        this.data.getBuckets(this.filter, bar.scale, null, $.proxy(this.onBuckets, this, bar));
+        this.data.getBuckets(this.filter, bar.scale, $.proxy(this.onBuckets, this, bar));
         this.drawer.clearText();
     };
 

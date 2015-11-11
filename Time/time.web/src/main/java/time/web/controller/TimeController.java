@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import time.web.bean.Buckets;
+import time.web.bean.BucketGroup;
 import time.web.bean.Phrases;
 import time.web.enums.Scale;
 import time.web.enums.Sens;
@@ -36,10 +36,9 @@ public class TimeController {
     }
 
     @RequestMapping(value = "/buckets", method = RequestMethod.GET)
-    public Buckets getBuckets(@RequestParam(value = "scale", required = true) Scale scale, 
-            @RequestParam(value = "bucket", required = false) Long bucket, 
+    public BucketGroup getBuckets(@RequestParam(value = "scale", required = true) Scale scale, 
             @RequestParam(value = "filter", required = false) String filter) throws IOException {
-        return bucketService.getBuckets(scale, bucket, filter);
+        return bucketService.getBuckets(scale, filter);
     }    
     
     @RequestMapping(value = "/phrases", method = RequestMethod.GET)

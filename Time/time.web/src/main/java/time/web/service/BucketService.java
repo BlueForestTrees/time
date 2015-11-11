@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import time.web.bean.Bucket;
-import time.web.bean.Buckets;
+import time.web.bean.BucketGroup;
 import time.web.enums.Scale;
 
 @Service
@@ -35,21 +35,20 @@ public class BucketService {
     @Autowired
     private QueryService queryService;
 
-    public Buckets getBuckets(final Scale scale, final Long bucketValue, final String term) throws IOException {
+    public BucketGroup getBuckets(final Scale scale, final String term) throws IOException {
         final String bucketName = scale.getField();
         final FacetsCollector facetsCollector = new FacetsCollector();
-        final Query query = queryService.getQuery(term, bucketName, bucketValue);
+        final Query query = queryService.getQuery(term, null, null);
         FacetsCollector.search(indexSearcher, query, 10, facetsCollector);
         final Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
         final FacetResult facets = facetsCounter.getTopChildren(10000, bucketName);
         
-        return toBucketsDTO(facets, scale, bucketValue);
+        return toBucketsDTO(facets, scale);
     }
     
-    protected Buckets toBucketsDTO(final FacetResult facetResult, final Scale scale, final Long parentBucket) {
-        final Buckets bucketsDTO = new Buckets();
-        bucketsDTO.setSubbuckets(toBucketsDTO(facetResult));
-        bucketsDTO.setParentBucket(parentBucket);
+    protected BucketGroup toBucketsDTO(final FacetResult facetResult, final Scale scale) {
+        final BucketGroup bucketsDTO = new BucketGroup();
+        bucketsDTO.setBuckets(toBucketsDTO(facetResult));
         bucketsDTO.setScale(scale);
         return bucketsDTO;
     }

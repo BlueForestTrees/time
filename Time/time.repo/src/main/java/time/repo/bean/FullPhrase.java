@@ -1,40 +1,21 @@
 package time.repo.bean;
 
 public class FullPhrase extends Phrase {
-    private long dateByTen;
-    private long dateByTen3;
-    private long dateByTen6;
-    private long dateByTen9;
 
     public long getDateByTen() {
-        return dateByTen;
-    }
-
-    public void setDateByTen(long dateByTen) {
-        this.dateByTen = dateByTen;
+        return getDate() / 10L;
     }
 
     public long getDateByTen3() {
-        return dateByTen3;
-    }
-
-    public void setDateByTen3(long dateByTen3) {
-        this.dateByTen3 = dateByTen3;
+        return getDate() / 10000L;
     }
 
     public long getDateByTen6() {
-        return dateByTen6;
-    }
-
-    public void setDateByTen6(long dateByTen6) {
-        this.dateByTen6 = dateByTen6;
+        return getDate() / 10000000L;
     }
 
     public long getDateByTen9() {
-        return dateByTen9;
+        return getDate() / 10000000000L;
     }
-
-    public void setDateByTen9(long dateByTen9) {
-        this.dateByTen9 = dateByTen9;
-    }
+    
 }

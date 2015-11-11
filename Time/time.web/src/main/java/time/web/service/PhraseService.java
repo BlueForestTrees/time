@@ -40,30 +40,29 @@ public class PhraseService {
     public Phrases find(final Scale scale, final Long bucketValue, final String term, final Integer doc, final Float score, Integer lastIndex) throws IOException {
         final String bucketName = scale.getField();
         final ScoreDoc after = lastIndex == null ? null : new ScoreDoc(doc, score);
-        final Sort sort = new Sort(new SortField("date", Type.LONG));
+        //final Sort sort = new Sort(new SortField("date", Type.LONG));
         final Query query = queryHelper.getQuery(term, bucketName, bucketValue);
-        final TopDocs search = indexSearcher.searchAfter(after, query, pageSize, sort);
+        final TopDocs search = indexSearcher.searchAfter(after, query, pageSize);//, sort, true, true);
         
         return toPhrases(search, lastIndex);
     }
 
     protected Phrases toPhrases(final TopDocs searchResult, Integer lastIndex) {
+        //LES PHRASES
         final Phrases phrases = new Phrases();
-        final int nbPhrasesFound = searchResult.scoreDocs.length;
         final List<Phrase> phraseList = Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> getPhrase(scoreDoc)).collect(Collectors.toList());
-
         phrases.setPhraseList(phraseList);
-
-        final ScoreDoc lastScoreDoc = searchResult.scoreDocs[nbPhrasesFound-1];
-
+        //LE LAST INDEX
+        final int nbPhrasesFound = searchResult.scoreDocs.length;
         Integer newLastIndex = lastIndex == null ? nbPhrasesFound-1 : lastIndex + nbPhrasesFound;
         if(newLastIndex == searchResult.totalHits-1){
             newLastIndex = null;
         }
+        phrases.setLastIndex(newLastIndex);
+        //LE LAST SCORE
+        final ScoreDoc lastScoreDoc = searchResult.scoreDocs[nbPhrasesFound-1];
         phrases.setDoc(lastScoreDoc.doc);
         phrases.setScore(lastScoreDoc.score);
-        phrases.setLastIndex(newLastIndex);
-
         return phrases;
     }
 

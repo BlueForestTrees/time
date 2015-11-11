@@ -7,32 +7,15 @@ import time.repo.bean.Phrase;
 public class Phrases {
 
     private List<Phrase> phraseList;
-    private Integer doc;
-    private Float score;
-    private Integer lastIndex;
+    
+    private String lastKey;
 
-    public Integer getLastIndex() {
-        return lastIndex;
+    public String getLastKey() {
+        return lastKey;
     }
 
-    public void setLastIndex(Integer lastIndex) {
-        this.lastIndex = lastIndex;
-    }
-
-    public Integer getDoc() {
-        return doc;
-    }
-
-    public void setDoc(Integer doc) {
-        this.doc = doc;
-    }
-
-    public Float getScore() {
-        return score;
-    }
-
-    public void setScore(Float score) {
-        this.score = score;
+    public void setLastKey(String lastKey) {
+        this.lastKey = lastKey;
     }
 
     public List<Phrase> getPhraseList() {

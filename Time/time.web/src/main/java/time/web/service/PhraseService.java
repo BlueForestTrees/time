@@ -3,21 +3,24 @@ package time.web.service;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
+import org.apache.lucene.search.FieldDoc;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.SortField.Type;
+import org.apache.lucene.search.TopFieldDocs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import time.repo.bean.Phrase;
+import time.web.bean.Last;
 import time.web.bean.Phrases;
 import time.web.enums.Scale;
 import time.web.exception.LuceneRuntimeException;
@@ -36,33 +39,37 @@ public class PhraseService {
 
     @Autowired
     private QueryService queryHelper;
-    
-    public Phrases find(final Scale scale, final Long bucketValue, final String term, final Integer doc, final Float score, Integer lastIndex) throws IOException {
+
+    @Autowired
+    private Map<String, Object> cache;
+
+    @Autowired
+    private Sort sortDateAsc;
+
+    public Phrases find(final Scale scale, final Long bucketValue, final String term, String lastKey) throws IOException {
         final String bucketName = scale.getField();
-        final ScoreDoc after = lastIndex == null ? null : new ScoreDoc(doc, score);
-        //final Sort sort = new Sort(new SortField("date", Type.LONG));
-        final Query query = queryHelper.getQuery(term, bucketName, bucketValue);
-        final TopDocs search = indexSearcher.searchAfter(after, query, pageSize);//, sort, true, true);
-        
-        return toPhrases(search, lastIndex);
+        final Last last = (Last) cache.remove(lastKey);
+        final Query query = queryHelper.getQuery(term, bucketName, bucketValue, null);
+        final TopFieldDocs search = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, pageSize, sortDateAsc, true, true);
+
+        return toPhrases(search, last == null ? null : last.getLastIndex());
     }
 
-    protected Phrases toPhrases(final TopDocs searchResult, Integer lastIndex) {
-        //LES PHRASES
+    protected Phrases toPhrases(final TopDocs searchResult, final Integer lastIndex) {
+        // LES PHRASES
         final Phrases phrases = new Phrases();
         final List<Phrase> phraseList = Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> getPhrase(scoreDoc)).collect(Collectors.toList());
         phrases.setPhraseList(phraseList);
-        //LE LAST INDEX
+        // LE LAST INDEX
         final int nbPhrasesFound = searchResult.scoreDocs.length;
-        Integer newLastIndex = lastIndex == null ? nbPhrasesFound-1 : lastIndex + nbPhrasesFound;
-        if(newLastIndex == searchResult.totalHits-1){
-            newLastIndex = null;
+        final int newLastIndex = lastIndex == null ? nbPhrasesFound - 1 : lastIndex + nbPhrasesFound;
+        if (newLastIndex < searchResult.totalHits - 1) {
+            // LE LAST SCORE
+            final FieldDoc lastScoreDoc = (FieldDoc) searchResult.scoreDocs[nbPhrasesFound - 1];
+            final String lastKey = UUID.randomUUID().toString();
+            cache.put(lastKey, new Last(lastScoreDoc, newLastIndex));
+            phrases.setLastKey(lastKey);
         }
-        phrases.setLastIndex(newLastIndex);
-        //LE LAST SCORE
-        final ScoreDoc lastScoreDoc = searchResult.scoreDocs[nbPhrasesFound-1];
-        phrases.setDoc(lastScoreDoc.doc);
-        phrases.setScore(lastScoreDoc.score);
         return phrases;
     }
 

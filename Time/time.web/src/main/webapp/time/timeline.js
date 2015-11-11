@@ -5,7 +5,7 @@
         this.mouse = new Time.Mouse(this.drawer);
         this.data = new Time.Data();
         this.bucketFactory = new Time.BucketFactory();
-        this.filter = '';
+        this.term = '';
 
         // DRAWER
         this.bars.forEach(function(bar) {
@@ -15,7 +15,7 @@
         $(window).resize($.proxy(this.onWindowResize, this));
 
         // BARMOUSE
-        this.mouse.install($.proxy(this.onFilterSelect, this));
+        this.mouse.install($.proxy(this.onFilterSelect, this), $.proxy(this.onScroll, this));
         var onBucketSelectCall = $.proxy(this.onBucketSelect, this);
         this.bars.forEach(function(bar) {
             this.mouse.installBar(bar, onBucketSelectCall);
@@ -23,12 +23,12 @@
 
         // INIT BAR 0
         var topbar = this.bars[0];
-        this.data.getBuckets(this.filter, topbar.scale, $.proxy(this.onBuckets, this, topbar, null));
+        this.data.getBuckets(this.term, topbar.scale, $.proxy(this.onBuckets, this, topbar, null));
         this.drawer.hide(1);
 
         // FILTRE
 
-        $("#filtreInput").keypress($.proxy(this.onFiltreKeyPress, this));
+        $("#termInput").keypress($.proxy(this.onFiltreKeyPress, this));
         $("input[type='text']").on("click", function() {
             $(this).select();
         });
@@ -41,7 +41,7 @@
     };
 
     timeline.prototype.onFiltreEnter = function() {
-        this.filter = $("#filtreInput").val();
+        this.term = $("#termInput").val();
         this.onFilter();
     };
 
@@ -50,12 +50,12 @@
         this.drawer.clearText();
         // affiche les phrases
         if (bucket.count < 50 || bar.scale === Scale.TEN) {
-            this.data.getPhrases(this.filter, bar.scale, bucket.x, null, null,null, $.proxy(this.onPhrases, this, bar.scale, bucket.x));
+            this.data.getPhrases(this.term, bar.scale, bucket.x, null, $.proxy(this.onPhrases, this, bar.scale, bucket.x));
             // niveau de detail++
         } else {
             var subBar = this.bars[this.bars.indexOf(bar) + 1];
             var parentBucket= bucket.bucket;
-            this.data.getBuckets(this.filter, subBar.scale, $.proxy(this.onBuckets, this, subBar, parentBucket));
+            this.data.getBuckets(this.term, subBar.scale, $.proxy(this.onBuckets, this, subBar, parentBucket));
         }
     };
 
@@ -67,22 +67,26 @@
     };
 
     timeline.prototype.onPhrases = function(scale, xBucket, phrases) {
-        this.drawer.setPhrases(phrases, this.filter);
-        if(phrases.lastIndex){
-            this.data.getPhrases(this.filter, scale, xBucket, phrases.doc, phrases.score, phrases.lastIndex, $.proxy(this.onPhrases, this, scale, xBucket));
+        this.drawer.setPhrases(phrases, this.term);
+        if(phrases.lastKey && this.isVisible($("#bottom"))){
+            this.data.getPhrases(this.term, scale, xBucket, phrases.lastKey, $.proxy(this.onPhrases, this, scale, xBucket));
         }
     };
 
-    timeline.prototype.onFilterSelect = function(filter) {
-        this.filter = filter;
-        $("#filtreInput").val(this.filter);
+    timeline.prototype.onFilterSelect = function(term) {
+        this.term = term;
+        $("#termInput").val(this.term);
         this.onFilter();
     };
+    
+    timeline.prototype.onScroll = function(){
+        //TODO poursuivre
+    }
 
     timeline.prototype.onFilter = function() {
         this.drawer.hide(0);
         var bar = this.bars[0];
-        this.data.getBuckets(this.filter, bar.scale, $.proxy(this.onBuckets, this, bar));
+        this.data.getBuckets(this.term, bar.scale, $.proxy(this.onBuckets, this, bar));
         this.drawer.clearText();
     };
 
@@ -90,6 +94,19 @@
         this.bars.forEach(function(bar) {
             this.drawer.resize(bar);
         }, this);
+    };
+    
+    timeline.prototype.isVisible = function(elem){
+        var $elem = $(elem);
+        var $window = $(window);
+
+        var docViewTop = $window.scrollTop();
+        var docViewBottom = docViewTop + $window.height();
+
+        var elemTop = $elem.offset().top;
+        var elemBottom = elemTop + $elem.height();
+
+        return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
     };
 
     Time.Timeline = timeline;

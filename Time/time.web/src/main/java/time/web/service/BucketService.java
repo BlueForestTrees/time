@@ -31,21 +31,21 @@ public class BucketService {
 
     @Autowired
     private SortedSetDocValuesReaderState readerState;
-    
+
     @Autowired
     private QueryService queryService;
 
     public BucketGroup getBuckets(final Scale scale, final String term) throws IOException {
         final String bucketName = scale.getField();
         final FacetsCollector facetsCollector = new FacetsCollector();
-        final Query query = queryService.getQuery(term, null, null);
+        final Query query = queryService.getQuery(term, null, null, null);
         FacetsCollector.search(indexSearcher, query, 10, facetsCollector);
         final Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
         final FacetResult facets = facetsCounter.getTopChildren(10000, bucketName);
-        
+
         return toBucketsDTO(facets, scale);
     }
-    
+
     protected BucketGroup toBucketsDTO(final FacetResult facetResult, final Scale scale) {
         final BucketGroup bucketsDTO = new BucketGroup();
         bucketsDTO.setBuckets(toBucketsDTO(facetResult));
@@ -54,7 +54,7 @@ public class BucketService {
     }
 
     protected List<Bucket> toBucketsDTO(final FacetResult facetResult) {
-        if(facetResult == null){
+        if (facetResult == null) {
             return Arrays.asList();
         }
         return Arrays.stream(facetResult.labelValues).map(elt -> toBucketDTO(elt)).collect(Collectors.toList());

@@ -4,11 +4,13 @@
     }
 
     /* COMMON */
-    mouse.prototype.install = function(filterSelect) {
+    mouse.prototype.install = function(filterSelect, scroll) {
         var data = {
-            filterSelect : filterSelect
+            filterSelect : filterSelect,
+            scroll : scroll
         };
         $('#phrases').on('dblclick.Textes', data, $.proxy(this.onPhrasesDblClick, this));
+        $(window).on('scrool', data, $.proxy(this.onScroll, this));
     };
 
     mouse.prototype.installBar = function(bar, bucketSelect) {
@@ -61,7 +63,6 @@
     mouse.prototype.onmouseClick = function(event) {
         var mousePosition = this.getmousePosition(event);
         var bucket = event.data.bar.searchBucketAt(mousePosition);
-        console.log("click on ", bucket);
         if (bucket) {
             event.data.bucketSelect(bucket, event.data.bar);
         }
@@ -74,6 +75,10 @@
             event.data.filterSelect(window.getSelection().toString().trim());
         }
     };
+    
+    mouse.prototype.onScroll = function(event){
+        event.data.scroll();
+    }
 
     /* UTIL */
     mouse.prototype.getmousePosition = function(event) {

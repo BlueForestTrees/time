@@ -1,19 +1,19 @@
 package time.web.service;
 
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
 public class QueryService {
-    public Query getQuery(String term, String bucketName, Long bucketValue) {
-        boolean noBucket = StringUtils.isEmpty(bucketName) || bucketValue == null;
+    public Query getQuery(String term, String bucketName, Long bucketValueFrom, Long bucketValueTo) {
+        boolean noBucket = StringUtils.isEmpty(bucketName) || (bucketValueFrom == null && bucketValueTo == null);
         boolean noTerm = StringUtils.isEmpty(term);
 
         if (noBucket && noTerm) {
@@ -21,7 +21,7 @@ public class QueryService {
         }
 
         TermQuery textQuery = noTerm ? null : new TermQuery(new Term("text", term));
-        Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(bucketName, bucketValue, bucketValue, true, true);
+        Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(bucketName, bucketValueFrom, bucketValueTo, true, true);
 
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
         if (textQuery != null) {

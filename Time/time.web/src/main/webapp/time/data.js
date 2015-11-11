@@ -12,14 +12,12 @@
         $.get("buckets", params).done(callback);
     };
 
-    data.prototype.getPhrases = function(filter, scale, bucket, doc, score, lastIndex, callback) {
+    data.prototype.getPhrases = function(term, scale, bucket, lastKey, callback) {
         var params = {
             scale : scale,
             bucket : bucket,
-            filter : filter,
-            doc : doc,
-            score : score,
-            lastIndex : lastIndex
+            term : term,
+            lastKey : lastKey
         };
         $.get("phrases", params).done(callback);
     };

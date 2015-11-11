@@ -12,7 +12,7 @@ public class ComponentConfig {
 
     @Bean
     public int pageSize() {
-        return 5;
+        return 2;
     }
-    
+
 }

@@ -35,9 +35,17 @@
         $('#phrases').empty();
     };
     barDrawer.prototype.setPhrases = function(phrases, filter) {
-        phrases.phraseList.forEach(function(phrase) {
-            $('#phrases').append(("<p>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
-        });
+        
+        for(var i = 0; i < phrases.phraseList.length; i++){
+            var prev = phrases.phraseList[i-1];
+            var phrase = phrases.phraseList[i];
+            
+            if(i>0 && phrase.date - prev.date > 1000){
+                $('#phrases').append("<p class='indication'>"+((phrase.date - prev.date)/364)+" années plus tard</p>");
+            }
+            $('#phrases').append(("<p date='"+phrase.date+"'>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
+        }
+        
         $('#phrases').append("<p>   -   -   -   -   -   -   -   -   -   -   -   -   </p>");
     };
 

@@ -10,7 +10,7 @@
             scroll : scroll
         };
         $('#phrases').on('dblclick.Textes', data, $.proxy(this.onPhrasesDblClick, this));
-        $(window).on('scrool', data, $.proxy(this.onScroll, this));
+        $(window).on('scroll', data, $.proxy(this.onScroll, this));
     };
 
     mouse.prototype.installBar = function(bar, bucketSelect) {
@@ -75,10 +75,10 @@
             event.data.filterSelect(window.getSelection().toString().trim());
         }
     };
-    
+
     mouse.prototype.onScroll = function(event){
         event.data.scroll();
-    }
+    };
 
     /* UTIL */
     mouse.prototype.getmousePosition = function(event) {

@@ -6,6 +6,8 @@
         this.data = new Time.Data();
         this.bucketFactory = new Time.BucketFactory();
         this.term = '';
+        this.lastSearch = null;
+        this.isSearching = false;
 
         // DRAWER
         this.bars.forEach(function(bar) {
@@ -63,13 +65,24 @@
         bar.viewport.local = -Scale.firstSubBucket(Scale.up(bar.scale), bucket);
         bar.buckets = this.bucketFactory.getBuckets(bucketsDTO);
         this.drawer.showBar(bar);
-        this.drawer.draw(bar);
+        this.drawer.draw(bar);        
+    };
+
+    timeline.prototype.maybeMorePhrases = function(){
+        if(!this.isSearching && this.lastSearch && this.isVisible($("#bottom"))){
+            this.isSearching = true;
+            this.data.getPhrases(this.lastSearch.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
+        }
     };
 
     timeline.prototype.onPhrases = function(scale, xBucket, phrases) {
         this.drawer.setPhrases(phrases, this.term);
-        if(phrases.lastKey && this.isVisible($("#bottom"))){
-            this.data.getPhrases(this.term, scale, xBucket, phrases.lastKey, $.proxy(this.onPhrases, this, scale, xBucket));
+        this.isSearching = false;
+        if(phrases.lastKey){
+            this.lastSearch = {term : this.term, scale : scale, bucket : xBucket, lastKey : phrases.lastKey};
+            this.maybeMorePhrases();
+        }else{
+            this.lastSearch = null;
         }
     };
 
@@ -78,15 +91,15 @@
         $("#termInput").val(this.term);
         this.onFilter();
     };
-    
+
     timeline.prototype.onScroll = function(){
-        //TODO poursuivre
-    }
+        this.maybeMorePhrases();
+    };
 
     timeline.prototype.onFilter = function() {
         this.drawer.hide(0);
         var bar = this.bars[0];
-        this.data.getBuckets(this.term, bar.scale, $.proxy(this.onBuckets, this, bar));
+        this.data.getBuckets(this.term, bar.scale, $.proxy(this.onBuckets, this, bar, null));
         this.drawer.clearText();
     };
 
@@ -95,8 +108,9 @@
             this.drawer.resize(bar);
         }, this);
     };
-    
+
     timeline.prototype.isVisible = function(elem){
+        var marge = 500;
         var $elem = $(elem);
         var $window = $(window);
 
@@ -106,7 +120,7 @@
         var elemTop = $elem.offset().top;
         var elemBottom = elemTop + $elem.height();
 
-        return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+        return (elemBottom-marge) <= docViewBottom;
     };
 
     Time.Timeline = timeline;

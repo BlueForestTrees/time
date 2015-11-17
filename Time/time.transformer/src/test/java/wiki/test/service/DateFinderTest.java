@@ -41,11 +41,11 @@ public class DateFinderTest {
                 "Les revolvers existent depuis au moins le xvie siècle.", "Au XXIe siècle, la montre se porte majoritairement au poignet, généralement du bras gauche, et est dite à montre-bracelet.", 
                 "1777 : l'horloger suisse Abraham Louis Perrelet cràe la à montre à secousses à dite perpàtuelle, souvent considàràe comme la premiàre montre automatique10.", "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.",
                 "La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.",
-                "ISBN 978-27491216979 : La longueur du numéro ISBN devrait être 10 ou 13 et non 14 -- 27 avril 2014 à 23:13 (CEST)", "Dans la ville de Çatal Höyük, fondée en 7000 av. J.-C." };
+                "ISBN 978-27491216979 : La longueur du numéro ISBN devrait être 10 ou 13 et non 14 -- 27 avril 2014 à 23:13 (CEST)", "Dans la ville de Çatal Höyük, fondée en 7000 av. J.-C.",
+                "En 1571, le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2."};
 
         assertThat(jcFinder.findPhrasesWithDates(phrases)).
-        hasSize(4).
-        haveExactly(1, withDate(-4500)).
+        hasSize(5).haveExactly(1, withDate(1571)).haveExactly(1, withDate(-4500)).
         haveExactly(1, withDate(-3500)).
         haveExactly(1, withDate(-2000)).
         haveExactly(1, withDate(-7000));

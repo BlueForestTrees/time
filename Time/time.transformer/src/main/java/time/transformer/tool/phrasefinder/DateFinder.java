@@ -19,7 +19,7 @@ public class DateFinder {
     }
 
     /**
-     * Renvoie une {@link List<Phrase>} de Phrase detectées.
+     * Renvoie une {@link List<FullPhrase>} de Phrase detectées.
      * 
      * @param phrases
      * @return

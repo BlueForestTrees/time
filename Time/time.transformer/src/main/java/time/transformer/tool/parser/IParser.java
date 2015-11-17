@@ -1,7 +1,7 @@
 package time.transformer.tool.parser;
 
-public interface IParser {
-    Long from(final String value);
+import java.util.regex.Matcher;
 
-    String to(final long value);
+public interface IParser {
+    Long from(final Matcher matcher);
 }

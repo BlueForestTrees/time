@@ -26,16 +26,16 @@ public class FindPhrasesModule implements IModule {
 
     @Autowired
     IStorage storage;
-    
+
     @Autowired
     PageReaderService pageReader;
 
     @Autowired
     PageFilter pageFilter;
-    
+
     @Autowired
     PhraseFilter phraseFilter;
-    
+
     @Autowired
     private DateFinder milliardFinder;
 
@@ -53,7 +53,7 @@ public class FindPhrasesModule implements IModule {
 
     @Autowired
     private DateFinder annee2DotFinder;
-    
+
     private static final String[] excludeAfter = new String[] { "Notes et références[", "Bibliographie[", "Liens externes[", "Bibliographie[", "Annexes[" };
 
     private static final Pattern splitPhrasePattern = Pattern.compile("(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))\\.) +");
@@ -65,7 +65,6 @@ public class FindPhrasesModule implements IModule {
         LOG.info("onStart()");
         storage.start();
     }
-
 
     @Override
     public long run(long pageCount) throws IOException, FinDuScanException {
@@ -81,7 +80,7 @@ public class FindPhrasesModule implements IModule {
         }
         return phraseCount;
     }
-    
+
     protected long handle(Page page) throws IOException {
         long count = 0;
         final String text = getCleanText(page.getPageContent());
@@ -92,21 +91,22 @@ public class FindPhrasesModule implements IModule {
 
             final String[] phrases = getPhrases(paragraph);
 
-            count += handlePage(phrases, milliardFinder);
-            count += handlePage(phrases, millionFinder);
-            count += handlePage(phrases, annee2DotFinder);
-            count += handlePage(phrases, enanneFinder);
-            count += handlePage(phrases, jcFinder);
-            count += handlePage(phrases, romanFinder);
+            count += handlePage(page, phrases, milliardFinder);
+            count += handlePage(page, phrases, millionFinder);
+            count += handlePage(page, phrases, annee2DotFinder);
+            count += handlePage(page, phrases, enanneFinder);
+            count += handlePage(page, phrases, jcFinder);
+            count += handlePage(page, phrases, romanFinder);
         }
         return count;
     }
-    
-    protected long handlePage(String[] phrasesArray, DateFinder finder) throws IOException {
+
+    protected long handlePage(Page page, String[] phrasesArray, DateFinder finder) throws IOException {
         long count = 0;
         List<FullPhrase> phrases = finder.findPhrasesWithDates(phrasesArray);
         for (FullPhrase phrase : phrases) {
             if (phraseFilter.keepThisPhrase(phrase)) {
+                phrase.setPageUrl(page.getUrl());
                 storage.store(phrase);
                 count++;
             }
@@ -137,7 +137,6 @@ public class FindPhrasesModule implements IModule {
             return text;
         }
     }
-
 
     @Override
     public void onEnd() {

@@ -32,7 +32,7 @@ public class DateFinderConfig {
 
     @Bean
     public DateFinder jcFinder() {
-        final Pattern pattern = Pattern.compile("(vers|environ) ((?<g>\\d{4})( ans)? (avant|av.) J.-C.)");
+        final Pattern pattern = Pattern.compile("([Vv]ers|[Ee]nviron|[Ee]n) ((?<g>(-)?\\d{4})( ans)?((?<neg> avant| av.) J.-C.)?)");
         final IParser parser = new JCParser();
         return new DateFinder(pattern, parser);
     }
@@ -45,21 +45,14 @@ public class DateFinderConfig {
     }
 
     @Bean
-    public DateFinder enanneFinder() {
-        final Pattern pattern = Pattern.compile("([Ee]n (?<g>(-)?\\d{4}))");
-        final IParser parser = new AnneeParser();
-        return new DateFinder(pattern, parser);
-    }
-
-    @Bean
     public DateFinder annee2DotFinder() {
-        final Pattern pattern = Pattern.compile("((?<g>(-)?\\d{4}) :)");
+        final Pattern pattern = Pattern.compile("(^(?<g>([ -])?\\d{4}) :)");
         final IParser parser = new AnneeParser();
         return new DateFinder(pattern, parser);
     }
 
     @Bean
     public DateFinder[] finders() {
-        return new DateFinder[] { milliardFinder(), millionFinder(), jcFinder(), romanFinder(), enanneFinder(), annee2DotFinder() };
+        return new DateFinder[] { milliardFinder(), millionFinder(), jcFinder(), romanFinder(), annee2DotFinder() };
     }
 }

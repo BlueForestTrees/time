@@ -30,7 +30,7 @@ public class LuceneStorage implements IStorage {
     IndexWriterConfig indexWriterConfig;
     IndexWriter iwriter;
     FacetsConfig config;
-    
+
     @Autowired
     private String indexPath;
 
@@ -41,9 +41,9 @@ public class LuceneStorage implements IStorage {
         indexWriterConfig = new IndexWriterConfig(analyzer);
         indexWriterConfig.setOpenMode(OpenMode.CREATE);
         indexWriterConfig.setRAMBufferSizeMB(256.0);
-        
+
         iwriter = new IndexWriter(directory, indexWriterConfig);
-        
+
         config = new FacetsConfig();
     }
 
@@ -52,13 +52,14 @@ public class LuceneStorage implements IStorage {
 
         final Document doc = new Document();
         doc.add(new TextField("text", phrase.getText(), Store.YES));
+        doc.add(new TextField("pageUrl", phrase.getPageUrl(), Store.YES));
         doc.add(new SortableLongField("date", phrase.getDate(), Store.YES));
-        
+
         doc.add(new LongField("dateByTen", phrase.getDateByTen(), Store.NO));
         doc.add(new LongField("dateByTen3", phrase.getDateByTen3(), Store.NO));
         doc.add(new LongField("dateByTen6", phrase.getDateByTen6(), Store.NO));
         doc.add(new LongField("dateByTen9", phrase.getDateByTen9(), Store.NO));
-        
+
         doc.add(new SortedSetDocValuesFacetField("dateByTen", String.valueOf(phrase.getDateByTen())));
         doc.add(new SortedSetDocValuesFacetField("dateByTen3", String.valueOf(phrase.getDateByTen3())));
         doc.add(new SortedSetDocValuesFacetField("dateByTen6", String.valueOf(phrase.getDateByTen6())));

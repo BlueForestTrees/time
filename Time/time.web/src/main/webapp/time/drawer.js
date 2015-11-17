@@ -25,28 +25,32 @@
     };
 
     barDrawer.prototype.hideBar = function(bar) {
-        $(bar.canvas).hide();
+        $(bar.canvas).fadeOut(100);
     };
     barDrawer.prototype.showBar = function(bar) {
-        $(bar.canvas).show();
+        $(bar.canvas).fadeIn(100);
     };
 
     barDrawer.prototype.clearText = function() {
-        $('#phrases').empty();
+        $('.phrases').empty();
     };
     barDrawer.prototype.setPhrases = function(phrases, filter) {
-        
-        for(var i = 0; i < phrases.phraseList.length; i++){
+
+        var prevOne =  $('.phrases').children().last();
+        var phraseOne = phrases.phraseList[0];
+        if(!prevOne || phraseOne.text !== prevOne.text){
+          $('.phrases').append(("<p date='"+phraseOne.date+"' page='"+phraseOne.pageUrl+"'>" + phraseOne.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
+        }
+
+        for(var i = 1; i < phrases.phraseList.length; i++){
             var prev = phrases.phraseList[i-1];
             var phrase = phrases.phraseList[i];
-            
-            if(i>0 && phrase.date - prev.date > 1000){
-                $('#phrases').append("<p class='indication'>"+((phrase.date - prev.date)/364)+" années plus tard</p>");
+            if(phrase.text !== prev.text){
+                $('.phrases').append(("<p date='"+phrase.date+"' page='"+phrase.pageUrl+"'>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
             }
-            $('#phrases').append(("<p date='"+phrase.date+"'>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
         }
-        
-        $('#phrases').append("<p>   -   -   -   -   -   -   -   -   -   -   -   -   </p>");
+
+        $('.phrases').append("<p>   -   -   -   -   -   -   -   -   -   -   -   -   </p>");
     };
 
     Time.BarDrawer = barDrawer;

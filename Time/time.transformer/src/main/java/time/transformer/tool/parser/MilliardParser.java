@@ -1,15 +1,12 @@
 package time.transformer.tool.parser;
 
+import java.util.regex.Matcher;
+
 public class MilliardParser implements IParser {
 
     @Override
-    public Long from(final String value) {
-        return -(long) (Double.parseDouble(value.replace(',', '.')) * 364250000000L);
-    }
-
-    @Override
-    public String to(final long value) {
-        return "il y a " + value / -364250000000L + " milliards d'années";
+    public Long from(final Matcher matcher) {
+        return -(long) (Double.parseDouble(matcher.group("g").replace(',', '.')) * 364250000000L);
     }
 
 }

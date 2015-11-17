@@ -4,22 +4,21 @@
 
 <meta charset="utf-8" />
 
-<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-<script src="http://momentjs.com/downloads/moment.min.js"></script>
+<script src="lib/jquery-2.1.4.min.js"></script>
 
 <script>
-	window.Time = {};
-	
-	$(document).ready(function() {
-		var timeline = new Time.Timeline();
-	});
+    window.Time = {};
+
+    $(document).ready(function() {
+        var timeline = new Time.Timeline();
+    });
 </script>
 
 <script src="time/viewport.js"></script>
 <script src="time/bucketFactory.js"></script>
 <script src="time/canvasFactory.js"></script>
 <script src="time/bar.js"></script>
-<script src="time/barDrawer.js"></script>
+<script src="time/drawer.js"></script>
 <script src="time/mouse.js"></script>
 <script src="time/timeline.js"></script>
 <script src="time/scale.js"></script>
@@ -31,13 +30,16 @@
 
 </head>
 <body>
-    <p class="bar">
+	<div class="bar">
+		<div>
+			<input class="tooltip"></span>
+		</div>
 		<div id="filtre">
-			<input id="termInput" type="text" width="100%" />
+			<input id="termInput" type="text" />
 		</div>
 		<div id="timeline"></div>
-    </p>
-	<p id="phrases"></p>
+	</div>
+	<div class="phrases"></div>
 	<p id="bottom"></p>
 </body>
 </html>

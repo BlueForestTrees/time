@@ -5,7 +5,6 @@
     }
 
     data.prototype.getBuckets = function(filter, scale, callback) {
-        $.get("synonyms", {term:"dinosaure"}).done(function(data){console.log(data);});
         var params = {
             scale : scale,
             filter : filter

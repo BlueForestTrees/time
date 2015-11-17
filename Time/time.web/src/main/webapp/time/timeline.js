@@ -29,7 +29,6 @@
         this.drawer.hide(1);
 
         // FILTRE
-
         $("#termInput").keypress($.proxy(this.onFiltreKeyPress, this));
         $("input[type='text']").on("click", function() {
             $(this).select();
@@ -65,7 +64,7 @@
         bar.viewport.local = -Scale.firstSubBucket(Scale.up(bar.scale), bucket);
         bar.buckets = this.bucketFactory.getBuckets(bucketsDTO);
         this.drawer.showBar(bar);
-        this.drawer.draw(bar);        
+        this.drawer.draw(bar);
     };
 
     timeline.prototype.maybeMorePhrases = function(){

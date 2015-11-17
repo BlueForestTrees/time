@@ -9,7 +9,7 @@
             filterSelect : filterSelect,
             scroll : scroll
         };
-        $('#phrases').on('dblclick.Textes', data, $.proxy(this.onPhrasesDblClick, this));
+        $('.phrases').on('dblclick.Textes', data, $.proxy(this.onPhrasesDblClick, this));
         $(window).on('scroll', data, $.proxy(this.onScroll, this));
     };
 
@@ -22,34 +22,44 @@
             bucketSelect : bucketSelect,
             drawer : this.drawer
         };
-        $(bar.canvas).on('mousedown.Viewport', data, $.proxy(this.onmouseDown, this));
-        $(bar.canvas).on('mousemove.ViewportTooltip', data, $.proxy(this.onmouseTooltip, this));
+        $(bar.canvas).on('mouseenter.ViewportTooltip', data, $.proxy(this.onEnterTooltip, this));
+        $(bar.canvas).on('mousemove.ViewportTooltip', data, $.proxy(this.onMoveTooltip, this));
+        $(bar.canvas).on('mousedown.Viewport', data, $.proxy(this.onDownBar, this));
+        $(bar.canvas).on('mouseout.ViewportTooltip', data, $.proxy(this.onOutTooltip, this));
     };
 
     /* VIEWPORTTOOLTIP */
-    mouse.prototype.onmouseTooltip = function(event) {
+    mouse.prototype.onEnterTooltip = function() {
+        $(".tooltip").show();
+    };
+    mouse.prototype.onMoveTooltip = function(event) {
         var bar = event.data.bar;
         var mousePosition = this.getmousePosition(event);
         var bucketPosition = bar.getBucketPosition(mousePosition);
         var toolTipText = Scale.getTooltipText(bar.scale, bucketPosition);
-        $("#tooltip").text(toolTipText);
+        $(".tooltip").val(toolTipText);
+        $(".tooltip").css({top: $(bar.canvas).position().top + 34, left: event.clientX+20, position:'absolute'});
     };
+    mouse.prototype.onOutTooltip = function() {
+        $(".tooltip").hide();
+    };
+
 
     /* VIEWPORT */
-    mouse.prototype.onmouseDown = function(event) {
+    mouse.prototype.onDownBar = function(event) {
         event.data.previousX = event.clientX;
-        $(window).on('mousemove.Viewport', event.data, $.proxy(this.onViewportDrag, this));
-        $(window).on('mouseup.Viewport', event.data, $.proxy(this.onViewportUp, this));
+        $(window).on('mousemove.Viewport', event.data, $.proxy(this.onBarDrag, this));
+        $(window).on('mouseup.Viewport', event.data, $.proxy(this.onBarUp, this));
     };
 
-    mouse.prototype.onViewportDrag = function(event) {
+    mouse.prototype.onBarDrag = function(event) {
         event.data.bar.viewport.local += event.clientX - event.data.previousX;
         event.data.drawer.draw(event.data.bar);
         event.data.previousX = event.clientX;
         event.data.move = true;
     };
 
-    mouse.prototype.onViewportUp = function(event) {
+    mouse.prototype.onBarUp = function(event) {
         if (!event.data.move) {
             this.onmouseClick(event);
         }

@@ -49,33 +49,35 @@
     scale.prototype.up = function(scale) {
         return this.details[scale].up;
     };
-    scale.prototype.getTooltipText = function(scale, bucket) {
-        var years = this.getYears(scale, bucket);
+    scale.prototype.getTooltipText = function(scale, bucketX) {
+        var years = this.getYears(scale, bucketX);
+        var start = bucketX > 0 ? 'Dans ' : 'Il y a ';
         var echelle = this.getEchelle(years);
 
         switch (echelle) {
         case this.echelles.milliard:
-            return Math.round(years / this.echelles.milliard) + " milliards d'années";
+            return start + Math.abs(Math.round(years / this.echelles.milliard)) + " milliards d'années";
         case this.echelles.million:
-            return this.dec(years / this.echelles.million) + " millions d'années";
+            return start + this.dec(years / this.echelles.million) + " millions d'années";
         case this.echelles.millier:
         case this.echelles.un:
             var negative = years < 0;
             var roundYears = Math.round(years);
-
             if (roundYears === 0)
-                return "de nos jours";
+                return "De nos jours";
             if (negative)
                 return roundYears + " av. JC";
             else
                 return "en " + roundYears;
             break;
+        default:
+            return 'WWWOOOOOWWW';
         }
     };
 
     scale.prototype.dec = function(value) {
         var decimals = Math.abs(value) < 10 ? 10 : 1;
-        return Math.round(value * decimals) / decimals;
+        return Math.abs(Math.round(value * decimals) / decimals);
     };
 
     scale.prototype.getEchelle = function(years) {

@@ -10,6 +10,8 @@ public class PhraseFilter {
     public boolean keepThisPhrase(Phrase phrase) {
         boolean startWithCatogories = phrase.getText().startsWith("Catégories :");
         boolean tooLong = phrase.getText().length() > 1000;
-        return !startWithCatogories && !tooLong;
+        boolean tooShort = phrase.getText().length() < 100;
+
+        return !startWithCatogories && !tooLong && !tooShort;
     }
 }

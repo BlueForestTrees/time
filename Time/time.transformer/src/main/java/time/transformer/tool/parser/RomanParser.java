@@ -1,27 +1,12 @@
 package time.transformer.tool.parser;
 
+import java.util.regex.Matcher;
+
 public class RomanParser implements IParser {
 
-    private static final int[] numbers = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-    private static final String[] letters = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
-
     @Override
-    public String to(final long nbJours) {
-        long nbSiecles = 1 + nbJours / 36425;
-        String result = "";
-        for (int i = 0; i < numbers.length; i++) {
-            while (nbSiecles >= numbers[i]) {
-                result += letters[i];
-                nbSiecles -= numbers[i];
-            }
-        }
-        return "au " + result + "e siècle";
-
-    }
-
-    @Override
-    public Long from(final String roman) {
-        final String romanUp = roman.toUpperCase();
+    public Long from(final Matcher matcher) {
+        final String romanUp = matcher.group("g").toUpperCase();
 
         int i = 0;
         Long arabic = 0L;
@@ -47,7 +32,7 @@ public class RomanParser implements IParser {
 
     }
 
-    private int letterToNumber(char letter) {
+    private static int letterToNumber(char letter) {
         switch (letter) {
             case 'I':
                 return 1;

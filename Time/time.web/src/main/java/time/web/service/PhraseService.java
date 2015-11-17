@@ -78,11 +78,11 @@ public class PhraseService {
             final Document doc = indexSearcher.doc(scoreDoc.doc);
             final Phrase phrase = new Phrase();
             phrase.setText(doc.get("text"));
+            phrase.setPageUrl(doc.get("pageUrl"));
             phrase.setDate((long) doc.getField("date").numericValue());
             return phrase;
         } catch (IOException e) {
             throw new LuceneRuntimeException(e);
         }
     }
-
 }

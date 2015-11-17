@@ -30,8 +30,7 @@ public class DateFinder {
             final Matcher matcher = pattern.matcher(phraseString);
             while (matcher.find()) {
                 final String dateExtract = matcher.group();
-                final String number = matcher.group("g");
-                final Long date = parser.from(number);
+                final Long date = parser.from(matcher);
                 final FullPhrase phrase = new FullPhrase();
                 phrase.setText(phraseString.replace(dateExtract, "<strong>" + dateExtract + "</strong>"));
                 phrase.setDate(date);

@@ -1,17 +1,17 @@
 package time.transformer.tool.parser;
 
+import java.util.regex.Matcher;
+
 public class JCParser implements IParser {
 
-    private final AnneeParser anneeParser = new AnneeParser();
-
     @Override
-    public Long from(String value) {
-        return -anneeParser.from(value);
-    }
-
-    @Override
-    public String to(long value) {
-        return anneeParser.to(value);
+    public Long from(Matcher matcher) {
+        final long result = (long) (Double.parseDouble(matcher.group("g")) * 364.25);
+        if(matcher.group("neg") != null){
+            return -result;
+        }else{
+            return result;
+        }
     }
 
 }

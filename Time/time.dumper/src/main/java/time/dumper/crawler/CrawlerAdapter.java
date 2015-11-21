@@ -1,6 +1,6 @@
 package time.dumper.crawler;
 
-import time.dumper.factory.DumperFactory;
+import time.dumper.Helper;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
@@ -12,7 +12,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
  *
  */
 public class CrawlerAdapter extends WebCrawler {
-    private IPageHandler crawler = DumperFactory.getCrawler(DumperFactory.getConfig());
+    private IPageHandler pageHandler = Helper.getPageHandler();
 
     /**
      * You should implement this function to specify whether the given url
@@ -20,7 +20,7 @@ public class CrawlerAdapter extends WebCrawler {
      */
     @Override
     public boolean shouldVisit(Page page, WebURL url) {
-        return crawler.shouldVisit(url.getURL());
+        return pageHandler.shouldVisit(url.getURL());
     }
 
     /**
@@ -29,11 +29,11 @@ public class CrawlerAdapter extends WebCrawler {
      */
     @Override
     public void visit(Page page) {
-        crawler.visit(page);
+        pageHandler.visit(page);
     }
 
     @Override
     public void onBeforeExit() {
-        crawler.end();
+        pageHandler.end();
     }
 }

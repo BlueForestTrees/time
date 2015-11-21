@@ -9,7 +9,8 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 public class LogWriter implements IWriter {
-    private static final Logger LOG = Logger.getLogger("pagestore");
+    private static final String PAGESTORE = "pagestore";
+    private static final Logger LOG = Logger.getLogger(PAGESTORE);
     private String sep;
     private String baseUrl;
 

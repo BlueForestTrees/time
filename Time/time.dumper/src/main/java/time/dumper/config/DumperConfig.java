@@ -2,19 +2,42 @@ package time.dumper.config;
 
 import java.util.regex.Pattern;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.stereotype.Component;
+
 /**
  * Regroupe l'ensemble du paramétrage d'un dump.
  * @author Slimane
  *
  */
+@Component
 public class DumperConfig {
+    
+    @Autowired
+    private ApplicationArguments args;
+    
+    private String sep;
+    private Pattern filter;
+    private String[] excludeFilter;
+    private int nbPageLog;
+    private String seedUrl;
+    private int nbCrawlers;
+    private int delay;
+    private int maxPages;
+    private String crawlPath;
+    private boolean resumable;
+    private String baseUrl;
+    private boolean write;
+    private boolean help;
+    private String storagePath; 
+    private String maxFileSize;
 
 	public DumperConfig(){
 		this.setMaxPages(-1);
 		this.setStoragePath("C:/Time/data/pages");
 		this.setNbPageLog(1000);
 		this.setWrite(true);
-		this.setStoreType(StoreType.DIRECT);
 		this.setSeedUrl("http://fr.wikipedia.org/wiki/Portail:Accueil");
 		this.setDelay(1);
 		this.setNbCrawlers(50);
@@ -26,45 +49,6 @@ public class DumperConfig {
 		this.setFilter(Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$"));
 		this.setSep("|¨");
 	}
-	
-	public enum StoreType{
-		ARRAY,
-		CONCURRENT,
-		MONGO,
-		DIRECT;
-		
-		public static StoreType fromString(String value){
-			switch(value){
-				case "array":
-					return ARRAY;
-				case "concurrent":
-					return CONCURRENT;
-				case "mongo":
-					return MONGO;
-				case "direct":
-					return DIRECT;
-				default:
-					throw new RuntimeException(value + " not a storageType. Use array, concurrent, direct or mongo.");
-			}
-		}
-	};
-	
-	private String sep;
-	private Pattern filter;
-	private String[] excludeFilter;
-	private int nbPageLog;
-	private StoreType storeType;
-	private String seedUrl;
-	private int nbCrawlers;
-	private int delay;
-	private int maxPages;
-	private String crawlPath;
-	private boolean resumable;
-	private String baseUrl;
-	private boolean write;
-	private boolean help;
-	private String storagePath; 
-	private String maxFileSize;
 	
 	public String[] getExcludeFilter() {
 		return excludeFilter;
@@ -136,14 +120,6 @@ public class DumperConfig {
 		this.nbPageLog = nbPageLog;
 	}
 
-	public StoreType getStoreType() {
-		return storeType;
-	}
-
-	public void setStoreType(StoreType storeType) {
-		this.storeType = storeType;
-	}
-
 	public String getSeedUrl() {
 		return seedUrl;
 	}
@@ -203,7 +179,6 @@ public class DumperConfig {
 		sb.append("\ndelay="+getDelay());
 		sb.append("\ncrawlPath="+getCrawlPath());
 		sb.append("\nbaseUrl="+getBaseUrl());
-		sb.append("\nstoreType="+getStoreType());
 		sb.append("\nnbPageLog="+getNbPageLog());
 		sb.append("\nresumable="+isResumable());
 		sb.append("\nwrite="+isWrite());

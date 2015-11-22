@@ -1,4 +1,4 @@
-package time.dumper.writer;
+package time.downloader.writer;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 

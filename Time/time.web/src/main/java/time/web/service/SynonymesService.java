@@ -29,15 +29,13 @@ public class SynonymesService {
             }
         };
         ResponseExtractor<List<String>> responseExtractor = new ResponseExtractor<List<String>>() {
-
             @Override
             public List<String> extractData(ClientHttpResponse httpResponse) throws IOException {
                 final String response = StreamUtils.copyToString(httpResponse.getBody(), Charset.forName("UTF-8"));
-                final List<String> synonyms = new ArrayList();
-
+                final List<String> synonyms = new ArrayList<>();
                 int fromIndex = 0;
-                int i = 0;
-                int i2 = 0;
+                int i;
+                int i2;
 
                 for (int nb = 0; nb <= 3; nb++) {
                     i = response.indexOf("><a href=\"/des/synonymes", fromIndex);
@@ -48,7 +46,6 @@ public class SynonymesService {
                 synonyms.remove(0);
                 return synonyms;
             }
-
         };
         return t.execute(url, HttpMethod.GET, requestCallback, responseExtractor);
     }

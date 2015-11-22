@@ -1,19 +1,19 @@
-package time.dumper.crawler;
+package time.downloader.crawler;
 
-import time.dumper.Helper;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 /**
- * Cette classe est passée à crawl4j.
+ * Cette classe est passée à crawl4j qui en fait des instances.
  * 
  * @author Slimane
  *
  */
 public class CrawlerAdapter extends WebCrawler {
-    private IPageHandler pageHandler = Helper.getPageHandler();
-
+    
+    public static IPageHandler pageHandler;
+    
     /**
      * You should implement this function to specify whether the given url
      * should be crawled or not (based on your crawling logic).

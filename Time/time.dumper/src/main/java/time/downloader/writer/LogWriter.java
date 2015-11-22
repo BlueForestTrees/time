@@ -1,8 +1,9 @@
-package time.dumper.writer;
+package time.downloader.writer;
 
 import java.util.Set;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -10,7 +11,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class LogWriter implements IWriter {
     private static final String PAGESTORE = "pagestore";
-    private static final Logger LOG = Logger.getLogger(PAGESTORE);
+    private static final Logger LOG = LogManager.getLogger(PAGESTORE);
     private String sep;
     private String baseUrl;
 

@@ -1,4 +1,4 @@
-package time.dumper.writer.layout;
+package time.downloader.writer;
 
 import java.nio.charset.Charset;
 

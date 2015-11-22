@@ -1,4 +1,4 @@
-package time.dumper;
+package time.downloader;
 
 import java.io.Serializable;
 
@@ -19,8 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import time.dumper.config.DumperConfig;
-import time.dumper.writer.layout.PageLayout;
+import time.downloader.writer.PageLayout;
 
 @Component
 public class StorageConfig {
@@ -28,10 +27,10 @@ public class StorageConfig {
     private static final String PAGESTORE = "pagestore";
     
     @Autowired
-    private DumperConfig config;
+    private ParamsConfig.Values config;
     
     @Bean
-    private String configureStorage() {
+    public String configureStorage() {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final Configuration logConfig = ctx.getConfiguration();
         final String fileName = config.getStoragePath();

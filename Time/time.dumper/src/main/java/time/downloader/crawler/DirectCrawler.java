@@ -1,17 +1,18 @@
-package time.dumper.crawler;
+package time.downloader.crawler;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import time.dumper.writer.IWriter;
+import time.downloader.writer.IWriter;
 import time.tool.chrono.Chrono;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 
 public class DirectCrawler implements IPageHandler {
-    private static final Logger LOGGER = Logger.getLogger(DirectCrawler.class);
+    private static final Logger LOGGER = LogManager.getLogger(DirectCrawler.class);
     protected Pattern filters;
     protected long pageCount;
     protected long nbPageLog;

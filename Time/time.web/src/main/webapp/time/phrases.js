@@ -12,20 +12,20 @@
     phrases.prototype.onPhrasesDblClick = function(event) {
         event.stopImmediatePropagation();
         if (window.getSelection()) {
-            var term = window.getSelection().toString().trim();
-            Time.view.termInput.val(term);
-            Time.filter.onFilter(term);
+            Time.filter.term = window.getSelection().toString().trim();
+            Time.filter.onFilter();
+            Time.view.termInput.val(Time.filter.term);
         }
     };
 
-    phrases.prototype.loadPhrases = function(scale, bucket, term) {
-        Time.data.getPhrases(term, scale, bucket, null, $.proxy(this.onPhrases, this, scale, bucket));
+    phrases.prototype.loadPhrases = function(scale, bucket) {
+        Time.data.getPhrases(Time.filter.term, scale, bucket, null, $.proxy(this.onPhrases, this, scale, bucket));
     };
 
     phrases.prototype.maybeMorePhrases = function() {
         if (!this.isSearching && this.lastSearch && this.isBottomVisible()) {
             this.isSearching = true;
-            Time.data.getPhrases(this.lastSearch.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
+            Time.data.getPhrases(Time.filter.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
         }
     };
 
@@ -34,7 +34,6 @@
         this.isSearching = false;
         if (phrases.lastKey) {
             this.lastSearch = {
-                term : this.term,
                 scale : scale,
                 bucket : xBucket,
                 lastKey : phrases.lastKey

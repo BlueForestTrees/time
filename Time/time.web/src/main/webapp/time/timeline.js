@@ -7,7 +7,7 @@
         Time.data = new Time.Data();
         Time.bucketFactory = new Time.BucketFactory();
         Time.filter = new Time.Filter();
-
+        
         // BARMOUSE
         var onBucketSelectCall = $.proxy(this.onBucketSelect, this);
         Time.bars.forEach(function(bar) {
@@ -16,7 +16,7 @@
 
         // INIT BAR 0
         var topbar = Time.bars[0];
-        topbar.loadBuckets();
+        topbar.loadBuckets(Time.filter.term);
         Time.drawer.hideBar(1);
 
         Time.drawer.install();
@@ -35,7 +35,7 @@
         } else {
             var subBar = Time.bars[Time.bars.indexOf(bar) + 1];
             var parentBucket = bucket.bucket;
-            subBar.loadBuckets(null, parentBucket);
+            subBar.loadBuckets(Time.filter.term, parentBucket);
         }
     };
 

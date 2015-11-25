@@ -4,10 +4,10 @@
 
     }
 
-    data.prototype.getBuckets = function(filter, scale, callback) {
+    data.prototype.getBuckets = function(term, scale, callback) {
         var params = {
             scale : scale,
-            filter : filter
+            filter : term
         };
         $.get("buckets", params).done(callback);
     };
@@ -20,6 +20,13 @@
             lastKey : lastKey
         };
         $.get("phrases", params).done(callback);
+    };
+
+    data.prototype.getSynonyms = function(term, callback) {
+        var params = {
+            term : term
+        };
+        $.get("synonyms", params).done(callback);
     };
 
     Time.Data = data;

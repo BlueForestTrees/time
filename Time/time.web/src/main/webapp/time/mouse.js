@@ -1,17 +1,7 @@
 (function() {
-    function mouse(drawer) {
-        this.drawer = drawer;
-    }
+    function mouse() {
 
-    /* COMMON */
-    mouse.prototype.install = function(filterSelect, scroll) {
-        var data = {
-            filterSelect : filterSelect,
-            scroll : scroll
-        };
-        $('.phrases').on('dblclick.Textes', data, $.proxy(this.onPhrasesDblClick, this));
-        $(window).on('scroll', data, $.proxy(this.onScroll, this));
-    };
+    }
 
     mouse.prototype.installBar = function(bar, bucketSelect) {
         var data = {
@@ -19,8 +9,7 @@
             deltaX : null,
             bar : bar,
             move : false,
-            bucketSelect : bucketSelect,
-            drawer : this.drawer
+            bucketSelect : bucketSelect
         };
         $(bar.canvas).on('mouseenter.ViewportTooltip', data, $.proxy(this.onEnterTooltip, this));
         $(bar.canvas).on('mousemove.ViewportTooltip', data, $.proxy(this.onMoveTooltip, this));
@@ -30,31 +19,34 @@
 
     /* VIEWPORTTOOLTIP */
     mouse.prototype.onEnterTooltip = function() {
-        $(".tooltip").show();
+        Time.view.toolTip.show();
     };
     mouse.prototype.onMoveTooltip = function(event) {
         var bar = event.data.bar;
         var mousePosition = this.getmousePosition(event);
         var bucketPosition = bar.getBucketPosition(mousePosition);
         var toolTipText = Scale.getTooltipText(bar.scale, bucketPosition);
-        $(".tooltip").val(toolTipText);
-        $(".tooltip").css({top: $(bar.canvas).position().top + 34, left: event.clientX+20, position:'absolute'});
+        var toolTipTop = $(bar.canvas).position().top + 14;
+        var toolTipLeft = event.clientX+20;
+
+        Time.view.toolTip.val(toolTipText);
+        Time.view.toolTip.css({top: toolTipTop, left: toolTipLeft, position:'absolute'});
     };
     mouse.prototype.onOutTooltip = function() {
-        $(".tooltip").hide();
+        Time.view.toolTip.hide();
     };
 
 
     /* VIEWPORT */
     mouse.prototype.onDownBar = function(event) {
         event.data.previousX = event.clientX;
-        $(window).on('mousemove.Viewport', event.data, $.proxy(this.onBarDrag, this));
-        $(window).on('mouseup.Viewport', event.data, $.proxy(this.onBarUp, this));
+        Time.view.window.on('mousemove.Viewport', event.data, $.proxy(this.onBarDrag, this));
+        Time.view.window.on('mouseup.Viewport', event.data, $.proxy(this.onBarUp, this));
     };
 
     mouse.prototype.onBarDrag = function(event) {
         event.data.bar.viewport.local += event.clientX - event.data.previousX;
-        event.data.drawer.draw(event.data.bar);
+        Time.drawer.drawBar(event.data.bar);
         event.data.previousX = event.clientX;
         event.data.move = true;
     };
@@ -65,8 +57,8 @@
         }
         event.data.move = false;
 
-        $(window).off('mousemove.Viewport');
-        $(window).off('mouseup.Viewport');
+        Time.view.window.off('mousemove.Viewport');
+        Time.view.window.off('mouseup.Viewport');
     };
 
     /* BUCKET SELECT */
@@ -76,18 +68,6 @@
         if (bucket) {
             event.data.bucketSelect(bucket, event.data.bar);
         }
-    };
-
-    /* TEXT TO FILTER */
-    mouse.prototype.onPhrasesDblClick = function(event) {
-        event.stopImmediatePropagation();
-        if (window.getSelection()) {
-            event.data.filterSelect(window.getSelection().toString().trim());
-        }
-    };
-
-    mouse.prototype.onScroll = function(event){
-        event.data.scroll();
     };
 
     /* UTIL */

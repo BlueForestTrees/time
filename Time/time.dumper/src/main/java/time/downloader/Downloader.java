@@ -26,6 +26,8 @@ public class Downloader implements CommandLineRunner{
     private static final Log LOG = LogFactory.getLog(Downloader.class);
     @Autowired
     private ParamsConfig.Values params;
+    @Autowired
+    private StorageConfig storageConfig;
 
     @Bean
     public LogWriter logWriter() {
@@ -81,6 +83,7 @@ public class Downloader implements CommandLineRunner{
 
     @Override
     public void run(String... args) throws Exception {
+        storageConfig.configureStorage();
         CrawlerAdapter.pageHandler = pageHandler();
         if (params.isHelp()) {
             LOG.info("configuration du crawler" + params.getConfAsString());

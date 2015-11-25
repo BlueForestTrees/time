@@ -32,14 +32,14 @@ public class DateFinderConfig {
 
     @Bean
     public DateFinder jcFinder() {
-        final Pattern pattern = Pattern.compile("([Vv]ers|[Ee]nviron|[Ee]n) ((?<g>(-)?\\d{4})( ans)?((?<neg> avant| av.) J.-C.)?)");
+        final Pattern pattern = Pattern.compile("([Vv]ers|[Ee]nviron|[Ee]n) (?<g>(-)?\\d{4})( ans)?(?<neg> avant| av. J.-C.)?");
         final IParser parser = new JCParser();
         return new DateFinder(pattern, parser);
     }
 
     @Bean
     public DateFinder romanFinder() {
-        final Pattern pattern = Pattern.compile("( (?<g>[ixvlcmIXVLCM]+)e siècle)");
+        final Pattern pattern = Pattern.compile("( (?<g>[ixvIXV]+)e siècle)");
         final IParser parser = new RomanParser();
         return new DateFinder(pattern, parser);
     }

@@ -16,7 +16,6 @@ import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import time.downloader.writer.PageLayout;
@@ -29,7 +28,6 @@ public class StorageConfig {
     @Autowired
     private ParamsConfig.Values config;
     
-    @Bean
     public String configureStorage() {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final Configuration logConfig = ctx.getConfiguration();

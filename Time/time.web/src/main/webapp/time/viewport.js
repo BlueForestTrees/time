@@ -1,12 +1,13 @@
-(function(){
-	function Viewport(){
-		this.global = 1000;
-		this.local = 0;
-	}
-	
-	Viewport.prototype.delta = function(){
-		return this.global + this.local;
-	}
-	
-	Time.Viewport = Viewport;
+(function() {
+    //constructeur
+    function viewport() {
+        this.global = 1000;
+        this.local = 0;
+    };
+
+    viewport.prototype.delta = function() {
+        return this.global + this.local;
+    };
+
+    Time.Viewport = viewport;
 })();

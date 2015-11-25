@@ -1,7 +1,5 @@
 package time.downloader;
 
-
-
 import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
 public class ParamsConfig {
 
     private static final Logger LOGGER = LogManager.getLogger(ParamsConfig.class);
-    private static final String HISTOIRE_ARG_PREFIX = "-H";
     private static final String SEED_URL = "seedUrl";
     private static final String NB_CRAWLERS = "nbCrawlers";
     private static final String MAX_PAGES = "maxPages";
@@ -28,57 +25,51 @@ public class ParamsConfig {
     private static final String HELP = "help";
     private static final String STORAGE_PATH = "storagePath";
     private static final String MAX_FILE_SIZE = "maxFileSize";
-    
+
     @Autowired
     private ApplicationArguments args;
-    
+
     @Bean
     public Values config() {
         final Values config = new Values();
         final String[] sourceArgs = args.getSourceArgs();
-        
-        for (int i = 0; i < sourceArgs.length; i++) {
-            final String arg = sourceArgs[i];
-            if (arg.startsWith(HISTOIRE_ARG_PREFIX)) {
-                final String key = arg.replace(HISTOIRE_ARG_PREFIX, "");
-                i++;
-                String value = sourceArgs[i];
-                if (key.equalsIgnoreCase(SEED_URL)) {
-                    config.setSeedUrl(value);
-                } else if (key.equalsIgnoreCase(NB_CRAWLERS)) {
-                    config.setNbCrawlers(Integer.parseInt(value));
-                } else if (key.equalsIgnoreCase(DELAY)) {
-                    config.setDelay(Integer.parseInt(value));
-                } else if (key.equalsIgnoreCase(MAX_PAGES)) {
-                    config.setMaxPages(Integer.parseInt(value));
-                } else if (key.equalsIgnoreCase(CRAWL_PATH)) {
-                    config.setCrawlPath(value);
-                } else if (key.equalsIgnoreCase(BASE_URL)) {
-                    config.setBaseUrl(value);
-                } else if (key.equalsIgnoreCase(NB_PAGE_LOG)) {
-                    config.setNbPageLog(Integer.parseInt(value));
-                } else if (key.equalsIgnoreCase(RESUMABLE)) {
-                    config.setResumable(Boolean.parseBoolean(value));
-                } else if (key.equalsIgnoreCase(WRITE)) {
-                    config.setWrite(Boolean.parseBoolean(value));
-                } else if (key.equalsIgnoreCase(HELP)) {
-                    config.setHelp(Boolean.parseBoolean(value));
-                } else if (key.equalsIgnoreCase(STORAGE_PATH)) {
-                    config.setStoragePath(value);
-                } else if (key.equalsIgnoreCase(MAX_FILE_SIZE)) {
-                    config.setMaxFileSize(value);
-                } else {
-                    LOGGER.warn("unknown parameter: " + key + "=" + value);
-                }
+
+        for (int i = 0; i < sourceArgs.length; i += 2) {
+            final String key = sourceArgs[i];
+            final String value = sourceArgs[i + 1];
+            if (key.equalsIgnoreCase(SEED_URL)) {
+                config.setSeedUrl(value);
+            } else if (key.equalsIgnoreCase(NB_CRAWLERS)) {
+                config.setNbCrawlers(Integer.parseInt(value));
+            } else if (key.equalsIgnoreCase(DELAY)) {
+                config.setDelay(Integer.parseInt(value));
+            } else if (key.equalsIgnoreCase(MAX_PAGES)) {
+                config.setMaxPages(Integer.parseInt(value));
+            } else if (key.equalsIgnoreCase(CRAWL_PATH)) {
+                config.setCrawlPath(value);
+            } else if (key.equalsIgnoreCase(BASE_URL)) {
+                config.setBaseUrl(value);
+            } else if (key.equalsIgnoreCase(NB_PAGE_LOG)) {
+                config.setNbPageLog(Integer.parseInt(value));
+            } else if (key.equalsIgnoreCase(RESUMABLE)) {
+                config.setResumable(Boolean.parseBoolean(value));
+            } else if (key.equalsIgnoreCase(WRITE)) {
+                config.setWrite(Boolean.parseBoolean(value));
+            } else if (key.equalsIgnoreCase(HELP)) {
+                config.setHelp(Boolean.parseBoolean(value));
+            } else if (key.equalsIgnoreCase(STORAGE_PATH)) {
+                config.setStoragePath(value);
+            } else if (key.equalsIgnoreCase(MAX_FILE_SIZE)) {
+                config.setMaxFileSize(value);
             } else {
-                LOGGER.warn("unknown parameter: " + arg);
+                LOGGER.warn("unknown parameter: " + key + "=" + value);
             }
         }
         return config;
     }
-    
+
     public class Values {
-        
+
         private String sep;
         private Pattern filter;
         private String[] excludeFilter;
@@ -92,10 +83,10 @@ public class ParamsConfig {
         private String baseUrl;
         private boolean write;
         private boolean help;
-        private String storagePath; 
+        private String storagePath;
         private String maxFileSize;
 
-        public Values(){
+        public Values() {
             this.setMaxPages(-1);
             this.setStoragePath("C:/Time/data/pages");
             this.setNbPageLog(1000);
@@ -111,7 +102,7 @@ public class ParamsConfig {
             this.setFilter(Pattern.compile(".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$"));
             this.setSep("|¨");
         }
-        
+
         public String[] getExcludeFilter() {
             return excludeFilter;
         }
@@ -119,21 +110,23 @@ public class ParamsConfig {
         public void setExcludeFilter(String[] excludeFilter) {
             this.excludeFilter = excludeFilter;
         }
-        
+
         public String getSep() {
             return sep;
         }
-        
+
         public void setSep(String sep) {
             this.sep = sep;
         }
+
         public Pattern getFilter() {
             return filter;
         }
-        
+
         public void setFilter(Pattern filter) {
             this.filter = filter;
         }
+
         public String getMaxFileSize() {
             return maxFileSize;
         }
@@ -230,28 +223,28 @@ public class ParamsConfig {
             this.resumable = resumable;
         }
 
-        public String getConfAsString(){
+        public String getConfAsString() {
             StringBuilder sb = new StringBuilder();
 
             sb.append("\n");
             sb.append("\n----------CRAWL CONFIG-------------");
-            sb.append("\nseedUrl="+getSeedUrl());
-            sb.append("\nnbCrawlers="+getNbCrawlers());
-            sb.append("\nmaxPages="+getMaxPages());
-            sb.append("\ndelay="+getDelay());
-            sb.append("\ncrawlPath="+getCrawlPath());
-            sb.append("\nbaseUrl="+getBaseUrl());
-            sb.append("\nnbPageLog="+getNbPageLog());
-            sb.append("\nresumable="+isResumable());
-            sb.append("\nwrite="+isWrite());
-            sb.append("\nstoragePath="+getStoragePath());
-            sb.append("\nmaxFileSize="+getMaxFileSize());
+            sb.append("\nseedUrl=" + getSeedUrl());
+            sb.append("\nnbCrawlers=" + getNbCrawlers());
+            sb.append("\nmaxPages=" + getMaxPages());
+            sb.append("\ndelay=" + getDelay());
+            sb.append("\ncrawlPath=" + getCrawlPath());
+            sb.append("\nbaseUrl=" + getBaseUrl());
+            sb.append("\nnbPageLog=" + getNbPageLog());
+            sb.append("\nresumable=" + isResumable());
+            sb.append("\nwrite=" + isWrite());
+            sb.append("\nstoragePath=" + getStoragePath());
+            sb.append("\nmaxFileSize=" + getMaxFileSize());
             sb.append("\n--------END CRAWL CONFIG-----------");
             sb.append("\n");
-            
+
             return sb.toString();
         }
 
     }
-    
+
 }

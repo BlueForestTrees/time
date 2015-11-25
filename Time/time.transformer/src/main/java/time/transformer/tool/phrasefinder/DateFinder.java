@@ -42,7 +42,7 @@ public class DateFinder {
 
     @Override
     public String toString() {
-        return parser.getClass().getName();
+        return "DateFinder<"+parser.getClass().getSimpleName()+">";
     }
 
 }

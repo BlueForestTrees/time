@@ -17,9 +17,9 @@
 		<Logger name="time" level="info">
 			<AppenderRef ref="Console" />
 		</Logger>
-		<Logger name="time.dumper.crawler" level="debug">
+		<Logger name="time.downloader.crawler" level="debug">
 		</Logger>
-		<Logger name="org.springframework" level="debug">
+		<Logger name="org.springframework" level="info">
 			<AppenderRef ref="Console" />
 		</Logger>
 	</Loggers>

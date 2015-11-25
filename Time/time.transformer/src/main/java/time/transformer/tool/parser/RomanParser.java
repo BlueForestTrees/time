@@ -40,14 +40,6 @@ public class RomanParser implements IParser {
                 return 5;
             case 'X':
                 return 10;
-            case 'L':
-                return 50;
-            case 'C':
-                return 100;
-            case 'D':
-                return 500;
-            case 'M':
-                return 1000;
             default:
                 throw new NumberFormatException("Illegal character \"" + letter + "\" in Roman numeral");
         }

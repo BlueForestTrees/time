@@ -1,12 +1,28 @@
 (function() {
-    function barDrawer(bars) {
-        this.bars = bars;
+    function drawer() {
+
     }
-    barDrawer.prototype.resize = function(bar) {
-        bar.canvas.width = window.innerWidth - 2;
-        this.draw(bar);
+
+    drawer.prototype.install = function() {
+        this.resizeAllBars();
+        $(window).on('resize', this.resizeAllBars);
     };
-    barDrawer.prototype.draw = function(bar) {
+
+    drawer.prototype.resizeAllBars = function() {
+        Time.bars.forEach(Time.drawer.resizeBar);
+    };
+
+    drawer.prototype.resizeBar = function(bar) {
+        bar.canvas.width = window.innerWidth - 2;
+        Time.drawer.drawBar(bar);
+    };
+
+    drawer.prototype.drawShowBar = function(bar) {
+        this.drawBar(bar);
+        this.showBar(bar);
+    };
+
+    drawer.prototype.drawBar = function(bar) {
         bar.context.fillStyle = 'rgb(255,255,255)';
         bar.context.fillRect(0, 0, bar.canvas.width, bar.canvas.height);
         var nbBuckets = bar.buckets.length;
@@ -17,41 +33,49 @@
         }
     };
 
-    barDrawer.prototype.hide = function(barIndex) {
-        while (barIndex < this.bars.length) {
-            this.hideBar(this.bars[barIndex]);
+    drawer.prototype.hideBar = function(barIndex) {
+        while (barIndex < Time.bars.length) {
+            this.hideBarBar(Time.bars[barIndex]);
             barIndex++;
         }
     };
 
-    barDrawer.prototype.hideBar = function(bar) {
+    drawer.prototype.hideBarBar = function(bar) {
         $(bar.canvas).fadeOut(100);
     };
-    barDrawer.prototype.showBar = function(bar) {
+    drawer.prototype.showBar = function(bar) {
         $(bar.canvas).fadeIn(100);
     };
 
-    barDrawer.prototype.clearText = function() {
-        $('.phrases').empty();
+    drawer.prototype.clearText = function() {
+        Time.view.phrases.empty();
     };
-    barDrawer.prototype.setPhrases = function(phrases, filter) {
+    drawer.prototype.setPhrases = function(phrases, filter) {
 
-        var prevOne =  $('.phrases').children().last();
+        var prevOne = Time.view.phrases.children().last();
         var phraseOne = phrases.phraseList[0];
-        if(!prevOne || phraseOne.text !== prevOne.text){
-          $('.phrases').append(("<p date='"+phraseOne.date+"' page='"+phraseOne.pageUrl+"'>" + phraseOne.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
+        if (!prevOne || phraseOne.text !== prevOne.text) {
+            Time.view.phrases.append(this.buildHtmlPhrase(phraseOne, filter));
         }
 
-        for(var i = 1; i < phrases.phraseList.length; i++){
-            var prev = phrases.phraseList[i-1];
+        for (var i = 1; i < phrases.phraseList.length; i++) {
+            var prev = phrases.phraseList[i - 1];
             var phrase = phrases.phraseList[i];
-            if(phrase.text !== prev.text){
-                $('.phrases').append(("<p date='"+phrase.date+"' page='"+phrase.pageUrl+"'>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>'));
+            if (phrase.text !== prev.text) {
+                Time.view.phrases.append(this.buildHtmlPhrase(phrase, filter));
             }
         }
 
-        $('.phrases').append("<p>   -   -   -   -   -   -   -   -   -   -   -   -   </p>");
+        Time.view.phrases.append("<p>   -   -   -   -   -   -   -   -   -   -   -   -   </p>");
     };
 
-    Time.BarDrawer = barDrawer;
+    drawer.prototype.buildHtmlPhrase = function(phrase, filter) {
+        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>');
+    };
+
+    drawer.prototype.setPhraseTooltip = function(text) {
+        Time.view.phrases.append("<h1>" + text + ". . .</h1>");
+    };
+
+    Time.Drawer = drawer;
 })();

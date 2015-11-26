@@ -33,7 +33,6 @@
         var saisie = Time.view.termInput.val().trim();
         var newSaisie = saisie + ' ' + synonyms.join(' ');
         Time.view.termInput.val(newSaisie);
-        //TODO menu deroulant proposant les synonymes
     };
 
     filter.prototype.onFiltreEnter = function() {

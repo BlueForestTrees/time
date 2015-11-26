@@ -38,6 +38,11 @@ public class DateFinderTest {
     private DateFinder[] finders;
     
     @Test
+    public void test12(){
+        assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
+    }
+    
+    @Test
     public void test11(){
         assertOnly(jcFinder, yearIs(1571), "En 1571, le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
     }

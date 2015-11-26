@@ -1,5 +1,7 @@
 package time.web.service;
 
+import java.util.Arrays;
+
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -20,7 +22,7 @@ public class QueryService {
             return new MatchAllDocsQuery();
         }
 
-        TermQuery textQuery = noTerm ? null : new TermQuery(new Term("text", term));
+        Query textQuery = noTerm ? null : getTermQuery(term);
         Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(bucketName, bucketValueFrom, bucketValueTo, true, true);
 
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
@@ -31,5 +33,16 @@ public class QueryService {
             builder.add(bucketQuery, Occur.MUST);
         }
         return builder.build();
+    }
+
+    protected Query getTermQuery(String term) {
+        boolean multiTerm = term.contains(" ");
+        if(!multiTerm){
+            return new TermQuery(new Term("text", term));            
+        }else{
+            final BooleanQuery.Builder builder = new BooleanQuery.Builder();
+            Arrays.stream(term.split(" ")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.SHOULD));
+            return builder.build();
+        }
     }
 }

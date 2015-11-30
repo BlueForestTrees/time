@@ -38,9 +38,15 @@ public class DateFinderTest {
     private DateFinder[] finders;
     
     @Test
+    public void test13(){
+        assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
+    }
+    
+    @Test
     public void test12(){
         assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
     }
+    
     
     @Test
     public void test11(){

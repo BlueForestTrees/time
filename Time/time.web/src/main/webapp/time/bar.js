@@ -3,7 +3,7 @@
         this.scale = scale;
         this.viewport = new Time.Viewport();
         this.buckets = [];
-        this.context = new Time.CanvasFactory().build(50, scale);
+        this.context = new Time.CanvasFactory().build(25, scale);
         this.canvas = this.context.canvas;
         this.amplitude = 10;
     }

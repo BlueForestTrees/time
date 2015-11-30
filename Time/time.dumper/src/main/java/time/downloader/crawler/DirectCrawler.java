@@ -10,20 +10,21 @@ import time.downloader.writer.IWriter;
 import time.tool.chrono.Chrono;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
+import edu.uci.ics.crawler4j.url.WebURL;
 
 public class DirectCrawler implements IPageHandler {
     private static final Logger LOGGER = LogManager.getLogger(DirectCrawler.class);
     protected Pattern filters;
     protected long pageCount;
     protected long nbPageLog;
-    protected boolean write;
     protected String baseUrl;
     protected Chrono chrono;
     protected Chrono fullChrono;
     protected long nbLog;
     protected IWriter writer;
     private int pageTotal;
-    private String[] toExclude = new String[] { "spécial:", "sp%c3%a9cial:", "discussion_wikipédia:", "discussion_wikip%c3%a9dia:", "cat%c3%a9gorie:", "catégorie:", "utilisateur:", "projet:", "discussion_projet:", "aide:", "wikipédia:", "wikip%c3%a9dia:", "fichier:" };
+    private String[] hrefExclusion = new String[] { "spécial:", "sp%c3%a9cial:", "discussion_wikipédia:", "discussion_wikip%c3%a9dia:", "cat%c3%a9gorie:", "catégorie:", "utilisateur:", "projet:", "discussion_projet:", "aide:", "wikipédia:", "wikip%c3%a9dia:", "fichier:" };
+    private String[] contentExclusion = new String[] { "\t\t\t(Redirigé depuis " };
 
     public DirectCrawler() {
         if (LOGGER.isDebugEnabled()) {
@@ -71,14 +72,6 @@ public class DirectCrawler implements IPageHandler {
         this.pageCount = pageCount;
     }
 
-    public boolean isWrite() {
-        return write;
-    }
-
-    public void setWrite(boolean write) {
-        this.write = write;
-    }
-
     public long getNbPageLog() {
         return nbPageLog;
     }
@@ -88,35 +81,36 @@ public class DirectCrawler implements IPageHandler {
     }
 
     @Override
-    public boolean shouldVisit(String url) {
-        final String href = url.toLowerCase();
-        if (href.startsWith(baseUrl) && !filters.matcher(href).matches() && !Arrays.stream(toExclude).anyMatch(term -> href.contains(term))) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
     public void visit(Page page) {
         if (page.getParseData() instanceof HtmlParseData) {
-            if (write) {
+            final String content = ((HtmlParseData) page.getParseData()).getText();
+            if (Arrays.stream(contentExclusion).noneMatch(term -> content.contains(term))) {
                 writer.writePage(page);
-            }
-            pageCount++;
-            if (LOGGER.isDebugEnabled() && (pageCount % nbPageLog == 0)) {
-                nbLog++;
-                chrono.stop();
-                fullChrono.stop();
-                LOGGER.debug("#" + pageCount + ", Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(nbLog) + ", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal));
-                chrono.start();
+                pageCount++;
+                if (LOGGER.isDebugEnabled() && (pageCount % nbPageLog == 0)) {
+                    nbLog++;
+                    chrono.stop();
+                    fullChrono.stop();
+                    LOGGER.debug("#" + pageCount + ", Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(nbLog) + ", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal));
+                    chrono.start();
+                }
             }
         }
-
     }
 
     @Override
     public void end() {
         // rien
+    }
+
+    @Override
+    public boolean shouldVisit(Page page, WebURL url) {
+        final String href = url.getURL().toLowerCase();
+        boolean startsWithBaseUrl = href.startsWith(baseUrl);
+        boolean validHrefPattern = !filters.matcher(href).matches();
+        boolean validHrefContent = Arrays.stream(hrefExclusion).noneMatch(term -> href.contains(term));
+
+        return startsWithBaseUrl && validHrefPattern && validHrefContent;
     }
 
 }

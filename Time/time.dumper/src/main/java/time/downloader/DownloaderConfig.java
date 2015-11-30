@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ParamsConfig {
+public class DownloaderConfig {
 
-    private static final Logger LOGGER = LogManager.getLogger(ParamsConfig.class);
+    private static final Logger LOGGER = LogManager.getLogger(DownloaderConfig.class);
     private static final String SEED_URL = "seedUrl";
     private static final String NB_CRAWLERS = "nbCrawlers";
     private static final String MAX_PAGES = "maxPages";
@@ -53,8 +53,6 @@ public class ParamsConfig {
                 config.setNbPageLog(Integer.parseInt(value));
             } else if (key.equalsIgnoreCase(RESUMABLE)) {
                 config.setResumable(Boolean.parseBoolean(value));
-            } else if (key.equalsIgnoreCase(WRITE)) {
-                config.setWrite(Boolean.parseBoolean(value));
             } else if (key.equalsIgnoreCase(HELP)) {
                 config.setHelp(Boolean.parseBoolean(value));
             } else if (key.equalsIgnoreCase(STORAGE_PATH)) {
@@ -81,20 +79,18 @@ public class ParamsConfig {
         private String crawlPath;
         private boolean resumable;
         private String baseUrl;
-        private boolean write;
         private boolean help;
         private String storagePath;
         private String maxFileSize;
 
         public Values() {
             this.setMaxPages(-1);
-            this.setStoragePath("C:/Time/data/pages");
+            this.setStoragePath("C:/Time/data/download/pages");
             this.setNbPageLog(1000);
-            this.setWrite(true);
             this.setSeedUrl("http://fr.wikipedia.org/wiki/Portail:Accueil");
-            this.setDelay(1);
+            this.setDelay(10);
             this.setNbCrawlers(50);
-            this.setCrawlPath("C:/Time/crawldata");
+            this.setCrawlPath("C:/Time/data/crawldata");
             this.setBaseUrl("https://fr.wikipedia.org/wiki");
             this.setResumable(false);
             this.setHelp(false);
@@ -149,14 +145,6 @@ public class ParamsConfig {
 
         public void setHelp(boolean help) {
             this.help = help;
-        }
-
-        public boolean isWrite() {
-            return write;
-        }
-
-        public void setWrite(boolean write) {
-            this.write = write;
         }
 
         public String getBaseUrl() {
@@ -236,7 +224,6 @@ public class ParamsConfig {
             sb.append("\nbaseUrl=" + getBaseUrl());
             sb.append("\nnbPageLog=" + getNbPageLog());
             sb.append("\nresumable=" + isResumable());
-            sb.append("\nwrite=" + isWrite());
             sb.append("\nstoragePath=" + getStoragePath());
             sb.append("\nmaxFileSize=" + getMaxFileSize());
             sb.append("\n--------END CRAWL CONFIG-----------");

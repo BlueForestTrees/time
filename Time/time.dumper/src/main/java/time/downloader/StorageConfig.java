@@ -26,7 +26,7 @@ public class StorageConfig {
     private static final String PAGESTORE = "pagestore";
     
     @Autowired
-    private ParamsConfig.Values config;
+    private DownloaderConfig.Values config;
     
     public String configureStorage() {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);

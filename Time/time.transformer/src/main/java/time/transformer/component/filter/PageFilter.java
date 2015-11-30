@@ -24,9 +24,7 @@ public class PageFilter {
     }
 
     public boolean isNewPage(Page page) {
-        final boolean isNew = !urlsLowerCase.contains(normalizedUrl(page));
-
-        return isNew;
+        return !urlsLowerCase.contains(normalizedUrl(page));
     }
 
     public boolean isValidPage(Page page) {

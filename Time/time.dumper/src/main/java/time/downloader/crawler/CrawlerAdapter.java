@@ -20,7 +20,7 @@ public class CrawlerAdapter extends WebCrawler {
      */
     @Override
     public boolean shouldVisit(Page page, WebURL url) {
-        return pageHandler.shouldVisit(url.getURL());
+        return pageHandler.shouldVisit(page, url);
     }
 
     /**

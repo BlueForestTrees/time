@@ -25,7 +25,7 @@ public class Downloader implements CommandLineRunner{
 
     private static final Log LOG = LogFactory.getLog(Downloader.class);
     @Autowired
-    private ParamsConfig.Values params;
+    private DownloaderConfig.Values params;
     @Autowired
     private StorageConfig storageConfig;
 
@@ -41,7 +41,6 @@ public class Downloader implements CommandLineRunner{
     public IPageHandler pageHandler() {
         final DirectCrawler handler = new DirectCrawler();
         handler.setNbPageLog(params.getNbPageLog());
-        handler.setWrite(params.isWrite());
         handler.setBaseUrl(params.getBaseUrl());
         handler.setFilters(params.getFilter());
         handler.setWriter(logWriter());

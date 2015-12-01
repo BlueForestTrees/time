@@ -65,8 +65,6 @@
                 Time.view.phrases.append(this.buildHtmlPhrase(phrase, filter));
             }
         }
-
-        Time.view.phrases.append("<p>   -   -   -   -   -   -   -   -   -   -   -   -   </p>");
     };
 
     drawer.prototype.buildHtmlPhrase = function(phrase, filter) {
@@ -74,7 +72,11 @@
     };
 
     drawer.prototype.setPhraseTooltip = function(text) {
-        Time.view.phrases.append("<h1>" + text + ". . .</h1>");
+        Time.view.phrases.append("<h1>Il était une fois " + text + " . . .</h1>");
+    };
+
+    drawer.prototype.addTheEnd = function() {
+        Time.view.phrases.append("<h1><center>The END<center></h1>");
     };
 
     Time.Drawer = drawer;

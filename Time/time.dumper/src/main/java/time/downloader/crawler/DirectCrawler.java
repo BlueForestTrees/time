@@ -14,7 +14,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class DirectCrawler implements IPageHandler {
     private static final Logger LOGGER = LogManager.getLogger(DirectCrawler.class);
-    protected Pattern filters;
+    protected Pattern urlRegexBlackList;
     protected long pageCount;
     protected long nbPageLog;
     protected String baseUrl;
@@ -23,7 +23,7 @@ public class DirectCrawler implements IPageHandler {
     protected long nbLog;
     protected IWriter writer;
     private int pageTotal;
-    private String[] hrefExclusion = new String[] { "spécial:", "sp%c3%a9cial:", "discussion_wikipédia:", "discussion_wikip%c3%a9dia:", "cat%c3%a9gorie:", "catégorie:", "utilisateur:", "projet:", "discussion_projet:", "aide:", "wikipédia:", "wikip%c3%a9dia:", "fichier:" };
+    private String[] urlBlackList = new String[] { "spécial:", "sp%c3%a9cial:", "discussion_wikipédia:", "discussion_wikip%c3%a9dia:", "cat%c3%a9gorie:", "catégorie:", "utilisateur:", "projet:", "discussion_projet:", "aide:", "wikipédia:", "wikip%c3%a9dia:", "fichier:" };
     private String[] contentExclusion = new String[] { "\t\t\t(Redirigé depuis " };
 
     public DirectCrawler() {
@@ -40,12 +40,12 @@ public class DirectCrawler implements IPageHandler {
         this.pageTotal = maxPages;
     }
 
-    public Pattern getFilters() {
-        return filters;
+    public Pattern getUrlRegexBlackList() {
+        return urlRegexBlackList;
     }
 
-    public void setFilters(Pattern filters) {
-        this.filters = filters;
+    public void setUrlRegexBlackList(Pattern filters) {
+        this.urlRegexBlackList = filters;
     }
 
     public IWriter getWriter() {
@@ -106,11 +106,12 @@ public class DirectCrawler implements IPageHandler {
     @Override
     public boolean shouldVisit(Page page, WebURL url) {
         final String href = url.getURL().toLowerCase();
-        boolean startsWithBaseUrl = href.startsWith(baseUrl);
-        boolean validHrefPattern = !filters.matcher(href).matches();
-        boolean validHrefContent = Arrays.stream(hrefExclusion).noneMatch(term -> href.contains(term));
+        
+        final boolean startsWithBaseUrl = href.startsWith(baseUrl);
+        final boolean urlRegexBlackListed = urlRegexBlackList.matcher(href).matches();
+        final boolean urlBlackListed = Arrays.stream(urlBlackList).anyMatch(term -> href.contains(term));
 
-        return startsWithBaseUrl && validHrefPattern && validHrefContent;
+        return startsWithBaseUrl && !urlRegexBlackListed && !urlBlackListed;
     }
 
 }

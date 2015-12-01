@@ -7,7 +7,7 @@
         Time.data = new Time.Data();
         Time.bucketFactory = new Time.BucketFactory();
         Time.filter = new Time.Filter();
-        
+
         // BARMOUSE
         var onBucketSelectCall = $.proxy(this.onBucketSelect, this);
         Time.bars.forEach(function(bar) {
@@ -25,7 +25,7 @@
     }
 
     timeline.prototype.onBucketSelect = function(bucket, bar) {
-        Time.drawer.hideBar(Time.bars.indexOf(bar)+1);
+        Time.drawer.hideBar(Time.bars.indexOf(bar) + 1);
         Time.drawer.clearText();
         // affiche les phrases
         if (bucket.count < 50 || bar.scale === Scale.TEN) {

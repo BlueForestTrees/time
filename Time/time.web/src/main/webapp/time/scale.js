@@ -49,26 +49,27 @@
     scale.prototype.up = function(scale) {
         return this.details[scale].up;
     };
-    scale.prototype.getTooltipText = function(scale, bucketX) {
+    scale.prototype.getTooltipText = function(scale, bucketX, bucket) {
         var years = this.getYears(scale, bucketX);
         var start = bucketX > 0 ? 'Dans ' : 'Il y a ';
         var echelle = this.getEchelle(years);
+        var end = bucket ? " ("+bucket.count+")" : "";
 
         switch (echelle) {
         case this.echelles.milliard:
-            return start + Math.abs(Math.round(years / this.echelles.milliard)) + " milliards d'années";
+            return start + Math.abs(Math.round(years / this.echelles.milliard)) + " milliards d'années" + end;
         case this.echelles.million:
-            return start + this.dec(years / this.echelles.million) + " millions d'années";
+            return start + this.dec(years / this.echelles.million) + " millions d'années" + end;
         case this.echelles.millier:
         case this.echelles.un:
             var negative = years < 0;
             var roundYears = Math.round(years);
             if (roundYears === 0)
-                return "De nos jours";
+                return "De nos jours" + end;
             if (negative)
-                return roundYears + " av. JC";
+                return roundYears + " av. JC" + end;
             else
-                return "en " + roundYears;
+                return "en " + roundYears + end;
             break;
         default:
             return 'WWWOOOOOWWW';

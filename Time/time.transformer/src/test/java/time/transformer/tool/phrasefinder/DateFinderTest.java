@@ -1,4 +1,4 @@
-package wiki.test.service;
+package time.transformer.tool.phrasefinder;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import time.repo.bean.Phrase;
 import time.transformer.config.DateFinderConfig;
-import time.transformer.tool.phrasefinder.DateFinder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DateFinderConfig.class)
@@ -150,5 +149,20 @@ public class DateFinderTest {
             }
         }.as("année correcte");
     }
+    
+    
+    @Test
+    public void testPreparePhrase(){
+        testPreparePhrase("AAA[g]BBB[sdfg]CCC", "AAABBBCCC");
+        testPreparePhrase("sdf[g]seef[sdfg]", "sdfseef");
+        testPreparePhrase("[tt]sdf[g]seef[sdfg]sddf", "sdfseefsddf");
+
+    }
+    
+    private void testPreparePhrase(final String text, final String expectedText){
+        final String actualText = milliardFinder.preparePhrase(text, "neverreachthis");
+        assertThat(actualText).as("phrase mal préparée").isEqualTo(expectedText);
+    }
+    
 
 }

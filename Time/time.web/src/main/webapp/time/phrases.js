@@ -41,6 +41,7 @@
             this.maybeMorePhrases();
         } else {
             this.lastSearch = null;
+            Time.drawer.addTheEnd();
         }
     };
 

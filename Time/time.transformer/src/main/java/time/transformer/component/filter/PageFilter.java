@@ -1,5 +1,6 @@
 package time.transformer.component.filter;
 
+import java.util.Arrays;
 import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import time.repo.bean.Page;
 public class PageFilter {
 
     private HashSet<String> urlsLowerCase = new HashSet<String>();
+    private String[] urlBlackList = new String[] { "#", "Portail:" };
 
     @Autowired
     private int urlMaxLength;
@@ -28,10 +30,12 @@ public class PageFilter {
     }
 
     public boolean isValidPage(Page page) {
-        final boolean startWithPortail = page.getUrl().startsWith("Portail:");
+        final String url = page.getUrl();
+
+        final boolean urlBlackListed = Arrays.stream(urlBlackList).anyMatch(term -> url.contains(term));
         final boolean urlTooLong = page.getUrl().length() > urlMaxLength;
 
-        return !urlTooLong && !startWithPortail;
+        return !urlTooLong && urlBlackListed;
     }
 
     public boolean isValidNewPage(Page page) {

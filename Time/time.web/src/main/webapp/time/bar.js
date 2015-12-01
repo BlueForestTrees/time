@@ -1,9 +1,9 @@
 (function() {
     function bar(scale) {
         this.scale = scale;
-        this.viewport = new Time.Viewport();
+        this.viewport = new Time.Viewport(this.scale);
         this.buckets = [];
-        this.context = new Time.CanvasFactory().build(25, scale);
+        this.context = new Time.CanvasFactory().build(35, scale);
         this.canvas = this.context.canvas;
         this.amplitude = 10;
     }
@@ -51,11 +51,7 @@
 
     bar.prototype.loadBuckets = function(term, parentBucket) {
         Time.data.getBuckets(term, this.scale, $.proxy(this.onBuckets, this));
-        this.lookAt(parentBucket);
-    };
-
-    bar.prototype.lookAt = function(parentBucket) {
-        this.viewport.local = -Scale.firstSubBucket(Scale.up(this.scale), parentBucket);
+        this.viewport.lookAt(parentBucket);
     };
 
     bar.prototype.onBuckets = function(bucketsDTO) {

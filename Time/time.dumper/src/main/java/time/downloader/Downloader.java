@@ -42,7 +42,7 @@ public class Downloader implements CommandLineRunner{
         final DirectCrawler handler = new DirectCrawler();
         handler.setNbPageLog(params.getNbPageLog());
         handler.setBaseUrl(params.getBaseUrl());
-        handler.setFilters(params.getFilter());
+        handler.setUrlRegexBlackList(params.getFilter());
         handler.setWriter(logWriter());
         handler.setMaxPages(params.getMaxPages());
         return handler;

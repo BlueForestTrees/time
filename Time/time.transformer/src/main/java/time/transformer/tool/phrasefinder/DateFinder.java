@@ -26,18 +26,22 @@ public class DateFinder {
      */
     public List<FullPhrase> findPhrasesWithDates(String[] phrases) {
         final List<FullPhrase> result = new ArrayList<>();
-        for (String phraseString : phrases) {
-            final Matcher matcher = pattern.matcher(phraseString);
+        for (String text : phrases) {
+            final Matcher matcher = pattern.matcher(text);
             while (matcher.find()) {
                 final String dateExtract = matcher.group();
                 final Long date = parser.from(matcher);
                 final FullPhrase phrase = new FullPhrase();
-                phrase.setText(phraseString.replace(dateExtract, "<strong>" + dateExtract + "</strong>"));
+                phrase.setText(preparePhrase(text, dateExtract));
                 phrase.setDate(date);
                 result.add(phrase);
             }
         }
         return result;
+    }
+
+    protected String preparePhrase(final String phrase, final String dateExtract) {
+        return phrase.replace(dateExtract, "<strong>" + dateExtract + "</strong>").replaceAll("\\[.*?\\]", "");
     }
 
     @Override

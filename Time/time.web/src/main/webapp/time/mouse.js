@@ -25,17 +25,23 @@
         var bar = event.data.bar;
         var mousePosition = this.getmousePosition(event);
         var bucketPosition = bar.getBucketPosition(mousePosition);
-        var toolTipText = Scale.getTooltipText(bar.scale, bucketPosition);
-        var toolTipTop = $(bar.canvas).position().top + 14;
-        var toolTipLeft = event.clientX+20;
+        var bucket = event.data.bar.searchBucketAt(mousePosition);
+        var toolTipText = Scale.getTooltipText(bar.scale, bucketPosition, bucket);
+        var toolTipTop = $(bar.canvas).position().top + 5;
+        var toolTipLeft = event.clientX + 20;
+        var width = ((toolTipText.length + 1) * 6) + 'px';
 
         Time.view.toolTip.val(toolTipText);
-        Time.view.toolTip.css({top: toolTipTop, left: toolTipLeft, position:'absolute'});
+        Time.view.toolTip.css({
+            top : toolTipTop,
+            left : toolTipLeft,
+            width : width,
+            position : 'absolute'
+        });
     };
     mouse.prototype.onOutTooltip = function() {
         Time.view.toolTip.hide();
     };
-
 
     /* VIEWPORT */
     mouse.prototype.onDownBar = function(event) {

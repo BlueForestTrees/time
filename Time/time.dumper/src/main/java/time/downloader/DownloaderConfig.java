@@ -88,7 +88,7 @@ public class DownloaderConfig {
             this.setStoragePath("C:/Time/data/downloader/pages/pages");
             this.setNbPageLog(1000);
             this.setSeedUrl("http://fr.wikipedia.org/wiki/Portail:Accueil");
-            this.setDelay(50);
+            this.setDelay(25);
             this.setNbCrawlers(50);
             this.setCrawlPath("C:/Time/data/downloader/crawldata");
             this.setBaseUrl("https://fr.wikipedia.org/wiki");

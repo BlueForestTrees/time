@@ -49,9 +49,6 @@ public class FindPhrasesModule implements IModule {
     private DateFinder romanFinder;
 
     @Autowired
-    private DateFinder enanneFinder;
-
-    @Autowired
     private DateFinder annee2DotFinder;
 
     private static final String[] excludeAfter = new String[] { "Notes et références[", "Bibliographie[", "Liens externes[", "Bibliographie[", "Annexes[" };
@@ -94,7 +91,6 @@ public class FindPhrasesModule implements IModule {
             count += handlePage(page, phrases, milliardFinder);
             count += handlePage(page, phrases, millionFinder);
             count += handlePage(page, phrases, annee2DotFinder);
-            count += handlePage(page, phrases, enanneFinder);
             count += handlePage(page, phrases, jcFinder);
             count += handlePage(page, phrases, romanFinder);
         }

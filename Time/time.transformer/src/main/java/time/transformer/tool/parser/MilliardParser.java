@@ -6,7 +6,11 @@ public class MilliardParser implements IParser {
 
     @Override
     public Long from(final Matcher matcher) {
-        return -(long) (Double.parseDouble(matcher.group("g").replace(',', '.')) * 364250000000L);
+        if("ard".equals(matcher.group("s"))){
+            return -(long) (Double.parseDouble(matcher.group("g").replace(',', '.')) * 364250000000L);
+        }else{
+            return -(long) (Double.parseDouble(matcher.group("g").replace(',', '.')) * 364250000L);
+        }
     }
 
 }

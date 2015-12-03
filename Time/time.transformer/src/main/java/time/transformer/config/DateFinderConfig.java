@@ -9,7 +9,6 @@ import time.transformer.tool.parser.AnneeParser;
 import time.transformer.tool.parser.IParser;
 import time.transformer.tool.parser.JCParser;
 import time.transformer.tool.parser.MilliardParser;
-import time.transformer.tool.parser.MillionParser;
 import time.transformer.tool.parser.RomanParser;
 import time.transformer.tool.phrasefinder.DateFinder;
 
@@ -18,15 +17,8 @@ public class DateFinderConfig {
 
     @Bean
     public DateFinder milliardFinder() {
-        final Pattern pattern = Pattern.compile("il y a( environ)? (?<g>\\d+([,\\.]\\d+)?) milliards d'années");
+        final Pattern pattern = Pattern.compile("il y a( environ)? (?<g>\\d+([,\\.]\\d+)?) milli(?<s>ard|on)s? d'années");
         final IParser parser = new MilliardParser();
-        return new DateFinder(pattern, parser);
-    }
-
-    @Bean
-    public DateFinder millionFinder() {
-        final Pattern pattern = Pattern.compile("il y a( environ)? (?<g>\\d+([,\\.]\\d+)?) millions d'années");
-        final IParser parser = new MillionParser();
         return new DateFinder(pattern, parser);
     }
 
@@ -46,13 +38,13 @@ public class DateFinderConfig {
 
     @Bean
     public DateFinder annee2DotFinder() {
-        final Pattern pattern = Pattern.compile("^(?<g>([ -])?\\d{4}) :");
+        final Pattern pattern = Pattern.compile("^(([Vv]ers|[Ee]nviron|[Ee]n) )?(?<g>([ -])?\\d{4}) ?:");
         final IParser parser = new AnneeParser();
         return new DateFinder(pattern, parser);
     }
 
     @Bean
     public DateFinder[] finders() {
-        return new DateFinder[] { milliardFinder(), millionFinder(), jcFinder(), romanFinder(), annee2DotFinder() };
+        return new DateFinder[] { milliardFinder(), jcFinder(), romanFinder(), annee2DotFinder() };
     }
 }

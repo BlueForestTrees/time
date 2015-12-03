@@ -22,9 +22,6 @@ public class DateFinderTest {
     private DateFinder milliardFinder;
 
     @Autowired
-    private DateFinder millionFinder;
-
-    @Autowired
     private DateFinder jcFinder;
 
     @Autowired
@@ -36,16 +33,26 @@ public class DateFinderTest {
     @Autowired
     private DateFinder[] finders;
 
-   /* @Test
-    public void test16(){
-        assertOnly(annee2DotFinder, yearIs(1650), "1650: retour vers le futur.");
-    }*/
-
     @Test
-    public void test6(){
-        assertOnly(annee2DotFinder, yearIs(1777), "1777 : l'horloger suisse Abraham Louis Perrelet cràe la à montre à secousses à dite perpàtuelle, souvent considàràe comme la premiàre montre automatique10.");
+    public void twoDot1(){
+        assertOnly(annee2DotFinder, yearIs(1650), "1650: retour vers le futur.");
     }
 
+    @Test
+    public void twoDot2(){
+        assertOnly(annee2DotFinder, yearIs(1650), "En 1650: retour vers le futur.");
+    }
+
+    @Test
+    public void twoDot3(){
+        assertOnly(annee2DotFinder, yearIs(1777), "1777 : l'horloger suisse Abraham Louis Perrelet cràe la à montre à secousses à dite perpàtuelle, souvent considàràe comme la premiàre montre automatique10.");
+    }
+/*
+    @Test
+    public void twoDot4(){
+        assertOnly(annee2DotFinder, yearIs(1650), "En 1650, retour vers le futur.");
+    }
+*/
     @Test
     public void test13(){
         assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
@@ -71,20 +78,28 @@ public class DateFinderTest {
         assertOnly(jcFinder, yearIs(-1600), "En 1600 avant J.C., le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
     }
     @Test
-    public void test8(){
+    public void testMilliard1(){
         assertOnly(milliardFinder, yearIs(-2400000000L),"La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
     }
     @Test
-    public void test82(){
+    public void testMilliard2(){
         assertOnly(milliardFinder, yearIs(-25400000000L),"Super il y a environ 25,4 milliards d'années, à une autre époque.");
     }
     @Test
-    public void test83(){
+    public void testMilliard3(){
         assertOnly(milliardFinder, yearIs(-25490000000L),"Super il y a environ 25,49 milliards d'années, à une autre époque.");
     }
     @Test
-    public void test7(){
-        assertOnly(millionFinder, yearIs(-65000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
+    public void testMillions4(){
+        assertOnly(milliardFinder, yearIs(-65000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
+    }
+    @Test
+    public void testMillions5(){
+        assertOnly(milliardFinder, yearIs(-1000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 million d'années.");
+    }
+    @Test
+    public void testMillions6(){
+        assertOnly(milliardFinder, yearIs(-1000000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
     }
 
     @Test
@@ -170,7 +185,7 @@ public class DateFinderTest {
             public boolean matches(Phrase phrase) {
                 return phrase.getDate() == (long) (annee * 364.25);
             }
-        }.as("année correcte");
+        }.as("année correcte : " + (long) (annee * 364.25));
     }
     
     

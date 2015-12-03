@@ -47,12 +47,12 @@ public class DateFinderTest {
     public void twoDot3(){
         assertOnly(annee2DotFinder, yearIs(1777), "1777 : l'horloger suisse Abraham Louis Perrelet cràe la à montre à secousses à dite perpàtuelle, souvent considàràe comme la premiàre montre automatique10.");
     }
-/*
+
     @Test
     public void twoDot4(){
         assertOnly(annee2DotFinder, yearIs(1650), "En 1650, retour vers le futur.");
     }
-*/
+
     @Test
     public void test13(){
         assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");

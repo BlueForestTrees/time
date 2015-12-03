@@ -35,35 +35,58 @@ public class DateFinderTest {
 
     @Autowired
     private DateFinder[] finders;
-    
+
+   /* @Test
+    public void test16(){
+        assertOnly(annee2DotFinder, yearIs(1650), "1650: retour vers le futur.");
+    }*/
+
+    @Test
+    public void test6(){
+        assertOnly(annee2DotFinder, yearIs(1777), "1777 : l'horloger suisse Abraham Louis Perrelet cràe la à montre à secousses à dite perpàtuelle, souvent considàràe comme la premiàre montre automatique10.");
+    }
+
     @Test
     public void test13(){
         assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
     }
-    
+
     @Test
     public void test12(){
         assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
     }
-    
-    
+
+    @Test
+    public void test14(){
+        assertOnly(jcFinder, yearIs(2000), "Vers l'an 2000, gros bug.");
+    }
+
     @Test
     public void test11(){
         assertOnly(jcFinder, yearIs(1571), "En 1571, le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
+    }
+
+    @Test
+    public void test15(){
+        assertOnly(jcFinder, yearIs(-1600), "En 1600 avant J.C., le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
     }
     @Test
     public void test8(){
         assertOnly(milliardFinder, yearIs(-2400000000L),"La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
     }
     @Test
+    public void test82(){
+        assertOnly(milliardFinder, yearIs(-25400000000L),"Super il y a environ 25,4 milliards d'années, à une autre époque.");
+    }
+    @Test
+    public void test83(){
+        assertOnly(milliardFinder, yearIs(-25490000000L),"Super il y a environ 25,49 milliards d'années, à une autre époque.");
+    }
+    @Test
     public void test7(){
         assertOnly(millionFinder, yearIs(-65000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
     }
-    @Test
-    public void test6(){
-        assertOnly(annee2DotFinder, yearIs(1777),"1777 : l'horloger suisse Abraham Louis Perrelet cràe la à montre à secousses à dite perpàtuelle, souvent considàràe comme la premiàre montre automatique10.");
-    }
-    
+
     @Test
     public void test5(){
         assertOnly(romanFinder, yearIs(2000),"Au XXIe siècle, la montre se porte majoritairement au poignet, généralement du bras gauche, et est dite à montre-bracelet.");

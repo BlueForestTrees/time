@@ -1,5 +1,7 @@
 package time.transformer.tool.parser;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.regex.Matcher;
 
 /**
@@ -11,6 +13,8 @@ public class AnneeParser
     @Override
     public Long from(final Matcher matcher)
     {
-        return (long) (Double.parseDouble(matcher.group("g")) * 364.25);
+        final int annee = Integer.parseInt(matcher.group("g"));
+
+        return LocalDate.of(annee, Month.JANUARY, 1).toEpochDay() + seventiesInDays;
     }
 }

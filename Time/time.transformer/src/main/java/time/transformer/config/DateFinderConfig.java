@@ -9,6 +9,7 @@ import time.transformer.tool.parser.AnneeParser;
 import time.transformer.tool.parser.IParser;
 import time.transformer.tool.parser.JCParser;
 import time.transformer.tool.parser.MilliardParser;
+import time.transformer.tool.parser.PreciseParser;
 import time.transformer.tool.parser.RomanParser;
 import time.transformer.tool.phrasefinder.DateFinder;
 
@@ -40,6 +41,13 @@ public class DateFinderConfig {
     public DateFinder annee2DotFinder() {
         final Pattern pattern = Pattern.compile("^(([Vv]ers|[Ee]nviron|[Ee]n) )?(?<g>([ -])?\\d{4}) ?:");
         final IParser parser = new AnneeParser();
+        return new DateFinder(pattern, parser);
+    }
+
+    @Bean
+    public DateFinder preciseFinder() {
+        final Pattern pattern = Pattern.compile("sdfojphjbzeldsiidsh");
+        final IParser parser = new PreciseParser();
         return new DateFinder(pattern, parser);
     }
 

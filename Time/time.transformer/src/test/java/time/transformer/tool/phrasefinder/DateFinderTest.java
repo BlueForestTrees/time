@@ -40,7 +40,10 @@ public class DateFinderTest {
     private DateFinder[] finders;
 
     @Test public void precise1(){
-        assertOnly(preciseFinder, dateIs(date(9, Month.MARCH, 1968)), "Il a disputé son premier test match le 9 mars 1968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
+        assertOnly(preciseFinder, dateIs(date(9, Month.MARCH, 1968)), "Il a disputé son premier test match le 9 Mars 1968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
+    }
+    @Test public void precise2(){
+        assertOnly(preciseFinder, dateIs(date(9, Month.MARCH, 968)), "Il a disputé son premier test match le 9 mars 968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
     }
 
 /*
@@ -64,7 +67,7 @@ public class DateFinderTest {
     }
 
     @Test
-    public void twoDot4(){
+    public void jc1(){
         assertOnly(jcFinder, yearIs(1650), "En 1650, retour vers le futur.");
     }
 
@@ -79,99 +82,109 @@ public class DateFinderTest {
     }
 
     @Test
-    public void test14(){
+    public void jc2(){
         assertOnly(jcFinder, yearIs(2000), "Vers l'an 2000, gros bug.");
     }
 
     @Test
-    public void test11(){
+    public void jc3(){
         assertOnly(jcFinder, yearIs(1571), "En 1571, le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
     }
 
     @Test
-    public void test15(){
+    public void jc4(){
         assertOnly(jcFinder, yearIs(-1600), "En 1600 avant J.C., le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
     }
-    /*@Test
-    public void testMilliard1(){
-        assertOnly(milliardFinder, yearIs(-2400000000L),"La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
-    }
     @Test
-    public void testMilliard2(){
-        assertOnly(milliardFinder, yearIs(-25400000000L),"Super il y a environ 25,4 milliards d'années, à une autre époque.");
-    }
-    @Test
-    public void testMilliard3(){
-        assertOnly(milliardFinder, yearIs(-25490000000L),"Super il y a environ 25,49 milliards d'années, à une autre époque.");
-    }*/
-    @Test
-    public void testMillions4(){
-        assertOnly(milliardFinder, yearIs(-65000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
-    }
-    @Test
-    public void testMillions5(){
-        assertOnly(milliardFinder, yearIs(-1000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 million d'années.");
-    }
-    @Test
-    public void testMillions6(){
-        assertOnly(milliardFinder, yearIs(-1000000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
-    }
-
-    @Test
-    public void test5(){
-        assertOnly(romanFinder, yearIs(2000),"Au XXIe siècle, la montre se porte majoritairement au poignet, généralement du bras gauche, et est dite à montre-bracelet.");
-    }
-    
-    @Test
-    public void test4(){
-        assertOnly(romanFinder, yearIs(1500),"Les revolvers existent depuis au moins le xvie siècle.");
-    }
-    
-    @Test
-    public void test3(){
+    public void jc5(){
         assertOnly(jcFinder, yearIs(-2000),"Les roues à rayons et à jantes, plus légères, seraient apparues environ 2000 ans av. J.-C..");
     }
+    @Test
+    public void jc5bis(){
+        assertOnly(jcFinder, yearIs(-2001),"Les roues à rayons et à jantes, plus légères, seraient apparues environ 2001 ans av. J.-C..");
+    }
     
     @Test
-    public void test2(){
+    public void jc6(){
         assertOnly(jcFinder, yearIs(-3500),"L'invention de la roue est estimée située vers 3500 avant J.-C. à Sumer en basse Mésopotamie.");
     }
     
     @Test
-    public void test10(){
+    public void jc7(){
         assertOnly(jcFinder, yearIs(-7000), "Dans la ville de Çatal Höyük, fondée en 7000 av. J.-C.");
     }
+    
     @Test
-    public void test9(){
-        assertNone("ISBN 978-27491216979 : La longueur du numéro ISBN devrait être 10 ou 13 et non 14 -- 27 avril 2014 à 23:13 (CEST)");
-    }
-    @Test
-    public void test0(){
+    public void jc8(){
         assertOnly(jcFinder, yearIs(-4500),"Néolithique, soit vers 4500 av. J.-C. Il s’agit");
     }
     
     @Test
-    public void test1(){
+    public void jc9(){
         assertOnly(jcFinder, yearIs(1571),"En 1571, le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
     }
     
     @Test
-    public void testPasDeSiecle() {
+    public void testMilliard0(){
+        assertOnly(milliardFinder, longyearIs(-1000000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
+    }
+    @Test
+    public void testMilliard1(){
+        assertOnly(milliardFinder, longyearIs(-2400000000L),"La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
+    }
+
+    @Test
+    public void testMilliard2(){
+        assertOnly(milliardFinder, longyearIs(-25400000000L),"Super il y a environ 25,4 milliards d'années, à une autre époque.");
+    }
+    @Test
+    public void testMilliard3(){
+        assertOnly(milliardFinder, longyearIs(-25490000000L),"Super il y a environ 25,49 milliards d'années, à une autre époque.");
+    }
+    
+    @Test
+    public void testMillion1(){
+        assertOnly(milliardFinder, longyearIs(-65000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
+    }
+    @Test
+    public void testMillion2(){
+        assertOnly(milliardFinder, longyearIs(-1000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 million d'années.");
+    }
+
+    @Test
+    public void roman1(){
+        assertOnly(romanFinder, yearIs(2000),"Au XXIe siècle, la montre se porte majoritairement au poignet, généralement du bras gauche, et est dite à montre-bracelet.");
+    }
+    
+    @Test
+    public void roman2(){
+        assertOnly(romanFinder, yearIs(1500),"Les revolvers existent depuis au moins le xvie siècle.");
+    }
+    
+    
+    @Test
+    public void none1(){
+        assertNone("ISBN 978-27491216979 : La longueur du numéro ISBN devrait être 10 ou 13 et non 14 -- 27 avril 2014 à 23:13 (CEST)");
+    }
+
+    
+    @Test
+    public void none2() {
         assertNone("Pépin II, roi d’Aquitaine, résiste durant un quart de siècle à Charles le Chauve, le roi de Francie occidentale.");
     }
     
     @Test
-    public void testPasDeCeSiecle() {
+    public void none3() {
         assertNone("Pour justifier le privilège du chapitre et expliquerait son absence du cycle réalisé dans le premier quart de ce siècle.");
     }
     
     @Test
-    public void testPasDeChelou() {
+    public void none4() {
         assertNone("fin en 566538 Invention du système décimal.606 Début du règne de Harsavardhana, roi de l'Inde du Nord");
     }   
 
     @Test
-    public void testPbSiecle() {
+    public void none5() {
         final String phrase = "Pépin II, roi d’Aquitaine, résiste durant un quart de siècle à Charles le Chauve, le roi de Francie occidentale.";
         assertNone(new String[]{phrase}, romanFinder);
     }
@@ -195,6 +208,16 @@ public class DateFinderTest {
         final DateFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new DateFinder[size]);
         assertNone(phrases, filteredFinders);
     }
+    
+    private Condition<? super Phrase> longyearIs(long expectedAnnee) {
+        final long expectedJour = toJours(expectedAnnee);
+        return new Condition<Phrase>() {
+            public boolean matches(Phrase phrase) {
+                return phrase.getDate() == expectedJour;
+            }
+        }.as("jours correct : " + expectedJour);
+    }
+    
     private Condition<? super Phrase> yearIs(int expectedAnnee) {
         final long expectedJour = toJours(expectedAnnee);
         return new Condition<Phrase>() {
@@ -246,6 +269,9 @@ public class DateFinderTest {
         return LocalDate.of(year, month, dayOfMonth);
     }
 
+    private long toJours(long expectedAnnee) {
+        return (long)(expectedAnnee * 364.25d);
+    }
     private long toJours(final int annee){
         return toJours(date(1,Month.JANUARY, annee));
     }

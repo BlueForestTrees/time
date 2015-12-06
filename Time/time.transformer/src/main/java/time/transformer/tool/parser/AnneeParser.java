@@ -11,7 +11,7 @@ public class AnneeParser
     implements IParser
 {
     @Override
-    public Long from(final Matcher matcher)
+    public long from(final Matcher matcher)
     {
         final int annee = Integer.parseInt(matcher.group("g"));
 

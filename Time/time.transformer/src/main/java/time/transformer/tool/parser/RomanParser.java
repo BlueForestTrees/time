@@ -1,15 +1,17 @@
 package time.transformer.tool.parser;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.regex.Matcher;
 
 public class RomanParser implements IParser {
 
     @Override
-    public Long from(final Matcher matcher) {
+    public long from(final Matcher matcher) {
         final String romanUp = matcher.group("g").toUpperCase();
 
         int i = 0;
-        Long arabic = 0L;
+        int arabic = 0;
 
         while (i < romanUp.length()) {
             char letter = romanUp.charAt(i);
@@ -27,9 +29,8 @@ public class RomanParser implements IParser {
                 }
             }
         }
-
-        return (arabic - 1) * 36425;
-
+        final int annee = (arabic - 1) * 100;
+        return LocalDate.of(annee, Month.JANUARY, 1).toEpochDay() + seventiesInDays;
     }
 
     private static int letterToNumber(char letter) {

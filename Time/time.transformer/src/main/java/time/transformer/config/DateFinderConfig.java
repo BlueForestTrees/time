@@ -25,7 +25,7 @@ public class DateFinderConfig {
 
     @Bean
     public DateFinder jcFinder() {
-        final Pattern pattern = Pattern.compile("(^| |,)([Vv]ers|[Ee]nviron|[Ee]n) (l'an )?(?<g>(-)?\\d{4})(,? )(ans )?(?<neg>avant|av. J.-C.)?");
+        final Pattern pattern = Pattern.compile("(^| |,)([Vv]ers|[Ee]nviron|[Ee]n) (l'an )?(?<g>(-)?\\d{4})(,? )(ans )?(?<neg>(avant|av.) J.-?C.)?");
         final IParser parser = new JCParser();
         return new DateFinder(pattern, parser);
     }
@@ -46,7 +46,7 @@ public class DateFinderConfig {
 
     @Bean
     public DateFinder preciseFinder() {
-        final Pattern pattern = Pattern.compile("sdfojphjbzeldsiidsh");
+        final Pattern pattern = Pattern.compile("le (?<g>(?<d>(-)?\\d{1,2}) (?<m>janvier|fevrier|Mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre) (?<y>\\d{4}))");
         final IParser parser = new PreciseParser();
         return new DateFinder(pattern, parser);
     }

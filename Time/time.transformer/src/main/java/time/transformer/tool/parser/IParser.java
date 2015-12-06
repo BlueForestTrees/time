@@ -4,5 +4,5 @@ import java.util.regex.Matcher;
 
 public interface IParser {
     long seventiesInDays = 719528L;
-    Long from(final Matcher matcher);
+    long from(final Matcher matcher);
 }

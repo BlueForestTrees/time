@@ -46,7 +46,7 @@ public class DateFinderConfig {
 
     @Bean
     public DateFinder preciseFinder() {
-        final Pattern pattern = Pattern.compile("le (?<g>(?<d>(-)?\\d{1,2}) (?<m>janvier|fevrier|Mars|avril|mai|juin|juillet|aout|septembre|octobre|novembre|decembre) (?<y>\\d{4}))");
+        final Pattern pattern = Pattern.compile("(le|au|du) (?<g>(?<d>(-)?\\d{1,2}) (?<m>(J|j)an(\\.|v\\.|vier)|(F|f)(é|e)v(\\.|rier)|(M|m)ar(\\.|s)|(A|a)vr(\\.|il)|(M|m)ai|(J|j)uin|(J|j)uil(\\.|let)|(A|a)o(u|û)(\\.|t)|(S|s)ep(\\.|t\\.|tembre)|(O|o)ct(\\.|obre)|(N|n)ov(\\.|embre)|(D|d)(é|e)c(\\.|embre)) (?<y>\\d{2,4}))");
         final IParser parser = new PreciseParser();
         return new DateFinder(pattern, parser);
     }

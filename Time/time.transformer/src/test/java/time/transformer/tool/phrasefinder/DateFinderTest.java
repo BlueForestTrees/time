@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
+import java.util.List;
 
 import org.assertj.core.api.Condition;
 import org.junit.Test;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import time.repo.bean.FullPhrase;
 import time.repo.bean.Phrase;
 import time.transformer.config.DateFinderConfig;
 import time.transformer.tool.parser.IParser;
@@ -40,35 +42,40 @@ public class DateFinderTest {
     private DateFinder[] finders;
 
     @Test public void precise1(){
-        assertOnly(preciseFinder, dateIs(date(9, Month.MARCH, 1968)), "Il a disputé son premier test match le 9 Mars 1968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
+        assertOne(preciseFinder, dateIs(date(9, Month.MARCH, 1968)), "Il a disputé son premier test match le 9 Mars 1968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
     }
     @Test public void precise2(){
-        assertOnly(preciseFinder, dateIs(date(9, Month.MARCH, 968)), "Il a disputé son premier test match le 9 mars 968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
+        assertOne(preciseFinder, dateIs(date(9, Month.MARCH, 968)), "Il a disputé son premier test match le 9 mars 968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
     }
 
-/*
-    @Test public void precise2(){
-        assertOnlyTwo("\"Il a disputé son premier test match le 9 mars 1968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie, le 21 juin 1969");
-    }*/
+    @Test public void precise3(){
+        assertTwo(preciseFinder, dateIs(date(9, Month.MARCH, 1968)), dateIs(date(21, Month.JUNE, 1969)), "\"Il a disputé son premier test match le 9 mars 1968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie, le 21 juin 1969.");
+    }
+    @Test public void precise4(){
+        assertOne(preciseFinder, dateIs(date(9, Month.FEBRUARY, 968)), "Il a disputé son premier test match le 9 fév. 968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
+    }
+    @Test public void precise5(){
+        assertOne(preciseFinder, dateIs(date(9, Month.DECEMBER, 968)), "Il a disputé son premier test match le 9 déc. 968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
+    }
 
     @Test
     public void twoDot1(){
-        assertOnly(annee2DotFinder, yearIs(1650), "1650: retour vers le futur.");
+        assertOne(annee2DotFinder, yearIs(1650), "1650: retour vers le futur.");
     }
 
     @Test
     public void twoDot2(){
-        assertOnly(annee2DotFinder, yearIs(1650), "En 1650: retour vers le futur.");
+        assertOne(annee2DotFinder, yearIs(1650), "En 1650: retour vers le futur.");
     }
 
     @Test
     public void twoDot3(){
-        assertOnly(annee2DotFinder, yearIs(1777), "1777 : l'horloger suisse Abraham Louis Perrelet cràe la à montre à secousses à dite perpàtuelle, souvent considàràe comme la premiàre montre automatique10.");
+        assertOne(annee2DotFinder, yearIs(1777), "1777 : l'horloger suisse Abraham Louis Perrelet cràe la à montre à secousses à dite perpàtuelle, souvent considàràe comme la premiàre montre automatique10.");
     }
 
     @Test
     public void jc1(){
-        assertOnly(jcFinder, yearIs(1650), "En 1650, retour vers le futur.");
+        assertOne(jcFinder, yearIs(1650), "En 1650, retour vers le futur.");
     }
 
     @Test
@@ -83,82 +90,82 @@ public class DateFinderTest {
 
     @Test
     public void jc2(){
-        assertOnly(jcFinder, yearIs(2000), "Vers l'an 2000, gros bug.");
+        assertOne(jcFinder, yearIs(2000), "Vers l'an 2000, gros bug.");
     }
 
     @Test
     public void jc3(){
-        assertOnly(jcFinder, yearIs(1571), "En 1571, le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
+        assertOne(jcFinder, yearIs(1571), "En 1571, le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
     }
 
     @Test
     public void jc4(){
-        assertOnly(jcFinder, yearIs(-1600), "En 1600 avant J.C., le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
+        assertOne(jcFinder, yearIs(-1600), "En 1600 avant J.C., le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
     }
     @Test
     public void jc5(){
-        assertOnly(jcFinder, yearIs(-2000),"Les roues à rayons et à jantes, plus légères, seraient apparues environ 2000 ans av. J.-C..");
+        assertOne(jcFinder, yearIs(-2000), "Les roues à rayons et à jantes, plus légères, seraient apparues environ 2000 ans av. J.-C..");
     }
     @Test
     public void jc5bis(){
-        assertOnly(jcFinder, yearIs(-2001),"Les roues à rayons et à jantes, plus légères, seraient apparues environ 2001 ans av. J.-C..");
+        assertOne(jcFinder, yearIs(-2001), "Les roues à rayons et à jantes, plus légères, seraient apparues environ 2001 ans av. J.-C..");
     }
     
     @Test
     public void jc6(){
-        assertOnly(jcFinder, yearIs(-3500),"L'invention de la roue est estimée située vers 3500 avant J.-C. à Sumer en basse Mésopotamie.");
+        assertOne(jcFinder, yearIs(-3500), "L'invention de la roue est estimée située vers 3500 avant J.-C. à Sumer en basse Mésopotamie.");
     }
     
     @Test
     public void jc7(){
-        assertOnly(jcFinder, yearIs(-7000), "Dans la ville de Çatal Höyük, fondée en 7000 av. J.-C.");
+        assertOne(jcFinder, yearIs(-7000), "Dans la ville de Çatal Höyük, fondée en 7000 av. J.-C.");
     }
     
     @Test
     public void jc8(){
-        assertOnly(jcFinder, yearIs(-4500),"Néolithique, soit vers 4500 av. J.-C. Il s’agit");
+        assertOne(jcFinder, yearIs(-4500), "Néolithique, soit vers 4500 av. J.-C. Il s’agit");
     }
     
     @Test
     public void jc9(){
-        assertOnly(jcFinder, yearIs(1571),"En 1571, le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
+        assertOne(jcFinder, yearIs(1571), "En 1571, le comte de Leicester offre un bracelet munie d'une petite montre à la reine élisabeth Ire2.");
     }
     
     @Test
     public void testMilliard0(){
-        assertOnly(milliardFinder, longyearIs(-1000000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
+        assertOne(milliardFinder, longyearIs(-1000000000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
     }
     @Test
     public void testMilliard1(){
-        assertOnly(milliardFinder, longyearIs(-2400000000L),"La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
+        assertOne(milliardFinder, longyearIs(-2400000000L), "La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
     }
 
     @Test
     public void testMilliard2(){
-        assertOnly(milliardFinder, longyearIs(-25400000000L),"Super il y a environ 25,4 milliards d'années, à une autre époque.");
+        assertOne(milliardFinder, longyearIs(-25400000000L), "Super il y a environ 25,4 milliards d'années, à une autre époque.");
     }
     @Test
     public void testMilliard3(){
-        assertOnly(milliardFinder, longyearIs(-25490000000L),"Super il y a environ 25,49 milliards d'années, à une autre époque.");
+        assertOne(milliardFinder, longyearIs(-25490000000L), "Super il y a environ 25,49 milliards d'années, à une autre époque.");
     }
     
     @Test
     public void testMillion1(){
-        assertOnly(milliardFinder, longyearIs(-65000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
+        assertOne(milliardFinder, longyearIs(-65000000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
     }
     @Test
     public void testMillion2(){
-        assertOnly(milliardFinder, longyearIs(-1000000),"Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 million d'années.");
+        assertOne(milliardFinder, longyearIs(-1000000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 million d'années.");
     }
 
     @Test
     public void roman1(){
-        assertOnly(romanFinder, yearIs(2000),"Au XXIe siècle, la montre se porte majoritairement au poignet, généralement du bras gauche, et est dite à montre-bracelet.");
+        assertOne(romanFinder, yearIs(2000), "Au XXIe siècle, la montre se porte majoritairement au poignet, généralement du bras gauche, et est dite à montre-bracelet.");
     }
     
     @Test
     public void roman2(){
-        assertOnly(romanFinder, yearIs(1500),"Les revolvers existent depuis au moins le xvie siècle.");
+        assertOne(romanFinder, yearIs(1500), "Les revolvers existent depuis au moins le xvie siècle.");
     }
     
     
@@ -201,9 +208,26 @@ public class DateFinderTest {
     private void assertNone(String[] phrases, DateFinder finder) {
         assertThat(finder.findPhrasesWithDates(phrases)).as(finder + " trouve des phrases").isEmpty();
     }
-    private void assertOnly(final DateFinder finder, Condition<? super Phrase> condition, String phrase) {
+    private void assertOne(final DateFinder finder, Condition<? super Phrase> condition, String phrase) {
         final String[] phrases = new String[]{phrase};
         assertThat(finder.findPhrasesWithDates(phrases)).as(finder + " ne trouve pas de phrases").haveExactly(1, condition);
+
+        final DateFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new DateFinder[size]);
+        assertNone(phrases, filteredFinders);
+    }
+
+    private void assertTwo(final DateFinder finder,
+                           Condition<? super Phrase> condition1,
+                           Condition<? super Phrase> condition2,
+                           String phrase){
+        final String[] phrases = new String[]{phrase};
+
+        final List<FullPhrase> actualPhrases = finder.findPhrasesWithDates(phrases);
+
+        assertThat(actualPhrases).as("doit trouver deux dates").hasSize(2);
+
+        assertThat(actualPhrases.get(0)).as("première date").has(condition1);
+        assertThat(actualPhrases.get(1)).as("deuxième date").has(condition2);
 
         final DateFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new DateFinder[size]);
         assertNone(phrases, filteredFinders);

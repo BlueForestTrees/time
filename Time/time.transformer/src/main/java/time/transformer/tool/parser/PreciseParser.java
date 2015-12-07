@@ -14,7 +14,7 @@ public class PreciseParser
     @Override
     public long from(final Matcher matcher)
     {
-        final int day = Integer.parseInt(matcher.group("d"));
+        final int day = matcher.group("d") == null ? 1 : Integer.parseInt(matcher.group("d"));
         final Month month = parseMonth(matcher.group("m"));
         final int year = Integer.parseInt(matcher.group("y"));
 

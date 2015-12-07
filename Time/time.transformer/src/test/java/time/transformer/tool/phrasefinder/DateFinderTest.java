@@ -57,6 +57,12 @@ public class DateFinderTest {
     @Test public void precise5(){
         assertOne(preciseFinder, dateIs(date(9, Month.DECEMBER, 968)), "Il a disputé son premier test match le 9 déc. 968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
     }
+    @Test public void precise6(){
+        assertOne(preciseFinder, dateIs(date(9, Month.DECEMBER, 968)), "9 déc. 968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
+    }
+    @Test public void precise7(){
+        assertOne(preciseFinder, dateIs(date(1, Month.JUNE, 2014)), "En juin 2014, Alibaba achète les 34 % qu'il ne détient pas dans UCWeb, entreprise chinoise de services pour l'internet mobile, opération valorisant UCWeb (en) à 1,9 milliard d'euros");
+    }
 
     @Test
     public void twoDot1(){
@@ -171,7 +177,7 @@ public class DateFinderTest {
     
     @Test
     public void none1(){
-        assertNone("ISBN 978-27491216979 : La longueur du numéro ISBN devrait être 10 ou 13 et non 14 -- 27 avril 2014 à 23:13 (CEST)");
+        assertNone("ISBN 978-27491216979 : La longueur du numéro ISBN devrait être 10 ou 13 et non 14 -- 27  2014 à 23:13 (CEST)");
     }
 
     

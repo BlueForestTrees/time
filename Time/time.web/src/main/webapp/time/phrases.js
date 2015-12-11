@@ -12,9 +12,8 @@
     phrases.prototype.onPhrasesDblClick = function(event) {
         event.stopImmediatePropagation();
         if (window.getSelection()) {
-            Time.filter.term = window.getSelection().toString().trim();
-            Time.filter.onFilter();
-            Time.view.termInput.val(Time.filter.term);
+            var term = window.getSelection().toString().trim();
+            Time.filter.onFilter(term);
         }
     };
 

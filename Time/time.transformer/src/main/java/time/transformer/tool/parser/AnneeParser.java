@@ -13,7 +13,7 @@ public class AnneeParser
     @Override
     public long from(final Matcher matcher)
     {
-        final int annee = Integer.parseInt(matcher.group("g"));
+        final int annee = Integer.parseInt(matcher.group("g").trim());
 
         return LocalDate.of(annee, Month.JANUARY, 1).toEpochDay() + seventiesInDays;
     }

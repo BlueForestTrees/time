@@ -1,5 +1,6 @@
 (function() {
     function timeline() {
+        Time.view.throbber.hide();
         Time.bars = [ new Time.Bar(Scale.TEN9), new Time.Bar(Scale.TEN6), new Time.Bar(Scale.TEN3), new Time.Bar(Scale.TEN) ];
         Time.drawer = new Time.Drawer();
         Time.mouse = new Time.Mouse();
@@ -16,7 +17,7 @@
 
         // INIT BAR 0
         var topbar = Time.bars[0];
-        topbar.loadBuckets(Time.filter.term);
+        topbar.loadBuckets("");
         Time.drawer.hideBar(1);
 
         Time.drawer.install();

@@ -12,7 +12,8 @@
 	                timeline : $("#timeline"),
 	                phrases : $('.phrases'),
 	                window : $(window),
-	                toolTip : $(".tooltip")
+	                toolTip : $(".tooltip"),
+	                throbber : $("#throbber")
 	        };
 	        var timeline = new Time.Timeline();
 	    });
@@ -46,11 +47,14 @@
 			<input class="tooltip" />
 		</div>
 		<div id="filtre">
-			<input id="termInput" type="text" />
+			<input id="termInput" type="text" autofocus placeholder="COURSE GANT PARTI PEUPLE MOLIERE VOITURE UNIVERS CIVILISATION INVENTION CHAT ORGANISME ATOME DANSE CHAUSSURE DEMON"/>
 		</div>
 		<div id="timeline"></div>
 	</div>
 	<div class="phrases"></div>
 	<p id="bottom"></p>
+	<div id="throbber" style="height: 400px; text-align: center;">
+        <img class="throbber" src="/img/throbber.gif"/>
+    </div>
 </body>
 </html>

@@ -35,7 +35,7 @@ public class PageFilter {
         final boolean urlBlackListed = Arrays.stream(urlBlackList).anyMatch(term -> url.contains(term));
         final boolean urlTooLong = page.getUrl().length() > urlMaxLength;
 
-        return !urlTooLong && urlBlackListed;
+        return !urlTooLong && !urlBlackListed;
     }
 
     public boolean isValidNewPage(Page page) {

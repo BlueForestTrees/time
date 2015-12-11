@@ -37,19 +37,7 @@ public class FindPhrasesModule implements IModule {
     PhraseFilter phraseFilter;
 
     @Autowired
-    private DateFinder milliardFinder;
-
-    @Autowired
-    private DateFinder millionFinder;
-
-    @Autowired
-    private DateFinder jcFinder;
-
-    @Autowired
-    private DateFinder romanFinder;
-
-    @Autowired
-    private DateFinder annee2DotFinder;
+    DateFinder[] finders;
 
     private static final String[] excludeAfter = new String[] { "Notes et références[", "Bibliographie[", "Liens externes[", "Bibliographie[", "Annexes[" };
 
@@ -88,11 +76,9 @@ public class FindPhrasesModule implements IModule {
 
             final String[] phrases = getPhrases(paragraph);
 
-            count += handlePage(page, phrases, milliardFinder);
-            count += handlePage(page, phrases, millionFinder);
-            count += handlePage(page, phrases, annee2DotFinder);
-            count += handlePage(page, phrases, jcFinder);
-            count += handlePage(page, phrases, romanFinder);
+            for(DateFinder finder : finders){
+                count += handlePage(page, phrases, finder);
+            }
         }
         return count;
     }

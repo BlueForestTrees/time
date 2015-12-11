@@ -53,7 +53,7 @@
         var years = this.getYears(scale, bucketX);
         var start = bucketX > 0 ? 'Dans ' : 'Il y a ';
         var echelle = this.getEchelle(years);
-        var end = bucket ? " ("+bucket.count+")" : "";
+        var end = bucket ? " ("+bucket.count+" phrase"+(bucket.count > 1 ? "s":"")+")" : "";
 
         switch (echelle) {
         case this.echelles.milliard:

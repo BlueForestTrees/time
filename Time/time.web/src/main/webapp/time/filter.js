@@ -7,12 +7,12 @@
         Time.view.termInput.on("click", function() {
             Time.view.termInput.select();
         });
-        Time.view.termInput.keypress($.proxy(this.onFiltreKeyPress, this));
+        Time.view.termInput.keypress($.proxy(this.termInputKeyPress, this));
     };
 
-    filter.prototype.onFiltreKeyPress = function(e) {
+    filter.prototype.termInputKeyPress = function(e) {
         if (e.which === 13) {
-            this.onFiltreEnter();
+            this.termInputKeyEnterPress();
         } else {
             this.checkNeedSynonyms();
         }
@@ -21,7 +21,7 @@
     filter.prototype.checkNeedSynonyms = function() {
         var saisie = Time.view.termInput.val();
         var term = saisie.trim();
-        var isTwoSpace = saisie.endsWith(' ');
+        var isTwoSpace = saisie.endsWith('  ');
         var isOneWord = !term.includes(' ');
 
         if (isTwoSpace && isOneWord) {
@@ -33,18 +33,22 @@
         var saisie = Time.view.termInput.val().trim();
         var newSaisie = saisie + ' ' + synonyms.join(' ');
         Time.view.termInput.val(newSaisie);
+        Time.view.termInput[0].selectionStart = saisie.length;
+        Time.view.termInput[0].selectionEnd = newSaisie.length;
     };
 
-    filter.prototype.onFiltreEnter = function() {
-        this.term = Time.view.termInput.val();
-        this.onFilter();
+    filter.prototype.termInputKeyEnterPress = function() {
+        var term = Time.view.termInput.val();
+        this.onFilter(term);
     };
 
-    filter.prototype.onFilter = function() {
-        Time.drawer.hideBar(0);
-        var bar = Time.bars[0];
-        bar.loadBuckets(this.term);
+    filter.prototype.onFilter = function(term) {
+        this.term = term;
+        Time.view.termInput.val(term);
         Time.drawer.clearText();
+        Time.drawer.hideBar(0);
+        Time.bars[0].loadBuckets(this.term);
+        Time.phrases.lastSearch = null;//pour arrêter l'infinite scroll
     };
 
     Time.Filter = filter;

@@ -50,11 +50,13 @@
     };
 
     bar.prototype.loadBuckets = function(term, parentBucket) {
+        Time.view.throbber.show();
         Time.data.getBuckets(term, this.scale, $.proxy(this.onBuckets, this));
         this.viewport.lookAt(parentBucket);
     };
 
     bar.prototype.onBuckets = function(bucketsDTO) {
+        Time.view.throbber.hide();
         this.buckets = Time.bucketFactory.getBuckets(bucketsDTO);
         Time.drawer.drawShowBar(this);
     };

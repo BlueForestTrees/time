@@ -18,7 +18,7 @@ input[type="text"] {
 }
 
 .phrases {
-    margin-top: 170px;
+    margin-top: 200px;
 }
 
 .tooltip {
@@ -28,4 +28,31 @@ input[type="text"] {
     border: 0px solid;
     height: 20px;
     background: rgba(255, 255, 255, 50);
+}
+
+
+
+
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+   opacity:  0.35;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   opacity:  0.35;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   opacity:  0.35;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   opacity:  0.35;
+}
+
+
+
+
+.throbber
+{
+    margin-top: 0;
+    vertical-align: middle;
+    margin-top: expression(( 150 - this.height ) / 2); 
 }

@@ -40,7 +40,7 @@ public class DateFinderTest {
 
     @Autowired
     private DateFinder[] finders;
-
+    
     @Test public void precise1(){
         assertOne(preciseFinder, dateIs(date(9, Month.MARCH, 1968)), "Il a disputé son premier test match le 9 Mars 1968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
     }
@@ -88,7 +88,22 @@ public class DateFinderTest {
     public void test13(){
         assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
     }
+    
+    @Test
+    public void test14(){
+        assertNone("mais c'est pas pour de suite, j'ai/nous avons d'abord environ 3500 autres articles à traduire avant d'arriver à celui-là !");
+    }
+    
+    @Test
+    public void test16(){
+        assertNone("Il serait d'origine alsacienne et deux parties sont manquantes : les vers 5479 à 5624 et les vers 7524 à 7716");
+    }
 
+    @Test
+    public void test15(){
+        assertNone("Il pouvait accueillir environ 9000 spectateurs répartis dans une cavea sem");
+    }
+    
     @Test
     public void test12(){
         assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
@@ -138,6 +153,11 @@ public class DateFinderTest {
     }
     
     @Test
+    public void jc10(){
+        assertOne(jcFinder, yearIs(-2300),"La civilisation olmèque a débuté avec une production en abondance de poterie, vers 2300 avant notre ère");
+    }
+    
+    @Test
     public void testMilliard0(){
         assertOne(milliardFinder, longyearIs(-1000000000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
     }
@@ -164,6 +184,11 @@ public class DateFinderTest {
         assertOne(milliardFinder, longyearIs(-1000000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 million d'années.");
     }
 
+    @Test
+    public void roman0(){
+        assertOne(romanFinder, yearIs(700), "Daté du VIIIe siècle av. J.-C., a été retrouvé dans les environs un ostracon sur lequel");
+    }
+    
     @Test
     public void roman1(){
         assertOne(romanFinder, yearIs(2000), "Au XXIe siècle, la montre se porte majoritairement au poignet, généralement du bras gauche, et est dite à montre-bracelet.");

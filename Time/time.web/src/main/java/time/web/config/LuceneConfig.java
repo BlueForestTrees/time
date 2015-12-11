@@ -21,7 +21,7 @@ public class LuceneConfig {
 
     @Bean
     public String indexPath() {
-        return "/Time/data/lucene-pages";
+        return "/Time/data/phrases";
     }
 
     @Bean

@@ -5,13 +5,14 @@ html, body {
 }
 
 input[type="text"] {
-    width: 100%;
+	width: 100%;
     text-align  : center;
     font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
     font-size: 25px;
 }
 
 .bar {
+	width: 100%;
     position : fixed;
     background: white;
     top : 0;

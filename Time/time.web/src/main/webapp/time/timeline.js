@@ -16,10 +16,7 @@
         }, this);
 
         // INIT BAR 0
-        var topbar = Time.bars[0];
-        topbar.loadBuckets("");
-        Time.drawer.hideBar(1);
-
+        Time.drawer.hideBar(0);
         Time.drawer.install();
         Time.filter.install();
         Time.phrases.install();

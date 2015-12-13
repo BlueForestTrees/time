@@ -61,5 +61,10 @@
         return (elemBottom - 500) <= docViewBottom;
     };
 
+    phrases.prototype.clearText = function() {
+        Time.view.phrases.empty();
+        $(window).scrollTop(0);
+    };
+
     Time.Phrases = phrases;
 })();

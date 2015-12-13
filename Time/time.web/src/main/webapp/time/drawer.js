@@ -47,9 +47,6 @@
         $(bar.canvas).fadeIn(100);
     };
 
-    drawer.prototype.clearText = function() {
-        Time.view.phrases.empty();
-    };
     drawer.prototype.setPhrases = function(phrases, filter) {
 
         if (phrases.phraseList.length === 0) {

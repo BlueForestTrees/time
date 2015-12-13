@@ -21,7 +21,6 @@ public class DownloaderConfig {
     private static final String BASE_URL = "baseUrl";
     private static final String NB_PAGE_LOG = "nbPageLog";
     private static final String RESUMABLE = "resumable";
-    private static final String WRITE = "write";
     private static final String HELP = "help";
     private static final String STORAGE_PATH = "storagePath";
     private static final String MAX_FILE_SIZE = "maxFileSize";
@@ -85,7 +84,7 @@ public class DownloaderConfig {
 
         public Values() {
             this.setMaxPages(-1);
-            this.setStoragePath("C:/Time/data/downloader/pages/pages");
+            this.setStoragePath("C:/Time/data/downloader/pages/all/pages");
             this.setNbPageLog(1000);
             this.setSeedUrl("http://fr.wikipedia.org/wiki/Portail:Accueil");
             this.setDelay(25);

@@ -45,7 +45,7 @@
     filter.prototype.onFilter = function(term) {
         this.term = term;
         Time.view.termInput.val(term);
-        Time.drawer.clearText();
+        Time.phrases.clearText();
         Time.drawer.hideBar(0);
         Time.bars[0].loadBuckets(this.term);
         Time.phrases.lastSearch = null;//pour arrêter l'infinite scroll

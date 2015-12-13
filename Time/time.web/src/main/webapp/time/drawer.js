@@ -52,6 +52,11 @@
     };
     drawer.prototype.setPhrases = function(phrases, filter) {
 
+        if (phrases.phraseList.length === 0) {
+            this.addNoPhrases();
+            return;
+        }
+
         var prevOne = Time.view.phrases.children().last();
         var phraseOne = phrases.phraseList[0];
         if (!prevOne || phraseOne.text !== prevOne.text) {
@@ -77,6 +82,9 @@
 
     drawer.prototype.addTheEnd = function() {
         Time.view.phrases.append("<h1><center>The END<center></h1>");
+    };
+    drawer.prototype.addNoPhrases = function() {
+        Time.view.phrases.append("<h1><center>Rien trouvé!<center></h1>");
     };
 
     Time.Drawer = drawer;

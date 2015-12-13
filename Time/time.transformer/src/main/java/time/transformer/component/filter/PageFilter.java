@@ -12,7 +12,7 @@ import time.repo.bean.Page;
 public class PageFilter {
 
     private HashSet<String> urlsLowerCase = new HashSet<String>();
-    private String[] urlBlackList = new String[] { "#", "Portail:", "Discussion_modèle:", "Discussion_mod%C3%A8le:", "Discussion:" };
+    private String[] urlBlackList = new String[] { "Discussion_utilisateur:","Discussion_utilisatrice:","Utilisatrice:", "#", "Portail:", "Discussion_modèle:", "Discussion_mod%C3%A8le:", "Discussion:" };
 
     @Autowired
     private int urlMaxLength;

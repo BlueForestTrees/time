@@ -27,7 +27,7 @@
         Time.drawer.clearText();
         // affiche les phrases
         if (bucket.count < 50 || bar.scale === Scale.TEN) {
-            Time.drawer.setPhraseTooltip(Scale.getTooltipText(bar.scale, bucket.x));
+            Time.drawer.setPhraseTooltip(Scale.getTooltipText(Scale.getYearsSB(bar.scale, bucket.x)));
             Time.phrases.loadPhrases(bar.scale, bucket.x);
             // niveau de detail++
         } else {

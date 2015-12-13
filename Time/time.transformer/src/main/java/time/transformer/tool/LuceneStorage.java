@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.LongField;
@@ -36,7 +36,7 @@ public class LuceneStorage implements IStorage {
 
     @Override
     public void start() throws IOException {
-        analyzer = new StandardAnalyzer();
+        analyzer = new FrenchAnalyzer();
         directory = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
         indexWriterConfig = new IndexWriterConfig(analyzer);
         indexWriterConfig.setOpenMode(OpenMode.CREATE);

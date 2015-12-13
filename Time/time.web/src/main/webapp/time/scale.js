@@ -49,9 +49,8 @@
     scale.prototype.up = function(scale) {
         return this.details[scale].up;
     };
-    scale.prototype.getTooltipText = function(scale, bucketX, bucket) {
-        var years = this.getYears(scale, bucketX);
-        var start = bucketX > 0 ? 'Dans ' : 'Il y a ';
+    scale.prototype.getTooltipText = function(years, bucket) {
+        var start = years > 0 ? 'Dans ' : 'Il y a ';
         var echelle = this.getEchelle(years);
         var end = bucket ? " ("+bucket.count+" phrase"+(bucket.count > 1 ? "s":"")+")" : "";
 
@@ -94,8 +93,11 @@
         }
     };
 
-    scale.prototype.getYears = function(scale, bucket) {
+    scale.prototype.getYearsSB = function(scale, bucket) {
         return this.multiplier(scale) * bucket / 364.25;
+    };
+    scale.prototype.getYearsD = function(days) {
+        return days / 364.25;
     };
 
     scale.prototype.firstSubBucket = function(scale, bucket) {

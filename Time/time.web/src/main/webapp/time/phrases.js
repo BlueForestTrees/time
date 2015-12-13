@@ -21,11 +21,22 @@
         Time.data.getPhrases(Time.filter.term, scale, bucket, null, $.proxy(this.onPhrases, this, scale, bucket));
     };
 
+    phrases.prototype.loadFirstPhrases = function() {
+        Time.data.getPhrases(Time.filter.term, null, null, null, $.proxy(this.onFirstPhrases, this));
+    };
+
     phrases.prototype.maybeMorePhrases = function() {
         if (!this.isSearching && this.lastSearch && this.isBottomVisible()) {
             this.isSearching = true;
             Time.data.getPhrases(Time.filter.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
         }
+    };
+
+    phrases.prototype.onFirstPhrases = function(phrases) {
+        if (phrases.phraseList.length > 0) {
+            Time.drawer.setPhraseTooltip(Scale.getTooltipText(Scale.getYearsD(phrases.phraseList[0].date)));
+        }
+        this.onPhrases(null, null, phrases);
     };
 
     phrases.prototype.onPhrases = function(scale, xBucket, phrases) {

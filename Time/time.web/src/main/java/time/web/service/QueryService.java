@@ -22,7 +22,7 @@ public class QueryService {
             return new MatchAllDocsQuery();
         }
 
-        Query textQuery = noTerm ? null : getTermQuery(term);
+        Query textQuery = noTerm ? null : getTermQuery(term.toLowerCase());
         Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(bucketName, bucketValueFrom, bucketValueTo, true, true);
 
         BooleanQuery.Builder builder = new BooleanQuery.Builder();

@@ -23,7 +23,7 @@ public class DirectCrawler implements IPageHandler {
     protected long nbLog;
     protected IWriter writer;
     private int pageTotal;
-    private String[] urlBlackList = new String[] { "#", "Discussion_modèle:", "Discussion_mod%C3%A8le:", "Discussion:", "spécial:", "sp%c3%a9cial:", "Discussion_wikipédia:", "discussion_wikipédia:", "discussion_wikip%c3%a9dia:", "cat%c3%a9gorie:", "catégorie:", "utilisateur:", "projet:", "discussion_projet:", "aide:", "wikipédia:", "wikip%c3%a9dia:", "fichier:" };
+    private String[] urlBlackList = new String[] { "Discussion_utilisateur:","Discussion_utilisatrice:","Utilisatrice:","#", "Discussion_modèle:", "Discussion_mod%C3%A8le:", "Discussion:", "spécial:", "sp%c3%a9cial:", "Discussion_wikipédia:", "discussion_wikipédia:", "discussion_wikip%c3%a9dia:", "cat%c3%a9gorie:", "catégorie:", "utilisateur:", "projet:", "discussion_projet:", "aide:", "wikipédia:", "wikip%c3%a9dia:", "fichier:" };
     private String[] contentExclusion = new String[] { "\t\t\t(Redirigé depuis " };
 
     public DirectCrawler() {

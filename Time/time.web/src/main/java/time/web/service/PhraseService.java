@@ -47,7 +47,7 @@ public class PhraseService {
     private Sort sortDateAsc;
 
     public Phrases find(final Scale scale, final Long bucketValue, final String term, String lastKey) throws IOException {
-        final String bucketName = scale.getField();
+        final String bucketName = scale != null ? scale.getField() : null;
         final Last last = (Last) cache.remove(lastKey);
         final Query query = queryHelper.getQuery(term, bucketName, bucketValue, null);
         final TopFieldDocs search = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, pageSize, sortDateAsc, true, true);

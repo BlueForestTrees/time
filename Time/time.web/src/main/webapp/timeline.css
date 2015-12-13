@@ -24,8 +24,8 @@ input[type="text"] {
 
 .tooltip {
 	position : absolute;
-	top : 300px;
-	left : 300px;  
+	top : 1px;
+	left : 1px;  
     border: 0px solid;
     height: 20px;
     background: rgba(255, 255, 255, 50);

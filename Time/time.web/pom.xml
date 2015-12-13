@@ -104,6 +104,8 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.6</version>
 				<configuration>
+					<finalName>ROOT</finalName>
+					<appendAssemblyId>false</appendAssemblyId>
 					<failOnMissingWebXml>false</failOnMissingWebXml>
 				</configuration>
 			</plugin>

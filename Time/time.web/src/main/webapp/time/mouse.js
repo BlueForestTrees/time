@@ -11,22 +11,21 @@
             move : false,
             bucketSelect : bucketSelect
         };
-        $(bar.canvas).on('mouseenter.ViewportTooltip', data, $.proxy(this.onEnterTooltip, this));
-        $(bar.canvas).on('mousemove.ViewportTooltip', data, $.proxy(this.onMoveTooltip, this));
-        $(bar.canvas).on('mousedown.Viewport', data, $.proxy(this.onDownBar, this));
-        $(bar.canvas).on('mouseout.ViewportTooltip', data, $.proxy(this.onOutTooltip, this));
+        $(bar.canvas).on('mouseenter.ViewportTooltip', data, $.proxy(this.mouseEnterOnBar, this));
+        $(bar.canvas).on('mousemove.ViewportTooltip', data, $.proxy(this.mouseMoveOnBar, this));
+        $(bar.canvas).on('mousedown.Viewport', data, $.proxy(this.mouseDownOnBar, this));
+        $(bar.canvas).on('mouseout.ViewportTooltip', data, $.proxy(this.mouseExitOfBar, this));
     };
 
-    /* VIEWPORTTOOLTIP */
-    mouse.prototype.onEnterTooltip = function() {
+    mouse.prototype.mouseEnterOnBar = function() {
         Time.view.toolTip.show();
     };
-    mouse.prototype.onMoveTooltip = function(event) {
+    mouse.prototype.mouseMoveOnBar = function(event) {
         var bar = event.data.bar;
         var mousePosition = this.getmousePosition(event);
         var bucketPosition = bar.getBucketPosition(mousePosition);
         var bucket = event.data.bar.searchBucketAt(mousePosition);
-        var toolTipText = Scale.getTooltipText(bar.scale, bucketPosition, bucket);
+        var toolTipText = Scale.getTooltipText(Scale.getYearsSB(bar.scale, bucketPosition), bucket);
         var toolTipTop = $(bar.canvas).position().top + 5;
         var toolTipLeft = event.clientX + 20;
         var width = ((toolTipText.length + 1) * 6) + 'px';
@@ -39,12 +38,11 @@
             position : 'absolute'
         });
     };
-    mouse.prototype.onOutTooltip = function() {
+    mouse.prototype.mouseExitOfBar = function() {
         Time.view.toolTip.hide();
     };
 
-    /* VIEWPORT */
-    mouse.prototype.onDownBar = function(event) {
+    mouse.prototype.mouseDownOnBar = function(event) {
         event.data.previousX = event.clientX;
         Time.view.window.on('mousemove.Viewport', event.data, $.proxy(this.onBarDrag, this));
         Time.view.window.on('mouseup.Viewport', event.data, $.proxy(this.onBarUp, this));
@@ -59,7 +57,7 @@
 
     mouse.prototype.onBarUp = function(event) {
         if (!event.data.move) {
-            this.onmouseClick(event);
+            this.onBarClick(event);
         }
         event.data.move = false;
 
@@ -67,8 +65,7 @@
         Time.view.window.off('mouseup.Viewport');
     };
 
-    /* BUCKET SELECT */
-    mouse.prototype.onmouseClick = function(event) {
+    mouse.prototype.onBarClick = function(event) {
         var mousePosition = this.getmousePosition(event);
         var bucket = event.data.bar.searchBucketAt(mousePosition);
         if (bucket) {
@@ -76,7 +73,6 @@
         }
     };
 
-    /* UTIL */
     mouse.prototype.getmousePosition = function(event) {
         // -1 hack pour la bordure de 1px
         return event.clientX - 1;

@@ -18,16 +18,19 @@
     };
 
     phrases.prototype.loadPhrases = function(scale, bucket) {
+        Time.view.throbber.show();
         Time.data.getPhrases(Time.filter.term, scale, bucket, null, $.proxy(this.onPhrases, this, scale, bucket));
     };
 
     phrases.prototype.loadFirstPhrases = function() {
+        Time.view.throbber.show();
         Time.data.getPhrases(Time.filter.term, null, null, null, $.proxy(this.onFirstPhrases, this));
     };
 
     phrases.prototype.maybeMorePhrases = function() {
         if (!this.isSearching && this.lastSearch && this.isBottomVisible()) {
             this.isSearching = true;
+            Time.view.throbber.show();
             Time.data.getPhrases(Time.filter.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
         }
     };
@@ -40,7 +43,8 @@
     };
 
     phrases.prototype.onPhrases = function(scale, xBucket, phrases) {
-        Time.drawer.setPhrases(phrases, this.term);
+        Time.view.throbber.hide();
+        Time.drawer.setPhrases(phrases, Time.filter.term);
         this.isSearching = false;
         if (phrases.lastKey) {
             this.lastSearch = {

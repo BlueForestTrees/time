@@ -48,7 +48,6 @@
     };
 
     drawer.prototype.setPhrases = function(phrases, filter) {
-
         if (phrases.phraseList.length === 0) {
             this.addNoPhrases();
             return;
@@ -70,7 +69,8 @@
     };
 
     drawer.prototype.buildHtmlPhrase = function(phrase, filter) {
-        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + phrase.text + "</p>").replace(filter, '<strong>' + filter + '</strong>');
+        var text = phrase.text.replace(filter, '<strong>' + filter + '</strong>');
+        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + text + "</p>");
     };
 
     drawer.prototype.setPhraseTooltip = function(text) {

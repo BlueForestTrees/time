@@ -47,9 +47,10 @@
         ga('send', 'pageview','/'+term.replace(/ /g,"_"));
         Time.view.termInput.val(term);
         Time.phrases.clearText();
-        Time.drawer.hideBar(0);
+        Time.drawer.hideBars(0);
         Time.bars[0].loadBuckets(this.term);
-        Time.phrases.lastSearch = null;//pour arrêter l'infinite scroll
+        //pour arrêter l'infinite scroll
+        Time.phrases.lastSearch = null;
         Time.phrases.loadFirstPhrases();
     };
 

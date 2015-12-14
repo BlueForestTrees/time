@@ -8,8 +8,6 @@
         Time.bucketFactory = new Time.BucketFactory();
         Time.filter = new Time.Filter();
 
-        // INIT BAR 0
-        Time.drawer.hideBar(0);
         Time.drawer.install();
         Time.filter.install();
         Time.phrases.install();

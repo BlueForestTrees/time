@@ -1,9 +1,10 @@
 (function() {
     function drawer() {
-        
+
     }
 
     drawer.prototype.install = function() {
+        this.hideBars(0);
         this.resizeAllBars();
         $(window).on('resize', this.resizeAllBars);
     };
@@ -33,16 +34,13 @@
         }
     };
 
-    drawer.prototype.hideBar = function(barIndex) {
+    drawer.prototype.hideBars = function(barIndex) {
         while (barIndex < Time.bars.length) {
-            this.hideBarBar(Time.bars[barIndex]);
+            $(Time.bars[barIndex].canvas).fadeOut(100);
             barIndex++;
         }
     };
 
-    drawer.prototype.hideBarBar = function(bar) {
-        $(bar.canvas).fadeOut(100);
-    };
     drawer.prototype.showBar = function(bar) {
         $(bar.canvas).fadeIn(100);
     };
@@ -70,7 +68,13 @@
 
     drawer.prototype.buildHtmlPhrase = function(phrase, filter) {
         var text = phrase.text.replace(filter, '<strong>' + filter + '</strong>');
-        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + text + "</p>");
+        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + text + this.getLink(phrase) + "</p>");
+    };
+
+    drawer.prototype.getLink = function(phrase) {
+        var pageName = decodeURIComponent(phrase.pageUrl).replace(/_/g," ").substring(1);
+        var tooltip = "source wikipedia : " + pageName;
+        return "<a title=\""+tooltip+"\" href=\"https://fr.wikipedia.org/wiki" + phrase.pageUrl + "\" target=\"_blank\"><img src=\"http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png\" /></a>";
     };
 
     drawer.prototype.setPhraseTooltip = function(text) {

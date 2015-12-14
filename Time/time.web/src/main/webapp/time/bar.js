@@ -135,7 +135,7 @@
     };
 
     bar.prototype.openSubBar = function(bucket) {
-        Time.drawer.hideBar(Time.bars.indexOf(this) + 1);
+        Time.drawer.hideBars(Time.bars.indexOf(this) + 1);
         var subBar = Time.bars[Time.bars.indexOf(this) + 1];
         subBar.loadBuckets(Time.filter.term, bucket.bucket);
     };

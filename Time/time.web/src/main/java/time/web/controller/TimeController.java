@@ -41,8 +41,8 @@ public class TimeController {
     }
 
     @RequestMapping(value = "/buckets", method = RequestMethod.GET)
-    public BucketGroup getBuckets(@RequestParam(value = "scale", required = true) Scale scale, @RequestParam(value = "filter", required = false) String filter) throws IOException {
-        return bucketService.getBuckets(scale, filter);
+    public BucketGroup getBuckets(@RequestParam(value = "scale", required = true) Scale scale, @RequestParam(value = "term", required = false) String term) throws IOException {
+        return bucketService.getBuckets(scale, term);
     }
 
     @RequestMapping(value = "/phrases", method = RequestMethod.GET)

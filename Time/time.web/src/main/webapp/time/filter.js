@@ -44,6 +44,7 @@
 
     filter.prototype.onFilter = function(term) {
         this.term = term;
+        ga('send', 'pageview','/'+term.replace(/ /g,"_"));
         Time.view.termInput.val(term);
         Time.phrases.clearText();
         Time.drawer.hideBar(0);

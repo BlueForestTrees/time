@@ -7,9 +7,9 @@
     data.prototype.getBuckets = function(term, scale, callback) {
         var params = {
             scale : scale,
-            filter : term
+            term : term
         };
-        ga('send', 'pageview', '/buckets/'+term);
+        ga('send', 'event', 'buckets', 'get', params);
         $.get("buckets", params).done(callback);
     };
 
@@ -20,7 +20,7 @@
             term : term,
             lastKey : lastKey
         };
-        ga('send', 'pageview', '/phrases/'+term);
+        ga('send', 'event', 'phrases', 'get', params);
         $.get("phrases", params).done(callback);
     };
 
@@ -28,7 +28,7 @@
         var params = {
             term : term
         };
-        ga('send', 'pageview', '/synonyms/'+term);
+        ga('send', 'event', 'synonyms', 'get', params);
         $.get("synonyms", params).done(callback);
     };
 

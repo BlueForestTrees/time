@@ -41,6 +41,7 @@ public class DateFinderTest {
     @Autowired
     private DateFinder[] finders;
 
+       
     @Test
     public void precise1() {
         assertOne(preciseFinder, dateIs(date(9, Month.MARCH, 1968)), "Il a disputé son premier test match le 9 Mars 1968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");

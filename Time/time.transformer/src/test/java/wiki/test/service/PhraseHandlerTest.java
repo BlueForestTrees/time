@@ -11,8 +11,8 @@ public class PhraseHandlerTest {
 	@Test
 	public void testGetPhrases() {
 		final FindPhrasesModule phraseHandler = new FindPhrasesModule();
-		final String data = "Bla bla. Bli bli. Blou av. b mr. lou. ICI blou. Blu blu blu. Blo avant JC. blo LA blo blo.";
-		String[] expectedPhrases = new String[] { "Bla bla.", "Bli bli.", "Blou av. b mr. lou.", "ICI blou.", "Blu blu blu.", "Blo avant JC. blo LA blo blo." };
+		final String data = "Dr. Martens Bla bla. Bli bli. Blou av. b mr. lou. ICI blou. Blu blu blu. Blo avant JC. blo LA blo blo.";
+		String[] expectedPhrases = new String[] { "Dr. Martens Bla bla.", "Bli bli.", "Blou av. b mr. lou.", "ICI blou.", "Blu blu blu.", "Blo avant JC. blo LA blo blo." };
 
 		String[] actualPhrases = phraseHandler.getPhrases(data);
 

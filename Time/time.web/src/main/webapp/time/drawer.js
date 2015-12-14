@@ -72,9 +72,14 @@
     };
 
     drawer.prototype.getLink = function(phrase) {
-        var pageName = decodeURIComponent(phrase.pageUrl).replace(/_/g," ").substring(1);
+        var pageName = decodeURIComponent(phrase.pageUrl).replace(/_/g, " ").substring(1);
         var tooltip = "source wikipedia : " + pageName;
-        return "<a title=\""+tooltip+"\" href=\"https://fr.wikipedia.org/wiki" + phrase.pageUrl + "\" target=\"_blank\"><img src=\"http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png\" /></a>";
+        var url = "https://fr.wikipedia.org/wiki" + phrase.pageUrl;
+        return "<a title=\"" + tooltip + "\" href=\"" + url + "\" onClick=\"Time.drawer.link('" + pageName + "')\" target=\"_blank\"><img src=\"http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png\" /></a>";
+    };
+
+    drawer.prototype.link = function(pageName) {
+        ga('send', 'event', 'link', pageName, Time.filter.term);
     };
 
     drawer.prototype.setPhraseTooltip = function(text) {

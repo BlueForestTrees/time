@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 
 @Component
 public class QueryService {
-    public Query getQuery(String term, String bucketName, Long bucketValueFrom, Long bucketValueTo) {
+    public Query getQuery(final String term, final String bucketName, Long bucketValueFrom, Long bucketValueTo) {
         boolean noBucket = StringUtils.isEmpty(bucketName) || (bucketValueFrom == null && bucketValueTo == null);
         boolean noTerm = StringUtils.isEmpty(term);
 
@@ -38,7 +38,7 @@ public class QueryService {
     protected Query getTermQuery(String term) {
         boolean multiTerm = term.contains(" ");
         if(!multiTerm){
-            return new TermQuery(new Term("text", term));            
+            return new TermQuery(new Term("text", term));
         }else{
             final BooleanQuery.Builder builder = new BooleanQuery.Builder();
             Arrays.stream(term.split(" ")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.SHOULD));

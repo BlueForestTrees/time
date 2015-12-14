@@ -1,6 +1,6 @@
 (function() {
     function drawer() {
-
+        
     }
 
     drawer.prototype.install = function() {
@@ -78,10 +78,10 @@
     };
 
     drawer.prototype.addTheEnd = function() {
-        Time.view.phrases.append("<h1><center>The END<center></h1>");
+        Time.view.phrases.append("<h1 style=\"text-align:center\">The END</h1>");
     };
     drawer.prototype.addNoPhrases = function() {
-        Time.view.phrases.append("<h1><center>Rien trouvé!<center></h1>");
+        Time.view.phrases.append("<h1 style=\"text-align:center\">Rien trouvé!</h1>");
     };
 
     Time.Drawer = drawer;

@@ -9,6 +9,7 @@
             scale : scale,
             filter : term
         };
+        ga('send', 'pageview', '/buckets/'+term);
         $.get("buckets", params).done(callback);
     };
 
@@ -19,6 +20,7 @@
             term : term,
             lastKey : lastKey
         };
+        ga('send', 'pageview', '/phrases/'+term);
         $.get("phrases", params).done(callback);
     };
 
@@ -26,6 +28,7 @@
         var params = {
             term : term
         };
+        ga('send', 'pageview', '/synonyms/'+term);
         $.get("synonyms", params).done(callback);
     };
 

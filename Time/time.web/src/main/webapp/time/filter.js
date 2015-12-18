@@ -49,9 +49,11 @@
         Time.phrases.clearText();
         Time.drawer.hideBars(0);
         Time.bars[0].loadBuckets(this.term);
-        //pour arrêter l'infinite scroll
+        // pour arrêter l'infinite scroll d'une recherche précédente
         Time.phrases.lastSearch = null;
         Time.phrases.loadFirstPhrases();
+
+        Time.history.pushState(term);
     };
 
     Time.Filter = filter;

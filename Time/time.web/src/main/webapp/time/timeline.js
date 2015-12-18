@@ -11,7 +11,11 @@
         Time.drawer.install();
         Time.filter.install();
         Time.phrases.install();
+
+        Time.history.popState();
+        window.onpopstate = Time.history.popState;
     }
 
     Time.Timeline = timeline;
+
 })();

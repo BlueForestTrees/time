@@ -40,7 +40,7 @@ public class DateFinderTest {
 
     @Autowired
     private DateFinder[] finders;
-
+    //TODO ajout test à partir de 
        
     @Test
     public void precise1() {

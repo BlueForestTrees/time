@@ -25,7 +25,7 @@ public class DateFinderConfig {
 
     @Bean
     public DateFinder jcFinder() {
-        final Pattern pattern = Pattern.compile("(^| |,)([Vv]ers|[Ee]nviron|[Ee]n) (l'an )?(?<g>(-)?\\d{4})(,? )(ans )?(?<neg>(avant|av.) J.-?C.)?");
+        final Pattern pattern = Pattern.compile("(^| |,)([Aà] partir de|[Vv]ers|[Ee]nviron|[Ee]n) (l'an )?(?<g>(-)?\\d{4})(,? )(ans )?(?<neg>(avant|av.) J.-?C.)?");
         final IParser parser = new JCParser();
         return new DateFinder(pattern, parser);
     }
@@ -46,7 +46,7 @@ public class DateFinderConfig {
 
     @Bean
     public DateFinder preciseFinder() {
-        final Pattern pattern = Pattern.compile("(^| |,)(?<g>((?<d>\\d{1,2})|(e|E)n) (?<m>(J|j)an(\\.|v\\.|vier)|(F|f)(é|e)v(\\.|rier)|(M|m)ar(\\.|s)|(A|a)vr(\\.|il)|(M|m)ai|(J|j)uin|(J|j)uil(\\.|let)|(A|a)o(u|û)(\\.|t)|(S|s)ep(\\.|t\\.|tembre)|(O|o)ct(\\.|obre)|(N|n)ov(\\.|embre)|(D|d)(é|e)c(\\.|embre)) (?<y>\\d{3,4}))");
+        final Pattern pattern = Pattern.compile("(^| |,)(?<g>((?<d>\\d{1,2})|(e|E)n|[Aà] partir de) (?<m>(J|j)an(\\.|v\\.|vier)|(F|f)(é|e)v(\\.|rier)|(M|m)ar(\\.|s)|(A|a)vr(\\.|il)|(M|m)ai|(J|j)uin|(J|j)uil(\\.|let)|(A|a)o(u|û)(\\.|t)|(S|s)ep(\\.|t\\.|tembre)|(O|o)ct(\\.|obre)|(N|n)ov(\\.|embre)|(D|d)(é|e)c(\\.|embre)) (?<y>\\d{3,4}))");
         final IParser parser = new PreciseParser();
         return new DateFinder(pattern, parser);
     }

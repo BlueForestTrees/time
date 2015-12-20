@@ -13,7 +13,7 @@
             });
         }
         if (params.q) {
-            Time.filter.onFilter(params.q);
+            Time.filter.onFilter(params.q, true);
         }
         Time.history.params = params;
     };

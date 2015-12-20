@@ -42,7 +42,7 @@
         this.onFilter(term);
     };
 
-    filter.prototype.onFilter = function(term) {
+    filter.prototype.onFilter = function(term, ignoreHistory) {
         this.term = term;
         ga('send', 'event', 'search', term);
         Time.view.termInput.val(term);
@@ -53,7 +53,9 @@
         Time.phrases.lastSearch = null;
         Time.phrases.loadFirstPhrases();
 
-        Time.history.pushState(term);
+        if (!ignoreHistory) {
+            Time.history.pushState(term);
+        }
     };
 
     Time.Filter = filter;

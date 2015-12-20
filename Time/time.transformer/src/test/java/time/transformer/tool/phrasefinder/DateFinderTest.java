@@ -23,6 +23,7 @@ import time.transformer.tool.parser.IParser;
 @ContextConfiguration(classes = DateFinderConfig.class)
 public class DateFinderTest {
 
+    
     @Autowired
     private DateFinder milliardFinder;
 
@@ -301,7 +302,7 @@ public class DateFinderTest {
     }
 
     private Condition<? super Phrase> longyearIs(long expectedAnnee) {
-        final long expectedJour = toJours(expectedAnnee);
+        final long expectedJour = toLongJours(expectedAnnee);
         return new Condition<Phrase>() {
             public boolean matches(Phrase phrase) {
                 return phrase.getDate() == expectedJour;
@@ -358,7 +359,7 @@ public class DateFinderTest {
         return LocalDate.of(year, month, dayOfMonth);
     }
 
-    private long toJours(long expectedAnnee) {
+    private long toLongJours(long expectedAnnee) {
         return (long) (expectedAnnee * 364.25d);
     }
 

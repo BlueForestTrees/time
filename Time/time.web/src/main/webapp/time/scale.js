@@ -1,6 +1,9 @@
 (function() {
 
     function scale() {
+        this.seventiesInDays = 719528;
+        this.daysToMillis = 24 * 60 * 60 * 1000;
+        this.max = 10000 * 364,25;
         this.ONE = 'ONE';
         this.TEN = 'TEN';
         this.TEN3 = 'TEN3';
@@ -52,7 +55,7 @@
     scale.prototype.getTooltipText = function(years, bucket) {
         var start = years > 0 ? 'Dans ' : 'Il y a ';
         var echelle = this.getEchelle(years);
-        var end = bucket ? " ("+bucket.count+" phrase"+(bucket.count > 1 ? "s":"")+")" : "";
+        var end = bucket ? " (" + bucket.count + " phrase" + (bucket.count > 1 ? "s" : "") + ")" : "";
 
         switch (echelle) {
         case this.echelles.milliard:
@@ -94,10 +97,16 @@
     };
 
     scale.prototype.getYearsSB = function(scale, bucket) {
-        return this.multiplier(scale) * bucket / 364.25;
+        return this.getYearsD(this.multiplier(scale) * bucket);
     };
     scale.prototype.getYearsD = function(days) {
-        return days / 364.25;
+        if (Math.abs(days) > this.max) {
+            return days / 364.25;
+        } else {
+            var daysEpoch = days - this.seventiesInDays;
+            var date = new Date(daysEpoch * 24 * 60 * 60 * 1000);
+            return date.getFullYear();
+        }
     };
 
     scale.prototype.firstSubBucket = function(scale, bucket) {

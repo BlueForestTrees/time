@@ -13,7 +13,7 @@ public class FindPhrasesConfig {
 
     @Bean
     public String indexPath() {
-        return "/Time/data/fr-phrases";
+        return "/Time/data/lucene/phrases";
     }
 
     @Bean

@@ -2,6 +2,7 @@ package time.repo.bean;
 
 public class Phrase {
     private String text;
+    //nb de jours / JC
     private long date;
     private String pageUrl;
 

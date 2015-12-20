@@ -13,14 +13,27 @@
             });
         }
         if (params.q) {
-            Time.filter.onFilter(params.q, true);
+            if (params.s && params.b) {
+                var bar = Scale.bars[Scale.details[params.s].index];
+                Time.filter.term = params.s;
+                Time.view.termInput.val(params.s);
+                bar.beginStory(params.s);
+            } else {
+                Time.filter.onFilter(params.q, true);
+            }
         }
         Time.history.params = params;
     };
 
     Time.history.pushState = function(term) {
-        if (Time.history.params.q !== term) {
+        if (Time.history.params.q !== term || Time.history.params.b !== bucket || Time.history.params.s !== scale) {
             history.pushState("", "", "/?q=" + encodeURIComponent(term));
+        }
+    };
+
+    Time.history.pushCompleteState = function(term, bucket, scale) {
+        if (Time.history.params.q !== term || Time.history.params.b !== bucket || Time.history.params.s !== scale) {
+            history.pushState("", "", "/?q=" + encodeURIComponent(term) + "&s=" + scale + "b=" + bucket);
         }
     };
 

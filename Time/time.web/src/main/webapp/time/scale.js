@@ -17,21 +17,25 @@
             TEN : {
                 sub : this.ONE,
                 multiplier : 10,
-                up : this.TEN3
+                up : this.TEN3,
+                index : 3
             },
             TEN3 : {
                 sub : this.TEN,
                 multiplier : 10000,
-                up : this.TEN6
+                up : this.TEN6,
+                index : 2
             },
             TEN6 : {
                 sub : this.TEN3,
                 multiplier : 10000000,
-                up : this.TEN9
+                up : this.TEN9,
+                index : 1
             },
             TEN9 : {
                 sub : this.TEN6,
-                multiplier : 10000000000
+                multiplier : 10000000000,
+                index : 0
             }
         };
         this.echelles = {

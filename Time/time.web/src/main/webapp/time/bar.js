@@ -151,6 +151,7 @@
         Time.phrases.clearText();
         Time.drawer.setPhraseTooltip(Scale.getTooltipText(Scale.getYearsSB(this.scale, bucket.x)));
         Time.phrases.loadPhrases(this.scale, bucket.x);
+        Time.history.pushCompleteState(Time.filter.term, this.scale, bucket.x);
     };
 
     bar.prototype.getmousePosition = function(event) {

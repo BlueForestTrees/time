@@ -1,6 +1,7 @@
 Barres etiquettes date
 Hightlightling
-Historique JS bucket+scroll position
+Historique JS bucket
+Historique scroll position
 
 Vrai facet pour la date
 Intro Layer avec tooltips

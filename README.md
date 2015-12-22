@@ -1,7 +1,6 @@
 Barres etiquettes date
 Hightlightling
 Historique JS bucket
-Historique scroll position
 
 Vrai facet pour la date
 Intro Layer avec tooltips
@@ -14,6 +13,7 @@ Phrases affichage progressif
 
 Prod suivi des perfs
 
+Historique scroll position
 DateFinder TU
 https://fr.wikipedia.org/wiki/1662
 Promises

@@ -11,12 +11,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import time.repo.bean.FullPhrase;
+import time.repo.bean.Phrase;
 import time.repo.bean.Page;
 import time.transformer.component.filter.PageFilter;
 import time.transformer.component.filter.PhraseFilter;
 import time.transformer.component.reader.FinDuScanException;
-import time.transformer.tool.IStorage;
+import time.transformer.tool.LuceneStorage;
 import time.transformer.tool.phrasefinder.DateFinder;
 
 @Service
@@ -25,7 +25,7 @@ public class FindPhrasesModule implements IModule {
     private static final Logger LOG = LogManager.getLogger(FindPhrasesModule.class);
 
     @Autowired
-    IStorage storage;
+    LuceneStorage storage;
 
     @Autowired
     PageReaderService pageReader;
@@ -85,8 +85,8 @@ public class FindPhrasesModule implements IModule {
 
     protected long handlePage(Page page, String[] phrasesArray, DateFinder finder) throws IOException {
         long count = 0;
-        List<FullPhrase> phrases = finder.findPhrasesWithDates(phrasesArray);
-        for (FullPhrase phrase : phrases) {
+        List<Phrase> phrases = finder.findPhrasesWithDates(phrasesArray);
+        for (Phrase phrase : phrases) {
             if (phraseFilter.keepThisPhrase(phrase)) {
                 phrase.setPageUrl(page.getUrl());
                 storage.store(phrase);

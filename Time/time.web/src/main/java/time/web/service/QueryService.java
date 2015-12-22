@@ -5,10 +5,10 @@ import java.util.Arrays;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -38,10 +38,12 @@ public class QueryService {
     protected Query getTermQuery(String term) {
         boolean multiTerm = term.contains(" ");
         if(!multiTerm){
-            return new TermQuery(new Term("text", term));
+            return new FuzzyQuery(new Term("text", term));
+            //return new TermQuery(new Term("text", term));
         }else{
             final BooleanQuery.Builder builder = new BooleanQuery.Builder();
-            Arrays.stream(term.split(" ")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.SHOULD));
+            Arrays.stream(term.split(" ")).forEach(t -> builder.add(new FuzzyQuery(new Term("text", t)), Occur.SHOULD));
+            //Arrays.stream(term.split(" ")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.SHOULD));
             return builder.build();
         }
     }

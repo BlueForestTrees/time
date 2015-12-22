@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import time.repo.bean.FullPhrase;
 import time.repo.bean.Phrase;
 import time.transformer.config.DateFinderConfig;
 import time.transformer.tool.parser.IParser;
@@ -290,7 +289,7 @@ public class DateFinderTest {
     private void assertTwo(final DateFinder finder, Condition<? super Phrase> condition1, Condition<? super Phrase> condition2, String phrase) {
         final String[] phrases = new String[] { phrase };
 
-        final List<FullPhrase> actualPhrases = finder.findPhrasesWithDates(phrases);
+        final List<Phrase> actualPhrases = finder.findPhrasesWithDates(phrases);
 
         assertThat(actualPhrases).as("doit trouver deux dates").hasSize(2);
 

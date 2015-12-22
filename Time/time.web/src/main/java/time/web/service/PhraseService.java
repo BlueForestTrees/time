@@ -16,6 +16,7 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.TopFieldDocs;
+import org.apache.lucene.search.highlight.Highlighter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,11 +46,19 @@ public class PhraseService {
 
     @Autowired
     private Sort sortDateAsc;
+    
+    private Highlighter highlighter;
 
     public Phrases find(final Scale scale, final Long bucketValue, final String term, String lastKey) throws IOException {
         final String bucketName = scale != null ? scale.getField() : null;
         final Last last = (Last) cache.remove(lastKey);
         final Query query = queryHelper.getQuery(term, bucketName, bucketValue, null);
+        
+//        final QueryScorer queryScorer = new QueryScorer(query, "text");
+//        final Fragmenter fragmenter = new SimpleSpanFragmenter(queryScorer);
+//        highlighter = new Highlighter(queryScorer); // Set the best scorer fragments
+//        highlighter.setTextFragmenter(fragmenter); // Set fragment to highlight
+        
         final TopFieldDocs search = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, pageSize, sortDateAsc, true, true);
 
         return toPhrases(search, last == null ? null : last.getLastIndex());
@@ -77,6 +86,10 @@ public class PhraseService {
         try {
             final Document doc = indexSearcher.doc(scoreDoc.doc);
             final Phrase phrase = new Phrase();
+            
+            //final TokenStream tokenStream = TokenSources.getAnyTokenStream(indexReader, scoreDoc.doc, "text", scoreDoc.doc, new StandardAnalyzer());
+            //final String fragment = highlighter.getBestFragment(tokenStream, doc.get("text"));
+            
             phrase.setText(doc.get("text"));
             phrase.setPageUrl(doc.get("pageUrl"));
             phrase.setDate((long) doc.getField("date").numericValue());

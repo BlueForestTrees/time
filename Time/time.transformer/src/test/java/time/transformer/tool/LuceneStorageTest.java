@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import time.repo.bean.FullPhrase;
+import time.repo.bean.Phrase;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { LuceneStorageConfig.class })
@@ -38,8 +38,8 @@ public class LuceneStorageTest {
         storage.end();
     }
 
-    private FullPhrase getPhrase(long l) {
-        final FullPhrase phrase = new FullPhrase();
+    private Phrase getPhrase(long l) {
+        final Phrase phrase = new Phrase();
         phrase.setDate(l);
         phrase.setText(String.valueOf(l));
         return phrase;

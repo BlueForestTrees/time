@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import time.repo.bean.FullPhrase;
+import time.repo.bean.Phrase;
 import time.transformer.tool.parser.IParser;
 
 public class DateFinder {
@@ -19,19 +19,19 @@ public class DateFinder {
     }
 
     /**
-     * Renvoie une {@link List<FullPhrase>} de Phrase detectées.
+     * Renvoie une {@link List<Phrase>} de Phrase detectées.
      * 
      * @param phrases
      * @return
      */
-    public List<FullPhrase> findPhrasesWithDates(String[] phrases) {
-        final List<FullPhrase> result = new ArrayList<>();
+    public List<Phrase> findPhrasesWithDates(String[] phrases) {
+        final List<Phrase> result = new ArrayList<>();
         for (String text : phrases) {
             final Matcher matcher = pattern.matcher(text);
             while (matcher.find()) {
                 final String dateExtract = matcher.group();
                 final Long date = parser.from(matcher);
-                final FullPhrase phrase = new FullPhrase();
+                final Phrase phrase = new Phrase();
                 phrase.setText(preparePhrase(text, dateExtract));
                 phrase.setDate(date);
                 result.add(phrase);

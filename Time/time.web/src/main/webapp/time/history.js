@@ -14,10 +14,10 @@
         }
         if (params.q) {
             if (params.s && params.b) {
-                var bar = Scale.bars[Scale.details[params.s].index];
-                Time.filter.term = params.s;
-                Time.view.termInput.val(params.s);
-                bar.beginStory(params.s);
+                var bar = Time.bars[params.s];
+                Time.filter.term = params.q;
+                Time.view.termInput.val(params.q);
+                bar.beginStory(params.q);
             } else {
                 Time.filter.onFilter(params.q, true);
             }

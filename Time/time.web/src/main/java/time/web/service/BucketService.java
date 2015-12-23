@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import time.web.bean.Bucket;
 import time.web.bean.BucketGroup;
-import time.web.enums.Scale;
 
 @Service
 public class BucketService {
@@ -35,18 +34,17 @@ public class BucketService {
     @Autowired
     private QueryService queryService;
 
-    public BucketGroup getBuckets(final Scale scale, final String term) throws IOException {
-        final String bucketName = scale.getField();
+    public BucketGroup getBuckets(final String scale, final String term) throws IOException {
         final FacetsCollector facetsCollector = new FacetsCollector();
         final Query query = queryService.getQuery(term, null, null, null);
         FacetsCollector.search(indexSearcher, query, 10, facetsCollector);
         final Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
-        final FacetResult facets = facetsCounter.getTopChildren(10000, bucketName);
+        final FacetResult facets = facetsCounter.getTopChildren(10000, scale);
 
         return toBucketsDTO(facets, scale);
     }
 
-    protected BucketGroup toBucketsDTO(final FacetResult facetResult, final Scale scale) {
+    protected BucketGroup toBucketsDTO(final FacetResult facetResult, final String scale) {
         final BucketGroup bucketsDTO = new BucketGroup();
         bucketsDTO.setBuckets(toBucketsDTO(facetResult));
         bucketsDTO.setScale(scale);

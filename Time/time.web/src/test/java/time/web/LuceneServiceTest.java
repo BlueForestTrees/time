@@ -23,9 +23,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StringUtils;
 
-import time.web.bean.BucketGroup;
 import time.web.config.ComponentConfig;
-import time.web.enums.Scale;
 import time.web.service.BucketService;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -35,14 +33,6 @@ public class LuceneServiceTest {
     @Autowired
     BucketService bucketService;
 
-    @Test
-    public void testGetBuckets() throws IOException{
-        final Scale scale = Scale.TEN3;//TEN6 lui renvoie plein de result sur le bucket enfant 0
-        final String term = "vivre";
-        final BucketGroup buckets = bucketService.getBuckets(scale, term);
-        
-        System.out.println(buckets);
-    }
     
     @Test
     public void testLuceneDoc() throws IOException{

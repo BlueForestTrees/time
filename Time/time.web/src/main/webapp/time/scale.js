@@ -3,41 +3,11 @@
     function scale() {
         this.seventiesInDays = 719528;
         this.daysToMillis = 24 * 60 * 60 * 1000;
-        this.max = 10000 * 364,25;
-        this.ONE = 'ONE';
-        this.TEN = 'TEN';
-        this.TEN3 = 'TEN3';
-        this.TEN6 = 'TEN6';
-        this.TEN9 = 'TEN9';
-        this.details = {
-            ONE : {
-                multiplier : 1,
-                up : this.TEN
-            },
-            TEN : {
-                sub : this.ONE,
-                multiplier : 10,
-                up : this.TEN3,
-                index : 3
-            },
-            TEN3 : {
-                sub : this.TEN,
-                multiplier : 10000,
-                up : this.TEN6,
-                index : 2
-            },
-            TEN6 : {
-                sub : this.TEN3,
-                multiplier : 10000000,
-                up : this.TEN9,
-                index : 1
-            },
-            TEN9 : {
-                sub : this.TEN6,
-                multiplier : 10000000000,
-                index : 0
-            }
-        };
+        this.max = 10000 * 364, 25;
+
+        this.scaleCount = 4;
+        this.scales = [ 10000000000, 10000000, 10000, 10 ];
+
         this.echelles = {
             milliard : 1000000000,
             million : 1000000,
@@ -46,16 +16,10 @@
         };
     }
 
-    scale.prototype.multiplier = function(scale) {
-        return this.details[scale].multiplier;
-    };
+    scale.prototype.isLastScale = function(scale) {
+        return scale === this.scaleCount - 1;
+    }
 
-    scale.prototype.sub = function(scale) {
-        return this.details[scale].sub;
-    };
-    scale.prototype.up = function(scale) {
-        return this.details[scale].up;
-    };
     scale.prototype.getTooltipText = function(years, bucket) {
         var start = years > 0 ? 'Dans ' : 'Il y a ';
         var echelle = this.getEchelle(years);
@@ -100,8 +64,8 @@
         }
     };
 
-    scale.prototype.getYearsSB = function(scale, bucket) {
-        return this.getYearsD(this.multiplier(scale) * bucket);
+    scale.prototype.getYearsSB = function(scaleIndex, bucket) {
+        return this.getYearsD(this.scales[scaleIndex] * bucket);
     };
     scale.prototype.getYearsD = function(days) {
         if (Math.abs(days) > this.max) {
@@ -113,9 +77,9 @@
         }
     };
 
-    scale.prototype.firstSubBucket = function(scale, bucket) {
+    scale.prototype.firstSubBucket = function(scaleIndex, bucket) {
         if (scale) {
-            var multiplierDelta = this.multiplier(scale) / this.multiplier(this.sub(scale));
+            var multiplierDelta = this.scales[scaleIndex] / this.scales[scaleIndex + 1];
             return multiplierDelta * bucket;
         } else {
             return 0;

@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 import time.repo.bean.Phrase;
 import time.web.bean.Last;
 import time.web.bean.Phrases;
-import time.web.enums.Scale;
 import time.web.exception.LuceneRuntimeException;
 
 @Service
@@ -49,10 +48,9 @@ public class PhraseService {
     
     private Highlighter highlighter;
 
-    public Phrases find(final Scale scale, final Long bucketValue, final String term, String lastKey) throws IOException {
-        final String bucketName = scale != null ? scale.getField() : null;
+    public Phrases find(final String scale, final Long bucketValue, final String term, String lastKey) throws IOException {
         final Last last = (Last) cache.remove(lastKey);
-        final Query query = queryHelper.getQuery(term, bucketName, bucketValue, null);
+        final Query query = queryHelper.getQuery(term, scale, bucketValue, null);
         
 //        final QueryScorer queryScorer = new QueryScorer(query, "text");
 //        final Fragmenter fragmenter = new SimpleSpanFragmenter(queryScorer);

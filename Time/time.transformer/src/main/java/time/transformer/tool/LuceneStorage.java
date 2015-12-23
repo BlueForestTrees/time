@@ -30,7 +30,7 @@ public class LuceneStorage {
     IndexWriterConfig indexWriterConfig;
     IndexWriter iwriter;
     FacetsConfig config;
-
+    
     @Autowired
     private String indexPath;
 
@@ -53,16 +53,11 @@ public class LuceneStorage {
         doc.add(new TextField("pageUrl", phrase.getPageUrl(), Store.YES));
         doc.add(new SortableLongField("date", phrase.getDate(), Store.YES));
 
-        doc.add(new LongField("dateByTen", phrase.getDate() / 10L, Store.NO));
-        doc.add(new LongField("dateByTen3", phrase.getDate() / 10000L, Store.NO));
-        doc.add(new LongField("dateByTen6", phrase.getDate() / 10000000L, Store.NO));
-        doc.add(new LongField("dateByTen9", phrase.getDate() / 10000000000L, Store.NO));
-
-        doc.add(new SortedSetDocValuesFacetField("dateByTen", String.valueOf(phrase.getDate() / 10L)));
-        doc.add(new SortedSetDocValuesFacetField("dateByTen3", String.valueOf(phrase.getDate() / 10000L)));
-        doc.add(new SortedSetDocValuesFacetField("dateByTen6", String.valueOf(phrase.getDate() / 10000000L)));
-        doc.add(new SortedSetDocValuesFacetField("dateByTen9", String.valueOf(phrase.getDate() / 10000000000L)));
-
+        for(int i = 0; i < Scale.scales.length; i++){
+            doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.scales[i], Store.NO));
+            doc.add(new SortedSetDocValuesFacetField(String.valueOf(i), String.valueOf(phrase.getDate() / Scale.scales[i])));
+        }
+        
         iwriter.addDocument(config.build(doc));
     }
 

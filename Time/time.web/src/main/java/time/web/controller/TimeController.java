@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import time.web.bean.BucketGroup;
 import time.web.bean.Phrases;
-import time.web.enums.Scale;
 import time.web.service.BucketService;
 import time.web.service.IndexService;
 import time.web.service.PhraseService;
@@ -41,12 +40,12 @@ public class TimeController {
     }
 
     @RequestMapping(value = "/buckets", method = RequestMethod.GET)
-    public BucketGroup getBuckets(@RequestParam(value = "scale", required = true) Scale scale, @RequestParam(value = "term", required = false) String term) throws IOException {
+    public BucketGroup getBuckets(@RequestParam(value = "scale", required = true) String scale, @RequestParam(value = "term", required = false) String term) throws IOException {
         return bucketService.getBuckets(scale, term);
     }
 
     @RequestMapping(value = "/phrases", method = RequestMethod.GET)
-    public Phrases find(@RequestParam(value = "scale", required = false) Scale scale, @RequestParam(value = "bucket", required = false) Long bucket, @RequestParam(value = "term", required = false) String term, @RequestParam(value = "lastKey", required = false) String lastKey) throws IOException {
+    public Phrases find(@RequestParam(value = "scale", required = false) String scale, @RequestParam(value = "bucket", required = false) Long bucket, @RequestParam(value = "term", required = false) String term, @RequestParam(value = "lastKey", required = false) String lastKey) throws IOException {
         return phraseService.find(scale, bucket, term, lastKey);
     }
 

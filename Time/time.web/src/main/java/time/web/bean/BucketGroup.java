@@ -2,18 +2,16 @@ package time.web.bean;
 
 import java.util.List;
 
-import time.web.enums.Scale;
-
 public class BucketGroup {
 
-    private Scale scale;
+    private String scale;
     private List<Bucket> buckets;
 
-    public Scale getScale() {
+    public String getScale() {
         return scale;
     }
 
-    public void setScale(Scale scale) {
+    public void setScale(String scale) {
         this.scale = scale;
     }
 

@@ -1,7 +1,7 @@
 (function() {
     function bar(scale) {
         this.scale = scale;
-        this.isLastBar = this.scale === Scale.TEN;
+        this.isLastBar = Scale.isLastScale(this.scale);
         this.viewport = new Time.Viewport(this.scale);
         this.buckets = [];
         this.context = new Time.CanvasFactory().build(35, scale);

@@ -5,17 +5,17 @@ import java.util.Arrays;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
 public class QueryService {
-    public Query getQuery(final String term, final String bucketName, Long bucketValueFrom, Long bucketValueTo) {
-        boolean noBucket = StringUtils.isEmpty(bucketName) || (bucketValueFrom == null && bucketValueTo == null);
+    public Query getQuery(final String term, final String scale, Long bucketValueFrom, Long bucketValueTo) {
+        boolean noBucket = StringUtils.isEmpty(scale) || (bucketValueFrom == null && bucketValueTo == null);
         boolean noTerm = StringUtils.isEmpty(term);
 
         if (noBucket && noTerm) {
@@ -23,7 +23,7 @@ public class QueryService {
         }
 
         Query textQuery = noTerm ? null : getTermQuery(term.toLowerCase());
-        Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(bucketName, bucketValueFrom, bucketValueTo, true, true);
+        Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(scale, bucketValueFrom, bucketValueTo, true, true);
 
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
         if (textQuery != null) {
@@ -38,12 +38,10 @@ public class QueryService {
     protected Query getTermQuery(String term) {
         boolean multiTerm = term.contains(" ");
         if(!multiTerm){
-            return new FuzzyQuery(new Term("text", term));
-            //return new TermQuery(new Term("text", term));
+            return new TermQuery(new Term("text", term));
         }else{
             final BooleanQuery.Builder builder = new BooleanQuery.Builder();
-            Arrays.stream(term.split(" ")).forEach(t -> builder.add(new FuzzyQuery(new Term("text", t)), Occur.SHOULD));
-            //Arrays.stream(term.split(" ")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.SHOULD));
+            Arrays.stream(term.split(" ")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.SHOULD));
             return builder.build();
         }
     }

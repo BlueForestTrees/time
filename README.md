@@ -6,9 +6,6 @@ Hightlightling
 
 Historique JS bucket
 
-
-Vrai facet pour la date
-
 Intro Layer avec tooltips
 
 Barres réduire les avant dernières barres

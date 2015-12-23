@@ -18,8 +18,6 @@ Phrases affichage progressif
 
 Prod suivi des perfs
 
-Historique scroll position
-
 DateFinder TU
 
 https://fr.wikipedia.org/wiki/1662

@@ -2,6 +2,8 @@ Rollover sur bucket: décalage
 
 Placement auto des viewport
 
+Curseur de position des phrases sur la barre active.
+
 Hightlightling
 
 Historique JS bucket

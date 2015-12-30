@@ -6,7 +6,7 @@ Curseur de position des phrases sur la barre active.
 
 Hightlightling
 
-Historique JS bucket
+Bucket dans l'historique JS
 
 DateFinder TU
 

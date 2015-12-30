@@ -1,18 +1,10 @@
-Débugger scale dynamique
-
-Barres etiquettes date
-
 Hightlightling
 
 Historique JS bucket
 
 Intro Layer avec tooltips
 
-Barres réduire les avant dernières barres
-
 Barres affichage progressif
-
-Phrases dictionnaire au roll-over d'un mot
 
 Phrases affichage progressif
 

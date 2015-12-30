@@ -1,9 +1,9 @@
 (function() {
-    Time.history = {};
+    Time.historic = {};
 
-    Time.history.params = {};
+    Time.historic.params = {};
 
-    Time.history.popState = function() {
+    Time.historic.popState = function() {
         var params = {};
         var url = document.location.href;
         if (url.indexOf("?") !== -1) {
@@ -22,18 +22,12 @@
                 Time.filter.onFilter(params.q, true);
             }
         }
-        Time.history.params = params;
+        Time.historic.params = params;
     };
 
-    Time.history.pushState = function(term) {
-        if (Time.history.params.q !== term || Time.history.params.b !== bucket || Time.history.params.s !== scale) {
-            history.pushState("", "", "/?q=" + encodeURIComponent(term));
-        }
-    };
-
-    Time.history.pushCompleteState = function(term, bucket, scale) {
-        if (Time.history.params.q !== term || Time.history.params.b !== bucket || Time.history.params.s !== scale) {
-            history.pushState("", "", "/?q=" + encodeURIComponent(term) + "&s=" + scale + "b=" + bucket);
+    Time.historic.pushState = function(term, bucket, scale) {
+        if (Time.historic.params.q !== term || Time.historic.params.b !== bucket || Time.historic.params.s !== scale) {
+            history.pushState("", "", "/?q=" + encodeURIComponent(term) + (scale && bucket ? "&s=" + scale + "b=" + bucket : ""));
         }
     };
 

@@ -1,12 +1,26 @@
 (function() {
     function drawer() {
-
+        this.scaleheight = 0.3;
     }
 
     drawer.prototype.install = function() {
-        this.hideBars(0);
+        this.hideBarsAfter(0);
         this.resizeAllBars();
         $(window).on('resize', this.resizeAllBars);
+    };
+
+    drawer.prototype.reduceBarsBefore = function(bar) {
+        var previousBar = Time.scale.previous(bar);
+        while (previousBar !== null) {
+            $(previousBar.canvas).css({height : previousBar.reducedHeight});
+            previousBar = Time.scale.previous(previousBar);
+        }
+    };
+
+    drawer.prototype.unreduceBar = function(bar) {
+        $(bar.canvas).css({
+            height : bar.height
+        });
     };
 
     drawer.prototype.resizeAllBars = function() {
@@ -18,9 +32,11 @@
         Time.drawer.drawBar(bar);
     };
 
-    drawer.prototype.drawShowBar = function(bar) {
+    drawer.prototype.focusOn = function(bar) {
+        this.reduceBarsBefore(bar);
         this.drawBar(bar);
         this.showBar(bar);
+        this.unreduceBar(bar);
     };
 
     drawer.prototype.drawBar = function(bar) {
@@ -34,15 +50,15 @@
         }
     };
 
-    drawer.prototype.hideBars = function(barIndex) {
+    drawer.prototype.hideBarsAfter = function(barIndex) {
         while (barIndex < Time.bars.length) {
-            $(Time.bars[barIndex].canvas).fadeOut(100);
+            $(Time.bars[barIndex].canvas).hide();
             barIndex++;
         }
     };
 
     drawer.prototype.showBar = function(bar) {
-        $(bar.canvas).fadeIn(100);
+        $(bar.canvas).show();
     };
 
     drawer.prototype.setPhrases = function(phrases, filter) {
@@ -73,13 +89,13 @@
 
     drawer.prototype.getLink = function(phrase) {
         var pageName = decodeURIComponent(phrase.pageUrl).replace(/_/g, " ").substring(1);
-        var tooltip = "source wikipedia : " + pageName;
+        var tiptext = "source wikipedia : " + pageName;
         var url = "https://fr.wikipedia.org/wiki" + phrase.pageUrl;
-        return "<a title=\"" + tooltip + "\" href=\"" + url + "\" onClick=\"Time.drawer.link('" + pageName + "')\" target=\"_blank\"><img src=\"http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png\" /></a>";
+        return "<a title=\"" + tiptext + "\" href=\"" + url + "\" onClick=\"Time.drawer.link('" + pageName + "')\" target=\"_blank\"><img src=\"http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png\" /></a>";
     };
 
     drawer.prototype.link = function(pageName) {
-        ga('send', 'event', 'link', pageName, Time.filter.term);
+        Time.anal.ga('send', 'event', 'link', pageName, Time.filter.term);
     };
 
     drawer.prototype.setPhraseTooltip = function(text) {

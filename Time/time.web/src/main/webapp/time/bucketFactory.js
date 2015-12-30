@@ -16,9 +16,10 @@
 
     bucketFactory.prototype.getBuckets = function(bucketsDTO) {
         for (var i = 0; i < bucketsDTO.buckets.length; i++) {
-            var facet = bucketsDTO.buckets[i];
-            facet.x = facet.bucket;
-            facet.color = this.getColor(facet.count);
+            var bucket = bucketsDTO.buckets[i];
+            bucket.x = bucket.bucket;
+            bucket.color = this.getColor(bucket.count);
+            bucket.scale = bucketsDTO.scale;
         }
         return bucketsDTO.buckets;
     };

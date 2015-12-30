@@ -17,4 +17,5 @@ public class AnneeParser
 
         return LocalDate.of(annee, Month.JANUARY, 1).toEpochDay() + seventiesInDays;
     }
+
 }

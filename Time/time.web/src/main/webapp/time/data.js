@@ -9,7 +9,7 @@
             scale : scale,
             term : term
         };
-        ga('send', 'event', 'buckets', term, scale);
+        Time.anal.ga('send', 'event', 'buckets', term, scale);
         $.get("buckets", params).done(callback);
     };
 
@@ -20,7 +20,7 @@
             term : term,
             lastKey : lastKey
         };
-        ga('send', 'event', 'phrases', term, scale);
+        Time.anal.ga('send', 'event', 'phrases', term, scale);
         $.get("phrases", params).done(callback);
     };
 
@@ -28,7 +28,7 @@
         var params = {
             term : term
         };
-        ga('send', 'event', 'synonyms', term);
+        Time.anal.ga('send', 'event', 'synonyms', term);
         $.get("synonyms", params).done(callback);
     };
 

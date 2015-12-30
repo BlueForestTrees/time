@@ -3,11 +3,11 @@
         this.term = null;
     }
 
-    filter.prototype.install = function() {
-        Time.view.termInput.on("click", function() {
-            Time.view.termInput.select();
+    filter.prototype.install = function(view) {
+        view.termInput.on("click", function() {
+            view.termInput.select();
         });
-        Time.view.termInput.keypress($.proxy(this.termInputKeyPress, this));
+        view.termInput.keypress($.proxy(this.termInputKeyPress, this));
     };
 
     filter.prototype.termInputKeyPress = function(e) {
@@ -44,17 +44,17 @@
 
     filter.prototype.onFilter = function(term, ignoreHistory) {
         this.term = term;
-        ga('send', 'event', 'search', term);
+        Time.anal.ga('send', 'event', 'search', term);
         Time.view.termInput.val(term);
         Time.phrases.clearText();
-        Time.drawer.hideBars(0);
+        Time.drawer.hideBarsAfter(0);
         Time.bars[0].loadBuckets(this.term);
         // pour arrêter l'infinite scroll d'une recherche précédente
         Time.phrases.lastSearch = null;
         Time.phrases.loadFirstPhrases();
 
         if (!ignoreHistory) {
-            Time.history.pushState(term);
+            Time.historic.pushState(term);
         }
     };
 

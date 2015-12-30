@@ -10,12 +10,12 @@
     canvasFactory.prototype.build = function(height, scale) {
         var canvasId = this.getNextCanvasId(scale);
         var canvasAttributes = {
-            id : canvasId,
-            width : '100%',
-            height : height + 'px'
+            id : canvasId
         };
         var canvasCss = {
-            border : '1px solid #000000'
+            border : '1px solid #000000',
+            width : '100%',
+            height : height + 'px'
         };
         $('<canvas>').attr(canvasAttributes)
                      .css(canvasCss)

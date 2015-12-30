@@ -28,7 +28,13 @@ public class DateFinderTest {
 
     @Autowired
     private DateFinder jcFinder;
+    
+    @Autowired
+    private DateFinder nearJcFinder;
 
+    @Autowired
+    private DateFinder nearJcFinder2;
+    
     @Autowired
     private DateFinder romanFinder;
 
@@ -41,7 +47,13 @@ public class DateFinderTest {
     @Autowired
     private DateFinder[] finders;
     //TODO ajout test à partir de 
-       
+    
+    
+    @Test
+    public void near0() {
+        assertOne(nearJcFinder2, yearIs(2000), "Vers l'an 2000, gros bug.");
+    }
+    
     @Test
     public void precise1() {
         assertOne(preciseFinder, dateIs(date(9, Month.MARCH, 1968)), "Il a disputé son premier test match le 9 Mars 1968, contre l'équipe d'Irlande, et son dernier test match fut contre l'équipe d'Australie.");
@@ -93,32 +105,32 @@ public class DateFinderTest {
     }
 
     @Test
-    public void test17() {
-        assertNone("En 1827, dans une Encyclopédie allemande Nitzsch propose la création de nouveaux genres de paramécies (« M. Dutrochet, en France, avait étudié les Rotifères et les Tubicolaires; M. Leclerc avait fait connaître les Difflugies; et Losana , en Italie , avait décrit des Amibes, des Kolpodes et des Cyclides dont il multipliait les espèces sans raison et sans mesure », selon Dujardin (1841).");
+    public void jc0() {
+        assertOne(jcFinder, yearIs(1827), "En 1827, dans une Encyclopédie allemande Nitzsch propose la création de nouveaux genres de paramécies (« M. Dutrochet, en France, avait étudié les Rotifères et les Tubicolaires; M. Leclerc avait fait connaître les Difflugies; et Losana , en Italie , avait décrit des Amibes, des Kolpodes et des Cyclides dont il multipliait les espèces sans raison et sans mesure », selon Dujardin (1841).");
     }
 
     @Test
-    public void test13() {
+    public void none13() {
         assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
     }
 
     @Test
-    public void test14() {
+    public void none14() {
         assertNone("mais c'est pas pour de suite, j'ai/nous avons d'abord environ 3500 autres articles à traduire avant d'arriver à celui-là !");
     }
 
     @Test
-    public void test16() {
+    public void none16() {
         assertNone("Il serait d'origine alsacienne et deux parties sont manquantes : les vers 5479 à 5624 et les vers 7524 à 7716");
     }
 
     @Test
-    public void test15() {
+    public void none15() {
         assertNone("Il pouvait accueillir environ 9000 spectateurs répartis dans une cavea sem");
     }
 
     @Test
-    public void test12() {
+    public void none12() {
         assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
     }
 
@@ -127,10 +139,7 @@ public class DateFinderTest {
         assertOne(jcFinder, yearIs(1650), "En 1650, retour vers le futur.");
     }
 
-    @Test
-    public void jc2() {
-        assertOne(jcFinder, yearIs(2000), "Vers l'an 2000, gros bug.");
-    }
+
 
     @Test
     public void jc3() {
@@ -143,13 +152,13 @@ public class DateFinderTest {
     }
 
     @Test
-    public void jc5() {
-        assertOne(jcFinder, yearIs(-2000), "Les roues à rayons et à jantes, plus légères, seraient apparues environ 2000 ans av. J.-C..");
+    public void nearJc5() {
+        assertOne(nearJcFinder, yearIs(-2000), "Les roues à rayons et à jantes, plus légères, seraient apparues environ 2000 ans av. J.-C..");
     }
 
     @Test
-    public void jc5bis() {
-        assertOne(jcFinder, yearIs(-2001), "Les roues à rayons et à jantes, plus légères, seraient apparues environ 2001 ans av. J.-C..");
+    public void nearJc5bis() {
+        assertOne(nearJcFinder, yearIs(-2001), "Les roues à rayons et à jantes, plus légères, seraient apparues environ 2001 ans av. J.-C..");
     }
 
     @Test
@@ -186,10 +195,25 @@ public class DateFinderTest {
     public void jc12() {
         assertOne(jcFinder, yearIs(-5000), "Des indices de culture de céréales et de domestication du chien, du cochon, du mouton et de la chèvre dans la région de Tétouan, remontant à environ -5300, constituent la plus ancienne trace connue d'agriculture en Afrique du Nord.");
     }
+    
+    @Test
+    public void jc13(){
+        assertOne(jcFinder, yearIs(-3500), "au sein des chasseurs-cueilleurs de la culture Botaï, vers 3500 av. J.-C.,.");
+    }
 
     @Test
-    public void jc13() {
+    public void jc14() {
         assertOne(jcFinder, yearIs(-4000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
+    }
+    
+    @Test
+    public void jc15(){
+        assertOne(jcFinder, yearIs(-1500), "L' éclipse de Lune est celle du 17 janvier 3380 av. J.-C., qui aurait été décrite par les Mayas en Amérique centrale.");
+    }
+    
+    @Test
+    public void jc16(){
+        assertOne(jcFinder, yearIs(-500), "A partir de l'an 500 avant J.C., il s'est passé des choses.");
     }
 
     @Test

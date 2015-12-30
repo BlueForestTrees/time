@@ -37,7 +37,9 @@
 
     phrases.prototype.onFirstPhrases = function(phrases) {
         if (phrases.phraseList.length > 0) {
-            Time.drawer.setPhraseTooltip(Scale.getTooltipText(Scale.getYearsD(phrases.phraseList[0].date)));
+            var bucket = {years:Time.scale.daysToYears(phrases.phraseList[0].date)};
+            var text = Time.tooltips.getTooltipText(bucket);
+            Time.drawer.setPhraseTooltip(text);
         }
         this.onPhrases(null, null, phrases);
     };

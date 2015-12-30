@@ -12,10 +12,12 @@ public class DateFinder {
 
     private final Pattern pattern;
     private final IParser parser;
+    private final String name;
 
-    public DateFinder(Pattern pattern, IParser parser) {
+    public DateFinder(Pattern pattern, IParser parser, String name) {
         this.pattern = pattern;
         this.parser = parser;
+        this.name = name;
     }
 
     /**
@@ -46,7 +48,7 @@ public class DateFinder {
 
     @Override
     public String toString() {
-        return "DateFinder<"+parser.getClass().getSimpleName()+">";
+        return name + "<"+parser.getClass().getSimpleName()+">";
     }
 
 }

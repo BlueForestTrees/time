@@ -4,25 +4,27 @@
 <link rel="icon" type="image/png" href="img/time.png">
 <meta charset="utf-8" />
 <script src="lib/jquery-2.1.4.min.js"></script>
-<script src="lib/ga.js"></script>
 <script>
     Time = {};
     $(document).ready(function() {
+        //Time.anal.init();
         Time.view = {
             termInput : $("#termInput"),
             bottom : $("#bottom"),
             timeline : $("#timeline"),
             phrases : $('.phrases'),
             window : $(window),
-            toolTip : $(".tooltip"),
+            mouseBarTip : $("#mouseBarTip"),
+            activeBarTips : [ $("#activeBarTip1"), $("#activeBarTip2"), $("#activeBarTip3") ],
             throbber : $("#throbber")
         };
-        var timeline = new Time.Timeline();
-        ga('create', 'UA-70863369-1', 'auto');
-        ga('send', 'pageview','/');
+        Time.timeline = new Time.Timeline();
+        Time.anal.ga('create', 'UA-70863369-1', 'auto');
+        Time.anal.ga('send', 'pageview', '/');
     });
 </script>
-<script src="time/history.js"></script>
+<script src="lib/ga.js"></script>
+<script src="time/historic.js"></script>
 <script src="time/viewport.js"></script>
 <script src="time/bucketFactory.js"></script>
 <script src="time/canvasFactory.js"></script>
@@ -33,24 +35,33 @@
 <script src="time/data.js"></script>
 <script src="time/filter.js"></script>
 <script src="time/phrases.js"></script>
+<script src="time/tooltips.js"></script>
 
 <link rel="stylesheet" type="text/css" href="timeline.css">
 
 </head>
 <body>
+
 	<div class="bar">
 		<div>
-			<input class="tooltip" />
+			<div id="mouseBarTip" class="mousetip"></div>
+			<div id="activeBarTip1" class="bartip"></div>
+			<div id="activeBarTip2" class="bartip"></div>
+			<div id="activeBarTip3" class="bartip"></div>
 		</div>
-		<div id="filtre">
-			<input id="termInput" type="text" autofocus placeholder="COURSE GANT SCIENCE OS LIVRE UNIVERS CIVILISATION ECRITURE CAPUCHE INVENTION CHAT ORGANISME ATOME DANSE CHAUSSURE" />
+		<div>
+			<input id="termInput" type="text" autofocus />
 		</div>
 		<div id="timeline"></div>
 	</div>
+
 	<div class="phrases"></div>
+
 	<p id="bottom"></p>
+
 	<div id="throbber" style="height: 400px; text-align: center;">
 		<img class="throbber" src="img/throbber.gif" />
 	</div>
+
 </body>
 </html>

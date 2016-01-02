@@ -15,7 +15,7 @@
         var years = Time.scale.bucketToYears(bucket);
         var start = years > 0 ? 'Dans ' : 'Il y a ';
         var echelle = Time.scale.getEchelle(years);
-        var end = bucket.count ? " (" + bucket.count + " phrase" + (bucket.count > 1 ? "s" : "") + ")" : "";
+        var end = bucket.count ? " (" + (bucket.count > 40 ? (1+(Math.ceil(bucket.count/40)) + " page") : (bucket.count + " phrase")) + (bucket.count > 1 ? "s" : "") + ")" : "";
 
         switch (echelle) {
         case Time.scale.echelles.milliard:

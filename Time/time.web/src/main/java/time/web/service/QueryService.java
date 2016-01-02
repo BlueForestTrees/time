@@ -22,7 +22,7 @@ public class QueryService {
             return new MatchAllDocsQuery();
         }
 
-        Query textQuery = noTerm ? null : getTermQuery(term.toLowerCase());
+        Query textQuery = noTerm ? null : getOrTermQuery(term.toLowerCase());
         Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(scale, bucketValueFrom, bucketValueTo, true, true);
 
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
@@ -35,13 +35,24 @@ public class QueryService {
         return builder.build();
     }
 
-    protected Query getTermQuery(String term) {
-        boolean multiTerm = term.contains(" ");
-        if(!multiTerm){
+    protected Query getOrTermQuery(String term) {
+        boolean hasOrs = term.contains(" ");
+        if(!hasOrs){
+            return getAndTermQuery(term);
+        }else{
+            final BooleanQuery.Builder builder = new BooleanQuery.Builder();
+            Arrays.stream(term.split(" ")).forEach(t -> builder.add(getAndTermQuery(t), Occur.SHOULD));
+            return builder.build();
+        }
+    }
+
+    protected Query getAndTermQuery(String term) {
+        boolean hasAnds = term.contains("+");
+        if(!hasAnds){
             return new TermQuery(new Term("text", term));
         }else{
             final BooleanQuery.Builder builder = new BooleanQuery.Builder();
-            Arrays.stream(term.split(" ")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.SHOULD));
+            Arrays.stream(term.split("\\+")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.MUST));
             return builder.build();
         }
     }

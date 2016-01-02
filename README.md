@@ -1,10 +1,14 @@
+Requêtes Phrases
+
+Requêtes ET (+)
+
+Hightlightling
+
 Rollover sur bucket: décalage
 
 Placement auto des viewport
 
 Curseur de position des phrases sur la barre active.
-
-Hightlightling
 
 Bucket dans l'historique JS
 

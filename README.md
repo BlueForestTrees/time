@@ -12,6 +12,6 @@ DateFinder TU
 
 https://fr.wikipedia.org/wiki/1662
 
-Intro Layer avec tooltips
+Intro "si q = intro alors phrases d'intro"
 
 Test de charge

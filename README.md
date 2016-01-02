@@ -1,7 +1,5 @@
 Requêtes Phrases
 
-Requêtes ET (+)
-
 Hightlightling
 
 Rollover sur bucket: décalage

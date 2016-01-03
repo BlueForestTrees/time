@@ -1,8 +1,8 @@
-Charger livres, organisation indexes, mergeur
+Charger livres
 
 Historique JS bug quand term = ""
 
-Merger des indexs
+Merger des indexs, organiser les indexs
 
 Rollover sur bucket: décalage
 

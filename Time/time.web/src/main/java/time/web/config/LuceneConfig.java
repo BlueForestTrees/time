@@ -5,6 +5,8 @@ import java.nio.file.FileSystems;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.facet.sortedset.DefaultSortedSetDocValuesReaderState;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
 import org.apache.lucene.index.DirectoryReader;
@@ -52,6 +54,11 @@ public class LuceneConfig {
     @Bean
     public Sort sortDateAsc() {
         return new Sort(new SortField("date", Type.LONG));
+    }
+    
+    @Bean
+    public Analyzer analyzer(){
+        return new StandardAnalyzer();
     }
 
 }

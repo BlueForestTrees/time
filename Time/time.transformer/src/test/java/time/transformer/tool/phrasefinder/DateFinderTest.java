@@ -47,7 +47,10 @@ public class DateFinderTest {
     @Autowired
     private DateFinder[] finders;
     //TODO ajout test à partir de 
-    
+    //En 3100 avant notre ère, toute la vallée du Nil inférieur était unie dans le premier royaume égyptien.
+    //Leur système de base 6 nous a laissé plusieurs héritages importants, comme la division du jour en 24 heures et celle du cercle en 360 degrés.) L’autre type de signes représentait des hommes, des animaux, des marchandises, des territoires, des dates et ainsi de suite.
+    //En 350 avant notre ère, aucun Romain n’aurait imaginé faire voile droit sur la Grande-Bretagne et la conquérir.
+    //En 1873, Jules Verne imagina que Phileas Fogg, riche aventurier britannique, pourrait faire le tour du monde en 80 jours.
     
     @Test
     public void near0() {

@@ -2,6 +2,7 @@ package time.transformer.config;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,16 +14,10 @@ import time.transformer.component.reader.SmartScanner;
 @ComponentScan({ "time.transformer.service", "time.transformer.component", "time.transformer.tool" })
 @Import({ DateFinderConfig.class })
 public class TransformerConfig {
-    @Bean
-    public String path() {
-        return "C:/Time/data/downloader/pages/all";
-    }
-
-    @Bean
-    public String baseUrl() {
-        return "http://fr.wikipedia.org/wiki/";
-    }
-
+    
+    @Autowired
+    private String datasourcePath;
+    
     @Bean
     public int urlMaxLength() {
         return 255;
@@ -40,7 +35,7 @@ public class TransformerConfig {
 
     @Bean
     public SmartScanner scanner() throws IOException {
-        SmartScanner scanner = new SmartScanner(path());
+        SmartScanner scanner = new SmartScanner(datasourcePath);
         scanner.setDelimiter(sep());
         return scanner;
     }

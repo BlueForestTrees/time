@@ -46,7 +46,7 @@ public class Runner {
                 LOG.debug("#" + pageCount + ", Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(pageSize) + ", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal) + " phrase#" + phraseCount);
             } while (maxPhrasesToFetch == -1L || (phraseCount < maxPhrasesToFetch));
         } catch (FinDuScanException e) {
-            LOG.info("fin du scan (" + pageCount + " pages)");
+            LOG.info("fin du scan (" + pageCount + " pages, " + phraseCount + " phrases");
         }
 
         module.onEnd();

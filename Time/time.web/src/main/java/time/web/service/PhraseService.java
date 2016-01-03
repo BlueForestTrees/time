@@ -82,7 +82,7 @@ public class PhraseService {
             final Phrase phrase = new Phrase();
             final String text = highlighter.getBestFragment(analyzer, "text", doc.get("text"));
             
-            phrase.setText(text);
+            phrase.setText(text != null ? text : doc.get("text"));
             phrase.setPageUrl(doc.get("pageUrl"));
             phrase.setDate((long) doc.getField("date").numericValue());
             return phrase;

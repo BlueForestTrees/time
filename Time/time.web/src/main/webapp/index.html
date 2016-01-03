@@ -7,7 +7,11 @@
 <script>
     Time = {};
     $(document).ready(function() {
-        //Time.anal.init();
+        if(document.location.hostname !== 'localhost'){            
+            Time.anal.init();
+        }else{
+            console.log('No GA since localhost');
+        }
         Time.view = {
             termInput : $("#termInput"),
             bottom : $("#bottom"),

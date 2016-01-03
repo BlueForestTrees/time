@@ -7,18 +7,18 @@
         view.termInput.on("click", function() {
             view.termInput.select();
         });
-        view.termInput.keypress($.proxy(this.termInputKeyPress, this));
+        view.termInput.on("keyup",$.proxy(this.termInputKeyPress, this));
     };
 
     filter.prototype.termInputKeyPress = function(e) {
         if (e.which === 13) {
             this.termInputKeyEnterPress();
         } else {
-            this.checkNeedSynonyms();
+            this.checkGetSynonymsTrigger();
         }
     };
 
-    filter.prototype.checkNeedSynonyms = function() {
+    filter.prototype.checkGetSynonymsTrigger = function() {
         var saisie = Time.view.termInput.val();
         var term = saisie.trim();
         var isTwoSpace = saisie.endsWith('  ');

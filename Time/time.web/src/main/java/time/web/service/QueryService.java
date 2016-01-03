@@ -7,6 +7,7 @@ import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.NumericRangeQuery;
+import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,14 @@ import org.springframework.util.StringUtils;
 
 @Component
 public class QueryService {
+    /**
+     * Construit une requête lucene depuis les paramètres 'Histoire/Time'
+     * @param term
+     * @param scale
+     * @param bucketValueFrom
+     * @param bucketValueTo
+     * @return
+     */
     public Query getQuery(final String term, final String scale, Long bucketValueFrom, Long bucketValueTo) {
         boolean noBucket = StringUtils.isEmpty(scale) || (bucketValueFrom == null && bucketValueTo == null);
         boolean noTerm = StringUtils.isEmpty(term);
@@ -22,7 +31,7 @@ public class QueryService {
             return new MatchAllDocsQuery();
         }
 
-        Query textQuery = noTerm ? null : getOrTermQuery(term.toLowerCase());
+        Query textQuery = noTerm ? null : getTermQuery(term.toLowerCase());
         Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(scale, bucketValueFrom, bucketValueTo, true, true);
 
         BooleanQuery.Builder builder = new BooleanQuery.Builder();
@@ -35,15 +44,30 @@ public class QueryService {
         return builder.build();
     }
 
-    protected Query getOrTermQuery(String term) {
-        boolean hasOrs = term.contains(" ");
-        if(!hasOrs){
-            return getAndTermQuery(term);
+    /**
+     * "civilisation moderne" => extrait de phrase
+     * chien chat => chien OU chat
+     * chien+chat => chien ET chat
+     * @param term terme.
+     * @return
+     */
+    protected Query getTermQuery(String term) {
+        final boolean isPhrase = term.startsWith("\"") && term.endsWith("\"");
+        final boolean hasOrs = term.contains(" ");
+        
+        if(isPhrase){
+            return new PhraseQuery("text", term.replaceAll("\"", "").split(" "));
+        }else if(hasOrs){
+            return getOrTermQuery(term);
         }else{
-            final BooleanQuery.Builder builder = new BooleanQuery.Builder();
-            Arrays.stream(term.split(" ")).forEach(t -> builder.add(getAndTermQuery(t), Occur.SHOULD));
-            return builder.build();
+            return getAndTermQuery(term);
         }
+    }
+
+    protected Query getOrTermQuery(String term) {
+        final BooleanQuery.Builder builder = new BooleanQuery.Builder();
+        Arrays.stream(term.split(" ")).forEach(t -> builder.add(getAndTermQuery(t), Occur.SHOULD));
+        return builder.build();
     }
 
     protected Query getAndTermQuery(String term) {

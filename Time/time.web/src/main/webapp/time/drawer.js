@@ -61,30 +61,29 @@
         $(bar.canvas).show();
     };
 
-    drawer.prototype.setPhrases = function(phrases, filter) {
+    drawer.prototype.setPhrases = function(phrases, term) {
         if (phrases.phraseList.length === 0) {
-            this.addNoPhrases();
+            this.addNoPhrases(term);
             return;
         }
 
         var prevOne = Time.view.phrases.children().last();
         var phraseOne = phrases.phraseList[0];
         if (!prevOne || phraseOne.text !== prevOne.text) {
-            Time.view.phrases.append(this.buildHtmlPhrase(phraseOne, filter));
+            Time.view.phrases.append(this.buildHtmlPhrase(phraseOne));
         }
 
         for (var i = 1; i < phrases.phraseList.length; i++) {
             var prev = phrases.phraseList[i - 1];
             var phrase = phrases.phraseList[i];
             if (phrase.text !== prev.text) {
-                Time.view.phrases.append(this.buildHtmlPhrase(phrase, filter));
+                Time.view.phrases.append(this.buildHtmlPhrase(phrase));
             }
         }
     };
 
-    drawer.prototype.buildHtmlPhrase = function(phrase, filter) {
-        var text = phrase.text.replace(filter, '<strong>' + filter + '</strong>');
-        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + text + this.getLink(phrase) + "</p>");
+    drawer.prototype.buildHtmlPhrase = function(phrase) {
+        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + phrase.text + this.getLink(phrase) + "</p>");
     };
 
     drawer.prototype.getLink = function(phrase) {
@@ -105,8 +104,8 @@
     drawer.prototype.addTheEnd = function() {
         Time.view.phrases.append("<h1 style=\"text-align:center\">The END</h1>");
     };
-    drawer.prototype.addNoPhrases = function() {
-        Time.view.phrases.append("<h1 style=\"text-align:center\">Rien trouvé!</h1>");
+    drawer.prototype.addNoPhrases = function(term) {
+        Time.view.phrases.append("<h1 style=\"text-align:center\">Aucun résultat pour <i>"+term+"</i></h1>");
     };
 
     Time.Drawer = drawer;

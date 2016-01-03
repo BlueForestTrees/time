@@ -1,6 +1,6 @@
-Charger livre
+Charger livres
 
-Highlight bug quand term = ""
+Historique JS bug quand term = ""
 
 Merger des indexs
 

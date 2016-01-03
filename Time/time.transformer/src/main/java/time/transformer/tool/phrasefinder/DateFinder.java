@@ -43,7 +43,7 @@ public class DateFinder {
     }
 
     protected String preparePhrase(final String phrase, final String dateExtract) {
-        return phrase.replace(dateExtract, "<strong>" + dateExtract + "</strong>").replaceAll("\\[.*?\\]", "");
+        return phrase.replace(dateExtract, "<b>" + dateExtract + "</b>").replaceAll("\\[.*?\\]", "");
     }
 
     @Override

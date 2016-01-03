@@ -1,4 +1,4 @@
-Charger livres
+Charger livres, organisation indexes, mergeur
 
 Historique JS bug quand term = ""
 

@@ -25,3 +25,5 @@ crawdfunding pour hébergement
 http://www.dont-nod.com/category/emploi/
 
 rech. alain damasio => il était une fois NaN, première phrase contient rs n° 89 juillet 2009 lire e
+
+mettre un design sur les fonds de barre et filtre

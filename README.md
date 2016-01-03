@@ -1,5 +1,7 @@
 Charger livre
 
+Highlight bug quand term = ""
+
 Merger des indexs
 
 Rollover sur bucket: décalage

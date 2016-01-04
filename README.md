@@ -6,9 +6,7 @@ Merger des indexs, organiser les indexs
 
 Rollover sur bucket: décalage
 
-Placement auto des viewport
-
-Curseur de position des phrases sur la barre active.
+Tooltips : suppr mousetooltip, tooltip bar active dynamiques
 
 Bucket dans l'historique JS
 

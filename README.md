@@ -1,12 +1,12 @@
+Tooltips : suppr mousetooltip, tooltip bar active dynamiques
+
+Rollover sur bucket: décalage
+
 Charger livres
 
 Historique JS bug quand term = ""
 
 Merger des indexs, organiser les indexs
-
-Rollover sur bucket: décalage
-
-Tooltips : suppr mousetooltip, tooltip bar active dynamiques
 
 Bucket dans l'historique JS
 

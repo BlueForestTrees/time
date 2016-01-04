@@ -19,8 +19,12 @@ public class PreciseParser implements IParser {
     public long from(final Matcher matcher) {
         final int day = matcher.group("d") == null ? 1 : Integer.parseInt(matcher.group("d").trim());
         final Month month = parseMonth(matcher.group("m").trim());
-        final int year = Integer.parseInt(matcher.group("y").trim());
+        int year = Integer.parseInt(matcher.group("y").trim());
 
+        if(matcher.group("neg") != null){
+            year = -year;
+        }
+        
         try {
             return LocalDate.of(year, month, day).toEpochDay() + seventiesInDays;
         } catch (DateTimeException e) {

@@ -36,6 +36,12 @@ public class DateFinderTest {
     private DateFinder nearJcFinder2;
     
     @Autowired
+    private DateFinder nearJcFinder3;
+    
+    @Autowired
+    private DateFinder ilYAFinder;
+    
+    @Autowired
     private DateFinder romanFinder;
 
     @Autowired
@@ -43,14 +49,12 @@ public class DateFinderTest {
 
     @Autowired
     private DateFinder preciseFinder;
+    
+    @Autowired
+    private DateFinder nearLessFinder;
 
     @Autowired
     private DateFinder[] finders;
-    //TODO ajout test à partir de 
-    //En 3100 avant notre ère, toute la vallée du Nil inférieur était unie dans le premier royaume égyptien.
-    //Leur système de base 6 nous a laissé plusieurs héritages importants, comme la division du jour en 24 heures et celle du cercle en 360 degrés.) L’autre type de signes représentait des hommes, des animaux, des marchandises, des territoires, des dates et ainsi de suite.
-    //En 350 avant notre ère, aucun Romain n’aurait imaginé faire voile droit sur la Grande-Bretagne et la conquérir.
-    //En 1873, Jules Verne imagina que Phileas Fogg, riche aventurier britannique, pourrait faire le tour du monde en 80 jours.
     
     @Test
     public void near0() {
@@ -108,15 +112,32 @@ public class DateFinderTest {
     }
 
     @Test
-    public void jc0() {
-        assertOne(jcFinder, yearIs(1827), "En 1827, dans une Encyclopédie allemande Nitzsch propose la création de nouveaux genres de paramécies (« M. Dutrochet, en France, avait étudié les Rotifères et les Tubicolaires; M. Leclerc avait fait connaître les Difflugies; et Losana , en Italie , avait décrit des Amibes, des Kolpodes et des Cyclides dont il multipliait les espèces sans raison et sans mesure », selon Dujardin (1841).");
+    public void jc17(){
+        assertOne(jcFinder, yearIs(-3100), "En 3100 avant notre ère, toute la vallée du Nil inférieur était unie dans le premier royaume égyptien.");
     }
+    
+    @Test
+    public void jc18(){
+        assertOne(jcFinder, yearIs(-350), "En 350 avant notre ère, aucun Romain n’aurait imaginé faire voile droit sur la Grande-Bretagne et la conquérir.");
+    }
+    
+    @Test
+    public void jc19(){
+        assertOne(jcFinder, yearIs(1873), "En 1873, Jules Verne imagina que Phileas Fogg, riche aventurier britannique, pourrait faire le tour du monde en 80 jours.");
+    }
+    
+    
 
     @Test
     public void none13() {
         assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
     }
-
+    
+    @Test
+    public void none17() {
+        assertNone("Leur système de base 6 nous a laissé plusieurs héritages importants, comme la division du jour en 24 heures et celle du cercle en 360 degrés.) L’autre type de signes représentait des hommes, des animaux, des marchandises, des territoires, des dates et ainsi de suite.");
+    }
+    
     @Test
     public void none14() {
         assertNone("mais c'est pas pour de suite, j'ai/nous avons d'abord environ 3500 autres articles à traduire avant d'arriver à celui-là !");
@@ -138,11 +159,14 @@ public class DateFinderTest {
     }
 
     @Test
+    public void jc0() {
+        assertOne(jcFinder, yearIs(1827), "En 1827, dans une Encyclopédie allemande Nitzsch propose la création de nouveaux genres de paramécies (« M. Dutrochet, en France, avait étudié les Rotifères et les Tubicolaires; M. Leclerc avait fait connaître les Difflugies; et Losana , en Italie , avait décrit des Amibes, des Kolpodes et des Cyclides dont il multipliait les espèces sans raison et sans mesure », selon Dujardin (1841).");
+    }
+
+    @Test
     public void jc1() {
         assertOne(jcFinder, yearIs(1650), "En 1650, retour vers le futur.");
     }
-
-
 
     @Test
     public void jc3() {
@@ -166,7 +190,7 @@ public class DateFinderTest {
 
     @Test
     public void jc6() {
-        assertOne(jcFinder, yearIs(-3500), "L'invention de la roue est estimée située vers 3500 avant J.-C. à Sumer en basse Mésopotamie.");
+        assertOne(nearJcFinder3, yearIs(-3500), "L'invention de la roue est estimée située vers 3500 avant J.-C. à Sumer en basse Mésopotamie.");
     }
 
     @Test
@@ -176,7 +200,7 @@ public class DateFinderTest {
 
     @Test
     public void jc8() {
-        assertOne(jcFinder, yearIs(-4500), "Néolithique, soit vers 4500 av. J.-C. Il s’agit");
+        assertOne(nearJcFinder3, yearIs(-4500), "Néolithique, soit vers 4500 av. J.-C. Il s’agit");
     }
 
     @Test
@@ -186,32 +210,32 @@ public class DateFinderTest {
 
     @Test
     public void jc10() {
-        assertOne(jcFinder, yearIs(-2300), "La civilisation olmèque a débuté avec une production en abondance de poterie, vers 2300 avant notre ère");
+        assertOne(nearJcFinder3, yearIs(-2300), "La civilisation olmèque a débuté avec une production en abondance de poterie, vers 2300 avant notre ère");
     }
 
     @Test
-    public void jc11() {
-        assertOne(jcFinder, yearIs(-5000), "La Grande Encyclopédie soviétique affirme que le soja est originaire de Chine ; il y a environ 5000 ans.");
+    public void ilYA11() {
+        assertOne(ilYAFinder, yearIs(-3000), "La Grande Encyclopédie soviétique affirme que le soja est originaire de Chine ; il y a environ 5000 ans.");
     }
 
     @Test
-    public void jc12() {
-        assertOne(jcFinder, yearIs(-5000), "Des indices de culture de céréales et de domestication du chien, du cochon, du mouton et de la chèvre dans la région de Tétouan, remontant à environ -5300, constituent la plus ancienne trace connue d'agriculture en Afrique du Nord.");
+    public void nearLess12() {
+        assertOne(nearLessFinder, yearIs(-5300), "Des indices de culture de céréales et de domestication du chien, du cochon, du mouton et de la chèvre dans la région de Tétouan, remontant à environ -5300, constituent la plus ancienne trace connue d'agriculture en Afrique du Nord.");
     }
     
     @Test
     public void jc13(){
-        assertOne(jcFinder, yearIs(-3500), "au sein des chasseurs-cueilleurs de la culture Botaï, vers 3500 av. J.-C.,.");
+        assertOne(nearJcFinder3, yearIs(-3500), "au sein des chasseurs-cueilleurs de la culture Botaï, vers 3500 av. J.-C., cool.");
     }
 
     @Test
-    public void jc14() {
-        assertOne(jcFinder, yearIs(-4000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
+    public void ilYA14() {
+        assertOne(ilYAFinder, yearIs(-2000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
     }
     
     @Test
     public void jc15(){
-        assertOne(jcFinder, yearIs(-1500), "L' éclipse de Lune est celle du 17 janvier 3380 av. J.-C., qui aurait été décrite par les Mayas en Amérique centrale.");
+        assertOne(preciseFinder, dateIs(date(17, Month.JANUARY, -3380)), "L' éclipse de Lune est celle du 17 janvier 3380 av. J.-C., qui aurait été décrite par les Mayas en Amérique centrale.");
     }
     
     @Test

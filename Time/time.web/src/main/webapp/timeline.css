@@ -2,20 +2,39 @@ html, body {
     width: 100%;
     height: 100%;
     margin: 0px;
+    background: #f5f9fb;
 }
 
-input[type="text"] {
-	width: 100%;
+
+.bar {
+	/*width: 100%;
+	position : fixed;
+    background: white;
+    top : 0;*/
+
+    box-shadow: rgba(11, 17, 25, 0.1) 0 2px 5px;
+    position: fixed;
+    top:0;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    background: #ffffff ;
+}
+
+.search{
     text-align  : center;
     font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
     font-size: 25px;
-}
-
-.bar {
-	width: 100%;
-	position : fixed;
-    background: white;
-    top : 0;
+    border:solid 1px #CDCDCD;
+    border-radius:3px;
+    width: 450px;
+    padding: 7px;
+    background: url(img/loupe.svg) no-repeat scroll 500px 11px;
+    background-size: 18px 18px;
+    padding-right:20px;
 }
 
 .phrases {

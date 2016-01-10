@@ -10,7 +10,7 @@
             term : term
         };
         Time.anal.ga('send', 'event', 'buckets', term, scale);
-        $.get("buckets", params).done(callback);
+        $.get("api/buckets", params).done(callback);
     };
 
     data.prototype.getPhrases = function(term, scale, bucket, lastKey, callback) {
@@ -21,7 +21,7 @@
             lastKey : lastKey
         };
         Time.anal.ga('send', 'event', 'phrases', term, scale);
-        $.get("phrases", params).done(callback);
+        $.get("api/phrases", params).done(callback);
     };
 
     data.prototype.getSynonyms = function(term, callback) {
@@ -29,7 +29,7 @@
             term : term
         };
         Time.anal.ga('send', 'event', 'synonyms', term);
-        $.get("synonyms", params).done(callback);
+        $.get("api/synonyms", params).done(callback);
     };
 
     Time.Data = data;

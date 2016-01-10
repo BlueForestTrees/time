@@ -122,7 +122,7 @@
         Time.phrases.clearText();
         Time.drawer.setPhraseTooltip(Time.tooltips.getTooltipText({scale:bucket.scale, bucket:bucket.bucket}));
         Time.phrases.loadPhrases(this.scale, bucket.x);
-        Time.historic.pushState(Time.filter.term, this.scale, bucket.x);
+        Time.historic.pushState(Time.filter.term);
     };
 
     bar.prototype.getmousePosition = function(event) {

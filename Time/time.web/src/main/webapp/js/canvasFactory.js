@@ -13,7 +13,7 @@
             id : canvasId
         };
         var canvasCss = {
-            border : '1px solid #000000',
+            border : '1px solid #CDCDCD',
             width : '100%',
             height : height + 'px'
         };

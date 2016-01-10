@@ -26,8 +26,8 @@ import time.repo.bean.SortableLongField;
 public class LuceneStorage {
 
     Analyzer analyzer;
-    Directory directory;
     IndexWriterConfig indexWriterConfig;
+    Directory directory;
     IndexWriter iwriter;
     FacetsConfig config;
     
@@ -36,10 +36,10 @@ public class LuceneStorage {
 
     public void start() throws IOException {
         analyzer = new StandardAnalyzer();
-        directory = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
         indexWriterConfig = new IndexWriterConfig(analyzer);
         indexWriterConfig.setOpenMode(OpenMode.CREATE);
         indexWriterConfig.setRAMBufferSizeMB(256.0);
+        directory = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
 
         iwriter = new IndexWriter(directory, indexWriterConfig);
 

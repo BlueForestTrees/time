@@ -1,6 +1,6 @@
 Datas : FindPhrasesConfig continuer conf Transformer multi source,Charger livres
 
-Style: Throbber de barre en canvas, Tooltips : suppr mousetooltip, tooltip bar active dynamiques
+Style: Throbber de barre en canvas, Tooltips : suppr mousetooltip, tooltip bar active dynamiques, ombre sous les barres
 
 Bugs : Rollover sur bucket: décalage, Historique JS bug quand term = "", rech. alain damasio => il était une fois NaN, première phrase contient rs n° 89 juillet 2009 lire
 

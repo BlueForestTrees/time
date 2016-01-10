@@ -1,3 +1,5 @@
+FindPhrasesConfig continuer conf Transformer multi source
+
 Tooltips : suppr mousetooltip, tooltip bar active dynamiques
 
 Rollover sur bucket: décalage

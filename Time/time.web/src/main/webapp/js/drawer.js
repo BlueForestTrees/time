@@ -97,8 +97,8 @@
         Time.anal.ga('send', 'event', 'link', pageName, Time.filter.term);
     };
 
-    drawer.prototype.setPhraseTooltip = function(text) {
-        Time.view.phrases.append("<h1>Il était une fois " + text + " . . .</h1>");
+    drawer.prototype.setPhraseTooltip = function(text, nbPhrases) {
+        Time.view.phrases.append("<h1>Il était une fois " + text + " . . .</h1><i>" + Time.tooltips.getNbPages(nbPhrases)+"</i>");
     };
 
     drawer.prototype.addTheEnd = function() {

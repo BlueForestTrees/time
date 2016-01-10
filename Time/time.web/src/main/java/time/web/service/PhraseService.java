@@ -62,6 +62,7 @@ public class PhraseService {
         // LES PHRASES
         final Integer lastIndex = last == null ? null : last.getLastIndex();
         final Phrases phrases = new Phrases();
+        phrases.setTotal(searchResult.totalHits);
         final List<Phrase> phraseList = Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> getPhrase(scoreDoc, highlighter)).collect(Collectors.toList());
         phrases.setPhraseList(phraseList);
         // LE LAST

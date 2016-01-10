@@ -39,7 +39,7 @@
         if (phrases.phraseList.length > 0) {
             var bucket = {years:Time.scale.daysToYears(phrases.phraseList[0].date)};
             var text = Time.tooltips.getTooltipText(bucket);
-            Time.drawer.setPhraseTooltip(text);
+            Time.drawer.setPhraseTooltip(text, phrases.total);
         }
         this.onPhrases(null, null, phrases);
     };

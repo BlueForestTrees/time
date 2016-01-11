@@ -3,14 +3,6 @@
         this.currentBar = null;
     }
 
-    tooltips.prototype.install = function(bars) {
-        bars.forEach(function(bar) {
-            $(bar.canvas).on('mouseenter.ViewportTooltip', bar, this.mouseEnterOnBar);
-            $(bar.canvas).on('mousemove.ViewportTooltip', bar, this.mouseMoveOnBar);
-            $(bar.canvas).on('mouseout.ViewportTooltip', bar, this.mouseExitOfBar);
-        }, this);
-    };
-
     tooltips.prototype.getNbPages = function(nbPhrases) {
         var phrasesParPage = 23;
         return nbPhrases ? " (" + (nbPhrases > phrasesParPage ? (1 + (Math.ceil(nbPhrases / phrasesParPage)) + " page") : (nbPhrases + " phrase")) + (nbPhrases > 1 ? "s" : "") + ")" : "";
@@ -42,59 +34,63 @@
     };
 
     // SUR LA BARRE CONTENANT LA SOURIS
-    tooltips.prototype.mouseEnterOnBar = function() {
-        Time.view.mouseBarTip.show();
+    tooltips.prototype.mouseEnterOnBar = function(event) {
+        //console.log(event.type, event.target);
     };
     tooltips.prototype.mouseMoveOnBar = function(event) {
-        var bar = event.data;
-        var mousePosition = bar.getmousePosition(event);
-        var bucket = bar.searchBucketAt(mousePosition);
-        // Si on a pas de bucket à la souris on en crée un factice pour générer
-        // le tooltip quand même.
-        if (bucket === null) {
-            bucket = {
-                bucket : bar.getBucketPosition(mousePosition),
-                scale : bar.scale
-            };
-        }
-        var toolTipText = Time.tooltips.getTooltipText(bucket);
-        var toolTipTop = $(bar.canvas).position().top + 7;
-        var toolTipLeft = event.clientX + 20;
-        var width = ((toolTipText.length + 1) * 9) + 'px';
-
-        Time.view.mouseBarTip.text(toolTipText);
-        Time.view.mouseBarTip.css({
-            top : toolTipTop,
-            left : toolTipLeft,
-            width : width,
-            opacity : 1
-        });
+        Time.tooltips.updateTooltips(event.clientX);
     };
-    tooltips.prototype.mouseExitOfBar = function() {
-        Time.view.mouseBarTip.hide();
+    tooltips.prototype.mouseExitOfBar = function(event) {
+        //console.log(event.type, event.target);
     };
 
     // DESSOUS DE LA BARRE ACTIVE
     tooltips.prototype.decorate = function(bar) {
         if (this.currentBar) {
-            this.currentBar.viewport.setListener(null);
+            this.undecorate(this.currentBar);
         }
         this.currentBar = bar;
-        this.currentBar.viewport.setListener(this.onCurrentBarChange);
-        this.onCurrentBarChange();
+        this.currentBar.viewport.setListener(this.updateTooltips);
+
+        $(bar.convas).on('mouseenter.Tooltip', bar, this.mouseEnterOnBar);
+        $(bar.canvas).on('mousemove.Tooltip', bar, this.mouseMoveOnBar);
+        $(bar.canvas).on('mouseout.Tooltip', bar, this.mouseExitOfBar);
+
+        this.updateTooltips();
     };
 
-    tooltips.prototype.onCurrentBarChange = function() {
+    tooltips.prototype.undecorate = function(bar) {
+        bar.viewport.setListener(null);
+        $(bar.canvas).off('mouseenter.Tooltip');
+        $(bar.canvas).off('mousemove.Tooltip');
+        $(bar.canvas).off('mouseout.Tooltip');
+    };
+
+    tooltips.prototype.updateTooltips = function(mouseX) {
         var width = window.innerWidth;
-        Time.tooltips.toolTipAt(Time.view.activeBarTips[0], 0.1 * width);
-        Time.tooltips.toolTipAt(Time.view.activeBarTips[1], 0.45 * width);
-        Time.tooltips.toolTipAt(Time.view.activeBarTips[2], 0.8 * width);
+        var tooltipsXs = [0.1 * width, 0.45 * width, 0.8 * width];
+        if(mouseX){
+            tooltipsXs[Time.tooltips.getNearest(mouseX, tooltipsXs)] = mouseX;
+        }
+        Time.tooltips.toolTipAt(Time.view.activeBarTips[0], tooltipsXs[0]);
+        Time.tooltips.toolTipAt(Time.view.activeBarTips[1], tooltipsXs[1]);
+        Time.tooltips.toolTipAt(Time.view.activeBarTips[2], tooltipsXs[2]);
     };
 
-    tooltips.prototype.toolTipAt = function(tooltip, at) {
+    tooltips.prototype.getNearest = function(mouseX, xS){
+        return xS.map(function(x){return Math.abs(mouseX - x);}).reduce(function(nearest, current, index){
+            if(current < nearest.distance){
+                return {distance:current, index:index};
+            }else{
+                return nearest;
+            }
+        },{distance:1000000, index:null}).index;
+    };
+    
+    tooltips.prototype.toolTipAt = function(tooltip, tooltipX) {
         var scale = Time.tooltips.currentBar.scale;
         var bucketPosition = Time.tooltips.currentBar.getBucketPosition(Time.tooltips.currentBar.getmousePosition({
-            clientX : at
+            clientX : tooltipX
         }));
         var toolTipText = Time.tooltips.getTooltipText({
             scale : scale,
@@ -102,7 +98,7 @@
         });
         var toolTipTop = $(Time.tooltips.currentBar.canvas).position().top + 9 + Time.tooltips.currentBar.height;
         // 15 => position before/after
-        var toolTipLeft = at - 15;
+        var toolTipLeft = tooltipX - 15;
         var width = ((toolTipText.length + 1) * 8) + 'px';
 
         tooltip.text(toolTipText);

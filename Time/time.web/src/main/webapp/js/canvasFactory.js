@@ -14,9 +14,16 @@
         };
         var canvasCss = {
             border : '1px solid #CDCDCD',
+            borderTop : '0px',
             width : '100%',
             height : height + 'px'
         };
+
+        //Seul la première barre à une bordure en haut.
+        if(scale === 0){
+            delete canvasCss.borderTop;
+        }
+
         $('<canvas>').attr(canvasAttributes)
                      .css(canvasCss)
                      .appendTo(Time.view.timeline);

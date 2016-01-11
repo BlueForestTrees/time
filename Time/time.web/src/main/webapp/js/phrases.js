@@ -17,22 +17,9 @@
         }
     };
 
-    phrases.prototype.loadPhrases = function(scale, bucket) {
-        Time.view.throbber.show();
-        Time.data.getPhrases(Time.filter.term, scale, bucket, null, $.proxy(this.onPhrases, this, scale, bucket));
-    };
-
     phrases.prototype.loadFirstPhrases = function() {
         Time.view.throbber.show();
         Time.data.getPhrases(Time.filter.term, null, null, null, $.proxy(this.onFirstPhrases, this));
-    };
-
-    phrases.prototype.maybeMorePhrases = function() {
-        if (!this.isSearching && this.lastSearch && this.isBottomVisible()) {
-            this.isSearching = true;
-            Time.view.throbber.show();
-            Time.data.getPhrases(Time.filter.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
-        }
     };
 
     phrases.prototype.onFirstPhrases = function(phrases) {
@@ -44,15 +31,20 @@
         this.onPhrases(null, null, phrases);
     };
 
+    phrases.prototype.loadPhrases = function(scale, bucket) {
+        Time.view.throbber.show();
+        Time.data.getPhrases(Time.filter.term, scale, bucket, null, $.proxy(this.onPhrases, this, scale, bucket));
+    };
+
     phrases.prototype.onPhrases = function(scale, xBucket, phrases) {
         Time.view.throbber.hide();
         Time.drawer.setPhrases(phrases, Time.filter.term);
         this.isSearching = false;
         if (phrases.lastKey) {
             this.lastSearch = {
-                scale : scale,
-                bucket : xBucket,
-                lastKey : phrases.lastKey
+                    scale : scale,
+                    bucket : xBucket,
+                    lastKey : phrases.lastKey
             };
             this.maybeMorePhrases();
         } else {
@@ -60,6 +52,16 @@
             Time.drawer.addTheEnd();
         }
     };
+
+    phrases.prototype.maybeMorePhrases = function() {
+        if (!this.isSearching && this.lastSearch && this.isBottomVisible()) {
+            this.isSearching = true;
+            Time.view.throbber.show();
+            Time.data.getPhrases(Time.filter.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
+        }
+    };
+
+
 
     phrases.prototype.isBottomVisible = function() {
         var docViewBottom = Time.view.window.scrollTop() + Time.view.window.height();

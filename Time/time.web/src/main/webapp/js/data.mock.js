@@ -5,7 +5,6 @@
     }
 
     data.prototype.getBuckets = function(term, scale, callback) {
-		console.log("getBuckets", scale);
        if(scale === 0){
 		    setTimeout(function(){
 			   callback({"scale":"0","buckets":[{"bucket":0,"count":1120}]});

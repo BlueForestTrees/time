@@ -13,7 +13,6 @@
         Time.drawer.install();
         Time.filter.install(Time.view);
         Time.phrases.install();
-        Time.tooltips.install(Time.bars);
 
         Time.historic.popState();
         window.onpopstate = Time.historic.popState;

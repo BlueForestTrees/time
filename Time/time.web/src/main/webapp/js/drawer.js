@@ -39,12 +39,13 @@
         this.unreduceBar(bar);
     };
 
-    drawer.prototype.drawBar = function(bar) {
+    drawer.prototype.drawBar = function(bar, explicitBuckets) {
+        var buckets = explicitBuckets ? explicitBuckets : bar.buckets;
         bar.context.fillStyle = 'rgb(255,255,255)';
         bar.context.fillRect(0, 0, bar.canvas.width, bar.canvas.height);
-        var nbBuckets = bar.buckets.length;
+        var nbBuckets = buckets.length;
         for (var i = 0; i < nbBuckets; i++) {
-            var bucket = bar.buckets[i];
+            var bucket = buckets[i];
             bar.context.fillStyle = bucket.color;
             bar.context.fillRect(bar.viewport.delta() + bucket.x, 0, 1, bar.canvas.height);
         }

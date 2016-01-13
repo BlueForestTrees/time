@@ -10,6 +10,7 @@
         this.context = new Time.CanvasFactory().build(this.height, this.scale);
         this.canvas = this.context.canvas;
         this.amplitude = 10;
+        this.loading = false;
         this.installEvents();
     }
 
@@ -59,6 +60,51 @@
         return position - this.viewport.delta();
     };
 
+    bar.prototype.startLoading = function () {
+        this.loading = true;
+        this.loadingPhase(this.getLoadingArray());
+    };
+    var nbLoadingBucket = 10;
+    bar.prototype.getLoadingArray = function(){
+        var loadingArray = [], i = 0;
+        while(i<nbLoadingBucket){
+            loadingArray.push({color:"#CDCDCD"});
+        }
+        loadingArray.push({color:"#FFFFFF"});
+        return loadingArray;
+    };
+    var loadingSpeed = 350;
+    bar.prototype.loadingPhase = function(loadingArray){
+        if(this.loading) {
+            Time.drawer.drawBar(this, this.getBucketArray(loadingArray));
+            this.animateArray(loadingArray);
+            setTimeout(this.loadingPhase(loadingArray), loadingSpeed);
+        }
+    };
+    bar.prototype.getBucketArray = function(loadingArray){
+        var throbberWidth = 20;
+        var nbBuckets = loadingArray.length;
+        var gap = throbberWidth / nbBuckets;
+        var throbberWidthHalf = throbberWidth / 2;
+        var screenHalf = bar.canvas.width / 2;
+        var throbberX = screenHalf - throbberWidthHalf;
+
+        return loadingArray.map(function(bucket, index){
+            return {
+                color : this.transformColor(bucket.color),
+                x : -this.viewport.delta() + throbberX + gap*index
+            };
+        });
+    };
+    bar.prototype.animateArray = function(loadingArray){
+        loadingArray.push(loadingArray.pop());
+    };
+    bar.prototype.transformColor = function(color){
+        return color;
+    }
+    bar.prototype.stopLoading = function () {
+        this.loading = false;
+    };
     bar.prototype.loadBuckets = function(term, parentBucket) {
         Time.view.throbber.show();
         Time.data.getBuckets(term, this.scale, $.proxy(this.onBuckets, this));

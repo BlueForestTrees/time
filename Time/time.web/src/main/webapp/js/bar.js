@@ -64,29 +64,29 @@
         this.loading = true;
         this.loadingPhase(this.getLoadingArray());
     };
-    var nbLoadingBucket = 10;
+    
+    var throbberWidth = 2000;
+    var loadingSpeed = 60;
     bar.prototype.getLoadingArray = function(){
-        var loadingArray = [], i = 0;
-        while(i<nbLoadingBucket){
-            loadingArray.push({color:"#CDCDCD"});
-        }
-        loadingArray.push({color:"#FFFFFF"});
-        return loadingArray;
+        return [
+                {color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},
+                {color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},
+                {color:"#FFFFFF"}
+                ];
     };
-    var loadingSpeed = 350;
     bar.prototype.loadingPhase = function(loadingArray){
         if(this.loading) {
             Time.drawer.drawBar(this, this.getBucketArray(loadingArray));
             this.animateArray(loadingArray);
-            setTimeout(this.loadingPhase(loadingArray), loadingSpeed);
+            var that = this;
+            setTimeout(function(){that.loadingPhase(loadingArray);}, loadingSpeed);
         }
     };
     bar.prototype.getBucketArray = function(loadingArray){
-        var throbberWidth = 20;
         var nbBuckets = loadingArray.length;
         var gap = throbberWidth / nbBuckets;
         var throbberWidthHalf = throbberWidth / 2;
-        var screenHalf = bar.canvas.width / 2;
+        var screenHalf = this.canvas.width / 2;
         var throbberX = screenHalf - throbberWidthHalf;
 
         return loadingArray.map(function(bucket, index){
@@ -94,27 +94,30 @@
                 color : this.transformColor(bucket.color),
                 x : -this.viewport.delta() + throbberX + gap*index
             };
-        });
+        },this);
     };
     bar.prototype.animateArray = function(loadingArray){
-        loadingArray.push(loadingArray.pop());
+        loadingArray.push(loadingArray.shift());
     };
     bar.prototype.transformColor = function(color){
         return color;
-    }
+    };
     bar.prototype.stopLoading = function () {
         this.loading = false;
     };
     bar.prototype.loadBuckets = function(term, parentBucket) {
-        Time.view.throbber.show();
+        this.startLoading();
+        Time.drawer.focusOn(this);
         Time.data.getBuckets(term, this.scale, $.proxy(this.onBuckets, this));
         this.viewport.lookAt(parentBucket);
+        Time.tooltips.decorate(null);
     };
 
     bar.prototype.onBuckets = function(bucketsDTO) {
-        Time.view.throbber.hide();
+        this.stopLoading();
         this.buckets = Time.bucketFactory.getBuckets(bucketsDTO);
-        Time.timeline.activateBar(this);
+        Time.drawer.drawBar(this, this.buckets);
+        Time.tooltips.decorate(this);
     };
 
     bar.prototype.mouseDownOnBar = function(event) {
@@ -125,7 +128,7 @@
 
     bar.prototype.onBarDrag = function(event) {
         this.viewport.addToLocal(event.clientX - event.data.previousX);
-        Time.drawer.drawBar(this);
+        Time.drawer.drawBar(this, this.buckets);
         event.data.previousX = event.clientX;
         event.data.move = true;
     };
@@ -152,9 +155,7 @@
     };
 
     bar.prototype.openSubBar = function(bucket) {
-        Time.drawer.hideBarsAfter(this.scale + 1);
-        var subBar = Time.bars[this.scale + 1];
-        subBar.loadBuckets(Time.filter.term, bucket.bucket);
+        Time.bars[this.scale + 1].loadBuckets(Time.filter.term, bucket.bucket);
     };
 
     bar.prototype.onBarDblClick = function(event) {
@@ -166,7 +167,6 @@
 
     bar.prototype.beginStory = function(bucket) {
         Time.phrases.clearText();
-        Time.drawer.setPhraseTooltip(Time.tooltips.getTooltipText({scale:bucket.scale, bucket:bucket.bucket}));
         Time.phrases.loadPhrases(this.scale, bucket.x);
         Time.historic.pushState(Time.filter.term);
     };

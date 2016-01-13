@@ -49,14 +49,16 @@
         if (this.currentBar) {
             this.undecorate(this.currentBar);
         }
-        this.currentBar = bar;
-        this.currentBar.viewport.setListener(this.updateTooltips);
+        if(bar){
+            this.currentBar = bar;
+            this.currentBar.viewport.setListener(this.updateTooltips);
 
-        $(bar.convas).on('mouseenter.Tooltip', bar, this.mouseEnterOnBar);
-        $(bar.canvas).on('mousemove.Tooltip', bar, this.mouseMoveOnBar);
-        $(bar.canvas).on('mouseout.Tooltip', bar, this.mouseExitOfBar);
+            $(bar.convas).on('mouseenter.Tooltip', bar, this.mouseEnterOnBar);
+            $(bar.canvas).on('mousemove.Tooltip', bar, this.mouseMoveOnBar);
+            $(bar.canvas).on('mouseout.Tooltip', bar, this.mouseExitOfBar);
 
-        this.updateTooltips();
+            this.updateTooltips();
+        }
     };
 
     tooltips.prototype.undecorate = function(bar) {
@@ -64,6 +66,7 @@
         $(bar.canvas).off('mouseenter.Tooltip');
         $(bar.canvas).off('mousemove.Tooltip');
         $(bar.canvas).off('mouseout.Tooltip');
+        this.hideTooltips();
     };
 
     tooltips.prototype.updateTooltips = function(mouseX) {
@@ -85,6 +88,12 @@
                 return nearest;
             }
         },{distance:1000000, index:null}).index;
+    };
+    
+    tooltips.prototype.hideTooltips = function(){
+        Time.view.activeBarTips.forEach(function(tooltip){
+            tooltip.css({opacity:0});
+        });
     };
     
     tooltips.prototype.toolTipAt = function(tooltip, tooltipX) {

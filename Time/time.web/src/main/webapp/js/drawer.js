@@ -4,7 +4,7 @@
     }
 
     drawer.prototype.install = function() {
-        this.hideBarsAfter(0);
+        this.hideBarsAfter(Time.bars[0]);
         this.resizeAllBars();
         $(window).on('resize', this.resizeAllBars);
     };
@@ -33,8 +33,8 @@
     };
 
     drawer.prototype.focusOn = function(bar) {
+        this.hideBarsAfter(bar);
         this.reduceBarsBefore(bar);
-        this.drawBar(bar);
         this.showBar(bar);
         this.unreduceBar(bar);
     };
@@ -51,10 +51,11 @@
         }
     };
 
-    drawer.prototype.hideBarsAfter = function(barIndex) {
-        while (barIndex < Time.bars.length) {
-            $(Time.bars[barIndex].canvas).hide();
-            barIndex++;
+    drawer.prototype.hideBarsAfter = function(bar) {
+        var scale = bar.scale;
+        while (scale < Time.bars.length) {
+            $(Time.bars[scale].canvas).hide();
+            scale++;
         }
     };
 

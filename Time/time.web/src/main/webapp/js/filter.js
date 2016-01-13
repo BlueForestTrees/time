@@ -47,11 +47,10 @@
         Time.anal.ga('send', 'event', 'search', term);
         Time.view.termInput.val(term);
         Time.phrases.clearText();
-        Time.drawer.hideBarsAfter(0);
         Time.bars[0].loadBuckets(this.term);
         // pour arrêter l'infinite scroll d'une recherche précédente
         Time.phrases.lastSearch = null;
-        Time.phrases.loadFirstPhrases();
+        Time.phrases.loadPhrases();
 
         if (!ignoreHistory) {
             Time.historic.pushState(term);

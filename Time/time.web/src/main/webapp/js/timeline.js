@@ -27,12 +27,6 @@
         return bars;
     };
 
-    timeline.prototype.activateBar = function(bar) {
-        this.activeBar = bar;
-        Time.drawer.focusOn(bar);
-        Time.tooltips.decorate(this.activeBar);
-    };
-
     Time.Timeline = timeline;
 
 })();

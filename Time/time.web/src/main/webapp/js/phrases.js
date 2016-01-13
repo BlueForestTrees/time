@@ -17,23 +17,18 @@
         }
     };
 
-    phrases.prototype.loadFirstPhrases = function() {
+    phrases.prototype.loadPhrases = function(scale, bucket) {
         Time.view.throbber.show();
-        Time.data.getPhrases(Time.filter.term, null, null, null, $.proxy(this.onFirstPhrases, this));
+        Time.data.getPhrases(Time.filter.term, scale, bucket, null, $.proxy(this.onFirstPhrases, this, scale, bucket));
     };
 
-    phrases.prototype.onFirstPhrases = function(phrases) {
+    phrases.prototype.onFirstPhrases = function(a,b,phrases) {
         if (phrases.phraseList.length > 0) {
             var bucket = {years:Time.scale.daysToYears(phrases.phraseList[0].date)};
             var text = Time.tooltips.getTooltipText(bucket);
             Time.drawer.setPhraseTooltip(text, phrases.total);
         }
         this.onPhrases(null, null, phrases);
-    };
-
-    phrases.prototype.loadPhrases = function(scale, bucket) {
-        Time.view.throbber.show();
-        Time.data.getPhrases(Time.filter.term, scale, bucket, null, $.proxy(this.onPhrases, this, scale, bucket));
     };
 
     phrases.prototype.onPhrases = function(scale, xBucket, phrases) {

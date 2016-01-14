@@ -1,7 +1,7 @@
 (function() {
     // constructeur
     function viewport(scale) {
-        this.global = 1000;
+        this.global = 0;
         this.local = 0;
         this.scale = scale;
         this.listener = null;
@@ -19,7 +19,7 @@
     };
 
     viewport.prototype.delta = function() {
-        return this.global + this.local;
+        return Math.round(this.global + this.local);
     };
 
     viewport.prototype.lookAt = function(bucket) {

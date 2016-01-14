@@ -25,7 +25,7 @@ public class FindPhrasesConfig {
         //return "http://fr.wikipedia.org/wiki/";
         //return "";
     }
-
+    
     @Bean
     public IModule module() {
         return new FindPhrasesModule();

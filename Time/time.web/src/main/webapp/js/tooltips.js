@@ -70,6 +70,9 @@
     };
 
     tooltips.prototype.updateTooltips = function(mouseX) {
+        if(!this.currentBar){
+            return;
+        }
         var width = window.innerWidth;
         var tooltipsXs = [0.1 * width, 0.45 * width, 0.8 * width];
         if(mouseX){

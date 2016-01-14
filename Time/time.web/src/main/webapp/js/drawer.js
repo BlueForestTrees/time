@@ -29,7 +29,9 @@
 
     drawer.prototype.resizeBar = function(bar) {
         bar.canvas.width = window.innerWidth - 2;
+        bar.viewport.global = bar.canvas.width * 0.7;
         Time.drawer.drawBar(bar);
+        Time.tooltips.updateTooltips();
     };
 
     drawer.prototype.focusOn = function(bar) {

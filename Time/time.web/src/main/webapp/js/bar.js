@@ -21,7 +21,6 @@
             move : false
         };
         $(this.canvas).on('mousedown.Viewport', data, $.proxy(this.mouseDownOnBar, this));
-        $(this.canvas).on('dblclick.bucket', $.proxy(this.onBarDblClick, this));
     };
 
     bar.prototype.searchBucketAt = function(mousePosition) {
@@ -60,55 +59,8 @@
         return position - this.viewport.delta();
     };
 
-    bar.prototype.startLoading = function () {
-        this.loading = true;
-        this.loadingPhase(this.getLoadingArray());
-        Time.view.timeline.css({cursor: 'progress'});
-    };
-    
-    var throbberWidth = 2000;
-    var loadingSpeed = 60;
-    bar.prototype.getLoadingArray = function(){
-        return [
-                {color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},
-                {color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},{color:"#CDCDCD"},
-                {color:"#FFFFFF"}
-                ];
-    };
-    bar.prototype.loadingPhase = function(loadingArray){
-        if(this.loading) {
-            Time.drawer.drawBar(this, this.getBucketArray(loadingArray));
-            this.animateArray(loadingArray);
-            var that = this;
-            setTimeout(function(){that.loadingPhase(loadingArray);}, loadingSpeed);
-        }
-    };
-    bar.prototype.getBucketArray = function(loadingArray){
-        var nbBuckets = loadingArray.length;
-        var gap = throbberWidth / nbBuckets;
-        var throbberWidthHalf = throbberWidth / 2;
-        var screenHalf = this.canvas.width / 2;
-        var throbberX = screenHalf - throbberWidthHalf;
-
-        return loadingArray.map(function(bucket, index){
-            return {
-                color : this.transformColor(bucket.color),
-                x : -this.viewport.delta() + throbberX + gap*index
-            };
-        },this);
-    };
-    bar.prototype.animateArray = function(loadingArray){
-        loadingArray.push(loadingArray.shift());
-    };
-    bar.prototype.transformColor = function(color){
-        return color;
-    };
-    bar.prototype.stopLoading = function () {
-        Time.view.timeline.css({cursor: 'pointer'});
-        this.loading = false;
-    };
     bar.prototype.loadBuckets = function(term, parentBucket) {
-        this.startLoading();
+        Time.barloading.startLoading(this);
         Time.drawer.focusOn(this);
         Time.data.getBuckets(term, this.scale, $.proxy(this.onBuckets, this));
         this.viewport.lookAt(parentBucket);
@@ -116,10 +68,13 @@
     };
 
     bar.prototype.onBuckets = function(bucketsDTO) {
-        this.stopLoading();
+        Time.barloading.stopLoading();
         this.buckets = Time.bucketFactory.getBuckets(bucketsDTO);
-        Time.drawer.drawBar(this, this.buckets);
+        Time.drawer.drawBar(this);
         Time.tooltips.decorate(this);
+        if(this.buckets.length === 1){
+            this.openSubBar(this.buckets[0]);
+        }
     };
 
     bar.prototype.mouseDownOnBar = function(event) {
@@ -130,7 +85,7 @@
 
     bar.prototype.onBarDrag = function(event) {
         this.viewport.addToLocal(event.clientX - event.data.previousX);
-        Time.drawer.drawBar(this, this.buckets);
+        Time.drawer.drawBar(this);
         event.data.previousX = event.clientX;
         event.data.move = true;
     };
@@ -158,13 +113,6 @@
 
     bar.prototype.openSubBar = function(bucket) {
         Time.bars[this.scale + 1].loadBuckets(Time.filter.term, bucket.bucket);
-    };
-
-    bar.prototype.onBarDblClick = function(event) {
-        var bucket = this.searchBucketAt(this.getmousePosition(event));
-        if (bucket) {
-            this.beginStory(bucket);
-        }
     };
 
     bar.prototype.beginStory = function(bucket) {

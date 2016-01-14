@@ -63,6 +63,7 @@
     bar.prototype.startLoading = function () {
         this.loading = true;
         this.loadingPhase(this.getLoadingArray());
+        Time.view.timeline.css({cursor: 'progress'});
     };
     
     var throbberWidth = 2000;
@@ -103,6 +104,7 @@
         return color;
     };
     bar.prototype.stopLoading = function () {
+        Time.view.timeline.css({cursor: 'pointer'});
         this.loading = false;
     };
     bar.prototype.loadBuckets = function(term, parentBucket) {

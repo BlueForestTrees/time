@@ -37,6 +37,7 @@ html, body {
 
 .timelines {
 	line-height: 0px;
+    cursor: pointer;
 }
 
 .bar {

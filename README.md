@@ -1,3 +1,5 @@
+Header Style à la youtube
+
 Datas : FindPhrasesConfig continuer conf Transformer multi source,Charger livres
 
 Bugs : Rollover sur bucket: décalage, Historique JS bug quand term = "", rech. alain damasio => il était une fois NaN, première phrase contient rs n° 89 juillet 2009 lire

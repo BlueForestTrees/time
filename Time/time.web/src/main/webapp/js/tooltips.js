@@ -93,6 +93,9 @@
         },{distance:1000000, index:null}).index;
     };
     
+    tooltips.prototype.showTooltips = function(){
+        this.updateTooltips();
+    };
     tooltips.prototype.hideTooltips = function(){
         Time.view.activeBarTips.forEach(function(tooltip){
             tooltip.css({opacity:0});

@@ -9,7 +9,7 @@
             Time.historic.term = decodeURIComponent(url.split("/")[url.split("/").length-1]);
         }
         if (Time.historic.term) {
-            Time.filter.onFilter(Time.historic.term, true);
+            Time.filter.onFilterFromHome(Time.historic.term, true);
         }
     };
 

@@ -6,7 +6,7 @@
 
     phrases.prototype.install = function() {
         Time.view.phrases.on('dblclick.Textes', this.onPhrasesDblClick);
-        Time.view.window.on('scroll', $.proxy(this.maybeMorePhrases, this));
+        Time.view.window.on('scroll', $.proxy(this.scroll, this));
     };
 
     phrases.prototype.onPhrasesDblClick = function(event) {
@@ -22,9 +22,11 @@
         Time.data.getPhrases(Time.filter.term, scale, bucket, null, $.proxy(this.onFirstPhrases, this, scale, bucket));
     };
 
-    phrases.prototype.onFirstPhrases = function(a,b,phrases) {
+    phrases.prototype.onFirstPhrases = function(a, b, phrases) {
         if (phrases.phraseList.length > 0) {
-            var bucket = {years:Time.scale.daysToYears(phrases.phraseList[0].date)};
+            var bucket = {
+                years : Time.scale.daysToYears(phrases.phraseList[0].date)
+            };
             var text = Time.tooltips.getTooltipText(bucket);
             Time.drawer.setPhraseTooltip(text, phrases.total);
         }
@@ -37,14 +39,23 @@
         this.isSearching = false;
         if (phrases.lastKey) {
             this.lastSearch = {
-                    scale : scale,
-                    bucket : xBucket,
-                    lastKey : phrases.lastKey
+                scale : scale,
+                bucket : xBucket,
+                lastKey : phrases.lastKey
             };
             this.maybeMorePhrases();
         } else {
             this.lastSearch = null;
             Time.drawer.addTheEnd();
+        }
+    };
+
+    phrases.prototype.scroll = function() {
+        this.maybeMorePhrases();
+        if (Time.view.window.scrollTop() < 20) {
+            Time.tooltips.showTooltips();
+        } else {
+            Time.tooltips.hideTooltips();
         }
     };
 
@@ -55,8 +66,6 @@
             Time.data.getPhrases(Time.filter.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
         }
     };
-
-
 
     phrases.prototype.isBottomVisible = function() {
         var docViewBottom = Time.view.window.scrollTop() + Time.view.window.height();

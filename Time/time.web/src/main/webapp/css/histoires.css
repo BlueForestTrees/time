@@ -1,38 +1,81 @@
-@import url("http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css");
+@import
+	url("http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css")
+	;
 
 .fa-search:before {
-  content: url(/img/loupe.svg);
+	content: url(/img/loupe.svg);
 }
 
 html, body {
-    width: 100%;
-    height: 100%;
-    margin: 0px;
-    background: #f9fbff;
+	width: 100%;
+	height: 100%;
+	margin: 0px;
+	background: #ffffff;
+}
+
+.home {
+	background: #ffffff;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 100%;
+	width: 100%;
+}
+
+.homebox {
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.logo {
+	background-size:342px 96px;
+	height:96px;
+	width:342px;
+	position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -100%);
+    background: url(/img/logo.png) no-repeat;
+}
+
+.logo-petit {
+    background-size:248px 61px;
+    height:61px;
+    width:248px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: url(/img/logo-petit.png) no-repeat;
 }
 
 .search {
-  position: relative;
-  display: inline-block;
-  color : #aaa;
-  }
-
-.search input {
-  width: 450px;
-  height: 32px;
-  padding-right:30px;
-  text-align  : center;
-  font-family: Lucida Console,Lucida Sans Typewriter,monaco,Bitstream Vera Sans Mono,monospace;
-  font-size: 25px;
-  border: 1px solid #CDCDCD;
-  border-radius: 3px;
+	position: relative;
+	display: inline-block;
+	color: #aaa;
 }
 
-.search input { text-indent: 32px;}
-.search .fa-search { 
-  position: absolute;
-  right : 0px;
-  top:7px;
+.search input {
+	width: 450px;
+	height: 32px;
+	padding-right: 30px;
+	text-align: left;
+	font-family: Lucida Console;
+	font-size: 25px;
+	border: 1px solid #CDCDCD;
+	border-radius: 3px;
+	text-indent: 10px;
+}
+
+.search .fa-search {
+	position: absolute;
+	right: 0px;
+}
+
+.top7 {
+	top: 7px;
 }
 
 .timelines {
@@ -40,71 +83,65 @@ html, body {
 }
 
 .bar {
-    box-shadow: rgba(11, 17, 25, 0.1) 0 2px 5px;
-    position: fixed;
-    top:0;
-    right: 0;
-    left: 0;
-    z-index: 100;
-    line-height: 55px;
-    text-align: center;
-    background: #ffffff;
+	box-shadow: rgba(11, 17, 25, 0.25) 0 2px 5px;
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	line-height: 55px;
+	text-align: center;
+	background: #f1f1f1;
 }
 
 .phrases {
-    margin-top: 150px;
+	margin-top: 150px;
 }
 
-.throbber
-{
-    margin-top: 0;
-    vertical-align: middle;
-    margin-top: expression(( 150 - this.height ) / 2); 
+.throbber {
+	margin-top: 0;
+	vertical-align: middle;
+	margin-top: expression(( 150 - this.height)/2);
 }
 
-.mousetip, .bartip{
-    position : absolute;
-    text-align: center; 
-    background: #FFF;
-    font: italic normal 90% Georgia, serif;
-    height: 20px;
-    visible : false;
-    opacity : 0;
+.mousetip, .bartip {
+	position: absolute;
+	text-align: center;
+	background: #FFF;
+	font: italic normal 90% Georgia, serif;
+	height: 20px;
+	visible: false;
+	opacity: 0;
 }
 
 .mousetip {
-    border: 0px solid;
+	border: 0px solid;
 }
 
 .bartip {
-    border: 1px solid #CDCDCD;
-    box-shadow: rgba(11, 17, 25, 0.1) 0 2px 5px;
+	border: 1px solid #CDCDCD;
+	box-shadow: rgba(11, 17, 25, 0.1) 0 2px 5px;
 }
 
 .bartip:before, .bartip:after {
-    content: "";
-    position: absolute;
-    top: 0%;
-    left: 15px;
-    z-index: 1;
+	content: "";
+	position: absolute;
+	top: 0%;
+	left: 15px;
+	z-index: 1;
 }
 
 .bartip:before {
-    border-bottom: 8px solid #CDCDCD;
-    
-    border-left:8px solid transparent;
-    border-top: 8px solid transparent;
-    border-right: 8px solid transparent;
-
-    margin-top : -16px;
+	border-bottom: 8px solid #CDCDCD;
+	border-left: 8px solid transparent;
+	border-top: 8px solid transparent;
+	border-right: 8px solid transparent;
+	margin-top: -16px;
 }
 
-.bartip:after{
-    border-bottom: 8px solid #FFF;
-    
-    border-left: 8px solid transparent;
-    border-top: 8px solid transparent;
-    border-right:8px solid transparent;
-
-    margin-top : -15px;
+.bartip:after {
+	border-bottom: 8px solid #FFF;
+	border-left: 8px solid transparent;
+	border-top: 8px solid transparent;
+	border-right: 8px solid transparent;
+	margin-top: -15px;
 }

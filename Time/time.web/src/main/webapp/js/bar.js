@@ -36,8 +36,9 @@
         var searchZone = this.context.getImageData(mousePosition - this.amplitude, 10, 2 * this.amplitude, 1).data;
         var middle = this.amplitude;
         var found = null;
+        var fillLevel = Time.drawer.fillLevel;
         for (var i = 0, j = 0; i < searchZone.length; i += 4) {
-            var isNotWhite = searchZone[i] < 255 || searchZone[i + 1] < 255 || searchZone[i + 2] < 255;
+            var isNotWhite = searchZone[i] !== fillLevel || searchZone[i + 1] !== fillLevel || searchZone[i + 2] !== fillLevel;
             if (isNotWhite && (!found || Math.abs(j - middle) < Math.abs(found - middle))) {
                 found = j;
             }
@@ -70,10 +71,12 @@
     bar.prototype.onBuckets = function(bucketsDTO) {
         Time.barloading.stopLoading();
         this.buckets = Time.bucketFactory.getBuckets(bucketsDTO);
-        Time.drawer.drawBar(this);
         Time.tooltips.decorate(this);
         if(this.buckets.length === 1){
+            Time.drawer.hideBar(this);
             this.openSubBar(this.buckets[0]);
+        }else{
+            Time.drawer.drawBar(this);
         }
     };
 

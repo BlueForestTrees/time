@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 import time.transformer.component.reader.SmartScanner;
+import time.transformer.service.FindPhrasesModule;
+import time.transformer.service.IModule;
 
 @Configuration
 @ComponentScan({ "time.transformer.service", "time.transformer.component", "time.transformer.tool" })
@@ -38,5 +40,10 @@ public class TransformerConfig {
         SmartScanner scanner = new SmartScanner(datasourcePath);
         scanner.setDelimiter(sep());
         return scanner;
+    }
+    
+    @Bean
+    public IModule module() {
+        return new FindPhrasesModule();
     }
 }

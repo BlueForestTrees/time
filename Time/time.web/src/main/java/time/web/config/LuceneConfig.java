@@ -23,7 +23,8 @@ public class LuceneConfig {
 
     @Bean
     public String indexPath() {
-        return "/Time/data/lucene/phrases";
+        return "/Time/data/lucene/histoires";
+        //return "/Time/data/lucene/phrases";
         //return "/Time/data/lucene/sapiens";
     }
 

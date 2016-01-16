@@ -8,7 +8,33 @@
             view.termInput.select();
         });
         view.termInput.on("keyup",$.proxy(this.termInputKeyPress, this));
+        view.homeTermInput.on("keyup",$.proxy(this.homeTermInputKeyPress, this));
     };
+
+//HOME
+    filter.prototype.homeTermInputKeyPress = function(e) {
+        if (e.which === 13) {
+            this.homeTermInputKeyEnterPress();
+        }
+    };
+
+    filter.prototype.homeTermInputKeyEnterPress = function() {
+        var term = Time.view.homeTermInput.val();
+        this.onFilterFromHome(term, false);
+    };
+
+    filter.prototype.onFilterFromHome = function(term, ignoreHistory){
+        Time.view.homeTermInput.off("keyup");
+        Time.view.home.remove();
+        delete filter.prototype.homeTermInputKeyEnterPress;
+        delete filter.prototype.homeTermInputKeyPress;
+        delete filter.prototype.onFilterFromHome;
+        delete Time.view.homeTermInput;
+        delete Time.view.home;
+
+        this.onFilter(term, ignoreHistory);
+    };
+//!HOME
 
     filter.prototype.termInputKeyPress = function(e) {
         if (e.which === 13) {
@@ -17,6 +43,7 @@
             this.checkGetSynonymsTrigger();
         }
     };
+
 
     filter.prototype.checkGetSynonymsTrigger = function() {
         var saisie = Time.view.termInput.val();

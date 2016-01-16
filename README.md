@@ -6,4 +6,4 @@ Bugs : Rollover sur bucket: décalage, Historique JS bug quand term = "", rech. 
 
 Evols : Filtre par date dans pathvariable : @1M    (2m,24.02.1984)
 
-Idées : https://fr.wikipedia.org/wiki/1662, page d'accueil, http://www.lavolte.net/, crawdfunding pour hébergement, http://www.dont-nod.com/category/emploi/
+Idées : https://fr.wikipedia.org/wiki/1662, https://fr.wikipedia.org/wiki/140_av._J.-C., page d'accueil, http://www.lavolte.net/, crawdfunding pour hébergement, http://www.dont-nod.com/category/emploi/

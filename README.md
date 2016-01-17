@@ -1,12 +1,10 @@
-Il était une fois en Nan => 34 décembre! Virer ces dates.
-logo petit lien vers home
-0 résuultats ajouter "pour xxx"
 Charger livres
 
-Si pas de résultats, refaire une recherche avec une approximation et la proposer.
-Ajouter = en début de terme pour faire une requête approximative
+alternative sur phrases OU ET
 
-Bugs : Rollover sur bucket: décalage, Historique JS bug quand term = "", rech. alain damasio => il était une fois NaN, première phrase contient rs n° 89 juillet 2009 lire, Il était une fois pas en premier dans ballade sur barres.
+Bugs : Rollover sur bucket: décalage, 
+première phrase contient rs n° 89 juillet 2009 lire, 
+"Il était une fois" pas en premier dans ballade sur barres. pb de clean asynchrone
 
 Evols : Filtre par date dans pathvariable : @1M    (2m,24.02.1984)
 

@@ -2,6 +2,7 @@ package time.web.service;
 
 import java.util.Arrays;
 
+import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -11,11 +12,17 @@ import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.util.QueryBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
 public class QueryService {
+    
+    @Autowired
+    private IndexReader reader;
+    
     /**
      * Construit une requête lucene depuis les paramètres 'Histoire/Time'
      * @param term
@@ -57,7 +64,12 @@ public class QueryService {
         final boolean hasOrs = term.contains(" ");
         
         if(isPhrase){
-            return new PhraseQuery("text", term.replaceAll("\"", "").split(" "));
+            final String[] words = words(term);
+            if(words.length == 1){
+                return getAndTermQuery(words[0]);
+            }else{
+                return new PhraseQuery(1, "text", words);
+            }
         }else if(hasOrs){
             return getOrTermQuery(term);
         }else{
@@ -95,8 +107,19 @@ public class QueryService {
         
         if(isSimpleWord){
             return new FuzzyQuery(new Term("text", term));
+        }else if(isPhrase){
+            return getFuzzyTermQuery(term);
         }else{
             return null;
         }
     }
+
+    private Query getFuzzyPhraseQuery(String term) {
+        return new QueryBuilder(null).createPhraseQuery("text", term);
+    }
+
+    private String[] words(String term) {
+        return term.replaceAll("\"", "").split(" ");
+    }
 }
+

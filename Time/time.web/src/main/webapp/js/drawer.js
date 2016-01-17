@@ -134,7 +134,7 @@
         if(phrases.alternatives == null || phrases.alternatives.length ===0){
             Time.view.phrases.append("<br><br><h2 style=\"text-align:center\">Aucun résultat pour <i>" + term + "</i></h2>");
         }else{
-            var tryWith = "<br><br><h2 style=\"text-align:center\">0 résultats  :( <br><br>Essayez avec ces mots: ";
+            var tryWith = "<br><br><h2 style=\"text-align:center\">0 résultats pour <i>" + term + "</i> :(<br><br>Essayez avec ces mots: ";
 
             phrases.alternatives.forEach(function(alternative){
                 tryWith += "<i><a href='/"+alternative+"'>" + alternative + "</a></i>, ";

@@ -28,11 +28,12 @@ public class PreciseParser implements IParser {
         try {
             return LocalDate.of(year, month, day).toEpochDay() + seventiesInDays;
         } catch (DateTimeException e) {
+            final int correctedDay = Integer.parseInt(matcher.group("d").trim().substring(1));
             try {
-                return LocalDate.of(year, month, day - 1).toEpochDay() + seventiesInDays;
-            } catch (DateTimeException ex) {
-                LOG.error("pb pour parser "+matcher.group("g"));
-                return 0L;
+                return LocalDate.of(year, month, correctedDay).toEpochDay() + seventiesInDays;
+            } catch (DateTimeException exx) {
+                LOG.error("pb pour parser " + matcher.group("g"), exx);
+                return 0;
             }
         }
     }

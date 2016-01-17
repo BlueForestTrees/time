@@ -69,14 +69,8 @@ html, body {
 	text-indent: 10px;
 }
 
-h1{
+h1, h2, h3{
 	font-family: Lucida Console;
-}
-h2{
-    font-family: Lucida Console;
-}
-h3{
-    font-family: Lucida Console;
 }
 
 .search .fa-search {
@@ -113,7 +107,7 @@ h3{
 	margin-top: expression(( 150 - this.height)/2);
 }
 
-.mousetip, .bartip {
+.bartip {
 	position: absolute;
 	text-align: center;
 	background: #FFF;

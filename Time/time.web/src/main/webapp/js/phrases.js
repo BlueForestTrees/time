@@ -23,7 +23,7 @@
     };
 
     phrases.prototype.onFirstPhrases = function(a, b, phrases) {
-        if (phrases.phraseList.length > 0) {
+        if (phrases.total > 0) {
             var bucket = {
                 years : Time.scale.daysToYears(phrases.phraseList[0].date)
             };

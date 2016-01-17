@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PhraseQuery;
@@ -78,6 +79,24 @@ public class QueryService {
             final BooleanQuery.Builder builder = new BooleanQuery.Builder();
             Arrays.stream(term.split("\\+")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.MUST));
             return builder.build();
+        }
+    }
+
+    /**
+     * Construit une requête de recherche de terme plus approprié.
+     * @param term Le terme à améliorer
+     * @return Une query fournissant des documents contenant des termes plus appropriés.
+     */
+    public Query getFuzzyTermQuery(String term) {
+        final boolean isPhrase = term.startsWith("\"") && term.endsWith("\"");
+        final boolean hasOrs = term.contains(" ");
+        final boolean hasAnds = term.contains("+");
+        final boolean isSimpleWord = !isPhrase && !hasOrs && !hasAnds;
+        
+        if(isSimpleWord){
+            return new FuzzyQuery(new Term("text", term));
+        }else{
+            return null;
         }
     }
 }

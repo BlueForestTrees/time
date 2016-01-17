@@ -48,9 +48,12 @@ public class PhraseService {
 
     @Autowired
     private Sort sortDateAsc;
-    
+
     @Autowired
     private Analyzer analyzer;
+    
+    @Autowired
+    private FindBetterService tryWithService;
 
     public Phrases find(final String scale, final Long bucketValue, final String term, String lastKey) throws IOException {
         final Last last = (Last) cache.remove(lastKey);
@@ -59,20 +62,26 @@ public class PhraseService {
         highlighter.setTextFragmenter(new NullFragmenter());
         final TopFieldDocs searchResult = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, pageSize, sortDateAsc, true, true);
 
-        // LES PHRASES
-        final Integer lastIndex = last == null ? null : last.getLastIndex();
         final Phrases phrases = new Phrases();
-        phrases.setTotal(searchResult.totalHits);
-        final List<Phrase> phraseList = Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> getPhrase(scoreDoc, highlighter)).collect(Collectors.toList());
-        phrases.setPhraseList(phraseList);
-        // LE LAST
-        final int nbPhrasesFound = searchResult.scoreDocs.length;
-        final int newLastIndex = lastIndex == null ? nbPhrasesFound - 1 : lastIndex + nbPhrasesFound;
-        if (newLastIndex < searchResult.totalHits - 1) {
-            final FieldDoc lastScoreDoc = (FieldDoc) searchResult.scoreDocs[nbPhrasesFound - 1];
-            final String newLastKey = UUID.randomUUID().toString();
-            cache.put(newLastKey, new Last(lastScoreDoc, newLastIndex));
-            phrases.setLastKey(newLastKey);
+        if (searchResult.totalHits > 0) {
+            // LES PHRASES
+            final Integer lastIndex = last == null ? null : last.getLastIndex();
+            phrases.setTotal(searchResult.totalHits);
+            final List<Phrase> phraseList = Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> getPhrase(scoreDoc, highlighter)).collect(Collectors.toList());
+            phrases.setPhraseList(phraseList);
+            // LE LAST
+            final int nbPhrasesFound = searchResult.scoreDocs.length;
+            final int newLastIndex = lastIndex == null ? nbPhrasesFound - 1 : lastIndex + nbPhrasesFound;
+            if (newLastIndex < searchResult.totalHits - 1) {
+                final FieldDoc lastScoreDoc = (FieldDoc) searchResult.scoreDocs[nbPhrasesFound - 1];
+                final String newLastKey = UUID.randomUUID().toString();
+                cache.put(newLastKey, new Last(lastScoreDoc, newLastIndex));
+                phrases.setLastKey(newLastKey);
+            }
+        } else {
+            phrases.setTotal(0);
+            final String betterTerm = tryWithService.findBetterTerm(term);
+            phrases.setAlternative(betterTerm);
         }
         return phrases;
     }
@@ -82,7 +91,7 @@ public class PhraseService {
             final Document doc = indexSearcher.doc(scoreDoc.doc);
             final Phrase phrase = new Phrase();
             final String text = highlighter.getBestFragment(analyzer, "text", doc.get("text"));
-            
+
             phrase.setText(text != null ? text : doc.get("text"));
             phrase.setPageUrl(doc.get("pageUrl"));
             phrase.setDate((long) doc.getField("date").numericValue());

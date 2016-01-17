@@ -11,6 +11,16 @@ public class Phrases {
     private String lastKey;
     
     private long total;
+    
+    private String alternative;
+
+    public String getAlternative() {
+        return alternative;
+    }
+
+    public void setAlternative(String alternative) {
+        this.alternative = alternative;
+    }
 
     public long getTotal() {
         return total;

@@ -75,8 +75,8 @@
     };
 
     drawer.prototype.setPhrases = function(phrases, term) {
-        if (phrases.phraseList.length === 0) {
-            this.addNoPhrases(term);
+        if (phrases.total === 0) {
+            this.addNoPhrases(term, phrases.alternative);
             return;
         }
 
@@ -133,8 +133,11 @@
     drawer.prototype.addTheEnd = function() {
         Time.view.phrases.append("<h1 style=\"text-align:center\">The END</h1>");
     };
-    drawer.prototype.addNoPhrases = function(term) {
+    drawer.prototype.addNoPhrases = function(term, alternative) {
         Time.view.phrases.append("<h1 style=\"text-align:center\">Aucun résultat pour <i>" + term + "</i></h1>");
+        if(alternative != null){
+            Time.view.phrases.append("<h2>Essayer avec <i><a href='/"+alternative+"'>" + alternative + "</a></i></h2>");
+        }
     };
 
     Time.Drawer = drawer;

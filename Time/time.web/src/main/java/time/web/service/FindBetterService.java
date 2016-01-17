@@ -1,27 +1,27 @@
 package time.web.service;
 
 import java.io.IOException;
+import java.util.Arrays;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.search.highlight.Formatter;
 import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleFragmenter;
 import org.apache.lucene.search.highlight.TokenGroup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FindBetterService implements Formatter{
 
-    private static final Logger LOG = LoggerFactory.getLogger(FindBetterService.class);
+    private static final Logger LOG = LogManager.getLogger(FindBetterService.class);
 
     @Autowired
     private IndexSearcher indexSearcher;
@@ -32,28 +32,26 @@ public class FindBetterService implements Formatter{
     @Autowired
     private Analyzer analyzer;
 
-    public String findBetterTerm(final String term) throws IOException {
+    public String[] findBetterTerm(final String term) throws IOException {
         final Query query = queryHelper.getFuzzyTermQuery(term);
         if (query == null) {
-            return null;
+            return new String[0];
         }
 
         final Highlighter highlighter = new Highlighter(this, new QueryScorer(query, "text"));
         highlighter.setTextFragmenter(new SimpleFragmenter(0));
-        final TopDocs searchResult = indexSearcher.searchAfter(null, query, 1);
+        final TopDocs searchResult = indexSearcher.searchAfter(null, query, 10);
 
-        if (searchResult.totalHits > 0) {
-            try {
-                return highlighter.getBestFragment(analyzer, "text", firstIn(searchResult).get("text"));
-            } catch (InvalidTokenOffsetsException e) {
-                LOG.error("findBetterTerm, hightlighter.bestFragments", e);
-            }
-        }
-        return null;
+        return Arrays.stream(searchResult.scoreDocs).map(res -> fragment(res, highlighter)).distinct().filter(f->f!=null).toArray(String[]::new);
     }
 
-    protected Document firstIn(final TopDocs searchResult) throws IOException {
-        return indexSearcher.doc(searchResult.scoreDocs[0].doc);
+    protected String fragment(final ScoreDoc scoreDoc, final Highlighter highlighter) {
+        try {
+            return highlighter.getBestFragment(analyzer, "text", indexSearcher.doc(scoreDoc.doc).get("text")).replaceAll("[^A-Za-z]+", "").toLowerCase();
+        } catch (Exception e) {
+            LOG.error("fragment", e);
+        }
+        return null;
     }
 
     @Override

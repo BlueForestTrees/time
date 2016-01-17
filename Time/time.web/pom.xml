@@ -19,10 +19,10 @@
 			<artifactId>lucene-facet</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>org.apache.lucene</groupId>
-		    <artifactId>lucene-highlighter</artifactId>
+			<groupId>org.apache.lucene</groupId>
+			<artifactId>lucene-highlighter</artifactId>
 		</dependency>
-		
+
 
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -54,18 +54,18 @@
 
 		<!-- LOGGING -->
 		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-web</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
 
 
 		<dependency>

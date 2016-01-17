@@ -12,14 +12,14 @@ public class Phrases {
     
     private long total;
     
-    private String alternative;
+    private String[] alternatives;
 
-    public String getAlternative() {
-        return alternative;
+    public String[] getAlternatives() {
+        return alternatives;
     }
 
-    public void setAlternative(String alternative) {
-        this.alternative = alternative;
+    public void setAlternatives(String[] alternatives) {
+        this.alternatives = alternatives;
     }
 
     public long getTotal() {

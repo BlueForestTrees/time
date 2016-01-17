@@ -1,13 +1,14 @@
 package time.web.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 
 @Service
 public class IndexService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexService.class);
+    private static final Logger LOG = LogManager.getLogger(IndexService.class);
 
     public String reIndex() {
         LOG.debug("reIndex...");

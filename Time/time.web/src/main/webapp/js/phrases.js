@@ -46,7 +46,9 @@
             this.maybeMorePhrases();
         } else {
             this.lastSearch = null;
-            Time.drawer.addTheEnd();
+            if(!phrases.alternatives){
+                Time.drawer.addTheEnd();
+            }
         }
     };
 

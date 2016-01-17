@@ -72,7 +72,10 @@
         Time.barloading.stopLoading();
         this.buckets = Time.bucketFactory.getBuckets(bucketsDTO);
         Time.tooltips.decorate(this);
-        if(this.buckets.length === 1){
+        if(this.buckets.length === 0){
+            Time.drawer.hideBar(this);
+            Time.tooltips.hideTooltips();
+        }else if(this.buckets.length === 1){
             Time.drawer.hideBar(this);
             this.openSubBar(this.buckets[0]);
         }else{

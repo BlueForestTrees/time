@@ -42,11 +42,11 @@ html, body {
 }
 
 .logo-petit {
-    background-size:248px 61px;
-    height:61px;
-    width:248px;
+    background-size:178px 134px;
+    height:134px;
+    width:178px;
     position: absolute;
-    top: 0px;
+    top: -37px;
     left: 0px;
     background: url(/img/logo-petit.png) no-repeat;
 }
@@ -67,6 +67,16 @@ html, body {
 	border: 1px solid #CDCDCD;
 	border-radius: 3px;
 	text-indent: 10px;
+}
+
+h1{
+	font-family: Lucida Console;
+}
+h2{
+    font-family: Lucida Console;
+}
+h3{
+    font-family: Lucida Console;
 }
 
 .search .fa-search {

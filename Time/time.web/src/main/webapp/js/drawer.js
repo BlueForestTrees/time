@@ -76,7 +76,7 @@
 
     drawer.prototype.setPhrases = function(phrases, term) {
         if (phrases.total === 0) {
-            this.addNoPhrases(term, phrases.alternative);
+            this.addNoPhrases(term, phrases);
             return;
         }
 
@@ -130,14 +130,22 @@
         Time.view.phrases.append("<h1>Il était une fois " + text + " . . .</h1><i>" + Time.tooltips.getNbPages(nbPhrases) + "</i>");
     };
 
+    drawer.prototype.addNoPhrases = function(term, phrases) {
+        if(phrases.alternatives == null || phrases.alternatives.length ===0){
+            Time.view.phrases.append("<br><br><h2 style=\"text-align:center\">Aucun résultat pour <i>" + term + "</i></h2>");
+        }else{
+            var tryWith = "<br><br><h2 style=\"text-align:center\">0 résultats  :( <br><br>Essayez avec ces mots: ";
+
+            phrases.alternatives.forEach(function(alternative){
+                tryWith += "<i><a href='/"+alternative+"'>" + alternative + "</a></i>, ";
+            });
+            tryWith = tryWith.slice(0, -2);
+            tryWith += "</h2>";
+            Time.view.phrases.append(tryWith);
+        }
+    };
     drawer.prototype.addTheEnd = function() {
         Time.view.phrases.append("<h1 style=\"text-align:center\">The END</h1>");
-    };
-    drawer.prototype.addNoPhrases = function(term, alternative) {
-        Time.view.phrases.append("<h1 style=\"text-align:center\">Aucun résultat pour <i>" + term + "</i></h1>");
-        if(alternative != null){
-            Time.view.phrases.append("<h2>Essayer avec <i><a href='/"+alternative+"'>" + alternative + "</a></i></h2>");
-        }
     };
 
     Time.Drawer = drawer;

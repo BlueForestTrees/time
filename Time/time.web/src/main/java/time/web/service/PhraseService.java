@@ -80,8 +80,8 @@ public class PhraseService {
             }
         } else {
             phrases.setTotal(0);
-            final String betterTerm = tryWithService.findBetterTerm(term);
-            phrases.setAlternative(betterTerm);
+            final String[] alternatives = tryWithService.findBetterTerm(term);
+            phrases.setAlternatives(alternatives);
         }
         return phrases;
     }

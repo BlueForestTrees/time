@@ -26,8 +26,6 @@ http://www.dont-nod.com/category/emploi/
 
 Datas :
 
-https://fr.wikipedia.org/wiki/140_av._J.-C.
-
-https://fr.wikipedia.org/wiki/1662
+pages chrono (FindPhrasesMdule)
 
 Charger livres

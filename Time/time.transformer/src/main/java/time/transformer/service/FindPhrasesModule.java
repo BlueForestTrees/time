@@ -55,7 +55,7 @@ public class FindPhrasesModule implements IModule {
     public long run(long pageCount) throws IOException, FinDuScanException {
         long phraseCount = 0;
         for (long i = 0; i < pageCount; i++) {
-            Page page = pageReader.getNextPage();
+            final Page page = pageReader.getNextPage();
             if (pageFilter.isValidPage(page)) {
                 if (pageFilter.isNewPage(page)) {
                     phraseCount += handle(page);
@@ -68,7 +68,8 @@ public class FindPhrasesModule implements IModule {
 
     protected long handle(Page page) throws IOException {
         long count = 0;
-        final String text = getCleanText(page.getPageContent());
+        transformPage(page);
+        final String text = page.getPageContent();
 
         final String[] paragraphs = getParagraphs(text);
 
@@ -102,6 +103,20 @@ public class FindPhrasesModule implements IModule {
 
     public String[] getParagraphs(final String text) {
         return splitParagraphPattern.split(text);
+    }
+
+    /**
+     * @param page
+     * @return
+     */
+    private void transformPage(final Page page)
+    {
+        page.setPageContent(getCleanText(page.getPageContent()));
+        //TODO si https://fr.wikipedia.org/wiki/141_av._J.-C. => années négatives (_av._J.-C. négative)
+        //TODO si https://fr.wikipedia.org/wiki/Ann%C3%A9es_100 => décennies (_av._J.-C. négative)
+        //TODO si https://fr.wikipedia.org/wiki/IIe_si%C3%A8cle => siècle (_av._J.-C. négative)
+        //TODO si https://fr.wikipedia.org/wiki/Ier_mill%C3%A9naire => millenaire (_av._J.-C. négative)
+
     }
 
     /**

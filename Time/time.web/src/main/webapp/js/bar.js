@@ -23,12 +23,20 @@
         $(this.canvas).on('mousedown.Viewport', data, $.proxy(this.mouseDownOnBar, this));
     };
 
-    bar.prototype.searchBucketAt = function(mousePosition) {
+    bar.prototype.searchBucketAt = function(mouseX) {
+        var barX = this.mouseXToBarX(mouseX);
+        var offset = this.searchNearest(barX);
+        var bucketPosition = null;
+        var xBucket = null;
         var foundBucket = null;
-        var offset = this.searchNearest(mousePosition);
         if (offset !== null) {
-            foundBucket = this.getBucketAt(offset + this.getBucketPosition(mousePosition));
+            bucketPosition = this.getBucketPosition(barX);
+            xBucket = offset + bucketPosition;
+            foundBucket = this.getBucketAt(xBucket);
         }
+
+        console.log({mouseX : mouseX, barX : barX, offset : offset, bucketPosition : bucketPosition, xBucket : xBucket, foundBucket : foundBucket});
+
         return foundBucket;
     };
 
@@ -107,7 +115,7 @@
     };
 
     bar.prototype.onBarClick = function(event) {
-        var bucket = this.searchBucketAt(this.getmousePosition(event));
+        var bucket = this.searchBucketAt(event.clientX);
         if (bucket) {
             if (this.isLastBar) {
                 this.beginStory(bucket);
@@ -127,9 +135,9 @@
         Time.historic.pushState(Time.filter.term);
     };
 
-    bar.prototype.getmousePosition = function(event) {
+    bar.prototype.mouseXToBarX = function(mouseX) {
         // -1 hack pour la bordure de 1px
-        return event.clientX - 1;
+        return mouseX - 1;
     };
 
     Time.Bar = bar;

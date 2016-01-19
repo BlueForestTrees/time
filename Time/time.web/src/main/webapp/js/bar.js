@@ -23,23 +23,30 @@
         $(this.canvas).on('mousedown.Viewport', data, $.proxy(this.mouseDownOnBar, this));
     };
 
+    /**
+     * Cherche si un bucket est présent à l'endroit spécifié
+     * @param mouseX coordonnée écran (event.clientX, window.mouseX)
+     * @returns {*} Le bucket trouvé au plus près, ou null
+     */
     bar.prototype.searchBucketAt = function(mouseX) {
         var barX = this.mouseXToBarX(mouseX);
         var offset = this.searchNearest(barX);
         var viewportX = this.barXToViewportX(barX);
         var bucketX = viewportX + offset;
-        var bucket = null;
-        if (offset !== null) {
-            bucket = this.getBucketAt(bucketX);
-        }
+        var bucket = this.getBucketAt(bucketX);
 
-        console.log({mouseX : mouseX, barX : barX, offset : offset, viewportX : viewportX, bucketX : bucketX, bucket : bucket});
+        console.log('mouseX', mouseX, 'barX', barX, 'offset', offset,'viewportX', viewportX, 'bucketX', bucketX, 'bucket', bucket);
 
         return bucket;
     };
 
-    bar.prototype.searchNearest = function(mousePosition) {
-        var searchZone = this.context.getImageData(mousePosition - this.amplitude, 10, 2 * this.amplitude, 1).data;
+    /**
+     * Cherche dans le canvas de la barre.
+     * @param barX Où chercher dans la barre
+     * @returns {*} Un bucket le plus proche possible ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
+     */
+    bar.prototype.searchNearest = function(barX) {
+        var searchZone = this.context.getImageData(barX - this.amplitude, 10, 2 * this.amplitude, 1).data;
         var middle = this.amplitude;
         var found = null;
         var fillLevel = Time.drawer.fillLevel;
@@ -50,20 +57,27 @@
             }
             j++;
         }
-        return found ? found - middle : null;
+        return found ? found - middle : undefined;
     };
 
-    bar.prototype.getBucketAt = function(xBucket) {
-        for (var i = 0; i < this.buckets.length; i++) {
-            var bucket = this.buckets[i];
-            if (bucket.x === xBucket) {
-                return bucket;
+    /**
+     * @param bucketX La position sur la barre du bucket à chercher.
+     * @returns {*} Le premier bucket tel que {bucket.x === bucketX}
+     */
+    bar.prototype.getBucketAt = function(bucketX) {
+        if(bucketX) {
+            for (var i = 0; i < this.buckets.length; i++) {
+                var bucket = this.buckets[i];
+                if (bucket.x === bucketX) {
+                    return bucket;
+                }
             }
         }
         return null;
     };
-    bar.prototype.barXToViewportX = function(position) {
-        return position - this.viewport.delta();
+
+    bar.prototype.barXToViewportX = function(barX) {
+        return barX - this.viewport.delta();
     };
 
     bar.prototype.loadBuckets = function(term, parentBucket) {

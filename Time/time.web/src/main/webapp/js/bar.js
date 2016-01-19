@@ -26,18 +26,16 @@
     bar.prototype.searchBucketAt = function(mouseX) {
         var barX = this.mouseXToBarX(mouseX);
         var offset = this.searchNearest(barX);
-        var bucketPosition = null;
-        var xBucket = null;
-        var foundBucket = null;
+        var viewportX = this.barXToViewportX(barX);
+        var bucketX = viewportX + offset;
+        var bucket = null;
         if (offset !== null) {
-            bucketPosition = this.getBucketPosition(barX);
-            xBucket = offset + bucketPosition;
-            foundBucket = this.getBucketAt(xBucket);
+            bucket = this.getBucketAt(bucketX);
         }
 
-        console.log({mouseX : mouseX, barX : barX, offset : offset, bucketPosition : bucketPosition, xBucket : xBucket, foundBucket : foundBucket});
+        console.log({mouseX : mouseX, barX : barX, offset : offset, viewportX : viewportX, bucketX : bucketX, bucket : bucket});
 
-        return foundBucket;
+        return bucket;
     };
 
     bar.prototype.searchNearest = function(mousePosition) {
@@ -64,7 +62,7 @@
         }
         return null;
     };
-    bar.prototype.getBucketPosition = function(position) {
+    bar.prototype.barXToViewportX = function(position) {
         return position - this.viewport.delta();
     };
 

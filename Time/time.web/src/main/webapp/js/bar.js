@@ -7,9 +7,9 @@
         this.isLastBar = Time.scale.isLastScale(this.scale);
         this.viewport = new Time.Viewport(this.scale);
         this.buckets = [];
-        this.context = new Time.CanvasFactory().build(this.height, this.scale);
+        this.context = Time.barFactory.buildCanvas(this.height, this.scale);
         this.canvas = this.context.canvas;
-        this.amplitude = 10;
+        this.amplitude = 20;
         this.loading = false;
         this.installEvents();
     }
@@ -29,27 +29,24 @@
      * @returns {*} Le bucket trouvé au plus près, ou null
      */
     bar.prototype.searchBucketAt = function(mouseX) {
-        var barX = this.mouseXToBarX(mouseX);
-        var offset = this.searchNearest(barX);
-        var viewportX = this.barXToViewportX(barX);
-        var bucketX = viewportX + offset;
-        var bucket = this.getBucketAt(bucketX);
-
-        console.log('mouseX', mouseX, 'barX', barX, 'offset', offset,'viewportX', viewportX, 'bucketX', bucketX, 'bucket', bucket);
+        var offset = this.searchNear(mouseX);
+        var barBucketX = offset + mouseX;
+        var viewPortBucketX = this.barXToViewportX(barBucketX);
+        var bucket = this.getBucketAt(viewPortBucketX);
 
         return bucket;
     };
 
     /**
      * Cherche dans le canvas de la barre.
-     * @param barX Où chercher dans la barre
+     * @param mouseX Où chercher dans la barre
      * @returns {*} Un bucket le plus proche possible ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
      */
-    bar.prototype.searchNearest = function(barX) {
-        var searchZone = this.context.getImageData(barX - this.amplitude, 10, 2 * this.amplitude, 1).data;
+    bar.prototype.searchNear = function(mouseX) {
+        var searchZone = this.context.getImageData(mouseX - this.amplitude, 10, 2 * this.amplitude, 1).data;
         var middle = this.amplitude;
         var found = null;
-        var fillLevel = Time.drawer.fillLevel;
+        var fillLevel = Time.barDrawer.fillLevel;
         for (var i = 0, j = 0; i < searchZone.length; i += 4) {
             var isNotWhite = searchZone[i] !== fillLevel || searchZone[i + 1] !== fillLevel || searchZone[i + 2] !== fillLevel;
             if (isNotWhite && (!found || Math.abs(j - middle) < Math.abs(found - middle))) {
@@ -64,11 +61,11 @@
      * @param bucketX La position sur la barre du bucket à chercher.
      * @returns {*} Le premier bucket tel que {bucket.x === bucketX}
      */
-    bar.prototype.getBucketAt = function(bucketX) {
-        if(bucketX) {
+    bar.prototype.getBucketAt = function(viewPortBucketX) {
+        if(viewPortBucketX !== undefined && viewPortBucketX !== null) {
             for (var i = 0; i < this.buckets.length; i++) {
                 var bucket = this.buckets[i];
-                if (bucket.x === bucketX) {
+                if (bucket.x === viewPortBucketX) {
                     return bucket;
                 }
             }
@@ -81,25 +78,25 @@
     };
 
     bar.prototype.loadBuckets = function(term, parentBucket) {
-        Time.barloading.startLoading(this);
-        Time.drawer.focusOn(this);
+        Time.barLoading.startLoading(this);
+        Time.barDrawer.focusOn(this);
         Time.data.getBuckets(term, this.scale, $.proxy(this.onBuckets, this));
         this.viewport.lookAt(parentBucket);
         Time.tooltips.decorate(null);
     };
 
     bar.prototype.onBuckets = function(bucketsDTO) {
-        Time.barloading.stopLoading();
-        this.buckets = Time.bucketFactory.getBuckets(bucketsDTO);
+        Time.barLoading.stopLoading();
+        this.buckets = Time.barFactory.buildBuckets(bucketsDTO);
         Time.tooltips.decorate(this);
         if(this.buckets.length === 0){
-            Time.drawer.hideBar(this);
+            Time.barDrawer.hideBar(this);
             Time.tooltips.hideTooltips();
         }else if(this.buckets.length === 1){
-            Time.drawer.hideBar(this);
+            Time.barDrawer.hideBar(this);
             this.openSubBar(this.buckets[0]);
         }else{
-            Time.drawer.drawBar(this);
+            Time.barDrawer.drawBar(this);
         }
     };
 
@@ -111,7 +108,7 @@
 
     bar.prototype.onBarDrag = function(event) {
         this.viewport.addToLocal(event.clientX - event.data.previousX);
-        Time.drawer.drawBar(this);
+        Time.barDrawer.drawBar(this);
         event.data.previousX = event.clientX;
         event.data.move = true;
     };
@@ -147,6 +144,7 @@
         Time.historic.pushState(Time.filter.term);
     };
 
+    //plus utilisée, globalToLocal de bar
     bar.prototype.mouseXToBarX = function(mouseX) {
         // -1 hack pour la bordure de 1px
         return mouseX - 1;

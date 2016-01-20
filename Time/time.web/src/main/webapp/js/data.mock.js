@@ -1,7 +1,7 @@
 (function() {
 
-	var responseTimeBucket = 3000;
-	var responseTimePhrases = 1000;
+	var responseTimeBucket = 300;
+	var responseTimePhrases = 100;
 
     function data() {
 

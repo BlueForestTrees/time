@@ -1,16 +1,16 @@
 (function() {
-    function barloading() {
+    function barLoading() {
         this.loading = false;
         this.loadingSpeed = 45;
     }
 
-    barloading.prototype.startLoading = function (bar) {
+    barLoading.prototype.startLoading = function (bar) {
         this.loading = true;
         this.loadingPhase(bar, this.getLoadingArray());
         Time.view.timeline.css({cursor: 'progress'});
     };
 
-    barloading.prototype.getLoadingArray = function(){
+    barLoading.prototype.getLoadingArray = function(){
         return [
                 {color:"#000000"},{color:"#888888"},
                 {color:"#999999"},{color:"#999999"},
@@ -22,17 +22,17 @@
                 {color:"#BBBBBB"}
                 ];
     };
-    barloading.prototype.loadingPhase = function(bar, loadingArray){
+    barLoading.prototype.loadingPhase = function(bar, loadingArray){
         if(this.loading) {
-            Time.drawer.drawBar(bar, this.getBucketArray(bar, loadingArray));
+            Time.barDrawer.drawBar(bar, this.getBucketArray(bar, loadingArray));
             this.animateArray(loadingArray);
             var that = this;
             setTimeout(function(){that.loadingPhase(bar, loadingArray);}, this.loadingSpeed);
         }else{
-            Time.drawer.drawBar(bar);
+            Time.barDrawer.drawBar(bar);
         }
     };
-    barloading.prototype.getBucketArray = function(bar, loadingArray){
+    barLoading.prototype.getBucketArray = function(bar, loadingArray){
         var throbberWidth = bar.canvas.width;
         var nbBuckets = loadingArray.length;
         var gap = throbberWidth / nbBuckets;
@@ -47,16 +47,16 @@
             };
         },this);
     };
-    barloading.prototype.animateArray = function(loadingArray){
+    barLoading.prototype.animateArray = function(loadingArray){
         loadingArray.unshift(loadingArray.pop());
     };
-    barloading.prototype.transformColor = function(color){
+    barLoading.prototype.transformColor = function(color){
         return color;
     };
-    barloading.prototype.stopLoading = function () {
+    barLoading.prototype.stopLoading = function () {
         Time.view.timeline.css({cursor: 'pointer'});
         this.loading = false;
     };
 
-    Time.Barloading = barloading;
+    Time.BarLoading = barLoading;
 })();

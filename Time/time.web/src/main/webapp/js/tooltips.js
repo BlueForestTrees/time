@@ -104,7 +104,8 @@
     
     tooltips.prototype.toolTipAt = function(tooltip, tooltipX) {
         var scale = Time.tooltips.currentBar.scale;
-        var bucketPosition = Time.tooltips.currentBar.barXToViewportX(Time.tooltips.currentBar.mouseXToBarX(tooltipX));
+        //anciennement Time.tooltips.currentBar.mouseXToBarX(tooltipX)
+        var bucketPosition = Time.tooltips.currentBar.barXToViewportX(tooltipX);
         var toolTipText = Time.tooltips.getTooltipText({
             scale : scale,
             bucket : bucketPosition

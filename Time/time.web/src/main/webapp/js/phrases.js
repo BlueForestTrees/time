@@ -28,14 +28,14 @@
                 years : Time.scale.daysToYears(phrases.phraseList[0].date)
             };
             var text = Time.tooltips.getTooltipText(bucket);
-            Time.drawer.setPhraseTooltip(text, phrases.total);
+            Time.phrasesdrawer.setPhraseTooltip(text, phrases.total);
         }
         this.onPhrases(null, null, phrases);
     };
 
     phrases.prototype.onPhrases = function(scale, xBucket, phrases) {
         Time.view.throbber.hide();
-        Time.drawer.setPhrases(phrases, Time.filter.term);
+        Time.phrasesdrawer.setPhrases(phrases, Time.filter.term);
         this.isSearching = false;
         if (phrases.lastKey) {
             this.lastSearch = {
@@ -47,7 +47,7 @@
         } else {
             this.lastSearch = null;
             if(!phrases.alternatives){
-                Time.drawer.addTheEnd();
+                Time.phrasesdrawer.addTheEnd();
             }
         }
     };

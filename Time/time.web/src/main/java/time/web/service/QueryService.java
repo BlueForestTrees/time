@@ -12,7 +12,6 @@ import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.util.QueryBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -59,7 +58,7 @@ public class QueryService {
      * @param term terme.
      * @return
      */
-    protected Query getTermQuery(String term) {
+    protected Query getTermQuery(final String term) {
         final boolean isPhrase = term.startsWith("\"") && term.endsWith("\"");
         final boolean hasOrs = term.contains(" ");
         
@@ -77,13 +76,13 @@ public class QueryService {
         }
     }
 
-    protected Query getOrTermQuery(String term) {
+    protected Query getOrTermQuery(final String term) {
         final BooleanQuery.Builder builder = new BooleanQuery.Builder();
         Arrays.stream(term.split(" ")).forEach(t -> builder.add(getAndTermQuery(t), Occur.SHOULD));
         return builder.build();
     }
 
-    protected Query getAndTermQuery(String term) {
+    protected Query getAndTermQuery(final String term) {
         boolean hasAnds = term.contains("+");
         if(!hasAnds){
             return new TermQuery(new Term("text", term));
@@ -99,7 +98,7 @@ public class QueryService {
      * @param term Le terme à améliorer
      * @return Une query fournissant des documents contenant des termes plus appropriés.
      */
-    public Query getFuzzyTermQuery(String term) {
+    public Query getFuzzyTermQuery(final String term) {
         final boolean isPhrase = term.startsWith("\"") && term.endsWith("\"");
         final boolean hasOrs = term.contains(" ");
         final boolean hasAnds = term.contains("+");
@@ -114,11 +113,12 @@ public class QueryService {
         }
     }
 
-    private Query getFuzzyPhraseQuery(String term) {
-        return new QueryBuilder(null).createPhraseQuery("text", term);
+    private Query getFuzzyPhraseQuery(final String term) {
+        //return new QueryBuilder(null).createPhraseQuery("text", term);
+        return null;
     }
 
-    private String[] words(String term) {
+    private String[] words(final String term) {
         return term.replaceAll("\"", "").split(" ");
     }
 }

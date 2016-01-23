@@ -1,7 +1,7 @@
 (function() {
     function bar(scale) {
         this.height = 35;
-        this.reducedHeight = 10;
+        this.reducedHeight = 15;
         this.scale = scale;
         this.isFirstBar = Time.scale.isFirstScale(this.scale);
         this.isLastBar = Time.scale.isLastScale(this.scale);
@@ -107,10 +107,13 @@
     };
 
     bar.prototype.onBarDrag = function(event) {
-        this.viewport.addToLocal(event.clientX - event.data.previousX);
-        Time.barDrawer.drawBar(this);
-        event.data.previousX = event.clientX;
-        event.data.move = true;
+        var delta = event.clientX - event.data.previousX;
+        if(delta > 0){
+            this.viewport.addToLocal();
+            Time.barDrawer.drawBar(this);
+            event.data.previousX = event.clientX;
+            event.data.move = true;
+        }
     };
 
     bar.prototype.onBarUp = function(event) {
@@ -144,10 +147,14 @@
         Time.historic.pushState(Time.filter.term);
     };
 
-    //plus utilisée, globalToLocal de bar
-    bar.prototype.mouseXToBarX = function(mouseX) {
-        // -1 hack pour la bordure de 1px
-        return mouseX - 1;
+    bar.prototype.focusOnEnter = function(){
+        $(this.canvas).on('mouseenter.focusAtEnter', $.proxy(this.onEnter, this));
+    };
+    bar.prototype.onEnter = function(){
+        Time.barDrawer.focusOn(this);
+        Time.barDrawer.reduceBar(Time.bars[this.scale+1]);
+        Time.tooltips.decorate(this);
+        $(this.canvas).off('mouseenter.focusAtEnter');
     };
 
     Time.Bar = bar;

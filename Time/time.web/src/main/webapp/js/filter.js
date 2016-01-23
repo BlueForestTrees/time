@@ -29,6 +29,7 @@
         delete filter.prototype.homeTermInputKeyEnterPress;
         delete filter.prototype.homeTermInputKeyPress;
         delete filter.prototype.onFilterFromHome;
+        filter.prototype.onFilterFromHome = this.onFilter;
         delete Time.view.homeTermInput;
         delete Time.view.home;
 

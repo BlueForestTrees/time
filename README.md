@@ -1,3 +1,6 @@
+Histoires est une encyclopédie chronologique : http://histoires.xyz
+
+
 
 pages wiki de dates
 

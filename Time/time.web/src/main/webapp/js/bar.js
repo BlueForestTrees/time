@@ -3,6 +3,7 @@
         this.height = 35;
         this.reducedHeight = 15;
         this.reducedOpacity = 0.3;
+        this.reduced = false;
         this.scale = scale;
         this.isFirstBar = Time.scale.isFirstScale(this.scale);
         this.isLastBar = Time.scale.isLastScale(this.scale);
@@ -153,12 +154,16 @@
     };
     bar.prototype.onEnter = function(){
         Time.barDrawer.focusOn(this);
-        if(!this.isLastBar){
-            Time.barDrawer.reduceBar(Time.bars[this.scale+1]);
-        }
         Time.tooltips.decorate(this);
         $(this.canvas).off('mouseenter.focusAtEnter');
     };
+    
+    bar.prototype.firstBucket = function(){
+        return this.buckets[0];
+    }
+    bar.prototype.lastBucket = function(){
+        return this.buckets[this.buckets.length-1];
+    }
 
     Time.Bar = bar;
 })();

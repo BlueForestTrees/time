@@ -34,14 +34,8 @@
     };
 
     // SUR LA BARRE CONTENANT LA SOURIS
-    tooltips.prototype.mouseEnterOnBar = function(event) {
-        //console.log(event.type, event.target);
-    };
     tooltips.prototype.mouseMoveOnBar = function(event) {
         Time.tooltips.updateTooltips(event.clientX);
-    };
-    tooltips.prototype.mouseExitOfBar = function(event) {
-        //console.log(event.type, event.target);
     };
 
     // DESSOUS DE LA BARRE ACTIVE
@@ -53,9 +47,7 @@
             this.currentBar = bar;
             this.currentBar.viewport.setListener(this.updateTooltips);
 
-            $(bar.convas).on('mouseenter.Tooltip', bar, this.mouseEnterOnBar);
             $(bar.canvas).on('mousemove.Tooltip', bar, this.mouseMoveOnBar);
-            $(bar.canvas).on('mouseout.Tooltip', bar, this.mouseExitOfBar);
 
             this.updateTooltips();
         }
@@ -75,6 +67,11 @@
         }
         var width = window.innerWidth;
         var tooltipsXs = [0.1 * width, 0.45 * width, 0.8 * width];
+        
+        console.log(this.currentBar.firstBucket()+delta);
+        
+        tooltipsXs[0] = this.currentBar.firstBucket().x;
+        
         if(mouseX){
             tooltipsXs[Time.tooltips.getNearest(mouseX, tooltipsXs)] = mouseX;
         }
@@ -110,9 +107,9 @@
             scale : scale,
             bucket : bucketPosition
         });
-        var toolTipTop = $(Time.tooltips.currentBar.canvas).position().top + 9 + Time.tooltips.currentBar.height;
-        // 15 => position before/after
-        var toolTipLeft = tooltipX - 15;
+        var toolTipTop = $(Time.tooltips.currentBar.canvas).position().top + Time.tooltips.currentBar.height + 7;
+        // 22 => position à l'arrache pour que la flèche du tooltip coincide avec la souris.
+        var toolTipLeft = tooltipX - 22;
         var width = ((toolTipText.length + 1) * 8) + 'px';
 
         tooltip.text(toolTipText);

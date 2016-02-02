@@ -44,9 +44,9 @@ html, body {
 .logo-petit {
     background-size:178px 134px;
     height:134px;
-    width:178px;
+    width:250px;
     position: absolute;
-    top: -37px;
+    top: 0px;
     left: 0px;
     background: url(/img/logo-petit.png) no-repeat;
 }
@@ -115,6 +115,7 @@ h1, h2, h3{
 	height: 20px;
 	visible: false;
 	opacity: 0;
+	pointer-events: none;
 }
 
 .mousetip {

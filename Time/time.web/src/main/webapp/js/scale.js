@@ -23,6 +23,14 @@
             return null;
         }
     };
+    
+    scale.prototype.next = function(bar) {
+        if (bar.scale < Time.bars.length-1) {
+            return Time.bars[bar.scale + 1];
+        } else {
+            return null;
+        }
+    };
 
     scale.prototype.isFirstScale = function(scale) {
         return scale === 0;

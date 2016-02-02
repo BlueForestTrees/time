@@ -22,10 +22,8 @@
 
     barDrawer.prototype.focusOn = function(bar) {
         //this.hideBarsAfter(bar);
-        this.reduceBarsBefore(bar);
-        this.showBar(bar);
+        this.reduceOtherThan(bar);
         this.unreduceBar(bar);
-        this.drawBar(bar);
     };
 
     barDrawer.prototype.hideBarsAfter = function(bar) {
@@ -40,39 +38,46 @@
         $(bar.canvas).hide();
     };
 
-    barDrawer.prototype.reduceBarsBefore = function(bar) {
+    barDrawer.prototype.reduceOtherThan = function(bar) {
         var previousBar = Time.scale.previous(bar);
         while (previousBar !== null) {
             this.reduceBar(previousBar);
             previousBar = Time.scale.previous(previousBar);
         }
+        var nextBar = Time.scale.next(bar);
+        while (nextBar !== null) {
+            this.reduceBar(nextBar);
+            nextBar = Time.scale.next(nextBar);
+        }
     };
     
     barDrawer.prototype.reduceBar = function(bar){
-        $(bar.canvas).attr({
-            height : bar.reducedHeight
-        });
-        
-        $(bar.canvas).css({
-            opacity : bar.reducedOpacity
-        });
-        
-        this.drawBar(bar);
-        bar.focusOnEnter();
-    };
-
-    barDrawer.prototype.showBar = function(bar) {
-        $(bar.canvas).show();
+        if(!bar.reduced){
+            bar.reduced = true;            
+            
+            $(bar.canvas).attr({
+                height : bar.reducedHeight
+            });
+            
+            $(bar.canvas).css({
+                opacity : bar.reducedOpacity
+            });
+            
+            this.drawBar(bar);
+            bar.focusOnEnter();
+        }
     };
 
     barDrawer.prototype.unreduceBar = function(bar) {
+        bar.reduced = false;   
         $(bar.canvas).attr({
             height : bar.height
         });
-        
         $(bar.canvas).css({
             opacity : 1
         });
+        $(bar.canvas).show();
+        this.drawBar(bar);
     };
     
     barDrawer.prototype.drawBar = function(bar, explicitBuckets) {

@@ -10,7 +10,9 @@
 
     barFactory.prototype.buildCanvas = function(height, scale) {
         var canvasAttributes = {
-            id : 'bar#' + scale
+            id : 'bar#' + scale,
+            width : '100%',
+            height : height + 'px'
         };
         var canvasCss = {
             borderTop : '1px solid #CDCDCD'

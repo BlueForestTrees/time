@@ -1,8 +1,8 @@
-bugs : bar.onmouseout, replacer tooltips (anime?)
-
 bar.onBucketClick, sous barre vide quand plein buckets jaunes dans le parent.
 
+mode redeploy sans coupure
 
+versions sur les js!!
 
 
 

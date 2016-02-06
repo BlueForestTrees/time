@@ -76,6 +76,7 @@
         Time.view.termInput.val(term);
         Time.phrases.clearText();
         Time.bars[0].loadBuckets(this.term);
+        Time.barDrawer.hideBarsAfter(Time.bars[0]);
         // pour arrêter l'infinite scroll d'une recherche précédente
         Time.phrases.lastSearch = null;
         Time.phrases.loadPhrases();

@@ -10,7 +10,7 @@
     data.prototype.getBuckets = function(term, scale, callback) {
        if(scale === 0){
 		    setTimeout(function(){
-			   callback({"scale":"0","buckets":[{"bucket":0,"count":1120}]});
+		        callback({"scale":"0","buckets":[{"bucket":0,"count":1120}]});
 		    }, responseTimeBucket);
 		}else if(scale === 1){
 			setTimeout(function(){

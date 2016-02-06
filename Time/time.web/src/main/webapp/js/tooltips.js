@@ -68,13 +68,14 @@
         var width = window.innerWidth;
         var tooltipsXs = [0.1 * width, 0.45 * width, 0.8 * width];
         
-        console.log(this.currentBar.firstBucket()+delta);
-        
-        tooltipsXs[0] = this.currentBar.firstBucket().x;
+        tooltipsXs[0] = this.currentBar.searchRightOf(0.1 * width, 2000);
+        tooltipsXs[2] = this.currentBar.searchLeftOf(0.9 * width, 2000);
+        tooltipsXs[1] = 0.5 * (tooltipsXs[0]+tooltipsXs[2]);
         
         if(mouseX){
             tooltipsXs[Time.tooltips.getNearest(mouseX, tooltipsXs)] = mouseX;
         }
+        
         Time.tooltips.toolTipAt(Time.view.activeBarTips[0], tooltipsXs[0]);
         Time.tooltips.toolTipAt(Time.view.activeBarTips[1], tooltipsXs[1]);
         Time.tooltips.toolTipAt(Time.view.activeBarTips[2], tooltipsXs[2]);

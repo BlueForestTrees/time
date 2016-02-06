@@ -2,7 +2,7 @@
     function bar(scale) {
         this.height = 35;
         this.reducedHeight = 15;
-        this.reducedOpacity = 0.3;
+        this.reducedOpacity = 0.25;
         this.reduced = false;
         this.scale = scale;
         this.isFirstBar = Time.scale.isFirstScale(this.scale);
@@ -11,7 +11,7 @@
         this.buckets = [];
         this.context = Time.barFactory.buildCanvas(this.height, this.scale);
         this.canvas = this.context.canvas;
-        this.amplitude = 20;
+        this.amplitude = 10;
         this.loading = false;
         this.installEvents();
     }
@@ -28,40 +28,91 @@
     /**
      * Cherche si un bucket est présent à l'endroit spécifié
      * @param mouseX coordonnée écran (event.clientX, window.mouseX)
-     * @returns {*} Le bucket trouvé au plus près, ou null
+     * @returns {*} Un objet contenant le nombre de buckets trouvés pendant la recheerche, et le bucket trouvé au plus près, ou null
      */
     bar.prototype.searchBucketAt = function(mouseX) {
-        var offset = this.searchNear(mouseX);
+        var searchResult = this.searchNear(mouseX);
+        var offset = searchResult.offset;
         var barBucketX = offset + mouseX;
         var viewPortBucketX = this.barXToViewportX(barBucketX);
         var bucket = this.getBucketAt(viewPortBucketX);
 
-        return bucket;
+        return bucket !== null ? {bucket : bucket, count : searchResult.count} : null;
     };
 
     /**
      * Cherche dans le canvas de la barre.
      * @param mouseX Où chercher dans la barre
-     * @returns {*} Un bucket le plus proche possible ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
+     * @returns {*} Un objet avec le nombre de bucket trouvé et le bucket le plus proche possible ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
      */
     bar.prototype.searchNear = function(mouseX) {
         var searchZone = this.context.getImageData(mouseX - this.amplitude, 10, 2 * this.amplitude, 1).data;
         var middle = this.amplitude;
         var found = null;
         var fillLevel = Time.barDrawer.fillLevel;
+        var foundCount = 0;
         for (var i = 0, j = 0; i < searchZone.length; i += 4) {
-            var isNotWhite = searchZone[i] !== fillLevel || searchZone[i + 1] !== fillLevel || searchZone[i + 2] !== fillLevel;
-            if (isNotWhite && (!found || Math.abs(j - middle) < Math.abs(found - middle))) {
-                found = j;
+            var bucket = this.bucketAt(searchZone, i);
+            if (bucket){
+                foundCount++;
+                if(!found || Math.abs(j - middle) < Math.abs(found - middle)) {
+                    found = j;
+                }
             }
             j++;
         }
-        return found ? found - middle : undefined;
+        return found ? {count : foundCount, offset : found - middle} : undefined;
+    };
+    
+    /**
+     * Cherche dans le canvas de la barre à droite de la position.
+     * @param mouseX Où chercher dans la barre
+     * @param amplitude la taille de la recherche
+     * @returns {*} Un bucket le plus proche possible à droite ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
+     */
+    bar.prototype.searchRightOf = function(mouseX, amplitude) {
+        var searchZone = this.context.getImageData(mouseX, 10, amplitude, 1).data;
+        var found = undefined;
+        for (var i = 0, j = 0; i < searchZone.length; i += 4) {
+            if(this.bucketAt(searchZone, i)){
+                found = mouseX + j;
+                break;
+            }
+            j++;
+        }
+        return found;
+    };
+    
+    bar.prototype.bucketAt = function(searchZone, i){
+        var fillLevel = Time.barDrawer.fillLevel;
+        return searchZone[i] !== fillLevel || searchZone[i + 1] !== fillLevel || searchZone[i + 2] !== fillLevel;
+    };
+    
+    /**
+     * Cherche dans le canvas de la barre à gauche de la position (exclu).
+     * @param mouseX Où chercher dans la barre
+     * @param amplitude la taille de la recherche
+     * @returns {*} Un bucket le plus proche possible à droite ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
+     */
+    bar.prototype.searchLeftOf = function(mouseX, amplitude) {
+        
+        var searchZone = this.context.getImageData(mouseX - amplitude, 10, amplitude, 1).data;
+        var fillLevel = Time.barDrawer.fillLevel;
+        var found = undefined;
+        //parcours de la searchZone en sens droite -> gauche
+        for (var i = (amplitude - 1) * 4, j = 0; i >= 0; i -= 4) {
+            if(this.bucketAt(searchZone, i)){
+                found = mouseX - j - 1;
+                break;
+            }
+            j++;
+        }
+        return found;
     };
 
     /**
      * @param bucketX La position sur la barre du bucket à chercher.
-     * @returns {*} Le premier bucket tel que {bucket.x === bucketX}
+     * @returns {*} Le premier bucket tel que {bucket.x === bucketX} ou null
      */
     bar.prototype.getBucketAt = function(viewPortBucketX) {
         if(viewPortBucketX !== undefined && viewPortBucketX !== null) {
@@ -90,7 +141,6 @@
     bar.prototype.onBuckets = function(bucketsDTO) {
         Time.barLoading.stopLoading();
         this.buckets = Time.barFactory.buildBuckets(bucketsDTO);
-        Time.tooltips.decorate(this);
         if(this.buckets.length === 0){
             Time.barDrawer.hideBar(this);
             Time.tooltips.hideTooltips();
@@ -99,6 +149,7 @@
             this.openSubBar(this.buckets[0]);
         }else{
             Time.barDrawer.drawBar(this);
+            Time.tooltips.decorate(this);
         }
     };
 
@@ -120,7 +171,7 @@
 
     bar.prototype.onBarUp = function(event) {
         if (!event.data.move) {
-            this.onBarClick(event);
+            this.onClick(event);
         }
         event.data.move = false;
 
@@ -128,10 +179,13 @@
         Time.view.window.off('mouseup.Viewport');
     };
 
-    bar.prototype.onBarClick = function(event) {
-        var bucket = this.searchBucketAt(event.clientX);
-        if (bucket) {
-            if (this.isLastBar) {
+    bar.prototype.onClick = function(event) {
+        var searchResult = this.searchBucketAt(event.clientX);
+        if (searchResult) {
+            var bucket = searchResult.bucket;
+            Time.phrases.clearText();
+            var bucketAlone = searchResult.count === 1 && bucket.count < 20;
+            if (this.isLastBar || bucketAlone) {
                 this.beginStory(bucket);
             } else {
                 this.openSubBar(bucket);
@@ -163,6 +217,16 @@
     }
     bar.prototype.lastBucket = function(){
         return this.buckets[this.buckets.length-1];
+    }
+    
+    bar.prototype.locationOf = function(bucket){
+        return this.viewport.delta() + bucket.x;
+    }
+    bar.prototype.firstLocation = function(){
+        return this.locationOf(this.firstBucket());
+    }
+    bar.prototype.lastLocation = function(){
+        return this.locationOf(this.lastBucket());
     }
 
     Time.Bar = bar;

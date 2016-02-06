@@ -32,8 +32,16 @@
             bucket.color = this.getColor(bucket.count);
             bucket.scale = bucketsDTO.scale;
         }
+        
+        bucketsDTO.buckets.sort(this.triBuckets);
+        
         return bucketsDTO.buckets;
     };
+    
+    barFactory.prototype.triBuckets = function(a,b){
+        return b.x - a.x;
+    }
+    
     barFactory.prototype.getColor = function(count) {
         var r = this.getRed(count);
         var g = this.getGreen(count);

@@ -4,7 +4,7 @@
     }
 
     barDrawer.prototype.install = function() {
-        this.hideBarsAfter(Time.bars[0]);
+        this.hideAllBars();
         this.updateSizeAllBars();
         $(window).on('resize', this.updateSizeAllBars);
     };
@@ -15,19 +15,26 @@
 
     barDrawer.prototype.updateSizeBar = function(bar) {
         bar.canvas.width = window.innerWidth - 2;
-        bar.viewport.global = bar.canvas.width * 0.7;
+        bar.viewport.setGlobal(bar.canvas.width * 0.7);
         Time.barDrawer.drawBar(bar);
         Time.tooltips.updateTooltips();
     };
 
     barDrawer.prototype.focusOn = function(bar) {
-        //this.hideBarsAfter(bar);
         this.reduceOtherThan(bar);
         this.unreduceBar(bar);
     };
 
+    barDrawer.prototype.hideAllBars = function() {
+        var scale = 0;
+        while (scale < Time.bars.length) {
+            this.hideBar(Time.bars[scale]);
+            scale++;
+        }
+    };
+    
     barDrawer.prototype.hideBarsAfter = function(bar) {
-        var scale = bar.scale;
+        var scale = bar.scale + 1;
         while (scale < Time.bars.length) {
             this.hideBar(Time.bars[scale]);
             scale++;
@@ -88,7 +95,7 @@
         for (var i = 0; i < nbBuckets; i++) {
             var bucket = buckets[i];
             bar.context.fillStyle = bucket.color;
-            bar.context.fillRect(bar.viewport.delta() + bucket.x, 0, 1, bar.canvas.height);
+            bar.context.fillRect(bar.locationOf(bucket), 0, 1, bar.canvas.height);
         }
     };
 

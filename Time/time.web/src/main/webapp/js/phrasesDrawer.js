@@ -26,9 +26,18 @@
     };
 
     phrasesDrawer.prototype.buildHtmlPhrase = function(phrase) {
-        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + phrase.text + this.getLink(phrase) + "</p>");
+        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + phrase.text + this.getPhraseHeader(phrase) + this.getLink(phrase) + "</p>");
     };
 
+    phrasesDrawer.prototype.getPhraseHeader = function(phrase) {
+        var source = Time.sources[phrase.pageUrl];
+        if (source) {
+            return "";
+        } else {
+            return " <i>(" + this.getPageName(phrase) + ")</i>";
+        }
+    };
+    
     phrasesDrawer.prototype.getLink = function(phrase) {
         var source = Time.sources[phrase.pageUrl];
         if (source) {
@@ -46,18 +55,23 @@
     };
 
     phrasesDrawer.prototype.getWikiLink = function(phrase) {
-        var pageName = decodeURIComponent(phrase.pageUrl).replace(/_/g, " ").substring(1);
+        var pageName = this.getPageName(phrase);
         var tiptext = "source wikipedia : " + pageName;
         var url = "https://fr.wikipedia.org/wiki" + phrase.pageUrl;
         return "<a title=\"" + tiptext + "\" href=\"" + url + "\" onClick=\"Time.drawer.link('" + pageName + "')\" target=\"_blank\"><img src=\"http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png\" /></a>";
+    };
+    
+    phrasesDrawer.prototype.getPageName = function(phrase){
+        return decodeURIComponent(phrase.pageUrl).replace(/_/g, " ").substring(1);    
     };
 
     phrasesDrawer.prototype.link = function(pageName) {
         Time.anal.ga('send', 'event', 'link', pageName, Time.filter.term);
     };
 
-    phrasesDrawer.prototype.setPhraseTooltip = function(text, nbPhrases) {
-        Time.view.phrases.append("<h1>Il était une fois " + text + " . . .</h1><i>" + Time.tooltips.getNbPages(nbPhrases) + "</i>");
+    phrasesDrawer.prototype.addTextIntro = function(text, nbPhrases) {
+        Time.view.phrases.append("<h1>Il était une fois " + this.firstToLowerCase(text) + " . . .</h1>");
+        Time.view.phrases.append("<i>" + Time.tooltips.getNbPages(nbPhrases) + "</i>");
     };
 
     phrasesDrawer.prototype.addNoPhrases = function(term, phrases) {
@@ -78,6 +92,10 @@
     phrasesDrawer.prototype.addTheEnd = function() {
         Time.view.phrases.append("<h1 style=\"text-align:center\">The END</h1>");
     };
+    
+    phrasesDrawer.prototype.firstToLowerCase = function( str ) {
+        return str.substr(0, 1).toLowerCase() + str.substr(1);
+    }
 
     Time.PhrasesDrawer = phrasesDrawer;
 })();

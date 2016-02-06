@@ -28,7 +28,7 @@
                 years : Time.scale.daysToYears(phrases.phraseList[0].date)
             };
             var text = Time.tooltips.getTooltipText(bucket);
-            Time.phrasesdrawer.setPhraseTooltip(text, phrases.total);
+            Time.phrasesdrawer.addTextIntro(text, phrases.total);
         }
         this.onPhrases(null, null, phrases);
     };

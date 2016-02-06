@@ -26,5 +26,9 @@
         this.local = -Time.scale.firstSubBucket(this.scale - 1, bucket);
     };
     
+    viewport.prototype.setGlobal = function(global){
+        this.global = global;
+    };
+    
     Time.Viewport = viewport;
 })();

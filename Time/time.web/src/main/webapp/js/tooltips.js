@@ -35,7 +35,7 @@
 
     // SUR LA BARRE CONTENANT LA SOURIS
     tooltips.prototype.mouseMoveOnBar = function(event) {
-        Time.tooltips.updateTooltips(event.clientX);
+        Time.tooltips.updateTooltips(null, event.clientX);
     };
 
     // DESSOUS DE LA BARRE ACTIVE
@@ -48,37 +48,41 @@
             this.currentBar.viewport.setListener(this.updateTooltips);
 
             $(bar.canvas).on('mousemove.Tooltip', bar, this.mouseMoveOnBar);
+            $(bar.canvas).on('mouseout.Tooltip', bar, this.mouseOutOnBar);
 
             this.updateTooltips();
         }
     };
+    
+    tooltips.prototype.mouseOutOnBar = function (){
+        Time.tooltips.updateTooltips();
+    };
 
     tooltips.prototype.undecorate = function(bar) {
         bar.viewport.setListener(null);
-        $(bar.canvas).off('mouseenter.Tooltip');
         $(bar.canvas).off('mousemove.Tooltip');
         $(bar.canvas).off('mouseout.Tooltip');
         this.hideTooltips();
     };
 
-    tooltips.prototype.updateTooltips = function(mouseX) {
-        if(!this.currentBar){
+    tooltips.prototype.updateTooltips = function(animate, mouseX) {
+        if(!Time.tooltips.currentBar){
             return;
         }
         var width = window.innerWidth;
-        var tooltipsXs = [0.1 * width, 0.45 * width, 0.8 * width];
+        var tooltipsXs = [];
         
-        tooltipsXs[0] = this.currentBar.searchRightOf(0.1 * width, 2000);
-        tooltipsXs[2] = this.currentBar.searchLeftOf(0.9 * width, 2000);
+        tooltipsXs[0] = Time.tooltips.currentBar.searchRightOf(0.1 * width, 2000);
+        tooltipsXs[2] = Time.tooltips.currentBar.searchLeftOf(0.9 * width, 2000);
         tooltipsXs[1] = 0.5 * (tooltipsXs[0]+tooltipsXs[2]);
         
         if(mouseX){
             tooltipsXs[Time.tooltips.getNearest(mouseX, tooltipsXs)] = mouseX;
         }
         
-        Time.tooltips.toolTipAt(Time.view.activeBarTips[0], tooltipsXs[0]);
-        Time.tooltips.toolTipAt(Time.view.activeBarTips[1], tooltipsXs[1]);
-        Time.tooltips.toolTipAt(Time.view.activeBarTips[2], tooltipsXs[2]);
+        Time.tooltips.toolTipAt(Time.view.activeBarTips[0], tooltipsXs[0], animate);
+        Time.tooltips.toolTipAt(Time.view.activeBarTips[1], tooltipsXs[1], animate);
+        Time.tooltips.toolTipAt(Time.view.activeBarTips[2], tooltipsXs[2], animate);
     };
 
     tooltips.prototype.getNearest = function(mouseX, xS){
@@ -100,9 +104,8 @@
         });
     };
     
-    tooltips.prototype.toolTipAt = function(tooltip, tooltipX) {
+    tooltips.prototype.toolTipAt = function(tooltip, tooltipX, animate) {
         var scale = Time.tooltips.currentBar.scale;
-        //anciennement Time.tooltips.currentBar.mouseXToBarX(tooltipX)
         var bucketPosition = Time.tooltips.currentBar.barXToViewportX(tooltipX);
         var toolTipText = Time.tooltips.getTooltipText({
             scale : scale,
@@ -114,12 +117,18 @@
         var width = ((toolTipText.length + 1) * 8) + 'px';
 
         tooltip.text(toolTipText);
-        tooltip.css({
-            top : toolTipTop,
-            left : toolTipLeft,
-            width : width,
-            opacity : 1
-        });
+        
+        var css = {
+                top : toolTipTop,
+                width : width,
+                opacity : 1
+            };
+        if(animate){            
+            tooltip.animate({left : toolTipLeft}, 200);
+        }else{
+            css.left = toolTipLeft;
+        }
+        tooltip.css(css);
     };
 
     Time.Tooltip = tooltips;

@@ -26,16 +26,20 @@
     };
 
     /**
-     * Cherche si un bucket est présent à l'endroit spécifié
+     * Cherche si un bucket est présent au plus près possible de l'endroit spécifié
      * @param mouseX coordonnée écran (event.clientX, window.mouseX)
      * @returns {*} Un objet contenant le nombre de buckets trouvés pendant la recheerche, et le bucket trouvé au plus près, ou null
      */
     bar.prototype.searchBucketAt = function(mouseX) {
+        var bucket = null;
+        
         var searchResult = this.searchNear(mouseX);
-        var offset = searchResult.offset;
-        var barBucketX = offset + mouseX;
-        var viewPortBucketX = this.barXToViewportX(barBucketX);
-        var bucket = this.getBucketAt(viewPortBucketX);
+        if(searchResult !== null){
+            var offset = searchResult.offset;
+            var barBucketX = offset + mouseX;
+            var viewPortBucketX = this.barXToViewportX(barBucketX);
+            bucket = this.getBucketAt(viewPortBucketX);            
+        }
 
         return bucket !== null ? {bucket : bucket, count : searchResult.count} : null;
     };
@@ -43,7 +47,7 @@
     /**
      * Cherche dans le canvas de la barre.
      * @param mouseX Où chercher dans la barre
-     * @returns {*} Un objet avec le nombre de bucket trouvé et le bucket le plus proche possible ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
+     * @returns {*} Un objet avec le nombre de bucket trouvé et le bucket le plus proche possible ou null si rien trouvé.
      */
     bar.prototype.searchNear = function(mouseX) {
         var searchZone = this.context.getImageData(mouseX - this.amplitude, 10, 2 * this.amplitude, 1).data;
@@ -61,7 +65,7 @@
             }
             j++;
         }
-        return found ? {count : foundCount, offset : found - middle} : undefined;
+        return found ? {count : foundCount, offset : found - middle} : null;
     };
     
     /**

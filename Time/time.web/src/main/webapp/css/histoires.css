@@ -96,6 +96,18 @@ h1, h2, h3{
 	background: #f2f2f2;
 }
 
+.content {
+	display : none;
+}
+.bottom {
+	height : 80px;
+}
+.throbber{
+	height: 400px;
+	text-align: center;
+	display : none;
+}
+
 .footer {
     position: fixed;
     bottom: 0;
@@ -104,6 +116,7 @@ h1, h2, h3{
     line-height: 40px;
     border-top: 1px solid #e4e4e4;
     background: #f2f2f2;
+    color: #666
 }
 
 .footer .right{
@@ -113,6 +126,11 @@ h1, h2, h3{
 }
 .footer .right a{
     margin-right: 30px;
+}
+
+a:hover{
+	text-decoration: underline;
+	cursor:pointer;
 }
 
 .footer .left{

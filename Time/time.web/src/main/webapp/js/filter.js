@@ -26,6 +26,7 @@
     filter.prototype.onFilterFromHome = function(term, ignoreHistory){
         Time.view.homeTermInput.off("keyup");
         Time.view.home.remove();
+        Time.view.content.show();
         delete filter.prototype.homeTermInputKeyEnterPress;
         delete filter.prototype.homeTermInputKeyPress;
         delete filter.prototype.onFilterFromHome;

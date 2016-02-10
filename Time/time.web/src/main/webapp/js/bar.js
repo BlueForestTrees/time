@@ -165,8 +165,8 @@
 
     bar.prototype.onBarDrag = function(event) {
         var delta = event.clientX - event.data.previousX;
-        if(delta > 0){
-            this.viewport.addToLocal();
+        if(delta !== 0){
+            this.viewport.addToLocal(delta);
             Time.barDrawer.drawBar(this);
             event.data.previousX = event.clientX;
             event.data.move = true;

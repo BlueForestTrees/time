@@ -13,7 +13,7 @@ import time.repo.bean.Page;
 public class ExcludeAfterPageTransformer implements IPageTransformer {
 
     /**
-     * Les mots clés à detecter dans les page.
+     * Les mots clés à detecter dans les pages.
      */
     private static final String[] excludeAfter = new String[] { "Notes et références[", "Bibliographie[", "Liens externes[", "Bibliographie[", "Annexes[" };
     

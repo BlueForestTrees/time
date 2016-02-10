@@ -11,6 +11,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import time.repo.bean.Phrase;
+import time.transformer.storage.LuceneStorage;
+import time.transformer.test.config.LuceneStorageConfig;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = { LuceneStorageConfig.class })

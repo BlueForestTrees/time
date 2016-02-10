@@ -10,15 +10,21 @@ public class Page implements Serializable {
     private Integer depth;
     private Integer nbLiensOut;
     private Integer nbLiensIn;
-    private transient List<String> liens;
-    private transient String pageContent;
+    private List<String> liens;
+    private StringBuilder content;
 
-    public String getPageContent() {
-        return pageContent;
+    
+    
+    public String getTextString() {
+        return content.toString();
     }
 
-    public void setPageContent(String text) {
-        this.pageContent = text;
+    public void setText(String text) {
+        this.content = new StringBuilder(text);
+    }
+    
+    public StringBuilder getText(){
+        return this.content;
     }
 
     public List<String> getLiens() {

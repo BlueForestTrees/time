@@ -5,14 +5,14 @@ import java.util.regex.Pattern;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import time.transformer.tool.parser.AnneeParser;
-import time.transformer.tool.parser.IParser;
-import time.transformer.tool.parser.IlYAParser;
-import time.transformer.tool.parser.JCParser;
-import time.transformer.tool.parser.MilliardParser;
-import time.transformer.tool.parser.PreciseParser;
-import time.transformer.tool.parser.RomanParser;
-import time.transformer.tool.phrasefinder.DateFinder;
+import time.transformer.phrase.finder.PhraseFinder;
+import time.transformer.phrase.finder.parser.AnneeParser;
+import time.transformer.phrase.finder.parser.IParser;
+import time.transformer.phrase.finder.parser.IlYAParser;
+import time.transformer.phrase.finder.parser.JCParser;
+import time.transformer.phrase.finder.parser.MilliardParser;
+import time.transformer.phrase.finder.parser.PreciseParser;
+import time.transformer.phrase.finder.parser.RomanParser;
 
 @Configuration
 public class DateFinderConfig {
@@ -22,77 +22,77 @@ public class DateFinderConfig {
     private final static String ANNEE = "(?<y>\\d{3,4}))";
     
     @Bean
-    public DateFinder milliardFinder() {
+    public PhraseFinder milliardFinder() {
         final Pattern pattern = Pattern.compile("il y a( environ)? (?<g>\\d+([,\\.]\\d+)?) milli(?<s>ard|on)s? d'années");
         final IParser parser = new MilliardParser();
-        return new DateFinder(pattern, parser, "milliardFinder");
+        return new PhraseFinder(pattern, parser, "milliardFinder");
     }
 
     @Bean
-    public DateFinder jcFinder() {
+    public PhraseFinder jcFinder() {
         final Pattern pattern = Pattern.compile("(^| |,)([Aà] partir de|[Ee]n) (l'an )?(?<g>(-)?\\d{2,4}),? (?<neg>(avant|av.) (J.-?C.|notre ère))?");
         final IParser parser = new JCParser();
-        return new DateFinder(pattern, parser, "jcFinder");
+        return new PhraseFinder(pattern, parser, "jcFinder");
     }
     
     @Bean
-    public DateFinder nearJcFinder() {
+    public PhraseFinder nearJcFinder() {
         final Pattern pattern = Pattern.compile("(^| |,)([Ee]nviron) (?<g>\\d{2,4})(,? )ans(?<neg> (avant|av.) (J.-?C.|notre ère))");
         final IParser parser = new JCParser();
-        return new DateFinder(pattern, parser, "nearJcFinder");
+        return new PhraseFinder(pattern, parser, "nearJcFinder");
     }
     
     @Bean
-    public DateFinder nearJcFinder2() {
+    public PhraseFinder nearJcFinder2() {
         final Pattern pattern = Pattern.compile("(^| |,)([Vv]ers l'an) (?<g>(-)?\\d{2,4})(,?)(?<neg> (avant|av.) (J.-?C.|notre ère))?");
         final IParser parser = new JCParser();
-        return new DateFinder(pattern, parser, "nearJcFinder2");
+        return new PhraseFinder(pattern, parser, "nearJcFinder2");
     }
     
     @Bean
-    public DateFinder nearJcFinder3() {
+    public PhraseFinder nearJcFinder3() {
         final Pattern pattern = Pattern.compile("(^| |,)[Vv]ers (?<g>\\d{2,4})(?<neg> (avant|av.) (J.-?C.|notre ère))");
         final IParser parser = new JCParser();
-        return new DateFinder(pattern, parser, "nearJcFinder3");
+        return new PhraseFinder(pattern, parser, "nearJcFinder3");
     }
     
     @Bean
-    public DateFinder nearLessFinder() {
+    public PhraseFinder nearLessFinder() {
         final Pattern pattern = Pattern.compile("(^| |,)([Ee]nviron) (?<neg>-)(?<g>\\d{2,4})");
         final IParser parser = new JCParser();
-        return new DateFinder(pattern, parser, "nearLessFinder");
+        return new PhraseFinder(pattern, parser, "nearLessFinder");
     }
     
     @Bean
-    public DateFinder ilYAFinder() {
+    public PhraseFinder ilYAFinder() {
         final Pattern pattern = Pattern.compile("(^| |,)(?<neg>il y a environ) (?<g>\\d{2,4}) ans");
         final IParser parser = new IlYAParser();
-        return new DateFinder(pattern, parser, "ilYAFinder");
+        return new PhraseFinder(pattern, parser, "ilYAFinder");
     }
 
     @Bean
-    public DateFinder romanFinder() {
+    public PhraseFinder romanFinder() {
         final Pattern pattern = Pattern.compile(" (?<g>[ixvIXV]+)e siècle");
         final IParser parser = new RomanParser();
-        return new DateFinder(pattern, parser, "romanFinder");
+        return new PhraseFinder(pattern, parser, "romanFinder");
     }
 
     @Bean
-    public DateFinder annee2DotFinder() {
+    public PhraseFinder annee2DotFinder() {
         final Pattern pattern = Pattern.compile("^(([Vv]ers|[Ee]nviron|[Ee]n) )?(?<g>([ -])?\\d{4}) ?:");
         final IParser parser = new AnneeParser();
-        return new DateFinder(pattern, parser, "annee2DotFinder");
+        return new PhraseFinder(pattern, parser, "annee2DotFinder");
     }
 
     @Bean
-    public DateFinder preciseFinder() {
+    public PhraseFinder preciseFinder() {
         final Pattern pattern = Pattern.compile("(^| |,)(?<g>(" + JOUR + "|(e|E)n|[Aà] partir de) "+ MOIS + " " + ANNEE + "(?<neg> (avant|av.) (J.-?C.|notre ère))?");
         final IParser parser = new PreciseParser();
-        return new DateFinder(pattern, parser , "preciseFinder");
+        return new PhraseFinder(pattern, parser , "preciseFinder");
     }
 
     @Bean
-    public DateFinder[] finders() {
-        return new DateFinder[] { milliardFinder(), jcFinder(),nearJcFinder(),ilYAFinder(), nearLessFinder(), nearJcFinder2(), nearJcFinder3(), romanFinder(), annee2DotFinder(), preciseFinder() };
+    public PhraseFinder[] finders() {
+        return new PhraseFinder[] { milliardFinder(), jcFinder(),nearJcFinder(),ilYAFinder(), nearLessFinder(), nearJcFinder2(), nearJcFinder3(), romanFinder(), annee2DotFinder(), preciseFinder() };
     }
 }

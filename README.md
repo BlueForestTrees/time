@@ -1,29 +1,17 @@
-bar.onBucketClick, sous barre vide quand plein buckets jaunes dans le parent.
-
-mode redeploy sans coupure
-
-versions sur les js!!
-
-
-
-
-Nouvelle police pour le logo
+versions sur les js!! gulp rev
 
 pages wiki de dates
 
-Barre en bas avec à propos, contact, envoi de livre
+barre du bas, page présentation
 
-Phrase sous le logo d'accueil : ~ Créez des histoires vraies en recherchant des mots depuis les origines. ~
+barre du bas, page participer pour envoi de liens, pdf
 
-Anglais i18n
+barre du bas, page Contact pour envoi de mail
 
-Diffuser
+Like Facebook
 
+Partage Facebook
 
+Twitter ?
 
-Idées : 
-http://www.lavolte.net/
-
-crawdfunding pour hébergement
-
-http://www.dont-nod.com/category/emploi/
+version Anglaise

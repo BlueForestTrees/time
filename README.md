@@ -6,11 +6,13 @@ Page facebook de promotion : https://www.facebook.com/histoires.xyz
 
 
 
-N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous intéresse:
+N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous intéresse pour + d'explications:
 
-versions sur les js!! gulp rev
+Installer un gulp rev/minifié sur les fichiers js et css depuis le maven install.
 
-pages wiki de dates
+pages wiki de dates ()
+
+barre du bas, système de layer au clic d'un bouton
 
 barre du bas, page présentation
 
@@ -18,10 +20,16 @@ barre du bas, page participer pour envoi de liens, pdf
 
 barre du bas, page Contact pour envoi de mail
 
+Ajouter @date-date dans le filtre de recherche pour filtrer par date
+
+Ajouter un curseur sur la barre active indiquant où le texte en est (date min).
+
+Ajouter un drag sur le curseur actif pour définir la date max.
+
 Like Facebook
 
 Partage Facebook
 
-Twitter ?
+Twitter
 
 version Anglaise

@@ -10,7 +10,7 @@ N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous int�
 
 Installer un gulp rev/minifié sur les fichiers js et css depuis le maven install.
 
-pages wiki de dates ()
+pages wiki de dates (TransformerService.handle(), système de tableau de pageTransformer)
 
 barre du bas, système de layer au clic d'un bouton
 

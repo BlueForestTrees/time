@@ -26,3 +26,4 @@ N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous int�
 - Partage Facebook
 - Twitter
 - version Anglaise
+- utiliser "messe basse" comme base de recherche pour améliorer le zoom auto des barres.

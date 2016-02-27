@@ -1,4 +1,4 @@
-package time.transformer.page;
+package time.transformer.page.transformer;
 
 import java.util.Arrays;
 import java.util.OptionalInt;
@@ -10,7 +10,7 @@ import time.repo.bean.Page;
  * @author slim
  *
  */
-public class ExcludeAfterPageTransformer implements IPageTransformer {
+public class WikiExcludeAfterPageTransformer implements IPageTransformer {
 
     /**
      * Les mots clés à detecter dans les pages.

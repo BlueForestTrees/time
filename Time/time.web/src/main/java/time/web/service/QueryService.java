@@ -25,30 +25,26 @@ public class QueryService {
     /**
      * Construit une requête lucene depuis les paramètres 'Histoire/Time'
      * @param term
-     * @param scale
-     * @param bucketValueFrom
-     * @param bucketValueTo
+     * @param field
+     * @param from
+     * @param to
      * @return
      */
-    public Query getQuery(final String term, final String scale, Long bucketValueFrom, Long bucketValueTo) {
-        boolean noBucket = StringUtils.isEmpty(scale) || (bucketValueFrom == null && bucketValueTo == null);
-        boolean noTerm = StringUtils.isEmpty(term);
+    public Query getQuery(final String term, final String field, final Long from, final Long to) {
+        final boolean hasTermFilter = !StringUtils.isEmpty(term);
+        final boolean hasBucketFilter = !StringUtils.isEmpty(field) && (from != null || to != null);
+        final Query termQuery = hasTermFilter ? getTermQuery(term.toLowerCase()) : null;
+        final Query bucketQuery = hasBucketFilter ? NumericRangeQuery.newLongRange(field, from, to, true, true) : null;
 
-        if (noBucket && noTerm) {
+        if (hasBucketFilter && hasTermFilter) {
+            return new BooleanQuery.Builder().add(termQuery, Occur.MUST).add(bucketQuery, Occur.MUST).build();
+        }else if(hasBucketFilter && !hasTermFilter){
+            return bucketQuery;
+        }else if(!hasBucketFilter && hasTermFilter){
+            return termQuery;
+        }else{
             return new MatchAllDocsQuery();
         }
-
-        Query textQuery = noTerm ? null : getTermQuery(term.toLowerCase());
-        Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(scale, bucketValueFrom, bucketValueTo, true, true);
-
-        BooleanQuery.Builder builder = new BooleanQuery.Builder();
-        if (textQuery != null) {
-            builder.add(textQuery, Occur.MUST);
-        }
-        if (bucketQuery != null) {
-            builder.add(bucketQuery, Occur.MUST);
-        }
-        return builder.build();
     }
 
     /**

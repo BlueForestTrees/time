@@ -55,9 +55,10 @@ public class PhraseService {
     @Autowired
     private FindBetterService tryWithService;
 
-    public Phrases find(final String scale, final Long bucketValue, final String term, String lastKey) throws IOException {
+    //TODO remplacer scale+bucket par date.
+    public Phrases find(final String term, final String field, final Long from,  final Long to, String lastKey) throws IOException {
         final Last last = (Last) cache.remove(lastKey);
-        final Query query = queryHelper.getQuery(term, scale, bucketValue, null);
+        final Query query = queryHelper.getQuery(term, field, from, to);
         final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
         highlighter.setTextFragmenter(new NullFragmenter());
         final TopFieldDocs searchResult = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, pageSize, sortDateAsc, true, true);

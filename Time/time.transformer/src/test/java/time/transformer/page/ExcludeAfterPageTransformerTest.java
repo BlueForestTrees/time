@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.Test;
 
 import time.repo.bean.Page;
+import time.transformer.page.transformer.WikiExcludeAfterPageTransformer;
 
 public class ExcludeAfterPageTransformerTest {
     @Test
@@ -14,7 +15,7 @@ public class ExcludeAfterPageTransformerTest {
         final Page page = new Page();
         page.setText(text);
 
-        final ExcludeAfterPageTransformer phraseHandler = new ExcludeAfterPageTransformer();
+        final WikiExcludeAfterPageTransformer phraseHandler = new WikiExcludeAfterPageTransformer();
         final String actual = phraseHandler.transform(page).getTextString();
 
         assertThat(actual).isEqualTo(expected);
@@ -27,7 +28,7 @@ public class ExcludeAfterPageTransformerTest {
         final Page page = new Page();
         page.setText(text);
 
-        final ExcludeAfterPageTransformer phraseHandler = new ExcludeAfterPageTransformer();
+        final WikiExcludeAfterPageTransformer phraseHandler = new WikiExcludeAfterPageTransformer();
         final String actual = phraseHandler.transform(page).getTextString();
 
         assertThat(actual).isEqualTo(expected);
@@ -40,7 +41,7 @@ public class ExcludeAfterPageTransformerTest {
         final Page page = new Page();
         page.setText(text);
 
-        final ExcludeAfterPageTransformer phraseHandler = new ExcludeAfterPageTransformer();
+        final WikiExcludeAfterPageTransformer phraseHandler = new WikiExcludeAfterPageTransformer();
         final String actual = phraseHandler.transform(page).getTextString();
 
         assertThat(actual).isEqualTo(expected);
@@ -53,7 +54,7 @@ public class ExcludeAfterPageTransformerTest {
         final Page page = new Page();
         page.setText(text);
 
-        final ExcludeAfterPageTransformer phraseHandler = new ExcludeAfterPageTransformer();
+        final WikiExcludeAfterPageTransformer phraseHandler = new WikiExcludeAfterPageTransformer();
         final String actual = phraseHandler.transform(page).getTextString();
 
         assertThat(actual).isEqualTo(expected);

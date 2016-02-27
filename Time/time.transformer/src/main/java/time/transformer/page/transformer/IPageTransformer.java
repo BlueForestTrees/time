@@ -1,4 +1,4 @@
-package time.transformer.page;
+package time.transformer.page.transformer;
 
 import time.repo.bean.Page;
 

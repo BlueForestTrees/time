@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 
 import time.repo.bean.Page;
 import time.repo.bean.Phrase;
-import time.transformer.page.IPageTransformer;
 import time.transformer.page.filter.PageFilter;
+import time.transformer.page.transformer.IPageTransformer;
 import time.transformer.phrase.filter.PhraseFilter;
 import time.transformer.phrase.finder.PhraseFinder;
 import time.transformer.reader.FinDuScanException;
@@ -66,17 +66,16 @@ public class TransformerService {
     }
 
     protected long handle(final Page page) throws IOException {
-        long count = 0;
-        prepare(page);
-        final String text = page.getTextString();
-        final String[] paragraphs = getParagraphs(text);
-        for (String paragraph : paragraphs) {
+        long phrasesCount = 0;
+        pageTransformer.transform(page);
+
+        for (String paragraph : getParagraphs(page.getTextString())) {
             final String[] phrases = getPhrases(paragraph);
             for(PhraseFinder finder : finders){
-                count += findAndStorePhrases(page, phrases, finder);
+                phrasesCount += findAndStorePhrases(page, phrases, finder);
             }
         }
-        return count;
+        return phrasesCount;
     }
 
     protected long findAndStorePhrases(Page page, String[] phrasesArray, PhraseFinder finder) throws IOException {
@@ -98,19 +97,6 @@ public class TransformerService {
 
     public String[] getParagraphs(final String text) {
         return splitParagraphPattern.split(text);
-    }
-
-    /**
-     * @param page
-     * @return
-     */
-    private void prepare(final Page page)
-    {
-        pageTransformer.transform(page);
-        //TODO si https://fr.wikipedia.org/wiki/141_av._J.-C. => années négatives (_av._J.-C. négative)
-        //TODO si https://fr.wikipedia.org/wiki/Ann%C3%A9es_100 => décennies (_av._J.-C. négative)
-        //TODO si https://fr.wikipedia.org/wiki/IIe_si%C3%A8cle => siècle (_av._J.-C. négative)
-        //TODO si https://fr.wikipedia.org/wiki/Ier_mill%C3%A9naire => millenaire (_av._J.-C. négative)
     }
 
     public void onEnd() {

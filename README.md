@@ -24,6 +24,7 @@ N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous int�
 - Ajouter un drag sur le curseur actif pour définir la date max.
 - Like Facebook
 - Partage Facebook
+- plugin slack
 - Twitter
 - version Anglaise
 - utiliser "messe basse", "espace" comme base de recherche pour améliorer le zoom auto / ouverture des barres.

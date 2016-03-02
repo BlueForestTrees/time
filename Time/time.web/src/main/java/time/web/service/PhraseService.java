@@ -9,12 +9,14 @@ import java.util.stream.Collectors;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
 import org.apache.lucene.search.FieldDoc;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.SortField.Type;
 import org.apache.lucene.search.TopFieldDocs;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
@@ -36,9 +38,6 @@ public class PhraseService {
 
     @Autowired
     private IndexSearcher indexSearcher;
-
-    @Autowired
-    private SortedSetDocValuesReaderState readerState;
 
     @Autowired
     private QueryService queryHelper;
@@ -101,5 +100,24 @@ public class PhraseService {
             throw new LuceneRuntimeException(e);
         }
     }
+
+	public String findFirst(String term) {
+		String result = "";
+		final Query query = NumericRangeQuery.newLongRange("date", Long.MIN_VALUE, null, true, true);
+		final Sort sort = new Sort(new SortField("date", Type.LONG));
+		
+		try {
+			final TopFieldDocs searchResult = indexSearcher.search(query, 1, sort);
+			if (searchResult.totalHits > 0) {
+				final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
+		        highlighter.setTextFragmenter(new NullFragmenter());
+				result = getPhrase(searchResult.scoreDocs[0], highlighter).getText();
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 
 }

@@ -56,5 +56,17 @@ public class TimeController {
     public List<String> find(@RequestParam(value = "term", required = true) String term) throws URISyntaxException {
         return synonymesService.get(term);
     }
+    
+    /**
+     * Pour l'instant, peek la première phrase matchant
+     * @param term
+     * @return
+     * @throws IOException
+     */
+    @RequestMapping(value = "/api/peek", method = RequestMethod.GET)
+    public String peek(
+            @RequestParam(value = "term", required = false) String term) throws IOException {
+        return phraseService.findFirst(term);
+    }
 
 }

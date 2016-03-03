@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,9 +64,8 @@ public class TimeController {
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/api/peek", method = RequestMethod.GET)
-    public String peek(
-            @RequestParam(value = "term", required = false) String term) throws IOException {
+    @RequestMapping(value = "/api/first/{term}", method = RequestMethod.GET)
+    public String first(@PathVariable String term) throws IOException {
         return phraseService.findFirst(term);
     }
 

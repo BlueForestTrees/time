@@ -101,9 +101,9 @@ public class PhraseService {
         }
     }
 
-	public String findFirst(String term) {
+	public String findFirst(final String term) {
 		String result = "";
-		final Query query = NumericRangeQuery.newLongRange("date", Long.MIN_VALUE, null, true, true);
+		final Query query = queryHelper.getQueryForFirstPhrase(term);
 		final Sort sort = new Sort(new SortField("date", Type.LONG));
 		
 		try {

@@ -2,7 +2,6 @@ package time.web.service;
 
 import java.util.Arrays;
 
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -12,15 +11,11 @@ import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 @Component
 public class QueryService {
-    
-    @Autowired
-    private IndexReader reader;
     
     /**
      * Construit une requête lucene depuis les paramètres 'Histoire/Time'
@@ -84,7 +79,7 @@ public class QueryService {
             return new TermQuery(new Term("text", term));
         }else{
             final BooleanQuery.Builder builder = new BooleanQuery.Builder();
-            Arrays.stream(term.split("\\+")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.MUST));
+            Arrays.stream(term.split("\\+")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.FILTER));
             return builder.build();
         }
     }
@@ -109,13 +104,14 @@ public class QueryService {
         }
     }
 
-    private Query getFuzzyPhraseQuery(final String term) {
-        //return new QueryBuilder(null).createPhraseQuery("text", term);
-        return null;
-    }
-
     private String[] words(final String term) {
         return term.replaceAll("\"", "").split(" ");
     }
+
+	public Query getQueryForFirstPhrase(String term) {
+		final Query rangeQuery = NumericRangeQuery.newLongRange("date", Long.MIN_VALUE, null, true, true);
+		final Query termQuery = getTermQuery(term.toLowerCase());
+		return new BooleanQuery.Builder().add(rangeQuery, Occur.FILTER).add(termQuery, Occur.FILTER).build();
+	}
 }
 

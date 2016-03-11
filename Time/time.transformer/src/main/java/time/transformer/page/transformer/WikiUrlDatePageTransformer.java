@@ -11,8 +11,21 @@ import time.repo.bean.Page;
  *
  */
 public class WikiUrlDatePageTransformer implements IPageTransformer {
+	
+	/*
+	 * pattern:
+	 * 24 avril :
+	 * 1er juillet-18 novembre :
+	 * 1er-2 décembre :
+	 * 1er janvier, Cameroun :
+	 * 29 - 31 décembre, Inde :
+	 * 27-29 avril :
+	 * 12 septembre-11 décembre :
+	 * exclude Naissances et Décès
+	 */
 
     //TODO si https://fr.wikipedia.org/wiki/141_av._J.-C. => années négatives (_av._J.-C. négative)
+	//TODO si https://fr.wikipedia.org/wiki/1915_en_a%C3%A9ronautique page thématique
     //TODO si https://fr.wikipedia.org/wiki/Ann%C3%A9es_100 => décennies (_av._J.-C. négative)
     //TODO si https://fr.wikipedia.org/wiki/IIe_si%C3%A8cle => siècle (_av._J.-C. négative)
     //TODO si https://fr.wikipedia.org/wiki/Ier_mill%C3%A9naire => millenaire (_av._J.-C. négative)
@@ -50,7 +63,7 @@ public class WikiUrlDatePageTransformer implements IPageTransformer {
             return centuryTransformer;
         }
         final Matcher milleniumMatcher = milleniumPattern.matcher(url);
-        if(yearMatcher.matches()){
+        if(milleniumMatcher.matches()){
             return milleniumTransformer;
         }
         return null;

@@ -59,7 +59,7 @@ public class TimeController {
     }
     
     /**
-     * Pour l'instant, peek la première phrase matchant
+     * La première phrase matchant
      * @param term
      * @return
      * @throws IOException

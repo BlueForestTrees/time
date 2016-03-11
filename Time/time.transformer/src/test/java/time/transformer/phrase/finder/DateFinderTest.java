@@ -56,9 +56,7 @@ public class DateFinderTest {
     @Autowired
     private PhraseFinder[] finders;
 
-    //Les humains sont apparus en Afrique de l’Est voici environ 2,5 millions d’années, issus d’un genre antérieur de singe,
-    //Il y a environ deux millions d’années, une partie de ces hommes et femmes archaïques quittèrent leur
-    //Les tout premiers hommes, voici 2,5 millions d’années, avaient un cerveau d’environ 600 cm3.
+    
     //Voici 400 000 ans seulement que plusieurs espèces d’hommes ont commencé à chasser régulièrement le gros gibier ; et 100 000 ans seulement, avec l’essor de l’Homo sapiens, que l’homme s’est hissé au sommet de la chaîne alimentaire.
     //Il y a 800 000 ans, déjà, certaines espèces humaines faisaient peut-être, à l’occasion, du feu.
     //Voici environ 300 000 ans, Homo erectus, les Neandertal et les ancêtres d’Homo sapiens faisaient quotidiennement du feu
@@ -83,8 +81,25 @@ public class DateFinderTest {
     //des rabbins juifs polonais du XVIIIe siècle aux puritains brûleurs
     //page 50 de sapiens
     
+    @Test
+    public void ilYA14() {
+        assertOne(ilYAFinder, yearIs(-2000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
+    }
+    @Test
+    public void ilYA11() {
+    	assertOne(ilYAFinder, yearIs(-3000), "La Grande Encyclopédie soviétique affirme que le soja est originaire de Chine ; il y a environ 5000 ans.");
+    }
     
+    @Test
+    public void ilYA1(){
+    	//le parseur hésite mal entre *365 et LocalTime.parse
+    	assertOne(ilYAFinder, longyearIs(-400000), "Voici 400 000 ans seulement que plusieurs espèces d’hommes ont commencé à chasser régulièrement le gros gibier");
+    }
     
+    @Test
+    public void ilYA2(){
+    	assertOne(ilYAFinder, longyearIs(-600000), "Voici 600000 ans seulement que plusieurs espèces d’hommes ont commencé à chasser régulièrement le gros gibier");
+    }
     
     @Test
     public void near0() {
@@ -125,6 +140,21 @@ public class DateFinderTest {
     public void precise7() {
         assertOne(preciseFinder, dateIs(date(1, Month.JUNE, 2014)), "En juin 2014, Alibaba achète les 34 % qu'il ne détient pas dans UCWeb, entreprise chinoise de services pour l'internet mobile, opération valorisant UCWeb (en) à 1,9 milliard d'euros");
     }
+    
+    @Test
+    public void precise8(){
+    	assertTwo(preciseFinder, dateIs(date(1, Month.FEBRUARY, 1919)), dateIs(date(1, Month.MARCH, 1921)), "La guerre soviéto-polonaise, ou guerre russo-polonaise (février 1919 - mars 1921) est l'une des conséquences de la Première Guerre mondiale.");
+    }
+    
+    @Test
+    public void precise9(){
+    	assertTwo(preciseFinder, dateIs(date(1, Month.FEBRUARY, 1919)), dateIs(date(1, Month.MARCH, 1921)), "La guerre soviéto-polonaise, ou guerre russo-polonaise (février 1919-mars 1921) est l'une des conséquences de la Première Guerre mondiale.");
+    }
+    
+    @Test
+    public void precise10(){
+    	assertOne(preciseFinder, dateIs(date(1, Month.FEBRUARY, 1919)), "La guerre soviéto-polonaise, ou guerre russo-polonaise (février 1919) est l'une des conséquences de la Première Guerre mondiale.");
+    }
 
     @Test
     public void twoDot1() {
@@ -154,38 +184,6 @@ public class DateFinderTest {
     @Test
     public void jc19(){
         assertOne(jcFinder, yearIs(1873), "En 1873, Jules Verne imagina que Phileas Fogg, riche aventurier britannique, pourrait faire le tour du monde en 80 jours.");
-    }
-    
-    
-
-    @Test
-    public void none13() {
-        assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
-    }
-    
-    @Test
-    public void none17() {
-        assertNone("Leur système de base 6 nous a laissé plusieurs héritages importants, comme la division du jour en 24 heures et celle du cercle en 360 degrés.) L’autre type de signes représentait des hommes, des animaux, des marchandises, des territoires, des dates et ainsi de suite.");
-    }
-    
-    @Test
-    public void none14() {
-        assertNone("mais c'est pas pour de suite, j'ai/nous avons d'abord environ 3500 autres articles à traduire avant d'arriver à celui-là !");
-    }
-
-    @Test
-    public void none16() {
-        assertNone("Il serait d'origine alsacienne et deux parties sont manquantes : les vers 5479 à 5624 et les vers 7524 à 7716");
-    }
-
-    @Test
-    public void none15() {
-        assertNone("Il pouvait accueillir environ 9000 spectateurs répartis dans une cavea sem");
-    }
-
-    @Test
-    public void none12() {
-        assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
     }
 
     @Test
@@ -243,10 +241,6 @@ public class DateFinderTest {
         assertOne(nearJcFinder3, yearIs(-2300), "La civilisation olmèque a débuté avec une production en abondance de poterie, vers 2300 avant notre ère");
     }
 
-    @Test
-    public void ilYA11() {
-        assertOne(ilYAFinder, yearIs(-3000), "La Grande Encyclopédie soviétique affirme que le soja est originaire de Chine ; il y a environ 5000 ans.");
-    }
 
     @Test
     public void nearLess12() {
@@ -258,10 +252,7 @@ public class DateFinderTest {
         assertOne(nearJcFinder3, yearIs(-3500), "au sein des chasseurs-cueilleurs de la culture Botaï, vers 3500 av. J.-C., cool.");
     }
 
-    @Test
-    public void ilYA14() {
-        assertOne(ilYAFinder, yearIs(-2000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
-    }
+    
     
     @Test
     public void jc15(){
@@ -300,7 +291,17 @@ public class DateFinderTest {
 
     @Test
     public void testMillion2() {
-        assertOne(milliardFinder, longyearIs(-1000000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 million d'années.");
+        assertOne(milliardFinder, longyearIs(-2500000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
+    }
+    
+    @Test
+    public void testMillion3(){
+    	assertOne(milliardFinder, longyearIs(-2500000), "Les humains sont apparus en Afrique de l’Est voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
+    }
+    
+    @Test
+    public void testMillion5(){
+    	assertOne(milliardFinder, longyearIs(-3000000), "Les humains sont apparus en Afrique de l’Est voici environ trois millions d’années, issus d’un genre antérieur de singe,");
     }
 
     @Test
@@ -343,6 +344,38 @@ public class DateFinderTest {
         final String phrase = "Pépin II, roi d’Aquitaine, résiste durant un quart de siècle à Charles le Chauve, le roi de Francie occidentale.";
         assertNone(new String[] { phrase }, romanFinder);
     }
+    
+
+    @Test
+    public void none13() {
+        assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
+    }
+    
+    @Test
+    public void none17() {
+        assertNone("Leur système de base 6 nous a laissé plusieurs héritages importants, comme la division du jour en 24 heures et celle du cercle en 360 degrés.) L’autre type de signes représentait des hommes, des animaux, des marchandises, des territoires, des dates et ainsi de suite.");
+    }
+    
+    @Test
+    public void none14() {
+        assertNone("mais c'est pas pour de suite, j'ai/nous avons d'abord environ 3500 autres articles à traduire avant d'arriver à celui-là !");
+    }
+
+    @Test
+    public void none16() {
+        assertNone("Il serait d'origine alsacienne et deux parties sont manquantes : les vers 5479 à 5624 et les vers 7524 à 7716");
+    }
+
+    @Test
+    public void none15() {
+        assertNone("Il pouvait accueillir environ 9000 spectateurs répartis dans une cavea sem");
+    }
+
+    @Test
+    public void none12() {
+        assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
+    }
+
 
     private void assertNone(String phrase) {
         assertNone(new String[] { phrase }, finders);

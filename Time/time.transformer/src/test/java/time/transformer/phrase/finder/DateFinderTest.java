@@ -57,33 +57,28 @@ public class DateFinderTest {
     private PhraseFinder[] finders;
 
     
-    //Voici 400 000 ans seulement que plusieurs espèces d’hommes ont commencé à chasser régulièrement le gros gibier ; et 100 000 ans seulement, avec l’essor de l’Homo sapiens, que l’homme s’est hissé au sommet de la chaîne alimentaire.
-    //Il y a 800 000 ans, déjà, certaines espèces humaines faisaient peut-être, à l’occasion, du feu.
-    //Voici environ 300 000 ans, Homo erectus, les Neandertal et les ancêtres d’Homo sapiens faisaient quotidiennement du feu
-    //Malgré les bénéfices du feu, les humains d’il y a 150 000 ans étaient encore des créatures marginales.
-    //Nous ne savons pas exactement quand les animaux que l’on peut classer comme Homo sapiens ont évolué à partir d’un type d’humains antérieur, mais la plupart des spécialistes conviennent cependant qu’il y a 150 000 ans l’Afrique orientale était peuplée de Sapiens qui nous ressemblaient énormément.
-    //Si tel est le cas, on peut faire remonter tous les lignages humains contemporains à la seule Afrique orientale, voici 70 000 ans.
-    //Mais cette situation a pris fin en 2010, quand ont été publiés les résultats de quatre années d’efforts pour dresser la carte du génome néandertalien.
-    //Les derniers restes d’Homo soloensis datent d’environ 50 000 ans.
-    //L’Homo denisova disparut peu après, il y a quelque 40 000 ans.
-    //Dans le chapitre précédent, nous avons vu que même si les Sapiens peuplaient déjà l’Afrique orientale voici 150 000 ans, ils commencèrent à envahir le reste de la planète Terre et à pousser les autres espèces humaines à l’extinction il y a seulement 70 000 ans.
-    //Voici quelque 100 000 ans, certains groupes de Sapiens s’aventurèrent au Levant – le territoire des Neandertal – mais ne réussirent pas à s’y implanter vraiment.
+    
+    
+    
     //L’apparition de nouvelles façons de penser et de communiquer, entre 70 000 et 30 000 ans, constitue la Révolution cognitive.
     //La période qui va des années 70 000 à 30 000 vit l’invention des bateaux, des lampes à huile, des arcs et des flèches, des aiguilles (essentielles pour coudre des vêtements chauds).
     //Les nouvelles capacités linguistiques que le Sapiens moderne a acquises voici quelque 70 millénaires lui ont permis de bavarder des heures d’affilée.
     //Physiologiquement, notre capacité de fabriquer des outils ne s’est pas sensiblement améliorée au cours des 30 000 dernières années.
     //Comment se fait-il que nous ayons des missiles intercontinentaux pourvus d’ogives nucléaires alors que, voici 30 000 ans, nous n’avions que des bâtons aux extrémités pourvues de silex ?
     //Les experts ne sont pas d’accord sur la date exacte, mais nous avons des preuves incontestables de la domestication des chiens il y a près de 15 000 ans.
-    //Tombe vieille de 12 000 ans découverte dans le nord d’Israël.
+    //
     //Les villages de pêche ont pu apparaître sur les côtes des îles indonésiennes dès 45 000 ans.
     //Les chasseurs-cueilleurs qui vivent de nos jours dans les habitats les moins hospitaliers – comme le désert du Kalahari – ne travaillent en moyenne que 35 à 45 heures par semaine.
     //Les Aché, peuple de chasseurs-cueilleurs qui vivaient dans les jungles du Paraguay jusque dans les années 1960, offrent un aperçu du monde des fourrageurs dans son côté sombre
     //des rabbins juifs polonais du XVIIIe siècle aux puritains brûleurs
-    //page 50 de sapiens
     
     @Test
-    public void ilYA14() {
+    public void ilYA15() {
         assertOne(ilYAFinder, yearIs(-2000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
+    }
+    @Test
+    public void ilYA14() {
+        assertOne(ilYAFinder, yearIs(-12000), "Tombe vieille de 12 000 ans découverte dans le nord d’Israël.");
     }
     @Test
     public void ilYA11() {
@@ -100,6 +95,28 @@ public class DateFinderTest {
     public void ilYA2(){
     	assertOne(ilYAFinder, longyearIs(-600000), "Voici 600000 ans seulement que plusieurs espèces d’hommes ont commencé à chasser régulièrement le gros gibier");
     }
+    @Test
+    public void ilYA3(){
+    	assertOne(ilYAFinder, longyearIs(-800000), "Il y a 800 000 ans, déjà, certaines espèces humaines faisaient peut-être, à l’occasion, du feu.");
+    }
+    @Test
+    public void ilYA4(){
+    	assertOne(ilYAFinder, longyearIs(-800000), "Voici environ 300 000 ans, Homo erectus, les Neandertal et les ancêtres d’Homo sapiens faisaient quotidiennement du feu");
+    }
+    @Test
+    public void ilYA5(){
+    	assertOne(ilYAFinder, longyearIs(-150000), "Malgré les bénéfices du feu, les humains d’il y a 150 000 ans étaient encore des créatures marginales.");
+    }
+    
+    @Test
+    public void ilYA6(){
+    	assertOne(ilYAFinder, longyearIs(-50000), "Les derniers restes d’Homo soloensis datent d’environ 50 000 ans.");
+    }
+    @Test
+    public void ilYA7(){
+    	assertOne(ilYAFinder, longyearIs(-40000), "L’Homo denisova disparut peu après, il y a quelque 40 000 ans.");
+    }
+    
     
     @Test
     public void near0() {

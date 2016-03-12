@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 
 @Component
 public class QueryService {
-    
+	
     /**
      * Construit une requête lucene depuis les paramètres 'Histoire/Time'
      * @param term

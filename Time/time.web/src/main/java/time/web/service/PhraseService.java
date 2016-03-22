@@ -85,6 +85,10 @@ public class PhraseService {
         }
         return phrases;
     }
+    
+	public String findFirstSlack(final String term){
+		return htmlToSlackFormat(findFirst(term));
+	}
 
     protected Phrase getPhrase(final ScoreDoc scoreDoc, final Highlighter highlighter) {
         try {
@@ -101,7 +105,7 @@ public class PhraseService {
         }
     }
 
-	public String findFirst(final String term) {
+	protected String findFirst(final String term) {
 		String result = "";
 		final Query query = queryHelper.getQueryForFirstPhrase(term);
 		final Sort sort = new Sort(new SortField("date", Type.LONG));
@@ -118,6 +122,12 @@ public class PhraseService {
 		}
 		
 		return result;
+	}
+
+	private String htmlToSlackFormat(final String textWithHtml) {
+		final String slackFormattedMessage = textWithHtml.replace("<strong> ", " <strong>").replace(" </strong>", "</strong> ").replace("<b> ", " <b>").replace(" </b>", "</b> ").replace("<B> ", " <B>").replace(" </B>", "</B> ").replace("<B>", "*").replace("</B>", "*").replace("<b>", "*").replace("</b>", "*").replace("<strong>", "*").replace("</strong>", "*");
+	
+		return "{\"response_type\": \"in_channel\",\"text\":\""+slackFormattedMessage+"\"}";
 	}
 
 }

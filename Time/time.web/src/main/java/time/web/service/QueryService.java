@@ -11,6 +11,7 @@ import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.WildcardQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -76,13 +77,27 @@ public class QueryService {
     protected Query getAndTermQuery(final String term) {
         boolean hasAnds = term.contains("+");
         if(!hasAnds){
-            return new TermQuery(new Term("text", term));
+            return getWordQuery(term);
         }else{
             final BooleanQuery.Builder builder = new BooleanQuery.Builder();
-            Arrays.stream(term.split("\\+")).forEach(t -> builder.add(new TermQuery(new Term("text", t)), Occur.FILTER));
+            Arrays.stream(term.split("\\+")).forEach(t -> builder.add(getWordQuery(t), Occur.FILTER));
             return builder.build();
         }
     }
+
+    /**
+     * Requête pour un mot.
+     * @param word
+     * @return
+     */
+	private Query getWordQuery(final String word) {
+		final boolean hasWildCards = word.contains("*");
+		if(hasWildCards){
+			return new WildcardQuery(new Term("text", word));
+		}else{
+			return new TermQuery(new Term("text", word));
+		}
+	}
 
     /**
      * Construit une requête de recherche de terme plus approprié.

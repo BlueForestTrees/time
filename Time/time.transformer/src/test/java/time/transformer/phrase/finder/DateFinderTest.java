@@ -71,7 +71,7 @@ public class DateFinderTest {
     //Les chasseurs-cueilleurs qui vivent de nos jours dans les habitats les moins hospitaliers – comme le désert du Kalahari – ne travaillent en moyenne que 35 à 45 heures par semaine.
     //Les Aché, peuple de chasseurs-cueilleurs qui vivaient dans les jungles du Paraguay jusque dans les années 1960, offrent un aperçu du monde des fourrageurs dans son côté sombre
     //des rabbins juifs polonais du XVIIIe siècle aux puritains brûleurs
-    
+      
     @Test
     public void ilYA15() {
         assertOne(ilYAFinder, yearIs(-2000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
@@ -199,7 +199,7 @@ public class DateFinderTest {
     }
     
     @Test
-    public void jc19(){
+    public void jc20(){
         assertOne(jcFinder, yearIs(1873), "En 1873, Jules Verne imagina que Phileas Fogg, riche aventurier britannique, pourrait faire le tour du monde en 80 jours.");
     }
 
@@ -280,6 +280,11 @@ public class DateFinderTest {
     public void jc16(){
         assertOne(jcFinder, yearIs(-500), "A partir de l'an 500 avant J.C., il s'est passé des choses.");
     }
+    @Test
+    public void jc19(){
+        assertOne(jcFinder, yearIs(1900), "Or, après 1990, on a eu la surprise de constater le contraire.");
+    }
+    
 
     @Test
     public void testMilliard0() {

@@ -3,6 +3,7 @@ package time.web.controller;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -57,16 +58,19 @@ public class TimeController {
     public List<String> find(@RequestParam(value = "term", required = true) String term) throws URISyntaxException {
         return synonymesService.get(term);
     }
-    
+        
+    /*
+     * Token slack gzPz99SDGcbEhzIfTkVKuCRf
+     */
     /**
-     * La première phrase matchant
+     * Slack endpoint
      * @param term
      * @return
      * @throws IOException
      */
-    @RequestMapping(value = "/api/first/{term}", method = RequestMethod.GET)
-    public String first(@PathVariable String term) throws IOException {
-        return phraseService.findFirst(term);
+    @RequestMapping(value = "/api/first", method = RequestMethod.POST)
+    public String slackFirst(@RequestParam final String text) throws IOException {
+        return phraseService.findFirstSlack(text);
     }
 
 }

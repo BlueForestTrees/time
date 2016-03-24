@@ -11,7 +11,6 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.search.FieldDoc;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.Sort;
@@ -55,9 +54,9 @@ public class PhraseService {
     private FindBetterService tryWithService;
 
     //TODO remplacer scale+bucket par date.
-    public Phrases find(final String term, final String field, final Long from,  final Long to, String lastKey) throws IOException {
+    public Phrases find(final String request, final String field, final Long from,  final Long to, String lastKey) throws IOException {    	
         final Last last = (Last) cache.remove(lastKey);
-        final Query query = queryHelper.getQuery(term, field, from, to);
+        final Query query = queryHelper.getQuery(request, field, from, to);
         final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
         highlighter.setTextFragmenter(new NullFragmenter());
         final TopFieldDocs searchResult = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, pageSize, sortDateAsc, true, true);
@@ -80,7 +79,7 @@ public class PhraseService {
             }
         } else {
             phrases.setTotal(0);
-            final String[] alternatives = tryWithService.findBetterTerm(term);
+            final String[] alternatives = tryWithService.findBetterTerm(request);
             phrases.setAlternatives(alternatives);
         }
         return phrases;

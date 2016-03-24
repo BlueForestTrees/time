@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.stream.IntStream;
 
+import time.tool.date.Dates;
 import time.transformer.config.DateFinderConfig;
 
 public class MilliardParser implements IParser {
@@ -27,9 +28,9 @@ public class MilliardParser implements IParser {
 		}
 
 		if ("ard".equals(matcher.group("s"))) {
-			return -(long) (count * 364250000000L);
+			return -Dates.milliardsToDays(count);
 		} else {
-			return -(long) (count * 364250000L);
+			return -Dates.millionsToDays(count);
 		}
 	}
 

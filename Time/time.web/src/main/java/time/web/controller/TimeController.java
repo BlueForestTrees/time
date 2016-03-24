@@ -46,12 +46,12 @@ public class TimeController {
 
     @RequestMapping(value = "/api/phrases", method = RequestMethod.GET)
     public Phrases find(
-            @RequestParam(value = "term", required = false) String term,
+            @RequestParam(value = "request", required = false) String request,
             @RequestParam(value = "field", required = false) String field,
             @RequestParam(value = "from", required = false) Long from,
             @RequestParam(value = "to", required = false) Long to,
             @RequestParam(value = "lastKey", required = false) String lastKey) throws IOException {
-        return phraseService.find(term, field, from, to, lastKey);
+        return phraseService.find(request, field, from, to, lastKey);
     }
 
     @RequestMapping(value = "/api/synonyms", method = RequestMethod.GET)

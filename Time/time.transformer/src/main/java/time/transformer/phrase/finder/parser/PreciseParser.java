@@ -8,6 +8,8 @@ import java.util.regex.Matcher;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import time.tool.date.Dates;
+
 /**
  * Created by slimane.medini on 04/12/2015.
  */
@@ -26,10 +28,10 @@ public class PreciseParser implements IParser {
         }
         
         try {
-            return LocalDate.of(year, month, day).toEpochDay() + seventiesInDays;
+            return Dates.toDays(LocalDate.of(year, month, day));
         } catch (DateTimeException e) {
             try {
-                return LocalDate.of(year, month, 1).toEpochDay() + seventiesInDays;
+            	return Dates.toDays(LocalDate.of(year, month, 1));
             } catch (DateTimeException exx) {
                 LOG.error("pb pour parser " + matcher.group("g"), exx);
                 return 0;

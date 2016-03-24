@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import time.repo.bean.Phrase;
+import time.tool.date.Dates;
 import time.transformer.config.DateFinderConfig;
 import time.transformer.phrase.finder.parser.IParser;
 
@@ -460,7 +461,7 @@ public class DateFinderTest {
             public boolean matches(Phrase phrase) {
                 return phrase.getDate() == expectedJour;
             }
-        }.as("jours correcte : " + expectedJour);
+        }.as("expectedJour : " + expectedJour);
     }
 
     @Test
@@ -478,10 +479,10 @@ public class DateFinderTest {
 
     @Test
     public void testToJours() {
-        testToJours(date(1, Month.JANUARY, 1970), IParser.seventiesInDays);
-        testToJours(date(16, Month.JANUARY, 1970), IParser.seventiesInDays + 15);
-        testToJours(date(16, Month.FEBRUARY, 1970), IParser.seventiesInDays + 15 + 31);
-        testToJours(date(16, Month.FEBRUARY, 1971), IParser.seventiesInDays + 15 + 31 + 365);
+        testToJours(date(1, Month.JANUARY, 1970), Dates.seventiesInDays);
+        testToJours(date(16, Month.JANUARY, 1970), Dates.seventiesInDays + 15);
+        testToJours(date(16, Month.FEBRUARY, 1970), Dates.seventiesInDays + 15 + 31);
+        testToJours(date(16, Month.FEBRUARY, 1971), Dates.seventiesInDays + 15 + 31 + 365);
         testToJours(date(1, Month.JANUARY, 0), 0);
     }
 
@@ -503,6 +504,6 @@ public class DateFinderTest {
     }
 
     private long toJours(final LocalDate date) {
-        return date.toEpochDay() + IParser.seventiesInDays;
+        return Dates.toDays(date);
     }
 }

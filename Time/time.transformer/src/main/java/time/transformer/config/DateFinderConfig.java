@@ -28,7 +28,7 @@ public class DateFinderConfig {
 		
     @Bean
     public PhraseFinder ilYAFinder(){
-    	final Pattern pattern = Pattern.compile("(?<neg>"+ILYA + ENVIRON+") (?<g>\\d{1,4}( ?000)?) ans");
+    	final Pattern pattern = Pattern.compile("(?<neg>"+ILYA + ENVIRON+") (?<g>\\d{1,3}( ?000)?) ans");
         final IParser parser = new IlYAParser();
         return new PhraseFinder(pattern, parser, "ilYAFinder");
     }

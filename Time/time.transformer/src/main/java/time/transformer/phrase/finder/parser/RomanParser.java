@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.regex.Matcher;
 
+import time.tool.date.Dates;
+
 public class RomanParser implements IParser {
 
     @Override
@@ -30,7 +32,7 @@ public class RomanParser implements IParser {
             }
         }
         final int annee = (arabic - 1) * 100;
-        return LocalDate.of(annee, Month.JANUARY, 1).toEpochDay() + seventiesInDays;
+        return Dates.toDays(LocalDate.of(annee, Month.JANUARY, 1));
     }
 
     private static int letterToNumber(char letter) {

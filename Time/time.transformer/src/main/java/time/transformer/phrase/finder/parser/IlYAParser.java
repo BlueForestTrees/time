@@ -4,18 +4,17 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.regex.Matcher;
 
+import time.tool.date.Dates;
+
 public class IlYAParser implements IParser {
 
     @Override
     public long from(Matcher matcher) {
         if(matcher.group("neg") != null){
-            return LocalDate.of(-Integer.parseInt(matcher.group("g").replace(" ", "")) + JCToNowYears, Month.JANUARY, 1).toEpochDay() + seventiesInDays;
+            return Dates.toDays(LocalDate.of(-Integer.parseInt(matcher.group("g").replace(" ", "")) + Dates.JCToNowYears, Month.JANUARY, 1));
         }else{
-            return LocalDate.of(Integer.parseInt(matcher.group("g")) + JCToNowYears, Month.JANUARY, 1).toEpochDay() + seventiesInDays;
+            return Dates.toDays(LocalDate.of(Integer.parseInt(matcher.group("g").replace(" ", "")) + Dates.JCToNowYears, Month.JANUARY, 1));
         }
-        //TODO quand le chiffre est grand il faut utiliser cela:
-        //ou trouver mieux
-        //Long.parseLong(matcher.group("g").replace(" ","")) * 36425L / 100L;
     }
 
 }

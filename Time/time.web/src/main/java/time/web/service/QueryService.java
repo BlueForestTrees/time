@@ -15,21 +15,27 @@ import org.apache.lucene.search.WildcardQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import time.web.bean.TermPeriodFilter;
+
 @Component
 public class QueryService {
 	
     /**
      * Construit une requête lucene depuis les paramètres 'Histoire/Time'
-     * @param term
+     * @param request
      * @param field
      * @param from
      * @param to
      * @return
      */
-    public Query getQuery(final String term, final String field, final Long from, final Long to) {
-        final boolean hasTermFilter = !StringUtils.isEmpty(term);
+    public Query getQuery(final String request, final String field, final Long from, final Long to) {
+    	final TermPeriodFilter termPeriodFilter = TermPeriodFilter.build(request);
+    	
+    	
+    	
+        final boolean hasTermFilter = !StringUtils.isEmpty(request);
         final boolean hasBucketFilter = !StringUtils.isEmpty(field) && (from != null || to != null);
-        final Query termQuery = hasTermFilter ? getTermQuery(term.toLowerCase()) : null;
+        final Query termQuery = hasTermFilter ? getTermQuery(request.toLowerCase()) : null;
         final Query bucketQuery = hasBucketFilter ? NumericRangeQuery.newLongRange(field, from, to, true, true) : null;
 
         if (hasBucketFilter && hasTermFilter) {

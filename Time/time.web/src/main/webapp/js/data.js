@@ -13,15 +13,15 @@
         $.get("api/buckets", params).done(callback);
     };
 
-    data.prototype.getPhrases = function(term, field, from, lastKey, callback) {
+    data.prototype.getPhrases = function(request, field, from, lastKey, callback) {
         var params = {
             field : field,
             from : from,
             to : null,
-            term : term,
+            request : request,
             lastKey : lastKey
         };
-        Time.anal.ga('send', 'event', 'phrases', term, field);
+        Time.anal.ga('send', 'event', 'phrases', request, field);
         $.get("api/phrases", params).done(callback);
     };
 

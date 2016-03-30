@@ -8,153 +8,42 @@ public class PeriodFilterTest {
 	@Test
 	public void build(){
 		TermPeriodFilter periodFilter = TermPeriodFilter.build("doudou @200+-10% @100 toto");
-		assertThat(periodFilter.getFrom()).isEqualTo(100);
-		assertThat(periodFilter.getTo()).isEqualTo(220);
+		assertThat(periodFilter.getFrom()).isEqualTo(36525L);
+		assertThat(periodFilter.getTo()).isEqualTo(80353L);
 		assertThat(periodFilter.getWords()).containsExactly("doudou","toto");
 	}
+	
 	@Test
-	public void parsePeriod1(){
-		assertParsePeriod("@-1", new Period(-1L, 0));
-	}
-	@Test
-	public void parsePeriod2(){
-		assertParsePeriod("@-1M", new Period(-364250000000L, 0));
-	}
-	@Test
-	public void parsePeriod3(){
-		assertParsePeriod("@-130M", new Period(-130000000000L, 0));
-	}
-	@Test
-	public void parsePeriod4(){
-		assertParsePeriod("@-1.43M", new Period(-1430000000L, 0));
-	}
-	@Test
-	public void parsePeriod5(){
-		assertParsePeriod("@-1,3M", new Period(-1300000000L, 0));
-	}
-	@Test
-	public void parsePeriod6(){
-		assertParsePeriod("@1", new Period(1L, 0));
-	}
-	@Test
-	public void parsePeriod7(){
-		assertParsePeriod("@1M", new Period(364250000000L, 0));
-	}
-	@Test
-	public void parsePeriod8(){
-		assertParsePeriod("@130M", new Period(130000000000L, 0));
-	}
-	@Test
-	public void parsePeriod9(){
-		assertParsePeriod("@1.43M", new Period(1430000000L, 0));
-	}
-	@Test
-	public void parsePeriod10(){
-		assertParsePeriod("@1,3M", new Period(1300000000L, 0));
-	}
-	@Test
-	public void parsePeriod11(){		
-		assertParsePeriod("@-1m", new Period(-1000000L, 0));
-	}
-	@Test
-	public void parsePeriod12(){
-		assertParsePeriod("@-130m", new Period(-130000000L, 0));
-	}
-	@Test
-	public void parsePeriod13(){
-		assertParsePeriod("@-1.43m", new Period(-1430000L, 0));
-	}
-	@Test
-	public void parsePeriod14(){
-		assertParsePeriod("@-1,3m", new Period(-1300000L, 0));
-	}
-	@Test
-	public void parsePeriod15(){
-		assertParsePeriod("@1m", new Period(1000000L, 0));
-	}
-	@Test
-	public void parsePeriod16(){
-		assertParsePeriod("@130m", new Period(130000000L, 0));
-	}
-	@Test
-	public void parsePeriod17(){
-		assertParsePeriod("@1.43m", new Period(1430000L, 0));
-	}
-	@Test
-	public void parsePeriod18(){
-		assertParsePeriod("@1,3m", new Period(1300000L, 0));
-	}
-	@Test
-	public void parsePeriod19(){				
-		assertParsePeriod("@1,3M+-10%", new Period(1300000000L, 10));
-	}
-	@Test
-	public void parsePeriod20(){		
-//		assertParsePeriod("@1.2M", new Period(-1200000L, null));
-//		assertParsePeriod("@17M", new Period(-1000000L, null));
-//		assertParsePeriod("@17.56M", new Period(-1000000L, null));
-//		assertParsePeriod("@1m", new Period(-1000000L, null));
-//		assertParsePeriod("@1.2m", new Period(-1200000L, null));
-//		assertParsePeriod("@17m", new Period(-1000000L, null));
-//		assertParsePeriod("@17.56m", new Period(-1000000L, null));
-//		assertParsePeriod("@1k", new Period(-1000000L, null));
-//		assertParsePeriod("@1.2k", new Period(-1200000L, null));
-//		assertParsePeriod("@17k", new Period(-1000000L, null));
-//		assertParsePeriod("@17.56k", new Period(-1000000L, null));
-//		
-//		assertParsePeriod("@-1M", new Period(-1000000L, null));
-//		assertParsePeriod("@-1.2M", new Period(-1200000L, null));
-//		assertParsePeriod("@-17M", new Period(-1000000L, null));
-//		assertParsePeriod("@-17.56M", new Period(-1000000L, null));
-//		assertParsePeriod("@-1m", new Period(-1000000L, null));
-//		assertParsePeriod("@-1.2m", new Period(-1200000L, null));
-//		assertParsePeriod("@-17m", new Period(-1000000L, null));
-//		assertParsePeriod("@-17.56m", new Period(-1000000L, null));
-//		assertParsePeriod("@-1k", new Period(-1000000L, null));
-//		assertParsePeriod("@-1.2k", new Period(-1200000L, null));
-//		assertParsePeriod("@-17k", new Period(-1000000L, null));
-//		assertParsePeriod("@-17.56k", new Period(-1000000L, null));
-//
-//		assertParsePeriod("@1M@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@1.2M@10%", new Period(-1200000L, null));
-//		assertParsePeriod("@17M@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@17.56M@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@1m@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@1.2m@10%", new Period(-1200000L, null));
-//		assertParsePeriod("@17m@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@17.56m@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@1k@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@1.2k@10%", new Period(-1200000L, null));
-//		assertParsePeriod("@17k@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@17.56k@10%", new Period(-1000000L, null));
-//		
-//		assertParsePeriod("@-1M@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-1.2M@10%", new Period(-1200000L, null));
-//		assertParsePeriod("@-17M@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-17.56M@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-1m@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-1.2m@10%", new Period(-1200000L, null));
-//		assertParsePeriod("@-17m@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-17.56m@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-1k@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-1.2k@10%", new Period(-1200000L, null));
-//		assertParsePeriod("@-17k@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-17.56k@10%", new Period(-1000000L, null));
-//		
-//		//années
-//		assertParsePeriod("@2000", new Period(-1000000L, null));
-//		assertParsePeriod("@-2000", new Period(-1000000L, null));
-//		assertParsePeriod("@2000@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-2000@10%", new Period(-1000000L, null));
-//		//jours
-//		assertParsePeriod("@1000000", new Period(-1000000L, null));
-//		assertParsePeriod("@-1000000", new Period(-1000000L, null));
-//		assertParsePeriod("@1000000@10%", new Period(-1000000L, null));
-//		assertParsePeriod("@-1000000@10%", new Period(-1000000L, null));
-	}
-
-	private void assertParsePeriod(final String part, final Period expectedPeriod) {
-		assertThat(TermPeriodFilter.parsePeriod(part)).isEqualToComparingFieldByField(expectedPeriod);
+	public void build1(){
+		TermPeriodFilter periodFilter = TermPeriodFilter.build("doudou toto");
+		assertThat(periodFilter.getFrom()).isNull();
+		assertThat(periodFilter.getTo()).isNull();
+		assertThat(periodFilter.getWords()).containsExactly("doudou","toto");
 	}
 	
+	@Test
+	public void parsePeriodMinMode(){
+		assertFromTo("@1984min", 724641L, Long.MAX_VALUE);
+		assertFromTo("@1984max", Long.MIN_VALUE, 725005L);
+		assertFromTo("@-10max", Long.MIN_VALUE, -3652L + 364L);
+		assertFromTo("@-10min", -3652L, Long.MAX_VALUE);
+		assertFromTo("@-1", -365L, -1L);
+		assertFromTo("@1", 366L, 730L);
+		assertFromTo("@1M", -400675000000L, -327825000000L);
+		assertFromTo("@1m", -400675000L, -327825000L);
+		assertFromTo("@130m", -52087750000L, -42617250000L);
+		assertFromTo("@130M", -52087750000000L, -42617250000000L);
+		assertFromTo("@1.5m", -601012500L, -491737500L);
+		assertFromTo("@1.5M", -601012500000L, -491737500000L);
+		assertFromTo("@1,5m", -601012500L, -491737500L);
+		assertFromTo("@1,5M", -601012500000L, -491737500000L);
+		assertFromTo("@1,5m+-20%", -655650000L, -437100000L);
+		assertFromTo("@1,5M+-20%", -655650000000L, -437100000000L);
+	}
+	
+	private void assertFromTo(final String request, long from, long to) {
+		final Period period = TermPeriodFilter.parsePeriod(request);
+		assertThat(period.getFrom()).isEqualTo(from);
+		assertThat(period.getTo()).isEqualTo(to);
+	}	
 }

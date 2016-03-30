@@ -1,2 +1,3 @@
-data/index/
-data/sources/*/_crawldata
+data/indexes/
+data/phrases/
+data/temp/

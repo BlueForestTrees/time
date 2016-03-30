@@ -13,11 +13,11 @@
         $.get("api/buckets", params).done(callback);
     };
 
-    data.prototype.getPhrases = function(request, field, from, lastKey, callback) {
+    data.prototype.getPhrases = function(request, field, from, to, lastKey, callback) {
         var params = {
             field : field,
             from : from,
-            to : null,
+            to : to,
             request : request,
             lastKey : lastKey
         };

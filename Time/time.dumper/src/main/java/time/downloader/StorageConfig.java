@@ -1,5 +1,6 @@
 package time.downloader;
 
+import java.io.File;
 import java.io.Serializable;
 
 import org.apache.logging.log4j.Level;
@@ -36,21 +37,26 @@ public class StorageConfig {
         final String append = "false";
         final String immediateFlush = "true";
         final String bufferSizeStr = String.valueOf(RollingRandomAccessFileManager.DEFAULT_BUFFER_SIZE);
-        TriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(config.getMaxFileSize());
-        RolloverStrategy strategy = DefaultRolloverStrategy.createStrategy("1000", null, null, null, logConfig);
-        Layout<? extends Serializable> layout = new PageLayout();
+        final TriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(config.getMaxFileSize());
+        final RolloverStrategy strategy = DefaultRolloverStrategy.createStrategy("1000", null, null, null, logConfig);
+        final Layout<? extends Serializable> layout = new PageLayout();
 
-        RollingRandomAccessFileAppender appender = RollingRandomAccessFileAppender.createAppender(fileName, filePattern, append, PAGESTORE, immediateFlush, bufferSizeStr, policy, strategy, layout, null, "true", "true", null, logConfig);
+        createLogFolderIfNeeded(fileName);
+        final RollingRandomAccessFileAppender appender = RollingRandomAccessFileAppender.createAppender(fileName, filePattern, append, PAGESTORE, immediateFlush, bufferSizeStr, policy, strategy, layout, null, "true", "true", null, logConfig);
 
         appender.start();
         logConfig.addAppender(appender);
 
-        AppenderRef ref = AppenderRef.createAppenderRef(PAGESTORE, null, null);
-        AppenderRef[] refs = new AppenderRef[] { ref };
-        LoggerConfig loggerConfig = LoggerConfig.createLogger("false", Level.INFO, PAGESTORE, "true", refs, null, logConfig, null);
+        final AppenderRef ref = AppenderRef.createAppenderRef(PAGESTORE, null, null);
+        final AppenderRef[] refs = new AppenderRef[] { ref };
+        final LoggerConfig loggerConfig = LoggerConfig.createLogger("false", Level.INFO, PAGESTORE, "true", refs, null, logConfig, null);
         loggerConfig.addAppender(appender, null, null);
         logConfig.addLogger(PAGESTORE, loggerConfig);
         ctx.updateLoggers();
         return "storage done";
     }
+
+	private void createLogFolderIfNeeded(final String fileName) {
+		new File(fileName).mkdirs();
+	}
 }

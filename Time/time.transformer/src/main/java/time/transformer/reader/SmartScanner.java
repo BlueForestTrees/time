@@ -1,5 +1,6 @@
 package time.transformer.reader;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.FileSystems;
@@ -32,8 +33,12 @@ public class SmartScanner {
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
             entries = new ArrayList<Path>();
             for (Path entry : stream) {
-                LOG.info(entry.toString());
-                entries.add(entry);
+            	if(new File(entry.toString()).isFile()){
+            		LOG.info(entry.toString());
+            		entries.add(entry);
+            	}else{
+            		LOG.info("ignoring " + entry);
+            	}
             }
         }
         firstScanner();

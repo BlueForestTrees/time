@@ -21,11 +21,11 @@ import org.springframework.stereotype.Component;
 
 import time.repo.bean.Phrase;
 import time.repo.bean.SortableLongField;
+import time.tool.ref.Fields;
 
 @Component
 public class LuceneStorage {
-
-    Analyzer analyzer;
+	Analyzer analyzer;
     IndexWriterConfig indexWriterConfig;
     Directory directory;
     IndexWriter iwriter;
@@ -49,9 +49,9 @@ public class LuceneStorage {
     public void store(Phrase phrase) throws IOException {
 
         final Document doc = new Document();
-        doc.add(new TextField("text", phrase.getText(), Store.YES));
-        doc.add(new TextField("pageUrl", phrase.getPageUrl(), Store.YES));
-        doc.add(new SortableLongField("date", phrase.getDate(), Store.YES));
+        doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
+        doc.add(new TextField(Fields.PAGE_URL, phrase.getPageUrl(), Store.YES));
+        doc.add(new SortableLongField(Fields.DATE, phrase.getDate(), Store.YES));
 
         for(int i = 0; i < Scale.scales.length; i++){
             doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.scales[i], Store.NO));

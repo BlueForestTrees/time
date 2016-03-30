@@ -84,12 +84,12 @@ public class DownloaderConfig {
 
         public Values() {
             this.setMaxPages(-1);
-            this.setStoragePath("C:/Time/data/downloader/pages/all/pages");
+            this.setStoragePath("/home/slimane/time/Histoire/data/sources/wiki/articles");
             this.setNbPageLog(1000);
             this.setSeedUrl("http://fr.wikipedia.org/wiki/Portail:Accueil");
             this.setDelay(25);
             this.setNbCrawlers(50);
-            this.setCrawlPath("C:/Time/data/downloader/crawldata");
+            this.setCrawlPath("/home/slimane/time/Histoire/data/sources/wiki/_crawldata");
             this.setBaseUrl("https://fr.wikipedia.org/wiki");
             this.setResumable(false);
             this.setHelp(false);

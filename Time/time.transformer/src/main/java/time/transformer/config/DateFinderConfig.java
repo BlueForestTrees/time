@@ -21,8 +21,9 @@ public class DateFinderConfig {
     private final static String MOIS = "(?<m>(J|j)an(\\.|v\\.|vier)|(F|f)(é|e)v(\\.|rier)|(M|m)ar(\\.|s)|(A|a)vr(\\.|il)|(M|m)ai|(J|j)uin|(J|j)uil(\\.|let)|(A|a)o(u|û)(\\.|t)|(S|s)ep(\\.|t\\.|tembre)|(O|o)ct(\\.|obre)|(N|n)ov(\\.|embre)|(D|d)(é|e)c(\\.|embre))";
     private final static String ANNEE = " (?<y>\\d{3,4})";
 	private final static String REF = "(?<neg> (avant|av.) (J.-?C.|notre ère|le présent))";
-	public final static String TEXT_NUMBERS = "(?<gt>(un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|dix-sept|dix-huit|dix-neuf|vingt))";
-    private final static String NUMBERS = "(?<g>\\d+([,\\.]\\d+)?)";
+	public final static String TEXT_NUMBERS = "un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|dix-sept|dix-huit|dix-neuf|vingt";
+    private final static String TEXT_NUMBERS_ = "(?<gt>(" + TEXT_NUMBERS + "))"; 
+	private final static String NUMBERS = "(?<g>\\d+([,\\.]\\d+)?)";
 	private static final String ILYA = "([Ii]l y a|[Vv]oici)";
 	private static final String ENVIRON = "( environ)?";
 		
@@ -35,14 +36,14 @@ public class DateFinderConfig {
     
     @Bean
     public PhraseFinder milliardFinder() {
-        final Pattern pattern = Pattern.compile("("+NUMBERS+"|"+TEXT_NUMBERS+") milli(?<s>ard|on)s? d['’]années");
+        final Pattern pattern = Pattern.compile("("+NUMBERS+"|"+TEXT_NUMBERS_+") milli(?<s>ard|on)s? d['’]années");
         final IParser parser = new MilliardParser();
         return new PhraseFinder(pattern, parser, "milliardFinder");
     }
 
     @Bean
     public PhraseFinder jcFinder() {
-        final Pattern pattern = Pattern.compile("(^| |,)([Aà] partir de|[Ee]n) (l'an )?(?<g>(-)?\\d{2,4})("+REF+"|,)");
+        final Pattern pattern = Pattern.compile("(^| |,)(([Aà] partir|date(nt)?) de|[Ee]n) (l'an )?(?<g>(-)?\\d{2,9})("+REF+"|,)");
         final IParser parser = new JCParser();
         return new PhraseFinder(pattern, parser, "jcFinder");
     }

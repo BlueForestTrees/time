@@ -11,22 +11,22 @@ import org.springframework.context.annotation.Import;
 import time.transformer.reader.SmartScanner;
 
 @Configuration
-@ComponentScan({ "time.transformer.service", "time.transformer.component", "time.transformer.tool" })
+@ComponentScan(basePackages={ "time.transformer"})
 @Import({ DateFinderConfig.class })
 public class TransformerConfig {
     
 
     @Bean
     public String indexPath() {
-        // return "/Time/data/lucene/phrases";
-        return "/Time/data/lucene/sapiens";
+         return "/home/slimane/time/Histoire/data/indexes/wiki";
+        //return "/Time/data/lucene/sapiens";
     }
 
     
     @Bean
     public String datasourcePath() {
-        // return "C:/Time/data/downloader/pages/all";
-        return "C:/Time/data/downloader/sapiens";
+        return "/home/slimane/time/Histoire/data/sources/wiki";
+        //return "C:/Time/data/downloader/sapiens";
     }
 
     @Bean
@@ -37,7 +37,7 @@ public class TransformerConfig {
     
     @Bean
     public Long pageSize() {
-        return 1000L;
+        return 100L;
     }
 
     @Bean

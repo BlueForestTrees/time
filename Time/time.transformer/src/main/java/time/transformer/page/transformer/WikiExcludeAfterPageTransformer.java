@@ -3,6 +3,8 @@ package time.transformer.page.transformer;
 import java.util.Arrays;
 import java.util.OptionalInt;
 
+import org.springframework.stereotype.Component;
+
 import time.repo.bean.Page;
 
 /**
@@ -10,6 +12,7 @@ import time.repo.bean.Page;
  * @author slim
  *
  */
+@Component
 public class WikiExcludeAfterPageTransformer implements IPageTransformer {
 
     /**

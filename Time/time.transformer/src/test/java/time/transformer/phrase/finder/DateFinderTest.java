@@ -17,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import time.repo.bean.Phrase;
 import time.tool.date.Dates;
 import time.transformer.config.DateFinderConfig;
-import time.transformer.phrase.finder.parser.IParser;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = DateFinderConfig.class)
@@ -286,6 +285,11 @@ public class DateFinderTest {
         assertOne(jcFinder, yearIs(1900), "Or, après 1990, on a eu la surprise de constater le contraire.");
     }
     
+    @Test
+    public void jc21(){
+        assertOne(jcFinder, yearIs(1769), "L'invention de l'automobile date de 1769 (Charles Cugnot).");
+    }
+    
 
     @Test
     public void testMilliard0() {
@@ -310,6 +314,11 @@ public class DateFinderTest {
     @Test
     public void testMillion1() {
         assertOne(milliardFinder, longyearIs(-65000000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
+    }
+    
+    @Test
+    public void testMillion4() {
+        assertOne(milliardFinder, longyearIs(-100000000), "Les abeilles sont apparues il y a 100 millions d'années.");
     }
 
     @Test

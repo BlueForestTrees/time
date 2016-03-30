@@ -28,14 +28,16 @@ public class MilliardParser implements IParser {
 		}
 
 		if ("ard".equals(matcher.group("s"))) {
-			return -Dates.milliardsToDays(count);
+			return Dates.milliardsToDays(count);
 		} else {
-			return -Dates.millionsToDays(count);
+			return Dates.millionsToDays(count);
 		}
 	}
 
 	private double numberFromText(String numberText) {
-		return numbersMap.get(numberText);
+		final Integer number = numbersMap.get(numberText);
+		
+		return number;
 	}
 
 }

@@ -23,8 +23,9 @@ public class LuceneConfig {
 
     @Bean
     public String indexPath() {
+        //return "/home/slimane/time/Histoire/data/indexes/.histoires";
         return "/Time/data/lucene/histoires";
-        //return "/Time/data/lucene/phrases";
+    	//return "/Time/data/lucene/phrases";
         //return "/Time/data/lucene/sapiens";
     }
 

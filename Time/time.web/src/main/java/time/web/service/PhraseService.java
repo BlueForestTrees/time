@@ -53,7 +53,6 @@ public class PhraseService {
     @Autowired
     private FindBetterService tryWithService;
 
-    //TODO remplacer scale+bucket par date.
     public Phrases find(final String request, final String field, final Long from,  final Long to, String lastKey) throws IOException {    	
         final Last last = (Last) cache.remove(lastKey);
         final Query query = queryHelper.getQuery(request, field, from, to);

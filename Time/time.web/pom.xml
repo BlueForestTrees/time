@@ -98,7 +98,6 @@
 		<dependency>
 			<groupId>slim</groupId>
 			<artifactId>time.tool</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 

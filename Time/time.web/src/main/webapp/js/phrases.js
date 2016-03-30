@@ -19,7 +19,7 @@
 
     phrases.prototype.loadPhrases = function(scale, bucket) {
         Time.view.throbber.show();
-        Time.data.getPhrases(Time.filter.term, scale, bucket, null, $.proxy(this.onFirstPhrases, this, scale, bucket));
+        Time.data.getPhrases(Time.filter.term, scale, bucket, bucket, null, $.proxy(this.onFirstPhrases, this, scale, bucket));
     };
 
     phrases.prototype.onFirstPhrases = function(a, b, phrases) {
@@ -65,7 +65,7 @@
         if (!this.isSearching && this.lastSearch && this.isBottomVisible()) {
             this.isSearching = true;
             Time.view.throbber.show();
-            Time.data.getPhrases(Time.filter.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
+            Time.data.getPhrases(Time.filter.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
         }
     };
 

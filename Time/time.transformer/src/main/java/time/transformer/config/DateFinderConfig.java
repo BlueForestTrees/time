@@ -24,7 +24,7 @@ public class DateFinderConfig {
 	public final static String TEXT_NUMBERS = "un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|dix-sept|dix-huit|dix-neuf|vingt";
     private final static String TEXT_NUMBERS_ = "(?<gt>(" + TEXT_NUMBERS + "))"; 
 	private final static String NUMBERS = "(?<g>\\d+([,\\.]\\d+)?)";
-	private static final String ILYA = "([Ii]l y a|[Vv]oici)";
+	private static final String ILYA = "([Ii]l y a|[Vv]oici|vie(ux|ille) de)";
 	private static final String ENVIRON = "( environ)?";
 		
     @Bean
@@ -57,7 +57,7 @@ public class DateFinderConfig {
     
     @Bean
     public PhraseFinder nearJcFinder2() {
-        final Pattern pattern = Pattern.compile("(^| |,)([Vv]ers l'an) (?<g>(-)?\\d{2,4})(,?)"+REF+"?");
+        final Pattern pattern = Pattern.compile("(^| |,)([Vv]ers l'an|après) (?<g>(-)?\\d{2,4})(,?)"+REF+"?");
         final IParser parser = new JCParser();
         return new PhraseFinder(pattern, parser, "nearJcFinder2");
     }
@@ -78,7 +78,7 @@ public class DateFinderConfig {
 
     @Bean
     public PhraseFinder romanFinder() {
-        final Pattern pattern = Pattern.compile(" (?<g>[ixvIXV]+)e siècle");
+        final Pattern pattern = Pattern.compile(" (?<g>[ixvIXV]+)e siècle"+REF+"?");
         final IParser parser = new RomanParser();
         return new PhraseFinder(pattern, parser, "romanFinder");
     }

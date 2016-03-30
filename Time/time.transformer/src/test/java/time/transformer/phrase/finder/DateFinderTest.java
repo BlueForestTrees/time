@@ -78,7 +78,7 @@ public class DateFinderTest {
     }
     @Test
     public void ilYA14() {
-        assertOne(ilYAFinder, yearIs(-12000), "Tombe vieille de 12 000 ans découverte dans le nord d’Israël.");
+        assertOne(ilYAFinder, ilyaYearIs(-12000), "Tombe vieille de 12 000 ans découverte dans le nord d’Israël.");
     }
     @Test
     public void ilYA11() {
@@ -87,34 +87,33 @@ public class DateFinderTest {
     
     @Test
     public void ilYA1(){
-    	//le parseur hésite mal entre *365 et LocalTime.parse
-    	assertOne(ilYAFinder, longyearIs(-400000), "Voici 400 000 ans seulement que plusieurs espèces d’hommes ont commencé à chasser régulièrement le gros gibier");
+    	assertOne(ilYAFinder, ilyaYearIs(-400000), "Voici 400 000 ans seulement que plusieurs espèces d’hommes ont commencé à chasser régulièrement le gros gibier");
     }
     
-    @Test
+	@Test
     public void ilYA2(){
-    	assertOne(ilYAFinder, longyearIs(-600000), "Voici 600000 ans seulement que plusieurs espèces d’hommes ont commencé à chasser régulièrement le gros gibier");
+    	assertOne(ilYAFinder, ilyaYearIs(-600000), "Voici 600000 ans seulement que plusieurs espèces d’hommes ont commencé à chasser régulièrement le gros gibier");
     }
     @Test
     public void ilYA3(){
-    	assertOne(ilYAFinder, longyearIs(-800000), "Il y a 800 000 ans, déjà, certaines espèces humaines faisaient peut-être, à l’occasion, du feu.");
+    	assertOne(ilYAFinder, ilyaYearIs(-800000), "Il y a 800 000 ans, déjà, certaines espèces humaines faisaient peut-être, à l’occasion, du feu.");
     }
     @Test
     public void ilYA4(){
-    	assertOne(ilYAFinder, longyearIs(-800000), "Voici environ 300 000 ans, Homo erectus, les Neandertal et les ancêtres d’Homo sapiens faisaient quotidiennement du feu");
+    	assertOne(ilYAFinder, ilyaYearIs(-300000), "Voici environ 300 000 ans, Homo erectus, les Neandertal et les ancêtres d’Homo sapiens faisaient quotidiennement du feu");
     }
     @Test
     public void ilYA5(){
-    	assertOne(ilYAFinder, longyearIs(-150000), "Malgré les bénéfices du feu, les humains d’il y a 150 000 ans étaient encore des créatures marginales.");
+    	assertOne(ilYAFinder, ilyaYearIs(-150000), "Malgré les bénéfices du feu, les humains d’il y a 150 000 ans étaient encore des créatures marginales.");
     }
     
     @Test
     public void ilYA6(){
-    	assertOne(ilYAFinder, longyearIs(-50000), "Les derniers restes d’Homo soloensis datent d’environ 50 000 ans.");
+    	assertOne(ilYAFinder, ilyaYearIs(-50000), "Les derniers restes d’Homo soloensis datent d’environ 50 000 ans.");
     }
     @Test
     public void ilYA7(){
-    	assertOne(ilYAFinder, longyearIs(-40000), "L’Homo denisova disparut peu après, il y a quelque 40 000 ans.");
+    	assertOne(ilYAFinder, ilyaYearIs(-40000), "L’Homo denisova disparut peu après, il y a quelque 40 000 ans.");
     }
     
     
@@ -282,7 +281,7 @@ public class DateFinderTest {
     }
     @Test
     public void jc19(){
-        assertOne(jcFinder, yearIs(1900), "Or, après 1990, on a eu la surprise de constater le contraire.");
+        assertOne(nearJcFinder2, yearIs(1900), "Or, après 1990, on a eu la surprise de constater le contraire.");
     }
     
     @Test
@@ -293,52 +292,52 @@ public class DateFinderTest {
 
     @Test
     public void testMilliard0() {
-        assertOne(milliardFinder, longyearIs(-1000000000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
+        assertOne(milliardFinder, milliardYearIs(1), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
     }
 
     @Test
     public void testMilliard1() {
-        assertOne(milliardFinder, longyearIs(-2400000000L), "La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
+        assertOne(milliardFinder, milliardYearIs(2.4d), "La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
     }
 
     @Test
     public void testMilliard2() {
-        assertOne(milliardFinder, longyearIs(-25400000000L), "Super il y a environ 25,4 milliards d'années, à une autre époque.");
+        assertOne(milliardFinder, milliardYearIs(25.4d), "Super il y a environ 25,4 milliards d'années, à une autre époque.");
     }
 
     @Test
     public void testMilliard3() {
-        assertOne(milliardFinder, longyearIs(-25490000000L), "Super il y a environ 25,49 milliards d'années, à une autre époque.");
+        assertOne(milliardFinder, milliardYearIs(25.49d), "Super il y a environ 25,49 milliards d'années, à une autre époque.");
     }
 
     @Test
     public void testMillion1() {
-        assertOne(milliardFinder, longyearIs(-65000000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
+        assertOne(milliardFinder, millionYearIs(65), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
     }
     
     @Test
     public void testMillion4() {
-        assertOne(milliardFinder, longyearIs(-100000000), "Les abeilles sont apparues il y a 100 millions d'années.");
+        assertOne(milliardFinder, millionYearIs(100), "Les abeilles sont apparues il y a 100 millions d'années.");
     }
 
     @Test
     public void testMillion2() {
-        assertOne(milliardFinder, longyearIs(-2500000), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
+        assertOne(milliardFinder, millionYearIs(2.5d), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
     }
     
     @Test
     public void testMillion3(){
-    	assertOne(milliardFinder, longyearIs(-2500000), "Les humains sont apparus en Afrique de l’Est voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
+    	assertOne(milliardFinder, millionYearIs(2.5d), "Les humains sont apparus en Afrique de l’Est voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
     }
     
     @Test
     public void testMillion5(){
-    	assertOne(milliardFinder, longyearIs(-3000000), "Les humains sont apparus en Afrique de l’Est voici environ trois millions d’années, issus d’un genre antérieur de singe,");
+    	assertOne(milliardFinder, millionYearIs(3d), "Les humains sont apparus en Afrique de l’Est voici environ trois millions d’années, issus d’un genre antérieur de singe,");
     }
 
     @Test
     public void roman0() {
-        assertOne(romanFinder, yearIs(700), "Daté du VIIIe siècle av. J.-C., a été retrouvé dans les environs un ostracon sur lequel");
+        assertOne(romanFinder, yearIs(-700), "Daté du VIIIe siècle av. J.-C., a été retrouvé dans les environs un ostracon sur lequel");
     }
 
     @Test
@@ -446,8 +445,17 @@ public class DateFinderTest {
         assertNone(phrases, filteredFinders);
     }
 
-    private Condition<? super Phrase> longyearIs(long expectedAnnee) {
-        final long expectedJour = toLongJours(expectedAnnee);
+    private Condition<? super Phrase> milliardYearIs(double expectedAnnee) {
+        final long expectedJour = Dates.milliardsToDays(expectedAnnee);
+        return new Condition<Phrase>() {
+            public boolean matches(Phrase phrase) {
+                return phrase.getDate() == expectedJour;
+            }
+        }.as("jours correct : " + expectedJour);
+    }
+    
+    private Condition<? super Phrase> millionYearIs(double expectedAnnee) {
+        final long expectedJour = Dates.millionsToDays(expectedAnnee);
         return new Condition<Phrase>() {
             public boolean matches(Phrase phrase) {
                 return phrase.getDate() == expectedJour;
@@ -456,16 +464,24 @@ public class DateFinderTest {
     }
 
     private Condition<? super Phrase> yearIs(int expectedAnnee) {
-        final long expectedJour = toJours(expectedAnnee);
+        final long expectedJour = Dates.toDays(expectedAnnee);
         return new Condition<Phrase>() {
             public boolean matches(Phrase phrase) {
                 return phrase.getDate() == expectedJour;
             }
         }.as("jours correct : " + expectedJour);
     }
+    private Condition<? super Phrase> ilyaYearIs(int expectedAnnee) {
+    	final long expectedJour = Dates.ilyaToDays(expectedAnnee);
+        return new Condition<Phrase>() {
+            public boolean matches(Phrase phrase) {
+                return phrase.getDate() == expectedJour;
+            }
+        }.as("il y a jours correct : " + expectedJour);
+	}
 
     private Condition<? super Phrase> dateIs(final LocalDate expectedDate) {
-        long expectedJour = toJours(expectedDate);
+        long expectedJour = Dates.toDays(expectedDate);
         return new Condition<Phrase>() {
             public boolean matches(Phrase phrase) {
                 return phrase.getDate() == expectedJour;
@@ -496,7 +512,7 @@ public class DateFinderTest {
     }
 
     private void testToJours(final LocalDate localDate, final long expectedJours) {
-        final long actualJours = toJours(localDate);
+        final long actualJours = Dates.toDays(localDate);
         assertThat(actualJours).isEqualTo(expectedJours);
     }
 
@@ -508,11 +524,4 @@ public class DateFinderTest {
         return (long) (expectedAnnee * 364.25d);
     }
 
-    private long toJours(final int annee) {
-        return toJours(date(1, Month.JANUARY, annee));
-    }
-
-    private long toJours(final LocalDate date) {
-        return Dates.toDays(date);
-    }
 }

@@ -60,7 +60,6 @@ public class DateFinderTest {
     //La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
     //Sapiens moderne a acquises voici quelque 70 millénaires lui
 
-
     @Test
     public void ilYA15() {
         assertOne(ilYAFinder, yearIs(-2000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
@@ -194,6 +193,12 @@ public class DateFinderTest {
     @Test
     public void precise9(){
     	assertTwo(preciseFinder, dateIs(date(1, Month.FEBRUARY, 1919)), dateIs(date(1, Month.MARCH, 1921)), "La guerre soviéto-polonaise, ou guerre russo-polonaise (février 1919-mars 1921) est l'une des conséquences de la Première Guerre mondiale.");
+    }
+    
+
+    @Test
+    public void precise11(){
+    	assertOne(preciseFinder, dateIs(date(2, Month.DECEMBER, 1935)), "Woody Allen, est un réalisateur, scénariste, acteur et humoriste américain, né le 1er décembre 1935 à New York.");
     }
     
     @Test

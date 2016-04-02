@@ -108,8 +108,24 @@ public class DateFinderTest {
     }
     
     @Test
+    public void ilYA8(){
+    	assertOne(ilYAFinder, ilyaYearIs(-50000), "Les derniers restes d’Homo soloensis voici 50 000 ans.");
+    }
+    @Test
+    public void ilYA9(){
+    	assertOne(ilYAFinder, ilyaYearIs(-50000), "Les derniers restes d’Homo soloensis voici environ 50 000 ans.");
+    }
+    @Test
+    public void ilYA10(){
+    	assertOne(ilYAFinder, ilyaYearIs(-50000), "Les derniers restes d’Homo soloensis vieux de 50 000 ans.");
+    }
+    @Test
+    public void ilYA12(){
+    	assertOne(ilYAFinder, ilyaYearIs(-50000), "Les derniers restes d’Homo soloensis datent d'environ 50 000 ans.");
+    }
+    @Test
     public void ilYA6(){
-    	assertOne(ilYAFinder, ilyaYearIs(-50000), "Les derniers restes d’Homo soloensis datent d’environ 50 000 ans.");
+    	assertOne(ilYAFinder, ilyaYearIs(-50000), "Les derniers restes d’Homo soloensis vieux d'environ 50 000 ans.");
     }
     @Test
     public void ilYA7(){
@@ -279,14 +295,31 @@ public class DateFinderTest {
     public void jc16(){
         assertOne(jcFinder, yearIs(-500), "A partir de l'an 500 avant J.C., il s'est passé des choses.");
     }
+    
     @Test
     public void jc19(){
-        assertOne(nearJcFinder2, yearIs(1900), "Or, après 1990, on a eu la surprise de constater le contraire.");
+        assertOne(nearJcFinder2, yearIs(1990), "Or, après 1990, on a eu la surprise de constater le contraire.");
     }
     
     @Test
+    public void jc22(){
+        assertOne(jcFinder, yearIs(500), "date de 500, il s'est passé des choses.");
+    }
+    @Test
+    public void jc25(){
+        assertOne(jcFinder, yearIs(1500), "cela apparaît à partir de 1500.");
+    }
+    @Test
+    public void jc23(){
+        assertOne(jcFinder, yearIs(1500), "cela apparaît à partir de 1500 souvent.");
+    }
+    @Test
     public void jc21(){
-        assertOne(jcFinder, yearIs(1769), "L'invention de l'automobile date de 1769 (Charles Cugnot).");
+    	assertOne(jcFinder, yearIs(1769), "L'invention de l'automobile date de 1769 (Charles Cugnot).");
+    }
+    @Test
+    public void jc24(){
+        assertOne(jcFinder, yearIs(-500), "A partir de l'an 500 avant J.C. pour la plupart il s'est passé des choses.");
     }
     
 
@@ -366,11 +399,6 @@ public class DateFinderTest {
     }
 
     @Test
-    public void none4() {
-        assertNone("fin en 566538 Invention du système décimal.606 Début du règne de Harsavardhana, roi de l'Inde du Nord");
-    }
-
-    @Test
     public void none5() {
         final String phrase = "Pépin II, roi d’Aquitaine, résiste durant un quart de siècle à Charles le Chauve, le roi de Francie occidentale.";
         assertNone(new String[] { phrase }, romanFinder);
@@ -378,32 +406,32 @@ public class DateFinderTest {
     
 
     @Test
-    public void none13() {
+    public void none6() {
         assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
     }
     
     @Test
-    public void none17() {
+    public void none7() {
         assertNone("Leur système de base 6 nous a laissé plusieurs héritages importants, comme la division du jour en 24 heures et celle du cercle en 360 degrés.) L’autre type de signes représentait des hommes, des animaux, des marchandises, des territoires, des dates et ainsi de suite.");
     }
     
     @Test
-    public void none14() {
+    public void none8() {
         assertNone("mais c'est pas pour de suite, j'ai/nous avons d'abord environ 3500 autres articles à traduire avant d'arriver à celui-là !");
     }
 
     @Test
-    public void none16() {
+    public void none9() {
         assertNone("Il serait d'origine alsacienne et deux parties sont manquantes : les vers 5479 à 5624 et les vers 7524 à 7716");
     }
 
     @Test
-    public void none15() {
+    public void none10() {
         assertNone("Il pouvait accueillir environ 9000 spectateurs répartis dans une cavea sem");
     }
 
     @Test
-    public void none12() {
+    public void none11() {
         assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
     }
 
@@ -518,10 +546,6 @@ public class DateFinderTest {
 
     private LocalDate date(final int dayOfMonth, final Month month, final int year) {
         return LocalDate.of(year, month, dayOfMonth);
-    }
-
-    private long toLongJours(long expectedAnnee) {
-        return (long) (expectedAnnee * 364.25d);
     }
 
 }

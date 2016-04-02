@@ -9,7 +9,7 @@ import time.tool.date.Dates;
 public class RomanParser implements IParser {
 
     @Override
-    public long from(final Matcher matcher) {
+    public Long from(final Matcher matcher) {
         final String romanNumber = matcher.group("g");
         int annee = Dates.toYear(romanNumber);
         if(matcher.group("neg") != null){

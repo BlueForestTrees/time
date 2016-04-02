@@ -18,7 +18,7 @@ public class PreciseParser implements IParser {
     private static final Logger LOG = LogManager.getLogger(PreciseParser.class);
 
     @Override
-    public long from(final Matcher matcher) {
+    public Long from(final Matcher matcher) {
         final int day = matcher.group("d") == null ? 1 : Integer.parseInt(matcher.group("d").trim());
         final Month month = parseMonth(matcher.group("m").trim());
         int year = Integer.parseInt(matcher.group("y").trim());
@@ -34,7 +34,7 @@ public class PreciseParser implements IParser {
             	return Dates.toDays(LocalDate.of(year, month, 1));
             } catch (DateTimeException exx) {
                 LOG.error("pb pour parser " + matcher.group("g"), exx);
-                return 0;
+                return 0L;
             }
         }
     }

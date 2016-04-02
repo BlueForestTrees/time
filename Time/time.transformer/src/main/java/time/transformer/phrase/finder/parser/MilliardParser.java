@@ -18,7 +18,7 @@ public class MilliardParser implements IParser {
 	}
 
 	@Override
-	public long from(final Matcher matcher) {
+	public Long from(final Matcher matcher) {
 		boolean textMode = matcher.group("gt") != null;
 		double count;
 		if (textMode) {

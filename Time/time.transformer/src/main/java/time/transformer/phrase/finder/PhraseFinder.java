@@ -33,10 +33,12 @@ public class PhraseFinder {
             while (matcher.find()) {
                 final String dateExtract = matcher.group();
                 final Long date = parser.from(matcher);
-                final Phrase phrase = new Phrase();
-                phrase.setText(preparePhrase(text, dateExtract));
-                phrase.setDate(date);
-                result.add(phrase);
+                if(date != null){
+	                final Phrase phrase = new Phrase();
+	                phrase.setText(preparePhrase(text, dateExtract));
+	                phrase.setDate(date);
+	                result.add(phrase);
+                }
             }
         }
         return result;
@@ -48,7 +50,7 @@ public class PhraseFinder {
 
     @Override
     public String toString() {
-        return name + "<"+parser.getClass().getSimpleName()+">";
+        return name;
     }
 
 }

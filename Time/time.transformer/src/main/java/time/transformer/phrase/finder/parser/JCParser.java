@@ -7,7 +7,7 @@ import time.tool.date.Dates;
 public class JCParser implements IParser {
 
     @Override
-    public long from(Matcher matcher) {
+    public Long from(Matcher matcher) {
         int annees = Integer.parseInt(matcher.group("g"));
 		if(matcher.group("neg") != null){
 			annees = -annees;

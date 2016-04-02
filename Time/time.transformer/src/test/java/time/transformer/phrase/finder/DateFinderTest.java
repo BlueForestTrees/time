@@ -59,6 +59,8 @@ public class DateFinderTest {
     //L’apparition de nouvelles façons de penser et de communiquer, entre 70 000 et 30 000 ans, constitue la Révolution cognitive.
     //La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
     //Sapiens moderne a acquises voici quelque 70 millénaires lui
+
+
     @Test
     public void ilYA15() {
         assertOne(ilYAFinder, yearIs(-2000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
@@ -144,7 +146,6 @@ public class DateFinderTest {
     	assertOne(ilYAFinder, ilyaYearIs(-45000), "Les villages de pêche ont pu apparaître sur les côtes des îles indonésiennes dès 45 000 ans.");
 	}
     
-    
     @Test
     public void near0() {
         assertOne(nearJcFinder2, yearIs(2000), "Vers l'an 2000, gros bug.");
@@ -194,6 +195,12 @@ public class DateFinderTest {
     public void precise9(){
     	assertTwo(preciseFinder, dateIs(date(1, Month.FEBRUARY, 1919)), dateIs(date(1, Month.MARCH, 1921)), "La guerre soviéto-polonaise, ou guerre russo-polonaise (février 1919-mars 1921) est l'une des conséquences de la Première Guerre mondiale.");
     }
+    
+    @Test
+    public void jc27(){
+    	assertOne(jcFinder, yearIs(1790), "L'invention du Camenbert date de 1790");
+    }
+    
     
     @Test
     public void precise10(){

@@ -55,23 +55,10 @@ public class DateFinderTest {
 
     @Autowired
     private PhraseFinder[] finders;
-
-    
-    
-    
     
     //L’apparition de nouvelles façons de penser et de communiquer, entre 70 000 et 30 000 ans, constitue la Révolution cognitive.
-    //La période qui va des années 70 000 à 30 000 vit l’invention des bateaux, des lampes à huile, des arcs et des flèches, des aiguilles (essentielles pour coudre des vêtements chauds).
-    //Les nouvelles capacités linguistiques que le Sapiens moderne a acquises voici quelque 70 millénaires lui ont permis de bavarder des heures d’affilée.
-    //Physiologiquement, notre capacité de fabriquer des outils ne s’est pas sensiblement améliorée au cours des 30 000 dernières années.
-    //Comment se fait-il que nous ayons des missiles intercontinentaux pourvus d’ogives nucléaires alors que, voici 30 000 ans, nous n’avions que des bâtons aux extrémités pourvues de silex ?
-    //Les experts ne sont pas d’accord sur la date exacte, mais nous avons des preuves incontestables de la domestication des chiens il y a près de 15 000 ans.
-    //
-    //Les villages de pêche ont pu apparaître sur les côtes des îles indonésiennes dès 45 000 ans.
-    //Les chasseurs-cueilleurs qui vivent de nos jours dans les habitats les moins hospitaliers – comme le désert du Kalahari – ne travaillent en moyenne que 35 à 45 heures par semaine.
-    //Les Aché, peuple de chasseurs-cueilleurs qui vivaient dans les jungles du Paraguay jusque dans les années 1960, offrent un aperçu du monde des fourrageurs dans son côté sombre
-    //des rabbins juifs polonais du XVIIIe siècle aux puritains brûleurs
-      
+    //La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
+    //Sapiens moderne a acquises voici quelque 70 millénaires lui
     @Test
     public void ilYA15() {
         assertOne(ilYAFinder, yearIs(-2000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");
@@ -131,6 +118,31 @@ public class DateFinderTest {
     public void ilYA7(){
     	assertOne(ilYAFinder, ilyaYearIs(-40000), "L’Homo denisova disparut peu après, il y a quelque 40 000 ans.");
     }
+    
+    @Test
+    public void ilYA16(){
+    	assertOne(ilYAFinder, ilyaYearIs(-15000), "mais nous avons des preuves incontestables de la domestication des chiens il y a près de 15 000 ans.");
+    }
+    
+    @Test
+    public void ilYA17(){
+    	assertOne(ilYAFinder, ilyaYearIs(-30000), "des outils ne s’est pas sensiblement améliorée au cours des 30 000 dernières années.");
+    }
+    
+    @Test
+    public void ilYA18(){
+    	assertOne(ilYAFinder, ilyaYearIs(-30000), "intercontinentaux pourvus d’ogives nucléaires alors que, voici 30 000 ans, nous n’avions");
+    }
+    
+    @Test
+    public void ilYA19(){
+    	assertOne(ilYAFinder, ilyaYearIs(-80), "il y a 80 ans");
+    }
+    
+    @Test
+    public void ilYA20(){
+    	assertOne(ilYAFinder, ilyaYearIs(-45000), "Les villages de pêche ont pu apparaître sur les côtes des îles indonésiennes dès 45 000 ans.");
+	}
     
     
     @Test
@@ -272,6 +284,11 @@ public class DateFinderTest {
     public void jc10() {
         assertOne(nearJcFinder3, yearIs(-2300), "La civilisation olmèque a débuté avec une production en abondance de poterie, vers 2300 avant notre ère");
     }
+    
+    @Test
+    public void jc26() {
+        assertOne(jcFinder, yearIs(1960), "du Paraguay jusque dans les années 1960, offrent un aperçu");
+    }
 
 
     @Test
@@ -382,6 +399,11 @@ public class DateFinderTest {
     public void roman2() {
         assertOne(romanFinder, yearIs(1500), "Les revolvers existent depuis au moins le xvie siècle.");
     }
+    
+    @Test
+    public void roman3() {
+        assertOne(romanFinder, yearIs(1700), "des rabbins juifs polonais du XVIIIe siècle aux puritains brûleurs");
+    }
 
     @Test
     public void none1() {
@@ -433,6 +455,11 @@ public class DateFinderTest {
     @Test
     public void none11() {
         assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
+    }
+    
+    @Test
+    public void none12() {
+        assertNone("Les chasseurs-cueilleurs du Kalahari – ne travaillent en moyenne que 35 à 45 heures par semaine.");
     }
 
 

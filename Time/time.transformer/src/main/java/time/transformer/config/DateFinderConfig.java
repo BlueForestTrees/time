@@ -26,12 +26,12 @@ public class DateFinderConfig {
 	public final static String TEXT_NUMBERS = "un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|dix-sept|dix-huit|dix-neuf|vingt";
     private final static String TEXT_NUMBERS_ = "(?<gt>(" + TEXT_NUMBERS + "))"; 
 	private final static String NUMBERS = "(?<g>\\d+([,\\.]\\d+)?)";
-	private static final String ILYAENVIRON = "([Ii]l y a( quelque)?|[Vv]oici|(datent|vie(ux|ille)) d(e)?)([ ']environ)?";
-	private static final String EXCLUDEDS = "(?<ex>(degré|coup|pa|tour|heure)s?)?";
+	private static final String ILYAENVIRON = "([Ii]l y a|[Vv]oici|(datent|vie(ux|ille)) d(e)?|au cours des|dès)([ ']environ)?( quelque)?( près de)?";
+	private static final String EXCLUDEDS = "(?<ex>(degré|coup|pa|tour|heure|minute|seconde|mois)s?)?";
 		
     @Bean
     public PhraseFinder ilYAFinder(){
-    	final Pattern pattern = Pattern.compile("(?<neg>"+ILYAENVIRON+") (?<g>\\d{1,3}( ?000)?) ans");
+    	final Pattern pattern = Pattern.compile("(?<neg>"+ILYAENVIRON+") (?<g>\\d{1,3}( ?000)?) (ans|dernières années)");
         final IParser parser = new IlYAParser();
         return new PhraseFinder(pattern, parser, "ilYAFinder");
     }
@@ -45,7 +45,7 @@ public class DateFinderConfig {
 
     @Bean
     public PhraseFinder jcFinder() {
-        final Pattern pattern = Pattern.compile(START + "([Aà] partir de|date de|[Ee]n) (l'an )?(?<g>(-)?\\d{2,9})"+REF+"?(;|,|\\.| "+EXCLUDEDS+"|$)");
+        final Pattern pattern = Pattern.compile(START + "([Aà] partir de|date de|[Ee]n|dans les années) (l'an )?(?<g>(-)?\\d{2,9})"+REF+"?(;|,|\\.| "+EXCLUDEDS+"|$)");
         final IParser parser = new ExcludingJCParser();
         return new PhraseFinder(pattern, parser, "jcFinder");
     }

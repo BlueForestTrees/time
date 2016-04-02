@@ -1,7 +1,5 @@
 package time.downloader.writer;
 
-import java.util.Set;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,7 +9,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 
 public class LogWriter implements IWriter {
     private static final String PAGESTORE = "pagestore";
-    private static final Logger LOG = LogManager.getLogger(PAGESTORE);
+    private static final Logger PAGEWRITER = LogManager.getLogger(PAGESTORE);
     private String sep;
     private String baseUrl;
 
@@ -33,39 +31,21 @@ public class LogWriter implements IWriter {
 
     @Override
     public void writePage(Page page) {
-        StringBuilder sb = new StringBuilder();
-
-        HtmlParseData htmlData = (HtmlParseData) page.getParseData();
+        final StringBuilder sb = new StringBuilder();
+        final HtmlParseData htmlData = (HtmlParseData) page.getParseData();
         final WebURL webURL = page.getWebURL();
         final String url = webURL.getURL();
-        final short depth = webURL.getDepth();
         final String title = htmlData.getTitle();
-        final Set<WebURL> liens = htmlData.getOutgoingUrls();
         final String text = htmlData.getText();
-        int nbLiens = 0;
-        StringBuilder sbLiens = new StringBuilder();
-        for (WebURL webUrl : liens) {
-            String lien = webUrl.getURL();
-            if (lien.startsWith(baseUrl)) {
-                sbLiens.append(lien);
-                sbLiens.append(sep);
-                nbLiens++;
-            }
-        }
 
         sb.append(url);
         sb.append(sep);
-        sb.append(String.valueOf(depth));
-        sb.append(sep);
         sb.append(title);
         sb.append(sep);
-        sb.append(String.valueOf(nbLiens));
-        sb.append(sep);
-        sb.append(sbLiens.toString());
         sb.append(text);
         sb.append(sep);
 
-        LOG.info(sb.toString());
+       	PAGEWRITER.info(sb.toString());
     }
 
 }

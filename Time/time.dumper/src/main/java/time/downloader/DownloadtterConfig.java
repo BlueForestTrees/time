@@ -10,9 +10,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class DownloaderConfig {
+public class DownloadtterConfig {
 
-    private static final Logger LOGGER = LogManager.getLogger(DownloaderConfig.class);
+    private static final Logger LOGGER = LogManager.getLogger(DownloadtterConfig.class);
     private static final String SEED_URL = "seedUrl";
     private static final String NB_CRAWLERS = "nbCrawlers";
     private static final String MAX_PAGES = "maxPages";
@@ -89,7 +89,7 @@ public class DownloaderConfig {
             this.setSeedUrl("http://fr.wikipedia.org/wiki/Portail:Accueil");
             this.setDelay(25);
             this.setNbCrawlers(50);
-            this.setCrawlPath("/home/slimane/time/Histoire/data/sources/wiki/_crawldata");
+            this.setCrawlPath("/home/slimane/time/Histoire/data/sources/wiki/.crawldata");
             this.setBaseUrl("https://fr.wikipedia.org/wiki");
             this.setResumable(false);
             this.setHelp(false);

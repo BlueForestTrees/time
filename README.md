@@ -13,7 +13,7 @@ Page facebook de promotion : https://www.facebook.com/histoires.xyz
  ### Collaboration
 N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous intéresse pour + d'explications:
 
-- Installer un gulp rev/minifié sur les fichiers js et css depuis le maven install.
+- gulp rev/minifié sur les fichiers js et css depuis le maven install.
 - pages de gallica avec unz conf de crawler spécifique: http://gallica.bnf.fr/ark:/12148/bpt6k1025019c/f1.item.r=.texteImage
 - post filter longueur entre 50 et 250?
 - tika pour epub et pdf
@@ -25,9 +25,10 @@ N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous int�
 - barre du bas, page Contact pour envoi de mail
 - Ajouter un curseur sur la barre active indiquant où le texte en est (date min).
 - Ajouter un drag sur le curseur actif pour définir la date max.
+- mettre la barre en vertical. . .
 - Like Facebook
 - Partage Facebook
-- plugin slack
+- plugin slack diffuser
 - Twitter
 - version Anglaise
 - utiliser "messe basse", "espace" comme base de recherche pour améliorer le zoom auto / ouverture des barres.

@@ -18,6 +18,7 @@ N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous int�
 - post filter longueur entre 50 et 250?
 - tika pour epub et pdf
 - config full text  wiki, epub, gallica
+- pipeline commandable
 - pages wiki de dates (TransformerService.handle(), système de tableau de pageTransformer)
 - barre du bas, système de layer au clic d'un bouton
 - barre du bas, page présentation

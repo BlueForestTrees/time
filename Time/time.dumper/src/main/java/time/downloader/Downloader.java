@@ -1,8 +1,11 @@
 package time.downloader;
 
+import java.io.IOException;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -24,37 +27,50 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 public class Downloader implements CommandLineRunner{
 
     private static final Log LOG = LogFactory.getLog(Downloader.class);
+    
     @Autowired
-    private DownloaderConfig.Values params;
+    private ApplicationArguments args;
+    
+    @Autowired
+    private Config conf;
+    
+    @Bean
+    public Config configuration() throws IOException{
+    	final String basePath = args.getOptionValues(ConfigKeys.basePath).get(0);
+		final String name = args.getOptionValues(ConfigKeys.name).get(0);
+		final Config config = new Config(basePath, name);
+		return config;
+    }
+    
     @Autowired
     private StorageConfig storageConfig;
 
     @Bean
     public LogWriter logWriter() {
         final LogWriter writer = new LogWriter();
-        writer.setBaseUrl(params.getBaseUrl());
-        writer.setSep(params.getSep());
+        writer.setBaseUrl(conf.getBaseUrl());
+        writer.setSep(conf.getSep());
         return writer;
     }
 
     @Bean
     public IPageHandler pageHandler() {
         final DirectCrawler handler = new DirectCrawler();
-        handler.setNbPageLog(params.getNbPageLog());
-        handler.setBaseUrl(params.getBaseUrl());
-        handler.setUrlRegexBlackList(params.getFilter());
+        handler.setNbPageLog(conf.getNbPageLog());
+        handler.setBaseUrl(conf.getBaseUrl());
+        handler.setUrlRegexBlackList(conf.getFilter());
         handler.setWriter(logWriter());
-        handler.setMaxPages(params.getMaxPages());
+        handler.setMaxPages(conf.getMaxPages());
         return handler;
     }
 
     @Bean
     public edu.uci.ics.crawler4j.crawler.CrawlConfig crawlConfig() {
         edu.uci.ics.crawler4j.crawler.CrawlConfig crawlConfig = new edu.uci.ics.crawler4j.crawler.CrawlConfig();
-        crawlConfig.setPolitenessDelay(params.getDelay());
-        crawlConfig.setCrawlStorageFolder(params.getCrawlPath());
-        crawlConfig.setResumableCrawling(params.isResumable());
-        crawlConfig.setMaxPagesToFetch(params.getMaxPages());
+        crawlConfig.setPolitenessDelay(conf.getDelay());
+        crawlConfig.setCrawlStorageFolder(conf.getCrawlStorageFolder());
+        crawlConfig.setResumableCrawling(conf.isResumable());
+        crawlConfig.setMaxPagesToFetch(conf.getMaxPages());
         return crawlConfig;
     }
 
@@ -71,7 +87,7 @@ public class Downloader implements CommandLineRunner{
         } catch (Exception e) {
             throw new DownloaderException(e);
         }
-        crawlController.addSeed(params.getSeedUrl());
+        crawlController.addSeed(conf.getSeedUrl());
 
         return crawlController;
     }
@@ -84,15 +100,15 @@ public class Downloader implements CommandLineRunner{
     public void run(String... args) throws Exception {
         storageConfig.configureStorage();
         CrawlerAdapter.pageHandler = pageHandler();
-        if (params.isHelp()) {
-            LOG.info("configuration du crawler" + params.getConfAsString());
+        if (conf.isHelp()) {
+            LOG.info("configuration du crawler" + conf);
         } else {
-            LOG.info("démarrage du crawler" + params.getConfAsString());
+            LOG.info("démarrage du crawler" + conf);
 
             final CrawlController crawlController = crawlController();
-            crawlController.start(CrawlerAdapter.class, params.getNbCrawlers());
+            crawlController.start(CrawlerAdapter.class, conf.getNbCrawlers());
 
-            LOG.info("fin du crawler" + params.getConfAsString());
+            LOG.info("fin du crawler" + conf);
         }
     }
 

@@ -198,8 +198,10 @@ public class DateFinderTest {
 
     @Test
     public void precise11(){
-    	assertOne(preciseFinder, dateIs(date(2, Month.DECEMBER, 1935)), "Woody Allen, est un réalisateur, scénariste, acteur et humoriste américain, né le 1er décembre 1935 à New York.");
+    	assertOne(preciseFinder, dateIs(date(1, Month.DECEMBER, 1935)), "Woody Allen, est un réalisateur, scénariste, acteur et humoriste américain, né le 1er décembre 1935 à New York.");
     }
+    
+    
     
     @Test
     public void jc27(){
@@ -351,6 +353,10 @@ public class DateFinderTest {
         assertOne(jcFinder, yearIs(-500), "A partir de l'an 500 avant J.C. pour la plupart il s'est passé des choses.");
     }
     
+    @Test
+    public void jc28(){
+        assertOne(jcFinder, yearIs(1456), "Les chats sont bleus depuis 1456.");
+    }
 
     @Test
     public void testMilliard0() {
@@ -472,6 +478,11 @@ public class DateFinderTest {
     @Test
     public void none12() {
         assertNone("Les chasseurs-cueilleurs du Kalahari – ne travaillent en moyenne que 35 à 45 heures par semaine.");
+    }
+    
+    @Test
+    public void precise12(){
+    	assertOne(preciseFinder, dateIs(date(10, Month.FEBRUARY, 1984)), "Slimane Médini est né le 10 Février 1984 à Gournay-en-bray");
     }
 
 

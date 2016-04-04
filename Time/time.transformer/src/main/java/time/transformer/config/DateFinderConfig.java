@@ -19,7 +19,7 @@ import time.transformer.phrase.finder.parser.RomanParser;
 public class DateFinderConfig {
     
 	private static final String START = "(^| |,|;)";
-    private final static String JOUR = "(?<d>\\d{1,2} )?";
+    private final static String JOUR = "((?<d>\\d{1,2})(er)? )?";
     private final static String MOIS = "(?<m>(J|j)an(\\.|v\\.|vier)|(F|f)(é|e)v(\\.|rier)|(M|m)ar(\\.|s)|(A|a)vr(\\.|il)|(M|m)ai|(J|j)uin|(J|j)uil(\\.|let)|(A|a)o(u|û)(\\.|t)|(S|s)ep(\\.|t\\.|tembre)|(O|o)ct(\\.|obre)|(N|n)ov(\\.|embre)|(D|d)(é|e)c(\\.|embre))";
     private final static String ANNEE = " (?<y>\\d{3,4})";
 	private final static String REF = "(?<neg> (avant|av.) (J.-?C.|notre ère|le présent))";
@@ -45,7 +45,7 @@ public class DateFinderConfig {
 
     @Bean
     public PhraseFinder jcFinder() {
-        final Pattern pattern = Pattern.compile(START + "([Aà] partir de|date de|[Ee]n|dans les années) (l'an )?(?<g>(-)?\\d{2,9})"+REF+"?(;|,|\\.| "+EXCLUDEDS+"|$)");
+        final Pattern pattern = Pattern.compile(START + "([Aà] partir de|date de|depuis|[Ee]n|dans les années) (l'an )?(?<g>(-)?\\d{2,9})"+REF+"?(;|,|\\.| "+EXCLUDEDS+"|$)");
         final IParser parser = new ExcludingJCParser();
         return new PhraseFinder(pattern, parser, "jcFinder");
     }

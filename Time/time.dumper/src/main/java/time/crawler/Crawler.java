@@ -1,49 +1,37 @@
-package time.downloader;
-
-import java.io.IOException;
+package time.crawler;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.Banner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-import time.downloader.crawler.CrawlerAdapter;
-import time.downloader.crawler.DirectCrawler;
-import time.downloader.crawler.IPageHandler;
-import time.downloader.writer.LogWriter;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import time.crawler.crawl.CrawlerAdapter;
+import time.crawler.crawl.DirectCrawler;
+import time.crawler.crawl.IPageHandler;
+import time.crawler.write.LogWriter;
+import time.crawler.write.LogWriterHelper;
+import time.tool.conf.Context;
 
-@Configuration
-@ComponentScan({ "time.downloader" })
-public class Downloader implements CommandLineRunner{
+@Component
+@ComponentScan({ "time.crawler" })
+public class Crawler implements CommandLineRunner{
 
-    private static final Log LOG = LogFactory.getLog(Downloader.class);
+    private static final Log LOG = LogFactory.getLog(Crawler.class);
     
     @Autowired
-    private ApplicationArguments args;
-    
+    private Context conf;
+        
     @Autowired
-    private Config conf;
-    
-    @Bean
-    public Config configuration() throws IOException{
-    	final String basePath = args.getOptionValues(ConfigKeys.basePath).get(0);
-		final String name = args.getOptionValues(ConfigKeys.name).get(0);
-		final Config config = new Config(basePath, name);
-		return config;
-    }
-    
-    @Autowired
-    private StorageConfig storageConfig;
+    private LogWriterHelper logWriterHelper;
 
     @Bean
     public LogWriter logWriter() {
@@ -75,36 +63,32 @@ public class Downloader implements CommandLineRunner{
     }
 
     @Bean
-    edu.uci.ics.crawler4j.crawler.CrawlController crawlController() throws DownloaderException {
+    edu.uci.ics.crawler4j.crawler.CrawlController crawlController() throws Exception {
         final RobotstxtConfig robotstxtConfig = new RobotstxtConfig();
         robotstxtConfig.setEnabled(false);
         final PageFetcher pageFetcher = new PageFetcher(crawlConfig());
         final RobotstxtServer robotstxtServer = new RobotstxtServer(robotstxtConfig, pageFetcher);
 
         edu.uci.ics.crawler4j.crawler.CrawlController crawlController;
-        try {
-            crawlController = new edu.uci.ics.crawler4j.crawler.CrawlController(crawlConfig(), pageFetcher, robotstxtServer);
-        } catch (Exception e) {
-            throw new DownloaderException(e);
-        }
+        crawlController = new edu.uci.ics.crawler4j.crawler.CrawlController(crawlConfig(), pageFetcher, robotstxtServer);
         crawlController.addSeed(conf.getSeedUrl());
 
         return crawlController;
     }
 
     public static void main(String[] args) throws Exception {
-       new SpringApplicationBuilder().bannerMode(Banner.Mode.OFF).sources(Downloader.class).run(args);
+       new SpringApplicationBuilder().bannerMode(Banner.Mode.OFF).sources(Crawler.class).run(args);
     }
 
     @Override
     public void run(String... args) throws Exception {
-        storageConfig.configureStorage();
-        CrawlerAdapter.pageHandler = pageHandler();
         if (conf.isHelp()) {
             LOG.info("configuration du crawler" + conf);
         } else {
             LOG.info("démarrage du crawler" + conf);
 
+            logWriterHelper.configureStorage();
+            CrawlerAdapter.pageHandler = pageHandler();
             final CrawlController crawlController = crawlController();
             crawlController.start(CrawlerAdapter.class, conf.getNbCrawlers());
 

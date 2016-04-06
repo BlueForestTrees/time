@@ -1,11 +1,11 @@
-package time.downloader;
+package time.tool.conf;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import java.util.HashMap;
+import java.util.Map;
 
-public class BaseConfig {
-	private final Properties prop = new Properties();
+public class BaseContext {
+	protected final Map<String,Object> map = new HashMap<>();
 	/**
 	 * Construit une map à partir des infos
 	 * /base/path
@@ -19,19 +19,25 @@ public class BaseConfig {
 	 * @param name
 	 * @throws IOException 
 	 */
-	public BaseConfig(final String basePath, final String name) throws IOException{
-		final String sourcesPath = basePath + (!basePath.endsWith("/")?"/":"") + "sources/";
-		final String tempPath = basePath + (!basePath.endsWith("/")?"/":"") + "temp/";
-		final String indexesPath = basePath + (!basePath.endsWith("/")?"/":"") + "indexes/";
-		final String confPath = sourcesPath + name + "/" + ".conf";
-		final InputStream in = getClass().getResourceAsStream(confPath);
-		prop.load(in);
-		in.close();
-		prop.setProperty("sourcesPath", sourcesPath);
-		prop.setProperty("tempPath", tempPath);
-		prop.setProperty("indexesPath", indexesPath);
-		prop.setProperty("basePath", basePath);
-		prop.setProperty("name", name);
+	public BaseContext() {
+//		final String basePath = "chemin";
+//		final String name = "wiki";
+//		final String sourcesPath = basePath + (!basePath.endsWith("/")?"/":"") + "sources/";
+//		final String tempPath = basePath + (!basePath.endsWith("/")?"/":"") + "temp/";
+//		final String indexesPath = basePath + (!basePath.endsWith("/")?"/":"") + "indexes/";
+//		final String confPath = sourcesPath + name + "/" + ".conf";
+//		final InputStream in = getClass().getResourceAsStream(confPath);
+//		prop.load(in);
+//		in.close();
+//		prop.setProperty("sourcesPath", sourcesPath);
+//		prop.setProperty("tempPath", tempPath);
+//		prop.setProperty("indexesPath", indexesPath);
+//		prop.setProperty("basePath", basePath);
+//		prop.setProperty("name", name);
+	}
+	
+	public void put(final String key, final Object value){
+		map.put(key, value);
 	}
 	
 	@Override
@@ -40,7 +46,7 @@ public class BaseConfig {
 
         sb.append("\n");
         sb.append("\n----------CONFIG-------------");
-        prop.entrySet().forEach(e -> sb.append("\n " + e.getKey() + " = " + e.getValue()));
+        map.entrySet().forEach(e -> sb.append("\n " + e.getKey() + " = " + e.getValue()));
         sb.append("\n--------END CONFIG-----------");
 
         return sb.toString();
@@ -51,7 +57,7 @@ public class BaseConfig {
 	}
 	
 	public String asstring(final String key, final String def){
-		return prop.getProperty(key, def);
+		return (String)map.get(key);
 	}
 	
 	public int asint(final String key, int def){

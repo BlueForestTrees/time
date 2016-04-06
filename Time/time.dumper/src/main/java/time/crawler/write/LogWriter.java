@@ -1,4 +1,4 @@
-package time.downloader.writer;
+package time.crawler.write;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

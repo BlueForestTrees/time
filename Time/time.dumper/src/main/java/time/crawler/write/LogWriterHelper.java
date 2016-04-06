@@ -1,11 +1,11 @@
-package time.downloader;
+package time.crawler.write;
 
 import java.io.File;
-import java.io.Serializable;
+import java.nio.charset.Charset;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.Layout;
+import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.RollingRandomAccessFileAppender;
 import org.apache.logging.log4j.core.appender.rolling.DefaultRolloverStrategy;
@@ -16,18 +16,19 @@ import org.apache.logging.log4j.core.appender.rolling.TriggeringPolicy;
 import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.apache.logging.log4j.core.layout.AbstractStringLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import time.downloader.writer.PageLayout;
+import time.tool.conf.Context;
 
 @Component
-public class StorageConfig {
+public class LogWriterHelper {
 
     private static final String PAGESTORE = "pagestore";
     
     @Autowired
-    private Config config;
+    private Context config;
     
     public String configureStorage() {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
@@ -39,9 +40,9 @@ public class StorageConfig {
         final String bufferSizeStr = String.valueOf(RollingRandomAccessFileManager.DEFAULT_BUFFER_SIZE);
         final TriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(config.getMaxFileSize());
         final RolloverStrategy strategy = DefaultRolloverStrategy.createStrategy("1000", null, null, null, logConfig);
-        final Layout<? extends Serializable> layout = new PageLayout();
+        final AbstractStringLayout layout = getLayout();
 
-        createLogFolderIfNeeded(fileName);
+        new File(fileName).mkdirs();
         final RollingRandomAccessFileAppender appender = RollingRandomAccessFileAppender.createAppender(fileName, filePattern, append, PAGESTORE, immediateFlush, bufferSizeStr, policy, strategy, layout, null, "true", "true", null, logConfig);
 
         appender.start();
@@ -56,7 +57,14 @@ public class StorageConfig {
         return "storage done";
     }
 
-	private void createLogFolderIfNeeded(final String fileName) {
-		new File(fileName).mkdirs();
+	private AbstractStringLayout getLayout() {
+		return new AbstractStringLayout(Charset.defaultCharset()){
+			private static final long serialVersionUID = 2961171351622684601L;
+			@Override
+			public String toSerializable(final LogEvent event) {
+				return event.getMessage().getFormattedMessage();
+			}
+		};
 	}
+
 }

@@ -1,4 +1,4 @@
-package time.downloader.crawler;
+package time.crawler.crawl;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import time.downloader.writer.IWriter;
+import time.crawler.write.IWriter;
 import time.tool.chrono.Chrono;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;

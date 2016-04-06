@@ -1,6 +1,6 @@
-package time.downloader;
+package time.tool.conf;
 
-public class ConfigKeys {
+public class ConfKeys {
 	public static final String basePath = "basePath";
 	public static final String name = "name";
 	public static final String baseUrl = "baseUrl";

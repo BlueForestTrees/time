@@ -14,6 +14,7 @@ Page facebook de promotion : https://www.facebook.com/histoires.xyz
 N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous intéresse pour + d'explications:
 
 - FrenchAnalyzer
+- source dans /first
 - gulp rev/minifié sur les fichiers js et css depuis le maven install. 1J
 - sources :
 - http://gallica.bnf.fr/ark:/12148/bpt6k1025019c/f1.item.r=.texteImage 3J

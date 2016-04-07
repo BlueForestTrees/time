@@ -81,6 +81,10 @@ h1, h2, h3{
 	top: 7px;
 }
 
+.hand {
+	cursor:pointer;
+}
+
 .timelines {
 	line-height: 0px;
 }

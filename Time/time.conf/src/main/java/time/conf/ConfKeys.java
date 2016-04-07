@@ -1,11 +1,17 @@
-package time.tool.conf;
+package time.conf;
 
 public class ConfKeys {
+	public static final String target = "target";
+	public static final String home = "home";
+	public static final String indexDir = "indexDir";
+	public static final String tempDir = "tempDir";
+	public static final String sourceDir = "sourceDir";
+	
 	public static final String basePath = "basePath";
 	public static final String name = "name";
 	public static final String baseUrl = "baseUrl";
 	public static final String sep = "sep";
-	public static final String filter = "filter";
+	public static final String urlFilter = "urlFilter";
 	public static final String nbPageLog = "nbPageLog";
 	public static final String maxPages = "maxPages";
 	public static final String politenessDelay = "politenessDelay";

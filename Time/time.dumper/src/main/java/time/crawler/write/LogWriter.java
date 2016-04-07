@@ -11,7 +11,6 @@ public class LogWriter implements IWriter {
     private static final String PAGESTORE = "pagestore";
     private static final Logger PAGEWRITER = LogManager.getLogger(PAGESTORE);
     private String sep;
-    private String baseUrl;
 
     public String getSep() {
         return sep;
@@ -19,14 +18,6 @@ public class LogWriter implements IWriter {
 
     public void setSep(String sep) {
         this.sep = sep;
-    }
-
-    public String getBaseUrl() {
-        return baseUrl;
-    }
-
-    public void setBaseUrl(String baseUrl) {
-        this.baseUrl = baseUrl;
     }
 
     @Override

@@ -20,7 +20,7 @@ import org.apache.logging.log4j.core.layout.AbstractStringLayout;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import time.tool.conf.Context;
+import time.conf.Conf;
 
 @Component
 public class LogWriterHelper {
@@ -28,17 +28,17 @@ public class LogWriterHelper {
     private static final String PAGESTORE = "pagestore";
     
     @Autowired
-    private Context config;
+    private Conf conf;
     
     public String configureStorage() {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final Configuration logConfig = ctx.getConfiguration();
-        final String fileName = config.getStoragePath();
-        final String filePattern = config.getStoragePath() + "%i";
+        final String fileName = conf.getStoragePath();
+        final String filePattern = conf.getStoragePath() + "%i";
         final String append = "false";
         final String immediateFlush = "true";
         final String bufferSizeStr = String.valueOf(RollingRandomAccessFileManager.DEFAULT_BUFFER_SIZE);
-        final TriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(config.getMaxFileSize());
+        final TriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(conf.getMaxFileSize());
         final RolloverStrategy strategy = DefaultRolloverStrategy.createStrategy("1000", null, null, null, logConfig);
         final AbstractStringLayout layout = getLayout();
 

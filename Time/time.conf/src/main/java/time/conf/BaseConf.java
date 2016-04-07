@@ -1,40 +1,10 @@
-package time.tool.conf;
+package time.conf;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BaseContext {
+public class BaseConf {
 	protected final Map<String,Object> map = new HashMap<>();
-	/**
-	 * Construit une map à partir des infos
-	 * /base/path
-	 *			\_sources
-	 *				\_[name]
-	 *					\_.conf
-	 *			\_phrases
-	 *			\_indexes
-	 * 
-	 * @param basePath
-	 * @param name
-	 * @throws IOException 
-	 */
-	public BaseContext() {
-//		final String basePath = "chemin";
-//		final String name = "wiki";
-//		final String sourcesPath = basePath + (!basePath.endsWith("/")?"/":"") + "sources/";
-//		final String tempPath = basePath + (!basePath.endsWith("/")?"/":"") + "temp/";
-//		final String indexesPath = basePath + (!basePath.endsWith("/")?"/":"") + "indexes/";
-//		final String confPath = sourcesPath + name + "/" + ".conf";
-//		final InputStream in = getClass().getResourceAsStream(confPath);
-//		prop.load(in);
-//		in.close();
-//		prop.setProperty("sourcesPath", sourcesPath);
-//		prop.setProperty("tempPath", tempPath);
-//		prop.setProperty("indexesPath", indexesPath);
-//		prop.setProperty("basePath", basePath);
-//		prop.setProperty("name", name);
-	}
 	
 	public void put(final String key, final Object value){
 		map.put(key, value);
@@ -57,7 +27,11 @@ public class BaseContext {
 	}
 	
 	public String asstring(final String key, final String def){
-		return (String)map.get(key);
+		final String string = (String)map.get(key);
+		if(string == null){
+			throw new RuntimeException(key + " is null");
+		}
+		return string;
 	}
 	
 	public int asint(final String key, int def){

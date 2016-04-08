@@ -23,13 +23,17 @@ public class BaseConf {
 	}
 	
 	public String asstring(final String key){
-		return asstring(key, null);
+		String string = asstring(key, null);
+		if(string == null){
+			throw new RuntimeException(key + " is null");
+		}
+		return string;
 	}
 	
 	public String asstring(final String key, final String def){
-		final String string = (String)map.get(key);
+		String string = (String)map.get(key);
 		if(string == null){
-			throw new RuntimeException(key + " is null");
+			string = def;
 		}
 		return string;
 	}

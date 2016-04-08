@@ -1,4 +1,4 @@
-package time.crawler.crawl;
+package time.crawler.wiki;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -84,8 +84,9 @@ public class DirectCrawler implements IPageHandler {
     public void visit(Page page) {
         if (page.getParseData() instanceof HtmlParseData) {
             final String content = ((HtmlParseData) page.getParseData()).getText();
-            if (Arrays.stream(contentExclusion).noneMatch(term -> content.contains(term))) {
-                writer.writePage(page);
+            if (Arrays.stream(contentExclusion).noneMatch(term -> content.contains(term))) {               
+            	final HtmlParseData htmlData = (HtmlParseData) page.getParseData();
+                writer.writePage(page.getWebURL().getURL(), htmlData.getTitle(), htmlData.getText());
                 pageCount++;
                 if (LOGGER.isDebugEnabled() && (pageCount % nbPageLog == 0)) {
                     nbLog++;

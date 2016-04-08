@@ -4,12 +4,13 @@ import java.util.regex.Pattern;
 
 public class Conf extends BaseConf {
 	
-	private static final String PHRASESFOLDER = "phrases";
+	private static final String TXTPAGES = "pages";
+	private static final String TXTPAGESDIR = TXTPAGES + "/";
 	private static final String SOURCES = "sources/";
 	private static final String TEMP = "temp/";
 	private static final String INDEXES = "indexes/";
 	private static final String CONF = ".conf";
-	private static final String CRAWLFOLDER = "crawldata";
+	private static final String CRAWLDIR = "crawldata";
 	
 	public String getHome() {
 		return withSlash(asstring(ConfKeys.home));
@@ -31,14 +32,20 @@ public class Conf extends BaseConf {
 		return getHome() + INDEXES + getTarget();		
 	}
 	
+	public String getPagesDir() {
+		return getHome() + TXTPAGESDIR + getTarget();
+	}
+	public String getPagesFile1() {
+		return getPagesDir() + TXTPAGES;
+	}
+	public String getCrawlStorageDir() {
+		return withSlash(getTempDir())+CRAWLDIR;
+	}
+	
 	public String getConfFile(){
 		return getSourceDir() + CONF;
 	}
 	
-	public String getSep() {
-		return asstring(ConfKeys.sep);
-	}
-
 	public Pattern getFilter() {
 		return Pattern.compile(asstring(ConfKeys.urlFilter));
 	}
@@ -48,47 +55,39 @@ public class Conf extends BaseConf {
 	}
 
 	public long getNbPageLog() {
-		return aslong(ConfKeys.nbPageLog);
+		return aslong(ConfKeys.nbPageLog, 1000);
 	}
 
 	public int getMaxPages() {
-		return asint(ConfKeys.maxPages);
+		return asint(ConfKeys.maxPages, -1);
 	}
 
 	public int getDelay() {
-		return asint(ConfKeys.politenessDelay);
-	}
-
-	public String getCrawlStorageFolder() {
-		return withSlash(getTempDir())+CRAWLFOLDER;
+		return asint(ConfKeys.politenessDelay, 25);
 	}
 
 	public boolean isResumable() {
-		return asbool(ConfKeys.resumable);
+		return asbool(ConfKeys.resumable, false);
 	}
 
 	public String getSeedUrl() {
 		return asstring(ConfKeys.seedUrl);
 	}
 
-	public boolean isHelp() {
-		return asbool(ConfKeys.help);
-	}
-
 	public int getNbCrawlers() {
-		return asint(ConfKeys.nbCrawlers);
-	}
-
-	public String getStoragePath() {
-		return withSlash(getTempDir())+PHRASESFOLDER;
+		return asint(ConfKeys.nbCrawlers, 5);
 	}
 
 	public String getMaxFileSize() {
-		return asstring(ConfKeys.maxFileSize);
+		return asstring(ConfKeys.maxFileSize, "100MB");
 	}
 	
 	private String withSlash(final String path) {
 		return path + (!path.endsWith("/")?"/":"");
 	}
 
+	public String getType() {
+		return asstring(ConfKeys.type);
+	}
+	
 }

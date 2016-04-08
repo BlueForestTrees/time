@@ -17,7 +17,7 @@
 		<Logger name="time" level="info">
 			<AppenderRef ref="Console" />
 		</Logger>
-		<Logger name="time.crawler.crawl" level="debug">
+		<Logger name="time.crawler" level="debug">
 		</Logger>
 		<Logger name="org.springframework" level="info">
 			<AppenderRef ref="Console" />

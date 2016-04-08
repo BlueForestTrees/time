@@ -14,27 +14,28 @@ import org.apache.logging.log4j.core.appender.rolling.RolloverStrategy;
 import org.apache.logging.log4j.core.appender.rolling.SizeBasedTriggeringPolicy;
 import org.apache.logging.log4j.core.appender.rolling.TriggeringPolicy;
 import org.apache.logging.log4j.core.config.AppenderRef;
-import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.AbstractStringLayout;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import time.conf.Conf;
 
-@Component
-public class LogWriterHelper {
-
+@Configuration
+public class LogWriterConf {
+	
     private static final String PAGESTORE = "pagestore";
     
     @Autowired
     private Conf conf;
-    
-    public String configureStorage() {
+
+    @Bean
+	public String logWriterPath() {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
-        final Configuration logConfig = ctx.getConfiguration();
-        final String fileName = conf.getStoragePath();
-        final String filePattern = conf.getStoragePath() + "%i";
+        final org.apache.logging.log4j.core.config.Configuration logConfig = ctx.getConfiguration();
+        final String filename = conf.getPagesFile1();
+        final String filePattern = conf.getPagesFile1() + "%i";
         final String append = "false";
         final String immediateFlush = "true";
         final String bufferSizeStr = String.valueOf(RollingRandomAccessFileManager.DEFAULT_BUFFER_SIZE);
@@ -42,8 +43,8 @@ public class LogWriterHelper {
         final RolloverStrategy strategy = DefaultRolloverStrategy.createStrategy("1000", null, null, null, logConfig);
         final AbstractStringLayout layout = getLayout();
 
-        new File(fileName).mkdirs();
-        final RollingRandomAccessFileAppender appender = RollingRandomAccessFileAppender.createAppender(fileName, filePattern, append, PAGESTORE, immediateFlush, bufferSizeStr, policy, strategy, layout, null, "true", "true", null, logConfig);
+        new File(filename).mkdirs();
+        final RollingRandomAccessFileAppender appender = RollingRandomAccessFileAppender.createAppender(filename, filePattern, append, PAGESTORE, immediateFlush, bufferSizeStr, policy, strategy, layout, null, "true", "true", null, logConfig);
 
         appender.start();
         logConfig.addAppender(appender);
@@ -54,7 +55,8 @@ public class LogWriterHelper {
         loggerConfig.addAppender(appender, null, null);
         logConfig.addLogger(PAGESTORE, loggerConfig);
         ctx.updateLoggers();
-        return "storage done";
+        
+        return filename;
     }
 
 	private AbstractStringLayout getLayout() {
@@ -66,5 +68,4 @@ public class LogWriterHelper {
 			}
 		};
 	}
-
 }

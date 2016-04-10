@@ -1,12 +1,10 @@
-package time.crawler.wiki;
+package time.crawler.web;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.url.WebURL;
 
-public interface IPageHandler {
+public interface ISpringCrawler {
     public void visit(Page page);
-
     public void end();
-
     public boolean shouldVisit(Page page, WebURL url);
 }

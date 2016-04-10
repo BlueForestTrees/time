@@ -1,4 +1,4 @@
-package time.crawler.wiki;
+package time.crawler.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,24 +9,26 @@ import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import time.conf.Conf;
-import time.crawler.wiki.CrawlerAdapter;
-import time.crawler.wiki.DirectCrawler;
-import time.crawler.wiki.IPageHandler;
-import time.crawler.write.LogWriter;
+import time.crawler.web.CrawlerToSpring;
+import time.crawler.web.SpringCrawler;
+import time.crawler.web.ISpringCrawler;
+import time.crawler.write.log.LogWriter;
 
 @Component
-public class Wikiman{
+public class Webman{
 
 	@Autowired
 	private Conf conf;
 	
-	private IPageHandler pageHandler() {
-		final DirectCrawler handler = new DirectCrawler();
+	private ISpringCrawler springCrawler() {
+		final SpringCrawler handler = new SpringCrawler();
 		handler.setNbPageLog(conf.getNbPageLog());
 		handler.setBaseUrl(conf.getBaseUrl());
 		handler.setUrlRegexBlackList(conf.getFilter());
 		handler.setWriter(new LogWriter());
 		handler.setMaxPages(conf.getMaxPages());
+		handler.setUrlBlackList(conf.getUrlBlackList());
+		handler.setContentExclusion(conf.getContentExclusion());
 		return handler;
 	}
 
@@ -52,9 +54,9 @@ public class Wikiman{
 	}
 
 	public void go() throws Exception {
-		CrawlerAdapter.pageHandler = pageHandler();
+		CrawlerToSpring.springBean = springCrawler();
 		final CrawlController crawlController = crawlController();
-		crawlController.start(CrawlerAdapter.class, conf.getNbCrawlers());
+		crawlController.start(CrawlerToSpring.class, conf.getNbCrawlers());
 	}
 
 }

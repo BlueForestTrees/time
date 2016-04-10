@@ -1,4 +1,4 @@
-package time.crawler.wiki;
+package time.crawler.web;
 
 import java.util.Arrays;
 import java.util.regex.Pattern;
@@ -12,8 +12,8 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
-public class DirectCrawler implements IPageHandler {
-    private static final Logger LOGGER = LogManager.getLogger(DirectCrawler.class);
+public class SpringCrawler implements ISpringCrawler {
+    private static final Logger LOGGER = LogManager.getLogger(SpringCrawler.class);
     protected Pattern urlRegexBlackList;
     protected long pageCount;
     protected long nbPageLog;
@@ -23,10 +23,10 @@ public class DirectCrawler implements IPageHandler {
     protected long nbLog;
     protected IWriter writer;
     private int pageTotal;
-    private String[] urlBlackList = new String[] { "Discussion_utilisateur:","Discussion_utilisatrice:","Utilisatrice:","#", "Discussion_modèle:", "Discussion_mod%C3%A8le:", "Discussion:", "spécial:", "sp%c3%a9cial:", "Discussion_wikipédia:", "discussion_wikipédia:", "discussion_wikip%c3%a9dia:", "cat%c3%a9gorie:", "catégorie:", "utilisateur:", "projet:", "discussion_projet:", "aide:", "wikipédia:", "wikip%c3%a9dia:", "fichier:" };
-    private String[] contentExclusion = new String[] { "\t\t\t(Redirigé depuis " };
+    private String[] urlBlackList;
+    private String[] contentExclusion;
 
-    public DirectCrawler() {
+	public SpringCrawler() {
         if (LOGGER.isDebugEnabled()) {
             nbLog = 0;
             chrono = new Chrono("Writer");
@@ -35,6 +35,22 @@ public class DirectCrawler implements IPageHandler {
             fullChrono.start();
         }
     }
+	
+    public String[] getUrlBlackList() {
+		return urlBlackList;
+	}
+
+	public void setUrlBlackList(String[] urlBlackList) {
+		this.urlBlackList = urlBlackList;
+	}
+
+	public String[] getContentExclusion() {
+		return contentExclusion;
+	}
+
+	public void setContentExclusion(String[] contentExclusion) {
+		this.contentExclusion = contentExclusion;
+	}
 
     public void setMaxPages(int maxPages) {
         this.pageTotal = maxPages;
@@ -107,7 +123,6 @@ public class DirectCrawler implements IPageHandler {
     @Override
     public boolean shouldVisit(Page page, WebURL url) {
         final String href = url.getURL().toLowerCase();
-        
         final boolean startsWithBaseUrl = href.startsWith(baseUrl);
         final boolean urlRegexBlackListed = urlRegexBlackList.matcher(href).matches();
         final boolean urlBlackListed = Arrays.stream(urlBlackList).anyMatch(term -> href.contains(term));

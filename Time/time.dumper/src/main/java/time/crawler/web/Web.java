@@ -1,4 +1,4 @@
-package time.crawler.wiki;
+package time.crawler.web;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -7,14 +7,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 
 @Component
-@ComponentScan({ "time.conf", "time.crawler.write", "time.crawler.wiki" })
-public class Wiki implements CommandLineRunner {
+@ComponentScan({ "time.conf", "time.crawler.write.log", "time.crawler.web" })
+public class Web implements CommandLineRunner {
 	
 	@Autowired
-	public Wikiman wikiman;
+	public Webman wikiman;
 
 	public static void main(String[] args) throws Exception {
-		SpringApplication.run(Wiki.class, args);
+		SpringApplication.run(Web.class, args);
 	}
 
 	@Override

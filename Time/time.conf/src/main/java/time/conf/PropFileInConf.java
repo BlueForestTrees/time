@@ -37,6 +37,11 @@ public class PropFileInConf implements InConf{
 	}
 
 	private void addProp(final String line, final Conf conf) {
+		boolean ignore = line.trim().length() == 0 || line.startsWith("#");
+		if(ignore){
+			return;
+		}
+		
 		final String key = line.split("=")[0];
 		final String value = line.split("=")[1];
 		conf.put(key, value);

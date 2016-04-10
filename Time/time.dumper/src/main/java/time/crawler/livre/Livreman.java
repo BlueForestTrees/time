@@ -33,7 +33,6 @@ public class Livreman {
 
 	private void og(final File source) {
 		LOGGER.info(source);
-		
 		try {
 			final ContentHandler textHandler = new BodyContentHandler(Integer.MAX_VALUE);
 			final Metadata metadata = new Metadata();
@@ -44,12 +43,10 @@ public class Livreman {
 			input.close();
 			//TODO stocker toutes les métadonnées pour la référence.
 			final String title = metadata.get("title");
-			final String identifier = Dirs.filenameAble(title);
 			final String author = metadata.get("Author");
 			writer.writePage("epub", title + " de " + author, textHandler.toString());
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		
 	}
 }

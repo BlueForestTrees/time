@@ -22,4 +22,6 @@ public class ConfKeys {
 	public static final String maxFileSize = "maxFileSize";
 	public static final String sep = "|¨";
 	public static final String type = "type";
+	public static final String urlBlackList = "urlBlackList";
+	public static final String contentExclusion = "contentExclusion";
 }

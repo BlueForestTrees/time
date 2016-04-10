@@ -1,4 +1,4 @@
-package time.crawler.wiki;
+package time.crawler.web;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
@@ -10,9 +10,9 @@ import edu.uci.ics.crawler4j.url.WebURL;
  * @author Slimane
  *
  */
-public class CrawlerAdapter extends WebCrawler {
+public class CrawlerToSpring extends WebCrawler {
     
-    public static IPageHandler pageHandler;
+    public static ISpringCrawler springBean;
     
     /**
      * You should implement this function to specify whether the given url
@@ -20,7 +20,7 @@ public class CrawlerAdapter extends WebCrawler {
      */
     @Override
     public boolean shouldVisit(Page page, WebURL url) {
-        return pageHandler.shouldVisit(page, url);
+        return springBean.shouldVisit(page, url);
     }
 
     /**
@@ -29,11 +29,11 @@ public class CrawlerAdapter extends WebCrawler {
      */
     @Override
     public void visit(Page page) {
-        pageHandler.visit(page);
+        springBean.visit(page);
     }
 
     @Override
     public void onBeforeExit() {
-        pageHandler.end();
+        springBean.end();
     }
 }

@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BaseConf {
+	private final static String arraySeparator = "/";
 	protected final Map<String,Object> map = new HashMap<>();
 	
 	public void put(final String key, final Object value){
 		map.put(key, value);
 	}
-	
+
+
 	@Override
 	public String toString(){
 		final StringBuilder sb = new StringBuilder();
@@ -20,6 +22,10 @@ public class BaseConf {
         sb.append("\n--------END CONFIG-----------");
 
         return sb.toString();
+	}
+	
+	protected String[] asstringarray(final String key) {
+		return asstring(key).split(arraySeparator);
 	}
 	
 	public String asstring(final String key){

@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 
 
 @Component
-@ComponentScan({ "time.conf", "time.crawler.write", "time.crawler.livre" })
+@ComponentScan({ "time.conf", "time.crawler.write.file", "time.crawler.livre" })
 public class Livre implements CommandLineRunner {
 
 	@Autowired
-	public Livreman epubman;
+	public Livreman livreman;
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Livre.class, args);
@@ -20,8 +20,7 @@ public class Livre implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
-		epubman.go();
+		livreman.go();
 	}
-
 
 }

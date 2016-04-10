@@ -32,11 +32,11 @@ public class Conf extends BaseConf {
 		return getHome() + INDEXES + getTarget();		
 	}
 	
-	public String getPagesDir() {
+	public String getTxtPagesDir() {
 		return getHome() + TXTPAGESDIR + getTarget();
 	}
 	public String getPagesFile1() {
-		return getPagesDir() + TXTPAGES;
+		return getTxtPagesDir() + TXTPAGES;
 	}
 	public String getCrawlStorageDir() {
 		return withSlash(getTempDir())+CRAWLDIR;
@@ -88,6 +88,14 @@ public class Conf extends BaseConf {
 
 	public String getType() {
 		return asstring(ConfKeys.type);
+	}
+
+	public String[] getUrlBlackList() {
+		return asstringarray(ConfKeys.urlBlackList);
+	}
+	
+	public String[] getContentExclusion() {
+		return asstringarray(ConfKeys.contentExclusion);
 	}
 	
 }

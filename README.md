@@ -19,7 +19,6 @@ N'hésitez pas à me contacter si toutefois une des tâches ci-dessous vous int�
 - sources :
 - http://gallica.bnf.fr/ark:/12148/bpt6k1025019c/f1.item.r=.texteImage 3J
 - https://www.gutenberg.org/browse/languages/fr 3J
-- tika pour epub et pdf 2J
 - config full text  wiki, epub, gallica 2J
 - pipeline commandable 2J
 - barre du bas, système de layer au clic d'un bouton, page présentation, page participer pour envoi de liens, pdf, de mail

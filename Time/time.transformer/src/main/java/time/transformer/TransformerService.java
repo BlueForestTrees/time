@@ -72,13 +72,14 @@ public class TransformerService {
         for (String paragraph : getParagraphs(page.getTextString())) {
             final String[] phrases = getPhrases(paragraph);
             for(PhraseFinder finder : finders){
-                phrasesCount += findAndStorePhrases(page, phrases, finder);
+            	//TODO stocker les paragraphes zippés, avec l'id du paragraphe dans les phrases
+                phrasesCount += findAndStorePhrases(page, paragraph, phrases, finder);
             }
         }
         return phrasesCount;
     }
 
-    protected long findAndStorePhrases(Page page, String[] phrasesArray, PhraseFinder finder) throws IOException {
+    protected long findAndStorePhrases(final Page page, final String paragraph, final String[] phrasesArray, final PhraseFinder finder) throws IOException {
         long count = 0;
         final List<Phrase> phrases = finder.findPhrases(phrasesArray);
         for (Phrase phrase : phrases) {

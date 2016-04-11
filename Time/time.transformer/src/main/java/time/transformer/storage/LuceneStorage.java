@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.FileSystems;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
@@ -35,7 +36,7 @@ public class LuceneStorage {
     private String indexPath;
 
     public void start() throws IOException {
-        analyzer = new StandardAnalyzer();
+        analyzer = new FrenchAnalyzer();
         indexWriterConfig = new IndexWriterConfig(analyzer);
         indexWriterConfig.setOpenMode(OpenMode.CREATE);
         indexWriterConfig.setRAMBufferSizeMB(256.0);

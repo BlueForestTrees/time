@@ -97,5 +97,21 @@ public class Conf extends BaseConf {
 	public String[] getContentExclusion() {
 		return asstringarray(ConfKeys.contentExclusion);
 	}
+
+	public String getSource() {
+		return asstring(ConfKeys.source);
+	}
+
+	public String getUrl() {
+		return asstring(ConfKeys.url);
+	}
+
+	public String getTitle() {
+		return asstring(ConfKeys.title);
+	}
+	
+	public String getRegexUrlFilter() {
+		return asstring(ConfKeys.regexUrlFilter);
+	}
 	
 }

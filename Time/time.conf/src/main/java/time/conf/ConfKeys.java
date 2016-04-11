@@ -10,6 +10,7 @@ public class ConfKeys {
 	public static final String basePath = "basePath";
 	public static final String name = "name";
 	public static final String baseUrl = "baseUrl";
+	public static final String regexUrlFilter = "regexUrlFilter";
 	public static final String urlFilter = "urlFilter";
 	public static final String nbPageLog = "nbPageLog";
 	public static final String maxPages = "maxPages";
@@ -24,4 +25,7 @@ public class ConfKeys {
 	public static final String type = "type";
 	public static final String urlBlackList = "urlBlackList";
 	public static final String contentExclusion = "contentExclusion";
+	public static final String source = "source";
+	public static final String url = "url";
+	public static final String title = "title";
 }

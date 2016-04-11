@@ -20,10 +20,10 @@ public class Asisman {
 	private Conf conf;
 
 	public void go() throws IOException {
-		final String source = conf.getSourceDir() + conf.asstring("source");
+		final String source = conf.getSourceDir() + conf.getSource();
 		final String text = new String(Files.readAllBytes(Paths.get(source)));
-		final String url = conf.asstring("url");
-		final String title = conf.asstring("title");
+		final String url = conf.getUrl();
+		final String title = conf.getTitle();
 		
 		writer.writePage(url, title, text);
 	}

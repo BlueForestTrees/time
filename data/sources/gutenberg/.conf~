@@ -1,6 +1,5 @@
 seedUrl=https://www.gutenberg.org/browse/languages/fr
-regexUrlFilter=https://www.gutenberg.org/ebooks/
-
+baszeUrl=https://www.gutenberg.org/ebooks/
 nbCrawlers=3
 maxPages=5000000
 nbPageLog=3

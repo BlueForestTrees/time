@@ -28,7 +28,7 @@ public class BaseConf {
 		return asstring(key).split(arraySeparator);
 	}
 	
-	public String asstring(final String key){
+	protected String asstring(final String key){
 		String string = asstring(key, null);
 		if(string == null){
 			throw new RuntimeException(key + " is null");
@@ -36,7 +36,7 @@ public class BaseConf {
 		return string;
 	}
 	
-	public String asstring(final String key, final String def){
+	protected String asstring(final String key, final String def){
 		String string = (String)map.get(key);
 		if(string == null){
 			string = def;
@@ -44,16 +44,16 @@ public class BaseConf {
 		return string;
 	}
 	
-	public int asint(final String key, int def){
+	protected int asint(final String key, int def){
 		return Integer.parseInt(asstring(key, Integer.toString(def)));
 	}
-	public int asint(final String key){
+	protected int asint(final String key){
 		return Integer.parseInt(asstring(key));
 	}
-	public boolean asbool(final String key){
+	protected boolean asbool(final String key){
 		return Boolean.parseBoolean(asstring(key));
 	}
-	public boolean asbool(final String key, final boolean def){
+	protected boolean asbool(final String key, final boolean def){
 		return Boolean.parseBoolean(asstring(key, Boolean.toString(def)));
 	}
 	

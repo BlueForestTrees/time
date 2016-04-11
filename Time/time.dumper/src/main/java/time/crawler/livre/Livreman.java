@@ -31,6 +31,10 @@ public class Livreman {
 		Dirs.files(conf.getSourceDir()).forEach(e -> og(e));
 	}
 
+	/**
+	 * Convertit une source epub/pdf en page.
+	 * @param source
+	 */
 	private void og(final File source) {
 		LOGGER.info(source);
 		try {

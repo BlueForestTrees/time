@@ -9,10 +9,6 @@ import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import time.conf.Conf;
-import time.crawler.web.CrawlerToSpring;
-import time.crawler.web.SpringCrawler;
-import time.crawler.web.ISpringCrawler;
-import time.crawler.write.log.LogWriter;
 
 @Component
 public class Webman{
@@ -20,17 +16,8 @@ public class Webman{
 	@Autowired
 	private Conf conf;
 	
-	private ISpringCrawler springCrawler() {
-		final SpringCrawler handler = new SpringCrawler();
-		handler.setNbPageLog(conf.getNbPageLog());
-		handler.setBaseUrl(conf.getBaseUrl());
-		handler.setUrlRegexBlackList(conf.getFilter());
-		handler.setWriter(new LogWriter());
-		handler.setMaxPages(conf.getMaxPages());
-		handler.setUrlBlackList(conf.getUrlBlackList());
-		handler.setContentExclusion(conf.getContentExclusion());
-		return handler;
-	}
+	@Autowired
+	private ISpringCrawler springCrawler;
 
 	private CrawlConfig crawlConfig() {
 		final CrawlConfig crawlConfig = new CrawlConfig();
@@ -54,7 +41,7 @@ public class Webman{
 	}
 
 	public void go() throws Exception {
-		CrawlerToSpring.springBean = springCrawler();
+		CrawlerToSpring.springBean = springCrawler;
 		final CrawlController crawlController = crawlController();
 		crawlController.start(CrawlerToSpring.class, conf.getNbCrawlers());
 	}

@@ -28,12 +28,6 @@ public class TransformerConfig {
         return "/home/slimane/time/Histoire/data/sources/wiki";
         //return "C:/Time/data/downloader/sapiens";
     }
-
-    @Bean
-    public String baseUrl() {
-        // return "http://fr.wikipedia.org/wiki/";
-        return "";
-    }
     
     @Bean
     public Long pageSize() {

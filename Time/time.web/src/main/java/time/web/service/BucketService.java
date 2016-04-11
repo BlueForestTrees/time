@@ -22,47 +22,44 @@ import time.web.bean.BucketGroup;
 @Service
 public class BucketService {
 
-    @Autowired
-    private int pageSize;
+	@Autowired
+	private IndexSearcher indexSearcher;
 
-    @Autowired
-    private IndexSearcher indexSearcher;
+	@Autowired
+	private SortedSetDocValuesReaderState readerState;
 
-    @Autowired
-    private SortedSetDocValuesReaderState readerState;
+	@Autowired
+	private QueryService queryService;
 
-    @Autowired
-    private QueryService queryService;
+	public BucketGroup getBuckets(final String scale, final String term) throws IOException {
+		final FacetsCollector facetsCollector = new FacetsCollector();
+		final Query query = queryService.getQuery(term, null, null, null);
+		FacetsCollector.search(indexSearcher, query, 10, facetsCollector);
+		final Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
+		final FacetResult facets = facetsCounter.getTopChildren(10000, scale);
 
-    public BucketGroup getBuckets(final String scale, final String term) throws IOException {
-        final FacetsCollector facetsCollector = new FacetsCollector();
-        final Query query = queryService.getQuery(term, null, null, null);
-        FacetsCollector.search(indexSearcher, query, 10, facetsCollector);
-        final Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
-        final FacetResult facets = facetsCounter.getTopChildren(10000, scale);
+		return toBucketsDTO(facets, scale);
+	}
 
-        return toBucketsDTO(facets, scale);
-    }
+	protected BucketGroup toBucketsDTO(final FacetResult facetResult, final String scale) {
+		final BucketGroup bucketsDTO = new BucketGroup();
+		bucketsDTO.setBuckets(toBucketsDTO(facetResult));
+		bucketsDTO.setScale(scale);
+		return bucketsDTO;
+	}
 
-    protected BucketGroup toBucketsDTO(final FacetResult facetResult, final String scale) {
-        final BucketGroup bucketsDTO = new BucketGroup();
-        bucketsDTO.setBuckets(toBucketsDTO(facetResult));
-        bucketsDTO.setScale(scale);
-        return bucketsDTO;
-    }
+	protected List<Bucket> toBucketsDTO(final FacetResult facetResult) {
+		if (facetResult == null) {
+			return Arrays.asList();
+		}
+		return Arrays.stream(facetResult.labelValues).map(elt -> toBucketDTO(elt)).collect(Collectors.toList());
+	}
 
-    protected List<Bucket> toBucketsDTO(final FacetResult facetResult) {
-        if (facetResult == null) {
-            return Arrays.asList();
-        }
-        return Arrays.stream(facetResult.labelValues).map(elt -> toBucketDTO(elt)).collect(Collectors.toList());
-    }
-
-    protected Bucket toBucketDTO(LabelAndValue facet) {
-        final Bucket facetDTO = new Bucket();
-        facetDTO.setBucket(new Long(facet.label));
-        facetDTO.setCount((int) facet.value);
-        return facetDTO;
-    }
+	protected Bucket toBucketDTO(LabelAndValue facet) {
+		final Bucket facetDTO = new Bucket();
+		facetDTO.setBucket(new Long(facet.label));
+		facetDTO.setCount((int) facet.value);
+		return facetDTO;
+	}
 
 }

@@ -4,28 +4,30 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import com.google.inject.Inject;
 
-import time.conf.Conf;
+import time.crawler.conf.Conf;
 import time.crawler.write.IWriter;
 
-@Component
-public class Asisman {
+public class AsisService {
 	
-	@Autowired
 	public IWriter writer;
 	
-	@Autowired
 	private Conf conf;
 
-	public void go() throws IOException {
+	@Inject
+	public AsisService(IWriter writer, Conf conf) {
+		this.writer = writer;
+		this.conf = conf;
+	}
+
+	public void run() throws IOException {
 		final String source = conf.getSourceDir() + conf.getSource();
 		final String text = new String(Files.readAllBytes(Paths.get(source)));
 		final String url = conf.getUrl();
 		final String title = conf.getTitle();
 		
-		writer.writePage(url, title, text);
+		writer.writePage(url, title, null, text);
 	}
 
 }

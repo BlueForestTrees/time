@@ -16,22 +16,14 @@ import org.apache.logging.log4j.core.appender.rolling.TriggeringPolicy;
 import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.AbstractStringLayout;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
-import time.conf.Conf;
+import time.crawler.conf.Conf;
 
-@Configuration
 public class LogWriterConf {
 	
     private static final String PAGESTORE = "pagestore";
     
-    @Autowired
-    private Conf conf;
-
-    @Bean
-	public String logWriterPath() {
+	public String logWriterPath(final Conf conf) {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final org.apache.logging.log4j.core.config.Configuration logConfig = ctx.getConfiguration();
         final String filename = conf.getPagesFile1();

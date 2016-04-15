@@ -1,16 +1,16 @@
 package time.crawler.write;
 
-import time.conf.ConfKeys;
+import time.crawler.conf.Conf;
 
 public class Write {
-	public static StringBuilder concat(final String url, final String title, final String text) {
+	public static StringBuilder concat(final String url, final String metadata, final String text) {
 		final StringBuilder sb = new StringBuilder();
         sb.append(url);
-        sb.append(ConfKeys.sep);
-        sb.append(title);
-        sb.append(ConfKeys.sep);
+        sb.append(Conf.sep);
+        sb.append(metadata);
+        sb.append(Conf.sep);
         sb.append(text);
-        sb.append(ConfKeys.sep);
+        sb.append(Conf.sep);
 		return sb;
 	}
 }

@@ -19,6 +19,9 @@ public class Dirs {
 
 	private static Stream<Path> list(final String dir) {
 		try {
+			if(!new File(dir).isDirectory()){
+				throw new IllegalArgumentException("not a dir: " + dir);
+			}
 			return Files.walk(Paths.get(dir));
 		} catch (final IOException e) {
 			throw new RuntimeException(e);

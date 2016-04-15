@@ -16,6 +16,16 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<jdk.version>1.8</jdk.version>
+		<api.core.version>1.1.0-SNAPSHOT</api.core.version>
+		<guice.version>4.0</guice.version>
+		<argparse4j.version>0.7.0</argparse4j.version>
+		<jackson.version>2.7.3</jackson.version>
+		<commons-lang3.version>3.4</commons-lang3.version>
+		<jdbi.version>2.72</jdbi.version>
+		<commons-dbcp2.version>2.1.1</commons-dbcp2.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 		<java.version>1.8</java.version>
@@ -30,7 +40,7 @@
 		<javax.servlet.version>3.1.0</javax.servlet.version>
 		<cglib.version>2.2.2</cglib.version>
 		<log4j-web.version>2.3</log4j-web.version>
-		<jackson.version>1.9.13</jackson.version>
+		<jackson.version>2.7.3</jackson.version>
 		<lucene.version>5.3.1</lucene.version>
 	</properties>
 

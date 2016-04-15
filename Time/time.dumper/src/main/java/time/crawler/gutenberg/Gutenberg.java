@@ -1,4 +1,4 @@
-package time.crawler.asis;
+package time.crawler.gutenberg;
 
 import java.io.IOException;
 
@@ -10,27 +10,29 @@ import com.google.inject.name.Named;
 
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
+import time.crawler.ICrawler;
 import time.crawler.conf.Conf;
 import time.crawler.write.IWriter;
-import time.crawler.write.file.FileWriter;
+import time.crawler.write.log.LogWriter;
 
-public class Asis extends AbstractModule {
+public class Gutenberg extends AbstractModule {
 
 	private Conf configuration;
 
-	private Asis(final String[] args) throws ArgumentParserException, IOException {
+	private Gutenberg(final String[] args) throws ArgumentParserException, IOException {
 		configuration = new Args().toBean(args, Conf.class);
 	}
 
 	@Override
 	protected void configure() {
-		bind(IWriter.class).to(FileWriter.class);
+		bind(ICrawler.class).to(GutenbergCrawler.class);
+		bind(IWriter.class).to(LogWriter.class);
 	}
 	
 	public static void main(final String[] args) throws Exception {
-		final Injector injector = Guice.createInjector(new Asis(args));
-		final AsisService service = injector.getInstance(AsisService.class);
-		service.run();
+		final Injector injector = Guice.createInjector(new Gutenberg(args));
+		final ICrawler crawler = injector.getInstance(ICrawler.class);
+		crawler.start();
 	}
 
 	@Provides
@@ -38,6 +40,4 @@ public class Asis extends AbstractModule {
 	public Conf webConfiguration() {
 		return configuration;
 	}
-
-
 }

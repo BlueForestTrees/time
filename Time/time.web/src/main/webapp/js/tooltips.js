@@ -3,16 +3,15 @@
         this.currentBar = null;
     }
 
-    tooltips.prototype.getNbPages = function(nbPhrases) {
-        var phrasesParPage = 23;
-        return nbPhrases ? " (" + (nbPhrases > phrasesParPage ? (1 + (Math.ceil(nbPhrases / phrasesParPage)) + " page") : (nbPhrases + " phrase")) + (nbPhrases > 1 ? "s" : "") + ")" : "";
+    tooltips.prototype.getNbPhrases = function(nbPhrases) {
+        return nbPhrases ? " (" + (nbPhrases + " phrase") + (nbPhrases > 1 ? "s" : "") + ")" : "";
     };
 
     tooltips.prototype.getTooltipText = function(bucket) {
         var years = Time.scale.bucketToYears(bucket);
         var start = years > 0 ? 'Dans ' : 'Il y a ';
         var echelle = Time.scale.getEchelle(years);
-        var end = Time.tooltips.getNbPages(bucket.count);
+        var end = Time.tooltips.getNbPhrases(bucket.count);
         switch (echelle) {
         case Time.scale.echelles.milliard:
             var nbard = Math.abs(Math.round(years / Time.scale.echelles.milliard));

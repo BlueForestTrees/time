@@ -14,21 +14,27 @@ import java.util.Scanner;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+import time.conf.Conf;
+
 public class SmartScanner {
 
 	private static final Logger LOG = LogManager.getLogger(SmartScanner.class);
 
 	private final List<Path> entries;
-
 	private Scanner scanner;
 	private String delimiter;
 	private int scannerIndex;
 
-	public SmartScanner(String path) throws IOException {
-		LOG.info("construction de smartScanner sur " + path);
+	@Inject
+	public SmartScanner(@Named("conf") Conf conf) throws IOException {
+		final String sourcePath = conf.getSourcePath();
+		LOG.info("construction de smartScanner sur " + sourcePath);
 		scanner = null;
 		scannerIndex = 0;
-		Path dir = FileSystems.getDefault().getPath(path);
+		Path dir = FileSystems.getDefault().getPath(sourcePath);
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
 			entries = new ArrayList<Path>();
 			for (Path entry : stream) {
@@ -41,9 +47,10 @@ public class SmartScanner {
 			}
 		}
 		firstScanner();
+		setDelimiter(conf.getSep());
 	}
 
-	public void setDelimiter(String delimiter) {
+	private void setDelimiter(String delimiter) {
 		this.delimiter = delimiter;
 		scanner.useDelimiter(delimiter);
 	}

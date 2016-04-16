@@ -10,8 +10,8 @@ import com.google.inject.name.Named;
 
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
+import time.conf.Conf;
 import time.crawler.ICrawler;
-import time.crawler.conf.Conf;
 
 public class Wiki extends AbstractModule {
 

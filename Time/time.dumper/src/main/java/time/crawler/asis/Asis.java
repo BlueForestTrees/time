@@ -10,7 +10,7 @@ import com.google.inject.name.Named;
 
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
-import time.crawler.conf.Conf;
+import time.conf.Conf;
 import time.crawler.write.IWriter;
 import time.crawler.write.file.FileWriter;
 

@@ -4,9 +4,11 @@ import java.io.IOException;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+import time.conf.Conf;
 import time.tool.chrono.Chrono;
 import time.transformer.reader.FinDuScanException;
 
@@ -16,19 +18,21 @@ import time.transformer.reader.FinDuScanException;
  * @author slim
  *
  */
-@Component
 public class Runner {
     private static final Logger LOG = LogManager.getLogger(Runner.class);
 
-    @Autowired
     private Long pageSize;
-    @Autowired
     private long pageTotal;
-    @Autowired
     private long maxPhrasesToFetch;
-
-    @Autowired
-    private TransformerService module;
+    private TransformerService transformer;
+    
+    @Inject
+    public Runner(@Named("conf") Conf conf, final TransformerService transformer){
+    	this.pageSize = conf.getPageSize();
+    	this.pageTotal = conf.getPageTotal();
+    	this.maxPhrasesToFetch = conf.getMaxPhrasesToFetch();
+    	this.transformer = transformer;
+    }
 
     public void run() throws IOException {
         LOG.info("run");
@@ -40,12 +44,12 @@ public class Runner {
 
         fullChrono.start();
 
-        module.onStart();
+        transformer.onStart();
 
         try {
             do {
                 chrono.start();
-                phraseCount += module.run(pageSize);
+                phraseCount += transformer.run(pageSize);
                 pageCount += pageSize;
                 chrono.stop();
                 fullChrono.stop();
@@ -55,7 +59,7 @@ public class Runner {
             LOG.info("fin du scan (" + pageCount + " pages, " + phraseCount + " phrases");
         }
 
-        module.onEnd();
+        transformer.onEnd();
 
         LOG.info("run end");
     }

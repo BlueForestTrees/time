@@ -3,9 +3,9 @@ package time.transformer.storage;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 
-import org.apache.lucene.analysis.Analyzer;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.LongField;
@@ -17,38 +17,40 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+import time.conf.Conf;
 import time.repo.bean.Phrase;
 import time.repo.bean.SortableLongField;
 import time.tool.ref.Fields;
 
-@Component
 public class LuceneStorage {
-	Analyzer analyzer;
-    IndexWriterConfig indexWriterConfig;
-    Directory directory;
-    IndexWriter iwriter;
-    FacetsConfig config;
-    
-    @Autowired
-    private String indexPath;
 
+	private static final Logger LOGGER = LogManager.getLogger(LuceneStorage.class);
+	
+	private String indexPath;
+    private IndexWriter iwriter;
+    private FacetsConfig config;
+
+    @Inject
+    public LuceneStorage(@Named("conf") Conf conf){
+    	indexPath = conf.getIndexPath();
+    	LOGGER.info("index: " + indexPath);
+    }
+    
     public void start() throws IOException {
-        analyzer = new FrenchAnalyzer();
-        indexWriterConfig = new IndexWriterConfig(analyzer);
+    	final Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
+    	final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new FrenchAnalyzer());
         indexWriterConfig.setOpenMode(OpenMode.CREATE);
         indexWriterConfig.setRAMBufferSizeMB(256.0);
-        directory = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
 
         iwriter = new IndexWriter(directory, indexWriterConfig);
-
         config = new FacetsConfig();
     }
 
     public void store(Phrase phrase) throws IOException {
-
         final Document doc = new Document();
         doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
         doc.add(new TextField(Fields.PAGE_URL, phrase.getPageUrl(), Store.YES));

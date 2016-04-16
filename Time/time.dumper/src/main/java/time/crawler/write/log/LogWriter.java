@@ -2,16 +2,14 @@ package time.crawler.write.log;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.stereotype.Component;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import time.crawler.conf.Conf;
+import time.conf.Conf;
 import time.crawler.write.IWriter;
 import time.crawler.write.Write;
 
-@Component
 public class LogWriter implements IWriter {
 	
 	private static final Logger LOGGER = LogManager.getLogger(LogWriter.class);

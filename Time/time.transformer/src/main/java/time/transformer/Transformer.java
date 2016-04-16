@@ -2,28 +2,40 @@ package time.transformer;
 
 import java.io.IOException;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.name.Named;
 
-import time.transformer.config.TransformerConfig;
+import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import time.conf.Args;
+import time.conf.Conf;
+import time.transformer.page.transformer.IPageTransformer;
+import time.transformer.page.transformer.NoOpPageTransformer;
 
-public class Transformer {
+public class Transformer extends AbstractModule{
     
-    private static final Logger LOG = LogManager.getLogger(Transformer.class);
-    
-    private Transformer(){
-        
-    }
+	private Conf conf;
 
-    public static void main(String[] args) throws IOException {
-        System.setProperty("file.encoding", "UTF-8");
+	private Transformer(final String[] args) throws ArgumentParserException, IOException {
+		conf = new Args().toBean(args, Conf.class);
+	}
 
-        LOG.info("Transformer start");
-        try (AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext(TransformerConfig.class)) {
-            ((Runner) ctx.getBean(Runner.class)).run();
-        }
-        LOG.info("Transformer end");
-    }
+	@Override
+	protected void configure() {
+		bind(IPageTransformer.class).to(NoOpPageTransformer.class);
+	}
+	
+	public static void main(final String[] args) throws Exception {
+		final Injector injector = Guice.createInjector(new Transformer(args));
+		injector.getInstance(Runner.class).run();
+	}
+
+	@Provides
+	@Named("conf")
+	public Conf webConfiguration() {
+		return conf;
+	}
 
 }

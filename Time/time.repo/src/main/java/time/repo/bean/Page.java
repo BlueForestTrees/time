@@ -10,6 +10,7 @@ public class Page implements Serializable {
     private Integer depth;
     private Integer nbLiensOut;
     private Integer nbLiensIn;
+    private String metadata;
     private List<String> liens;
     private StringBuilder content;
 
@@ -66,5 +67,13 @@ public class Page implements Serializable {
     public void setNbLiensIn(Integer nbLiensIn) {
         this.nbLiensIn = nbLiensIn;
     }
+
+	public String getMetadata() {
+		return metadata;
+	}
+
+	public void setMetadata(String metadata) {
+		this.metadata = metadata;
+	}
 
 }

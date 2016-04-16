@@ -2,14 +2,13 @@ package time.crawler.wiki;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.inject.name.Named;
 
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
+import time.conf.Conf;
 import time.crawler.BaseCrawler;
-import time.crawler.conf.Conf;
 import time.crawler.write.IWriter;
 import time.tool.chrono.Chrono;
 
@@ -17,7 +16,6 @@ public class WikiCrawler extends BaseCrawler {
 	
 	private static final Logger LOGGER = LogManager.getLogger(WikiCrawler.class);
 	        
-    @Autowired
     protected IWriter writer;
     
     protected Chrono chrono;

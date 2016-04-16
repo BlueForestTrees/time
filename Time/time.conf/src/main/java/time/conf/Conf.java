@@ -1,4 +1,4 @@
-package time.crawler.conf;
+package time.conf;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -44,12 +44,20 @@ public class Conf {
 	private String title;
 	private String includePattern;
 	private String excludePattern;
-	@JsonProperty
 	private String sourceDir;
-	@JsonProperty
 	private String txtPagesDir;
-	@JsonProperty
 	private String crawlStorageDir;
+	private Long pageSize;
+	private long pageTotal;
+	private long maxPhrasesToFetch;
+	private int maxLength;
+	private int minLength;
+	private List<String> excludeAfterList;
+	private int urlMaxLength;
+	private List<String> urlBlackList;
+	private String sourcePath;
+	private String datasourcePath;
+	private String indexPath;
 	
 	public String getHome() {
 		return withSlash(home);
@@ -187,5 +195,93 @@ public class Conf {
 
 	public String getStoragePath() {
 		return storagePath;
+	}
+
+	public Long getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Long pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public long getPageTotal() {
+		return pageTotal;
+	}
+
+	public void setPageTotal(long pageTotal) {
+		this.pageTotal = pageTotal;
+	}
+
+	public long getMaxPhrasesToFetch() {
+		return maxPhrasesToFetch;
+	}
+
+	public void setMaxPhrasesToFetch(long maxPhrasesToFetch) {
+		this.maxPhrasesToFetch = maxPhrasesToFetch;
+	}
+
+	public int getMaxLength() {
+		return maxLength;
+	}
+
+	public void setMaxLength(int maxLength) {
+		this.maxLength = maxLength;
+	}
+
+	public int getMinLength() {
+		return minLength;
+	}
+
+	public void setMinLength(int minLength) {
+		this.minLength = minLength;
+	}
+
+	public List<String> getExcludeAfterList() {
+		return excludeAfterList;
+	}
+
+	public void setExcludeAfterList(List<String> excludeAfterList) {
+		this.excludeAfterList = excludeAfterList;
+	}
+
+	public int getUrlMaxLength() {
+		return urlMaxLength;
+	}
+
+	public void setUrlMaxLength(int urlMaxLength) {
+		this.urlMaxLength = urlMaxLength;
+	}
+
+	public List<String> getUrlBlackList() {
+		return urlBlackList;
+	}
+
+	public void setUrlBlackList(List<String> urlBlackList) {
+		this.urlBlackList = urlBlackList;
+	}
+
+	public String getSourcePath() {
+		return sourcePath;
+	}
+
+	public void setSourcePath(String sourcePath) {
+		this.sourcePath = sourcePath;
+	}
+
+	public String getDatasourcePath() {
+		return datasourcePath;
+	}
+
+	public void setDatasourcePath(String datasourcePath) {
+		this.datasourcePath = datasourcePath;
+	}
+
+	public String getIndexPath() {
+		return indexPath;
+	}
+
+	public void setIndexPath(String indexPath) {
+		this.indexPath = indexPath;
 	}
 }

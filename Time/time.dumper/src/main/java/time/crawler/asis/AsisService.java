@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 
 import com.google.inject.Inject;
 
-import time.crawler.conf.Conf;
+import time.conf.Conf;
 import time.crawler.write.IWriter;
 
 public class AsisService {

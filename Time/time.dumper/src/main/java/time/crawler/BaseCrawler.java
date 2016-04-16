@@ -15,7 +15,7 @@ import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
-import time.crawler.conf.Conf;
+import time.conf.Conf;
 
 public abstract class BaseCrawler implements ICrawler{
 	private static final Logger LOGGER = LogManager.getLogger(BaseCrawler.class);

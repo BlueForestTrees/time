@@ -1,6 +1,6 @@
 package time.crawler.write;
 
-import time.crawler.conf.Conf;
+import time.conf.Conf;
 
 public class Write {
 	public static StringBuilder concat(final String url, final String metadata, final String text) {

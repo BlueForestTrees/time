@@ -10,10 +10,10 @@ import com.google.inject.name.Named;
 
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
+import time.conf.Conf;
 import time.crawler.ICrawler;
-import time.crawler.conf.Conf;
 import time.crawler.write.IWriter;
-import time.crawler.write.log.LogWriter;
+import time.crawler.write.file.FileWriter;
 
 public class Gutenberg extends AbstractModule {
 
@@ -26,7 +26,7 @@ public class Gutenberg extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(ICrawler.class).to(GutenbergCrawler.class);
-		bind(IWriter.class).to(LogWriter.class);
+		bind(IWriter.class).to(FileWriter.class);
 	}
 	
 	public static void main(final String[] args) throws Exception {

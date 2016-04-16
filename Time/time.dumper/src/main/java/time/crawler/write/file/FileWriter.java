@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import time.crawler.conf.Conf;
+import time.conf.Conf;
 import time.crawler.write.IWriter;
 import time.crawler.write.Write;
 import time.tool.file.Dirs;
@@ -20,13 +20,16 @@ import time.tool.file.Dirs;
 public class FileWriter implements IWriter {
 
 	private static final Logger LOGGER = LogManager.getLogger(FileWriter.class);
+	
+	final File outputDir;
 
 	private Conf conf;
 
 	@Inject
-	public FileWriter(@Named("conf") final Conf conf) {
+	public FileWriter(@Named("conf") final Conf conf) throws IOException {
 		this.conf = conf;
-		new File(conf.getTxtPagesDir()).mkdirs();
+		outputDir = new File(conf.getTxtPagesDir());
+		Dirs.renew(outputDir);
 	}
 
 	public void writePage(final String url, final String title, final String metadata, final String text) {
@@ -40,12 +43,10 @@ public class FileWriter implements IWriter {
 		final Path path = Paths.get(filepath);
 		final byte[] content = Write.concat(url, metadata, text).toString().getBytes();
 
-		LOGGER.info(path);
-
 		try {
 			Files.write(path, content);
 		} catch (IOException e) {
-			LOGGER.error(e);
+			e.printStackTrace();
 		}
 	}
 

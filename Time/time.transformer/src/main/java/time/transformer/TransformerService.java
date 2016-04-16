@@ -6,11 +6,14 @@ import java.util.regex.Pattern;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+import time.conf.Conf;
 import time.repo.bean.Page;
 import time.repo.bean.Phrase;
+import time.transformer.factory.DateFindersFactory;
 import time.transformer.page.filter.PageFilter;
 import time.transformer.page.transformer.IPageTransformer;
 import time.transformer.phrase.filter.PhraseFilter;
@@ -19,32 +22,28 @@ import time.transformer.reader.FinDuScanException;
 import time.transformer.reader.PageReader;
 import time.transformer.storage.LuceneStorage;
 
-@Component
 public class TransformerService {
 
     private static final Logger LOG = LogManager.getLogger(TransformerService.class);
-
-    @Autowired
-    LuceneStorage storage;
-
-    @Autowired
-    PageReader pageReader;
-
-    @Autowired
-    PageFilter pageFilter;
-
-    @Autowired
-    PhraseFilter phraseFilter;
-
-    @Autowired
-    PhraseFinder[] finders;
-    
-    @Autowired
-    IPageTransformer pageTransformer;
-
     private static final Pattern splitPhrasePattern = Pattern.compile("(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))\\.) +");
+    private static final Pattern splitParagraphPattern = Pattern.compile("[\r\n\t]+");
 
-    private final Pattern splitParagraphPattern = Pattern.compile("[\r\n\t]+");
+    private LuceneStorage storage;
+    private PhraseFinder[] finders;
+    private PhraseFilter phraseFilter;
+    private PageReader pageReader;
+    private PageFilter pageFilter;
+    private IPageTransformer pageTransformer;
+    
+    @Inject
+    public TransformerService(@Named("conf") Conf conf, LuceneStorage storage, PhraseFilter phraseFilter, PageReader pageReader, PageFilter pageFilter, IPageTransformer pageTransformer){
+    	this.storage = storage;
+    	this.phraseFilter = phraseFilter;
+    	this.pageReader = pageReader;
+    	this.pageFilter = pageFilter;
+    	this.pageTransformer = pageTransformer;
+    	finders = new DateFindersFactory().finders();
+    }
 
     public void onStart() throws IOException {
         LOG.info("onStart()");

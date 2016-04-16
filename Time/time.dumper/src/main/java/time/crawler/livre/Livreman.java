@@ -2,13 +2,14 @@ package time.crawler.livre;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
-import org.apache.tika.metadata.TikaCoreProperties;
 import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
@@ -19,8 +20,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
-import time.crawler.conf.Conf;
+import time.conf.Conf;
 import time.crawler.write.IWriter;
+import time.crawler.write.tika.MyTikaMetadata;
 import time.tool.file.Dirs;
 
 public class Livreman {
@@ -54,21 +56,29 @@ public class Livreman {
 	 */
 	private void writePage(final File source) {
 		LOGGER.info(source);
-
-		final ContentHandler textHandler = new BodyContentHandler(Integer.MAX_VALUE);
-		final Metadata metadata = new Metadata();
-
+		FileInputStream input;
 		try {
-			final AutoDetectParser parser = new AutoDetectParser();
-			final FileInputStream input = new FileInputStream(source);
-			parser.parse(input, textHandler, metadata);
-			input.close();
-		} catch (IOException | SAXException | TikaException e) {
+			input = new FileInputStream(source);
+		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Lecture fichier", e);
 		}
 
+		toPages(input);
+	}
+	
+	private void toPages(final InputStream input){
+		final ContentHandler textHandler = new BodyContentHandler(Integer.MAX_VALUE);
+		final Metadata metadata = new Metadata();
 		try {
-			final MyMetadata metadatas = new MyMetadata(metadata);
+			final AutoDetectParser parser = new AutoDetectParser();
+			parser.parse(input, textHandler, metadata);
+			input.close();
+		} catch (IOException | SAXException | TikaException e) {
+			throw new RuntimeException("Parsing fichier", e);
+		}
+
+		try {
+			final MyTikaMetadata metadatas = new MyTikaMetadata(metadata);
 			final String datas = mapper.writeValueAsString(metadatas);
 			writer.writePage("epub", metadatas.getTitle(), datas, textHandler.toString());
 		} catch (JsonProcessingException e) {
@@ -76,53 +86,7 @@ public class Livreman {
 		}
 	}
 
-	private class MyMetadata {
-		private final String identifier;
-		private final String title;
-		private final String creator;
-		private final String created;
-		private final String language;
-		private final String type;
-		private final String comments;
-		
-		public MyMetadata(final Metadata metadata) {
-			identifier = metadata.get(TikaCoreProperties.IDENTIFIER);
-			title = metadata.get(TikaCoreProperties.TITLE);
-			creator = metadata.get(TikaCoreProperties.CREATOR);
-			created = metadata.get(TikaCoreProperties.CREATED);
-			language = metadata.get(TikaCoreProperties.LANGUAGE);
-			type = metadata.get(TikaCoreProperties.TYPE);
-			comments = metadata.get(TikaCoreProperties.COMMENTS);
-		}
-
-		public String getTitle() {
-			return title;
-		}
-
-		public String getCreator() {
-			return creator;
-		}
-
-		public String getCreated() {
-			return created;
-		}
-
-		public String getLanguage() {
-			return language;
-		}
-
-		public String getType() {
-			return type;
-		}
-
-		public String getComments() {
-			return comments;
-		}
-
-		public String getIdentifier() {
-			return identifier;
-		}
-	}
+	
 }
 
 /**

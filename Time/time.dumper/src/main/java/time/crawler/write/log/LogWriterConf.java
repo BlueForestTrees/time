@@ -17,7 +17,7 @@ import org.apache.logging.log4j.core.config.AppenderRef;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.AbstractStringLayout;
 
-import time.crawler.conf.Conf;
+import time.conf.Conf;
 
 public class LogWriterConf {
 	

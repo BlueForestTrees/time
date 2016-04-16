@@ -1,10 +1,12 @@
 package time.transformer.page.transformer;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.OptionalInt;
 
-import org.springframework.stereotype.Component;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 
+import time.conf.Conf;
 import time.repo.bean.Page;
 
 /**
@@ -12,18 +14,19 @@ import time.repo.bean.Page;
  * @author slim
  *
  */
-@Component
 public class WikiExcludeAfterPageTransformer implements IPageTransformer {
 
-    /**
-     * Les mots clés à detecter dans les pages.
-     */
-    private static final String[] excludeAfter = new String[] { "Notes et références[", "Bibliographie[", "Liens externes[", "Bibliographie[", "Annexes[" };
+    private List<String> excludeAfterList;
     
-    @Override
+    @Inject
+    public WikiExcludeAfterPageTransformer(@Named("conf") Conf conf) {
+		this.excludeAfterList = conf.getExcludeAfterList();
+	}
+
+	@Override
     public Page transform(final Page page) {
         final StringBuilder text = page.getText();
-        final OptionalInt whereToCut = Arrays.stream(excludeAfter).mapToInt(term -> text.indexOf(term)).filter(v -> v > 0).min();
+        final OptionalInt whereToCut = excludeAfterList.stream().mapToInt(term -> text.indexOf(term)).filter(v -> v > 0).min();
         if (whereToCut.isPresent()) {
             text.delete(whereToCut.getAsInt(), text.length());
         }

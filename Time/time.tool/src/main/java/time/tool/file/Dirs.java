@@ -7,7 +7,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+import org.apache.commons.io.FileUtils;
+
 public class Dirs {
+	
+	public static void renew(final File file) throws IOException{
+		FileUtils.deleteDirectory(file);
+		file.mkdirs();
+	}
 	
 	public static Stream<File> files(final String dir) {
 			return list(dir)
@@ -29,7 +36,8 @@ public class Dirs {
 	}
 
 	public static String filenameAble(final String title) {
-		return title.replaceAll("[^a-zA-Z0-9.-]", "_");
+		final String titleTemp = title.replaceAll("[^a-zA-Z0-9.-]", "_");
+		return titleTemp.substring(0, Math.min(50, titleTemp.length()));
 	}
 	
 }

@@ -5,26 +5,24 @@ import java.io.IOException;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import time.conf.Conf;
 import time.repo.bean.Phrase;
 import time.transformer.storage.LuceneStorage;
-import time.transformer.test.config.LuceneStorageConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { LuceneStorageConfig.class })
 public class LuceneStorageTest {
 
     private static final Logger LOG = LogManager.getLogger(LuceneStorageTest.class);
 
-    @Autowired
-    LuceneStorage storage;
-
+    private LuceneStorage storage;
     private int logEvery = 1000;
 
+    public LuceneStorageTest(){
+    	Conf conf = new Conf();
+    	conf.setIndexPath("C:/Time/data/testphrases");
+        storage = new LuceneStorage(conf);
+    }
+    
     @Test
     public void fillTest() throws IOException {
         storage.start();

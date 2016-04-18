@@ -14,8 +14,14 @@ public class Page implements Serializable {
     private List<String> liens;
     private StringBuilder content;
     private String title;
+    private StringBuilder hightlightenContent;
     
-    
+    public void appendHightlightContent(final String part){
+    	if(hightlightenContent == null){
+    		hightlightenContent = new StringBuilder();
+    	}
+    	hightlightenContent.append(part);
+    }
     public String getTextString() {
         return content.toString();
     }
@@ -82,6 +88,10 @@ public class Page implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getHightlightenContent() {
+		return hightlightenContent.toString();
 	}
 
 }

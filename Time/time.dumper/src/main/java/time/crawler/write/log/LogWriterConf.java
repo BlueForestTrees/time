@@ -26,8 +26,11 @@ public class LogWriterConf {
 	public String logWriterPath(final Conf conf) {
         final LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         final org.apache.logging.log4j.core.config.Configuration logConfig = ctx.getConfiguration();
-        final String filename = conf.getPagesFile1();
-        final String filePattern = conf.getPagesFile1() + "%i";
+        final String filename = conf.getTxtOutputDir();
+        if(filename == null){
+        	throw new RuntimeException("txtOutputDir is null");
+        }
+        final String filePattern = filename + "%i";
         final String append = "false";
         final String immediateFlush = "true";
         final String bufferSizeStr = String.valueOf(RollingRandomAccessFileManager.DEFAULT_BUFFER_SIZE);

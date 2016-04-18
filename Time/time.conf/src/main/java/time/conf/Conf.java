@@ -1,41 +1,30 @@
 package time.conf;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Conf {
-	private static final String TXTPAGES = "pages";
-	private static final String TEMP = "temp/";
-	private static final String INDEXES = "indexes/";
-	private static final String CONF = ".conf";
 	public static final String sep = "\\|¨";
 	
 	private String target;
 	private String home;
-	
+	private String splitParagraphPattern = "[\r\n\t]+";
 	private String basePath;
 	private String name;
 	private String baseUrl;
 	private String regexUrlFilter;
 	private String urlFilter;
-	@JsonProperty(defaultValue="1000")
-	private Long nbPageLog;
-	@JsonProperty(defaultValue="-1")
-	private int maxPages;
-	@JsonProperty(defaultValue="25")
-	private int politenessDelay;
-	private String crawlStorageFolder;
-	@JsonProperty(defaultValue="false")
-	private boolean resumable;
-	private String seedUrl;
-	@JsonProperty(defaultValue="5")
-	private int nbCrawlers;
 	private String storagePath;
-	
-	@JsonProperty(defaultValue="100MB")
-	private String maxFileSize;
+	private Long nbPageLog = 1000L;
+	private int maxPages = -1;
+	private int politenessDelay = 25;
+	private String crawlStorageFolder;
+	private boolean resumable = false;
+	private String seedUrl;
+	private int nbCrawlers = 5;
+	private long pageSize = 100;	
+	private String maxFileSize = "100MB";
 	private String type;
 	private List<String> excludeList;
 	private List<String> contentExclusion;
@@ -45,19 +34,18 @@ public class Conf {
 	private String includePattern;
 	private String excludePattern;
 	private String sourceDir;
-	private String txtPagesDir;
+	private String txtOutputDir;
 	private String crawlStorageDir;
-	private Long pageSize;
 	private long pageTotal;
 	private long maxPhrasesToFetch;
 	private int maxLength;
 	private int minLength;
 	private List<String> excludeAfterList;
-	private int urlMaxLength;
-	private List<String> urlBlackList;
+	private int urlMaxLength = 255;
+	private List<String> urlBlackList = Arrays.asList();
 	private String sourcePath;
 	private String datasourcePath;
-	private String indexPath;
+	private String indexDir;
 	
 	public String getHome() {
 		return withSlash(home);
@@ -71,26 +59,12 @@ public class Conf {
 		return sourceDir;
 	}
 	
-	public String getTempDir(){
-		return getHome() + TEMP + getTarget();
+	public String getTxtOutputDir() {
+		return txtOutputDir;
 	}
-	
-	public String getIndexDir(){
-		return getHome() + INDEXES + getTarget();		
-	}
-	
-	public String getTxtPagesDir() {
-		return txtPagesDir;
-	}
-	public String getPagesFile1() {
-		return getTxtPagesDir() + TXTPAGES;
-	}
+
 	public String getCrawlStorageDir() {
 		return crawlStorageDir;
-	}
-	
-	public String getConfFile(){
-		return getSourceDir() + CONF;
 	}
 	
 	public Pattern getFilter() {
@@ -197,11 +171,11 @@ public class Conf {
 		return storagePath;
 	}
 
-	public Long getPageSize() {
+	public long getPageSize() {
 		return pageSize;
 	}
 
-	public void setPageSize(Long pageSize) {
+	public void setPageSize(long pageSize) {
 		this.pageSize = pageSize;
 	}
 
@@ -277,11 +251,19 @@ public class Conf {
 		this.datasourcePath = datasourcePath;
 	}
 
-	public String getIndexPath() {
-		return indexPath;
+	public String getIndexDir() {
+		return indexDir;
 	}
 
-	public void setIndexPath(String indexPath) {
-		this.indexPath = indexPath;
+	public void setIndexDir(String indexPath) {
+		this.indexDir = indexPath;
+	}
+
+	public String getSplitParagraphPattern() {
+		return splitParagraphPattern;
+	}
+
+	public void setSplitParagraphPattern(String splitParagraphPattern) {
+		this.splitParagraphPattern = splitParagraphPattern;
 	}
 }

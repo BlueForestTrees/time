@@ -29,44 +29,48 @@ import time.tool.ref.Fields;
 public class LuceneStorage {
 
 	private static final Logger LOGGER = LogManager.getLogger(LuceneStorage.class);
-	
+
 	private String indexPath;
-    private IndexWriter iwriter;
-    private FacetsConfig config;
+	private IndexWriter iwriter;
+	private FacetsConfig config;
 
-    @Inject
-    public LuceneStorage(@Named("conf") Conf conf){
-    	indexPath = conf.getIndexPath();
-    	LOGGER.info("index: " + indexPath);
-    }
-    
-    public void start() throws IOException {
-    	final Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
-    	final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new FrenchAnalyzer());
-        indexWriterConfig.setOpenMode(OpenMode.CREATE);
-        indexWriterConfig.setRAMBufferSizeMB(256.0);
+	@Inject
+	public LuceneStorage(@Named("conf") Conf conf) {
+		indexPath = conf.getIndexDir();
+		LOGGER.info("index: " + indexPath);
+		if (indexPath == null) {
+			throw new RuntimeException("indexPath is null");
+		}
+	}
 
-        iwriter = new IndexWriter(directory, indexWriterConfig);
-        config = new FacetsConfig();
-    }
+	public void start() throws IOException {
+		final Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
+		final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new FrenchAnalyzer());
+		indexWriterConfig.setOpenMode(OpenMode.CREATE);
+		indexWriterConfig.setRAMBufferSizeMB(256.0);
 
-    public void store(Phrase phrase) throws IOException {
-        final Document doc = new Document();
-        doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
-        doc.add(new TextField(Fields.PAGE_URL, phrase.getPageUrl(), Store.YES));
-        doc.add(new SortableLongField(Fields.DATE, phrase.getDate(), Store.YES));
+		iwriter = new IndexWriter(directory, indexWriterConfig);
+		config = new FacetsConfig();
+	}
 
-        for(int i = 0; i < Scale.scales.length; i++){
-            doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.scales[i], Store.NO));
-            doc.add(new SortedSetDocValuesFacetField(String.valueOf(i), String.valueOf(phrase.getDate() / Scale.scales[i])));
-        }
-        
-        iwriter.addDocument(config.build(doc));
-    }
+	public void store(Phrase phrase) throws IOException {
+		final Document doc = new Document();
+		doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
+		doc.add(new TextField(Fields.PAGE_URL, phrase.getPageUrl(), Store.YES));
+		doc.add(new SortableLongField(Fields.DATE, phrase.getDate(), Store.YES));
 
-    public void end() throws IOException {
-        iwriter.forceMerge(1);
-        iwriter.close();
-    }
+		for (int i = 0; i < Scale.scales.length; i++) {
+			doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.scales[i], Store.NO));
+			doc.add(new SortedSetDocValuesFacetField(String.valueOf(i),
+					String.valueOf(phrase.getDate() / Scale.scales[i])));
+		}
+
+		iwriter.addDocument(config.build(doc));
+	}
+
+	public void end() throws IOException {
+		iwriter.forceMerge(1);
+		iwriter.close();
+	}
 
 }

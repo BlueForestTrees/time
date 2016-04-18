@@ -30,13 +30,13 @@ public class SmartScanner {
 
 	@Inject
 	public SmartScanner(@Named("conf") Conf conf) throws IOException {
-		final String sourcePath = conf.getSourcePath();
+		final String sourcePath = conf.getTxtOutputDir();
 		LOG.info("construction de smartScanner sur " + sourcePath);
 		scanner = null;
 		scannerIndex = 0;
 		Path dir = FileSystems.getDefault().getPath(sourcePath);
 		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
-			entries = new ArrayList<Path>();
+			entries = new ArrayList<>();
 			for (Path entry : stream) {
 				if (new File(entry.toString()).isFile()) {
 					LOG.info(entry.toString());

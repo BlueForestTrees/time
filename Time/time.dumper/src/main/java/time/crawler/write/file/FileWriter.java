@@ -28,12 +28,12 @@ public class FileWriter implements IWriter {
 	@Inject
 	public FileWriter(@Named("conf") final Conf conf) throws IOException {
 		this.conf = conf;
-		outputDir = new File(conf.getTxtPagesDir());
+		outputDir = new File(conf.getTxtOutputDir());
 		Dirs.renew(outputDir);
 	}
 
 	public void writePage(final String url, final String title, final String metadata, final String text) {
-		final String txtPagesDir = conf.getTxtPagesDir();
+		final String txtPagesDir = conf.getTxtOutputDir();
 		final String filename = Dirs.filenameAble(title);
 		final String filepath = txtPagesDir + filename;
 		if(txtPagesDir == null || filename == null){

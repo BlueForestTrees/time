@@ -15,7 +15,5 @@ pageSize: 100
 sourcePath: C:/dev/Histoire/time/data/temp/gutenberg/epubs/
 #indexPath: /home/slimane/time/Histoire/data/indexes/wiki/
 indexPath: C:/dev/Histoire/time/data/indexes/gutenberg/
-urlBlackList: []
-indexPath: C:/dev/Histoire/time/data/indexes/gutenberg/
 minLength: 30
 maxLength: 500000

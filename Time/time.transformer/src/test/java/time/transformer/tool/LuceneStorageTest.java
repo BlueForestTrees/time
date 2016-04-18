@@ -19,7 +19,7 @@ public class LuceneStorageTest {
 
     public LuceneStorageTest(){
     	Conf conf = new Conf();
-    	conf.setIndexPath("C:/Time/data/testphrases");
+    	conf.setIndexDir("C:/Time/data/testphrases");
         storage = new LuceneStorage(conf);
     }
     

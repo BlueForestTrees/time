@@ -34,7 +34,7 @@ public class Transformer extends AbstractModule{
 
 	@Provides
 	@Named("conf")
-	public Conf webConfiguration() {
+	public Conf conf() {
 		return conf;
 	}
 

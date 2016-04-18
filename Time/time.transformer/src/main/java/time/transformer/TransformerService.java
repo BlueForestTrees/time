@@ -65,11 +65,15 @@ public class TransformerService {
     }
 
     protected long handle(final Page page) throws IOException {
+    	LOG.info(page.getTextString());
         long phrasesCount = 0;
         pageTransformer.transform(page);
 
-        for (String paragraph : getParagraphs(page.getTextString())) {
+        final String[] paragraphs = getParagraphs(page.getTextString());
+        LOG.info(paragraphs.length + " paragraphes");
+		for (String paragraph : paragraphs) {
             final String[] phrases = getPhrases(paragraph);
+            //LOG.info(phrases.length + " phrases");
             for(PhraseFinder finder : finders){
             	//TODO stocker les paragraphes zippés, avec l'id du paragraphe dans les phrases
                 phrasesCount += findAndStorePhrases(page, paragraph, phrases, finder);
@@ -81,6 +85,7 @@ public class TransformerService {
     protected long findAndStorePhrases(final Page page, final String paragraph, final String[] phrasesArray, final PhraseFinder finder) throws IOException {
         long count = 0;
         final List<Phrase> phrases = finder.findPhrases(phrasesArray);
+        //LOG.info(phrases.size() + " dated phrases");
         for (Phrase phrase : phrases) {
             if (phraseFilter.keepThisPhrase(phrase)) {
                 phrase.setPageUrl(page.getUrl());

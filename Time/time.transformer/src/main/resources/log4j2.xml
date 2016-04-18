@@ -19,7 +19,7 @@
 			<AppenderRef ref="Console" />
 			<AppenderRef ref="StdFile" />
 		</Root>
-		<Logger name="time.transformer.service.Runner" level="debug" />
+		<Logger name="time.transformer.reader" level="error" />
 		<Logger name="time" level="info" />
 	</Loggers>
 </Configuration>

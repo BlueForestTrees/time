@@ -13,7 +13,7 @@ public class Page implements Serializable {
     private String metadata;
     private List<String> liens;
     private StringBuilder content;
-
+    private String title;
     
     
     public String getTextString() {
@@ -74,6 +74,14 @@ public class Page implements Serializable {
 
 	public void setMetadata(String metadata) {
 		this.metadata = metadata;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }

@@ -10,7 +10,7 @@ public class Conf {
 	private static final String TEMP = "temp/";
 	private static final String INDEXES = "indexes/";
 	private static final String CONF = ".conf";
-	public static final String sep = "|¨";
+	public static final String sep = "\\|¨";
 	
 	private String target;
 	private String home;

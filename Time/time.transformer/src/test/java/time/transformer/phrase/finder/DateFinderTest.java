@@ -10,7 +10,7 @@ import java.util.List;
 import org.assertj.core.api.Condition;
 import org.junit.Test;
 
-import time.repo.bean.Phrase;
+import time.repo.bean.DatedPhrase;
 import time.tool.date.Dates;
 import time.transformer.factory.DateFindersFactory;
 
@@ -437,7 +437,7 @@ public class DateFinderTest {
 	@Test
 	public void none5() {
 		final String phrase = "Pépin II, roi d’Aquitaine, résiste durant un quart de siècle à Charles le Chauve, le roi de Francie occidentale.";
-		assertNone(new String[] { phrase }, romanFinder);
+		assertNone(phrase, romanFinder);
 	}
 
 	@Test
@@ -481,32 +481,29 @@ public class DateFinderTest {
 	}
 
 	private void assertNone(String phrase) {
-		assertNone(new String[] { phrase }, finders);
+		assertNone(phrase, finders);
 	}
 
-	private void assertNone(String[] phrases, PhraseFinder[] finders) {
+	private void assertNone(String phrases, PhraseFinder[] finders) {
 		assertThat(finders).isNotEmpty();
 		for (PhraseFinder finder : finders) {
 			assertNone(phrases, finder);
 		}
 	}
 
-	private void assertNone(String[] phrases, PhraseFinder finder) {
+	private void assertNone(String phrases, PhraseFinder finder) {
 		assertThat(finder.findPhrases(phrases)).as(finder + " trouve des phrases").isEmpty();
 	}
 
-	private void assertOne(final PhraseFinder finder, Condition<? super Phrase> condition, String phrase) {
-		final String[] phrases = new String[] { phrase };
-		assertThat(finder.findPhrases(phrases)).as(finder + " ne trouve pas de phrases").haveExactly(1, condition);
+	private void assertOne(final PhraseFinder finder, Condition<? super DatedPhrase> condition, String phrase) {
+		assertThat(finder.findPhrases(phrase)).as(finder + " ne trouve pas de phrases").haveExactly(1, condition);
 
 		final PhraseFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new PhraseFinder[size]);
-		assertNone(phrases, filteredFinders);
+		assertNone(phrase, filteredFinders);
 	}
 
-	private void assertTwo(final PhraseFinder finder, Condition<? super Phrase> condition1, Condition<? super Phrase> condition2, String phrase) {
-		final String[] phrases = new String[] { phrase };
-
-		final List<Phrase> actualPhrases = finder.findPhrases(phrases);
+	private void assertTwo(final PhraseFinder finder, Condition<? super DatedPhrase> condition1, Condition<? super DatedPhrase> condition2, String phrase) {
+		final List<DatedPhrase> actualPhrases = finder.findPhrases(phrase);
 
 		assertThat(actualPhrases).as("doit trouver deux dates").hasSize(2);
 
@@ -514,49 +511,49 @@ public class DateFinderTest {
 		assertThat(actualPhrases.get(1)).as("deuxième date").has(condition2);
 
 		final PhraseFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new PhraseFinder[size]);
-		assertNone(phrases, filteredFinders);
+		assertNone(phrase, filteredFinders);
 	}
 
-	private Condition<? super Phrase> milliardYearIs(double expectedAnnee) {
+	private Condition<? super DatedPhrase> milliardYearIs(double expectedAnnee) {
 		final long expectedJour = Dates.milliardsToDays(expectedAnnee);
-		return new Condition<Phrase>() {
-			public boolean matches(Phrase phrase) {
+		return new Condition<DatedPhrase>() {
+			public boolean matches(DatedPhrase phrase) {
 				return phrase.getDate() == expectedJour;
 			}
 		}.as("jours correct : " + expectedJour);
 	}
 
-	private Condition<? super Phrase> millionYearIs(double expectedAnnee) {
+	private Condition<? super DatedPhrase> millionYearIs(double expectedAnnee) {
 		final long expectedJour = Dates.millionsToDays(expectedAnnee);
-		return new Condition<Phrase>() {
-			public boolean matches(Phrase phrase) {
+		return new Condition<DatedPhrase>() {
+			public boolean matches(DatedPhrase phrase) {
 				return phrase.getDate() == expectedJour;
 			}
 		}.as("jours correct : " + expectedJour);
 	}
 
-	private Condition<? super Phrase> yearIs(int expectedAnnee) {
+	private Condition<? super DatedPhrase> yearIs(int expectedAnnee) {
 		final long expectedJour = Dates.toDays(expectedAnnee);
-		return new Condition<Phrase>() {
-			public boolean matches(Phrase phrase) {
+		return new Condition<DatedPhrase>() {
+			public boolean matches(DatedPhrase phrase) {
 				return phrase.getDate() == expectedJour;
 			}
 		}.as("jours correct : " + expectedJour);
 	}
 
-	private Condition<? super Phrase> ilyaYearIs(int expectedAnnee) {
+	private Condition<? super DatedPhrase> ilyaYearIs(int expectedAnnee) {
 		final long expectedJour = Dates.ilyaToDays(expectedAnnee);
-		return new Condition<Phrase>() {
-			public boolean matches(Phrase phrase) {
+		return new Condition<DatedPhrase>() {
+			public boolean matches(DatedPhrase phrase) {
 				return phrase.getDate() == expectedJour;
 			}
 		}.as("il y a jours correct : " + expectedJour);
 	}
 
-	private Condition<? super Phrase> dateIs(final LocalDate expectedDate) {
+	private Condition<? super DatedPhrase> dateIs(final LocalDate expectedDate) {
 		long expectedJour = Dates.toDays(expectedDate);
-		return new Condition<Phrase>() {
-			public boolean matches(Phrase phrase) {
+		return new Condition<DatedPhrase>() {
+			public boolean matches(DatedPhrase phrase) {
 				return phrase.getDate() == expectedJour;
 			}
 		}.as("expectedJour : " + expectedJour);

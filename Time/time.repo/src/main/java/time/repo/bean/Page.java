@@ -93,5 +93,18 @@ public class Page implements Serializable {
 	public String getHightlightenContent() {
 		return hightlightenContent.toString();
 	}
+	
+	public void openParagraph() {
+		appendHightlightContent("<div class=\"paragraph\">");
+	}
+	public void closeParagraph() {
+		appendHightlightContent("</div>");
+	}
+	public void startPhrase() {
+		appendHightlightContent("<span class=\"phrase\">");
+	}
+	public void endPhrase() {
+		appendHightlightContent("</span>");
+	}
 
 }

@@ -1,8 +1,12 @@
 package time.repo.bean;
 
-public class Phrase {
+/**
+ * La date est exprimée en nombres de jours par rapport à J.C.
+ * @author slimane
+ *
+ */
+public class DatedPhrase {
     private String text;
-    //nb de jours / JC
     private long date;
     private String pageUrl;
 

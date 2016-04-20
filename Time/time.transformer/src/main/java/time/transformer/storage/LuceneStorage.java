@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import time.conf.Conf;
-import time.repo.bean.Phrase;
+import time.repo.bean.DatedPhrase;
 import time.repo.bean.SortableLongField;
 import time.tool.ref.Fields;
 
@@ -53,7 +53,7 @@ public class LuceneStorage {
 		config = new FacetsConfig();
 	}
 
-	public void store(Phrase phrase) throws IOException {
+	public void store(DatedPhrase phrase) {
 		final Document doc = new Document();
 		doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
 		doc.add(new TextField(Fields.PAGE_URL, phrase.getPageUrl(), Store.YES));
@@ -65,7 +65,11 @@ public class LuceneStorage {
 					String.valueOf(phrase.getDate() / Scale.scales[i])));
 		}
 
-		iwriter.addDocument(config.build(doc));
+		try {
+			iwriter.addDocument(config.build(doc));
+		} catch (IOException e) {
+			throw new RuntimeException("IndexWriter.addDocument error", e);
+		}
 	}
 
 	public void end() throws IOException {

@@ -34,18 +34,21 @@ public class Conf {
 	private String includePattern;
 	private String excludePattern;
 	private String sourceDir;
+	private String txtOutputFile;
 	private String txtOutputDir;
 	private String crawlStorageDir;
 	private long pageTotal;
 	private long maxPhrasesToFetch;
-	private int maxLength;
-	private int minLength;
+	private int maxLength = 1000;
+	private int minLength = 40;
 	private List<String> excludeAfterList;
 	private int urlMaxLength = 255;
 	private List<String> urlBlackList = Arrays.asList();
 	private String sourcePath;
 	private String datasourcePath;
 	private String indexDir;
+	private String[] phraseMustNotStartWith;
+
 	
 	public String getHome() {
 		return withSlash(home);
@@ -265,5 +268,13 @@ public class Conf {
 
 	public void setSplitParagraphPattern(String splitParagraphPattern) {
 		this.splitParagraphPattern = splitParagraphPattern;
+	}
+
+	public String[] getPhraseMustNotStartWith() {
+		return phraseMustNotStartWith;
+	}
+
+	public String getTxtOutputFile() {
+		return txtOutputFile;
 	}
 }

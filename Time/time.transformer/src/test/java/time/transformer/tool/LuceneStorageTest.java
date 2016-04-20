@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import time.conf.Conf;
-import time.repo.bean.Phrase;
+import time.repo.bean.DatedPhrase;
 import time.transformer.storage.LuceneStorage;
 
 public class LuceneStorageTest {
@@ -38,8 +38,8 @@ public class LuceneStorageTest {
         storage.end();
     }
 
-    private Phrase getPhrase(long l) {
-        final Phrase phrase = new Phrase();
+    private DatedPhrase getPhrase(long l) {
+        final DatedPhrase phrase = new DatedPhrase();
         phrase.setDate(l);
         phrase.setText(String.valueOf(l));
         return phrase;

@@ -30,24 +30,36 @@ public class SmartScanner {
 
 	@Inject
 	public SmartScanner(@Named("conf") Conf conf) throws IOException {
-		final String sourcePath = conf.getTxtOutputDir();
-		LOG.info("construction de smartScanner sur " + sourcePath);
-		scanner = null;
-		scannerIndex = 0;
-		Path dir = FileSystems.getDefault().getPath(sourcePath);
-		try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
-			entries = new ArrayList<>();
-			for (Path entry : stream) {
-				if (new File(entry.toString()).isFile()) {
-					LOG.info(entry.toString());
-					entries.add(entry);
-				} else {
-					LOG.info("ignoring " + entry);
+		final String txtOutputDir = conf.getTxtOutputDir();
+		final String txtOutputFile = conf.getTxtOutputFile();
+		
+		entries = new ArrayList<>();
+		
+		if(txtOutputDir != null){
+			LOG.info("construction de smartScanner sur dir " + txtOutputDir);
+			Path dir = FileSystems.getDefault().getPath(txtOutputDir);
+			try (DirectoryStream<Path> stream = Files.newDirectoryStream(dir)) {
+				for (Path entry : stream) {
+					addEntry(entry);
 				}
 			}
+		}else if(txtOutputFile != null){
+			LOG.info("construction de smartScanner sur file " + txtOutputFile);
+			addEntry(FileSystems.getDefault().getPath(txtOutputFile));
+		}else{
+			throw new IllegalArgumentException("manque txtOutputDir ou txtOutputFile");
 		}
 		firstScanner();
-		setDelimiter(conf.getSep());
+		setDelimiter(Conf.getSep());
+	}
+
+	private void addEntry(Path entry) {
+		if (new File(entry.toString()).isFile()) {
+			LOG.info(entry.toString());
+			entries.add(entry);
+		} else {
+			LOG.info("ignoring " + entry);
+		}
 	}
 
 	private void setDelimiter(String delimiter) {

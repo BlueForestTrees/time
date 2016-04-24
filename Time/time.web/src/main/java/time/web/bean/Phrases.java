@@ -2,11 +2,11 @@ package time.web.bean;
 
 import java.util.List;
 
-import time.repo.bean.Phrase;
+import time.repo.bean.DatedPhrase;
 
 public class Phrases {
 
-    private List<Phrase> phraseList;
+    private List<DatedPhrase> phraseList;
     
     private String lastKey;
     
@@ -38,11 +38,11 @@ public class Phrases {
         this.lastKey = lastKey;
     }
 
-    public List<Phrase> getPhraseList() {
+    public List<DatedPhrase> getPhraseList() {
         return phraseList;
     }
 
-    public void setPhraseList(List<Phrase> phrases) {
+    public void setPhraseList(List<DatedPhrase> phrases) {
         this.phraseList = phrases;
     }
     

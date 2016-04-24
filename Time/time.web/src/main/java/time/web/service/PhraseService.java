@@ -24,7 +24,7 @@ import org.apache.lucene.search.highlight.QueryScorer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import time.repo.bean.Phrase;
+import time.repo.bean.DatedPhrase;
 import time.web.bean.Last;
 import time.web.bean.Phrases;
 import time.web.exception.LuceneRuntimeException;
@@ -65,7 +65,7 @@ public class PhraseService {
             // LES PHRASES
             final Integer lastIndex = last == null ? null : last.getLastIndex();
             phrases.setTotal(searchResult.totalHits);
-            final List<Phrase> phraseList = Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> getPhrase(scoreDoc, highlighter)).collect(Collectors.toList());
+            final List<DatedPhrase> phraseList = Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> getPhrase(scoreDoc, highlighter)).collect(Collectors.toList());
             phrases.setPhraseList(phraseList);
             // LE LAST
             final int nbPhrasesFound = searchResult.scoreDocs.length;
@@ -88,10 +88,10 @@ public class PhraseService {
 		return htmlToSlackFormat(findFirst(term));
 	}
 
-    protected Phrase getPhrase(final ScoreDoc scoreDoc, final Highlighter highlighter) {
+    protected DatedPhrase getPhrase(final ScoreDoc scoreDoc, final Highlighter highlighter) {
         try {
             final Document doc = indexSearcher.doc(scoreDoc.doc);
-            final Phrase phrase = new Phrase();
+            final DatedPhrase phrase = new DatedPhrase();
             final String text = highlighter.getBestFragment(analyzer, "text", doc.get("text"));
 
             phrase.setText(text != null ? text : doc.get("text"));

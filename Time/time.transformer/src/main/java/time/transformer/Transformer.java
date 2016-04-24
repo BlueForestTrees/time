@@ -49,8 +49,6 @@ public class Transformer {
 		}
 		LOG.info(paragraphs.length + " paragraphes, " + phrasesCount + " phrases");
 		
-		System.out.println(page.getHightlightenContent().toString());
-		
 		return phrasesCount;
 	}
 

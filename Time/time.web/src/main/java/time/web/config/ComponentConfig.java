@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Import;
 
 @Configuration
 @ComponentScan({ "time.web.service" })
-@Import(LuceneConfig.class)
+@Import({LuceneConfig.class, ParserConfig.class})
 public class ComponentConfig {
 
     @Bean

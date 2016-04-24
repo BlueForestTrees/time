@@ -42,6 +42,7 @@
 		<log4j-web.version>2.3</log4j-web.version>
 		<jackson.version>2.7.3</jackson.version>
 		<lucene.version>5.3.1</lucene.version>
+		<fileupload.version>1.2</fileupload.version>
 	</properties>
 
 	<dependencyManagement>
@@ -82,6 +83,12 @@
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-highlighter</artifactId>
 				<version>${lucene.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>commons-fileupload</groupId>
+				<artifactId>commons-fileupload</artifactId>
+				<version>${fileupload.version}</version>
 			</dependency>
 
 

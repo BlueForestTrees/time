@@ -71,7 +71,7 @@
 
     phrasesDrawer.prototype.addTextIntro = function(text, nbPhrases) {
         Time.view.phrases.append("<h1>Il était une fois " + this.firstToLowerCase(text) + " . . .</h1>");
-        Time.view.phrases.append("<i>" + Time.tooltips.getNbPages(nbPhrases) + "</i>");
+        Time.view.phrases.append("<i>" + Time.tooltips.getNbPhrases(nbPhrases) + "</i>");
     };
 
     phrasesDrawer.prototype.addNoPhrases = function(term, phrases) {

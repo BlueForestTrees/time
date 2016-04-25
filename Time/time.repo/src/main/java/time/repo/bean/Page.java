@@ -7,11 +7,7 @@ public class Page implements Serializable {
 
     private static final long serialVersionUID = 1591695335410659944L;
     private String url;
-    private Integer depth;
-    private Integer nbLiensOut;
-    private Integer nbLiensIn;
     private String metadata;
-    private List<String> liens;
     private StringBuilder content;
     private String title;
     private StringBuilder hightlightenContent;
@@ -34,44 +30,12 @@ public class Page implements Serializable {
         return this.content;
     }
 
-    public List<String> getLiens() {
-        return liens;
-    }
-
-    public void setLiens(List<String> liens) {
-        this.liens = liens;
-    }
-
     public String getUrl() {
         return url;
     }
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public Integer getDepth() {
-        return depth;
-    }
-
-    public void setDepth(Integer depth) {
-        this.depth = depth;
-    }
-
-    public Integer getNbLiensOut() {
-        return nbLiensOut;
-    }
-
-    public void setNbLiensOut(Integer nbLiensOut) {
-        this.nbLiensOut = nbLiensOut;
-    }
-
-    public Integer getNbLiensIn() {
-        return nbLiensIn;
-    }
-
-    public void setNbLiensIn(Integer nbLiensIn) {
-        this.nbLiensIn = nbLiensIn;
     }
 
 	public String getMetadata() {
@@ -90,10 +54,6 @@ public class Page implements Serializable {
 		this.title = title;
 	}
 
-	public String getHightlightenContent() {
-		return hightlightenContent.toString();
-	}
-	
 	public void openParagraph() {
 		appendHightlightContent("<div class=\"paragraph\">");
 	}

@@ -7,11 +7,14 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>time.conf</module>
 		<module>time.repo</module>
 		<module>time.tool</module>
 		<module>time.transformer</module>
-		<module>time.dumper</module>
+		<module>time.crawler</module>
 		<module>time.web</module>
+		<module>time.tika</module>
+		<module>time.merger</module>
 	</modules>
 
 	<properties>
@@ -43,6 +46,7 @@
 		<jackson.version>2.7.3</jackson.version>
 		<lucene.version>5.3.1</lucene.version>
 		<fileupload.version>1.2</fileupload.version>
+		<commons-io.version>2.5</commons-io.version>
 	</properties>
 
 	<dependencyManagement>
@@ -62,6 +66,12 @@
 				<artifactId>cglib-nodep</artifactId>
 				<version>${cglib.version}</version>
 				<!--<scope>runtime</scope> -->
+			</dependency>
+
+			<dependency>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons-io.version}</version>
 			</dependency>
 
 			<dependency>

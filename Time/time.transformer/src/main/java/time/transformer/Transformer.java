@@ -31,8 +31,7 @@ public class Transformer {
 	public Transformer(@Named("conf") Conf conf, LuceneStorage storage, PhraseFilter phraseFilter) {
 		this.storage = storage;
 		this.phraseFilter = phraseFilter;
-		String pattern = conf.getSplitParagraphPattern();
-		this.splitParagraphPattern = Pattern.compile(pattern);
+		this.splitParagraphPattern = Pattern.compile(conf.getSplitParagraphPattern());
 		this.datedPhrasesDetector = new DatedPhraseDetector();
 	}
 

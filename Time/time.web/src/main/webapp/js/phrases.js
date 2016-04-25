@@ -24,11 +24,9 @@
 
     phrases.prototype.onFirstPhrases = function(a, b, phrases) {
         if (phrases.total > 0) {
-            var bucket = {
-                years : Time.scale.daysToYears(phrases.phraseList[0].date)
-            };
-            var text = Time.tooltips.getTooltipText(bucket);
-            Time.phrasesdrawer.addTextIntro(text, phrases.total);
+			var day = phrases.phraseList[0].date;
+            var humanDate = Time.tooltips.dayToHuman(day);
+            Time.phrasesdrawer.addTextIntro(humanDate, phrases.total);
         }
         this.onPhrases(null, null, phrases);
     };

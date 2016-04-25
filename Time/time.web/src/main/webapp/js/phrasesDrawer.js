@@ -26,7 +26,7 @@
     };
 
     phrasesDrawer.prototype.buildHtmlPhrase = function(phrase) {
-        return ("<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + phrase.text + this.getPhraseHeader(phrase) + this.getLink(phrase) + "</p>");
+        return (this.getPhraseHeader(phrase) + "<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + phrase.text + " " + this.getLink(phrase) + "</p>");
     };
 
     phrasesDrawer.prototype.getPhraseHeader = function(phrase) {
@@ -34,7 +34,7 @@
         if (source) {
             return "";
         } else {
-            return " <i>(" + this.getPageName(phrase) + ")</i>";
+            return "<div class=\"phraseHeader\"><i>" + this.getPageName(phrase) + "  (" + Time.tooltips.dayToHuman(phrase.date)+")</i></div>";
         }
     };
     
@@ -69,9 +69,9 @@
         Time.anal.ga('send', 'event', 'link', pageName, Time.filter.term);
     };
 
-    phrasesDrawer.prototype.addTextIntro = function(text, nbPhrases) {
-        Time.view.phrases.append("<h1>Il était une fois " + this.firstToLowerCase(text) + " . . .</h1>");
-        Time.view.phrases.append("<i>" + Time.tooltips.getNbPhrases(nbPhrases) + "</i>");
+    phrasesDrawer.prototype.addTextIntro = function(moment, nbPhrases) {
+        Time.view.phrases.append("<div class=\"textIntro\"><h1>Il était une fois " + this.firstToLowerCase(moment) + " . . .</h1>");
+        Time.view.phrases.append("<i>" + Time.tooltips.getNbPhrases(nbPhrases) + "</i>" + "</div>");
     };
 
     phrasesDrawer.prototype.addNoPhrases = function(term, phrases) {

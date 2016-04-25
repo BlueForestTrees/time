@@ -2,12 +2,19 @@
     function tooltips() {
         this.currentBar = null;
     }
-
-    tooltips.prototype.getNbPhrases = function(nbPhrases) {
-        return nbPhrases ? " (" + (nbPhrases + " phrase") + (nbPhrases > 1 ? "s" : "") + ")" : "";
+	
+	tooltips.prototype.getNbPhrases = function(nbPhrases) {
+        return nbPhrases ? (nbPhrases + " phrase") + (nbPhrases > 1 ? "s" : "") : "";
     };
 
-    tooltips.prototype.getTooltipText = function(bucket) {
+	tooltips.prototype.dayToHuman = function(day){
+		var bucket = {
+			years : Time.scale.daysToYears(day)
+		};
+		return Time.tooltips.bucketToHuman(bucket);
+	};
+
+    tooltips.prototype.bucketToHuman = function(bucket) {
         var years = Time.scale.bucketToYears(bucket);
         var start = years > 0 ? 'Dans ' : 'Il y a ';
         var echelle = Time.scale.getEchelle(years);
@@ -104,18 +111,16 @@
     };
     
     tooltips.prototype.toolTipAt = function(tooltip, tooltipX, animate) {
-        var scale = Time.tooltips.currentBar.scale;
-        var bucketPosition = Time.tooltips.currentBar.barXToViewportX(tooltipX);
-        var toolTipText = Time.tooltips.getTooltipText({
-            scale : scale,
-            bucket : bucketPosition
+        var humanDate = Time.tooltips.bucketToHuman({
+            scale : Time.tooltips.currentBar.scale,
+            bucket : Time.tooltips.currentBar.barXToViewportX(tooltipX)
         });
         var toolTipTop = $(Time.tooltips.currentBar.canvas).position().top + Time.tooltips.currentBar.height + 7;
         // 22 => position à l'arrache pour que la flèche du tooltip coincide avec la souris.
         var toolTipLeft = tooltipX - 22;
-        var width = ((toolTipText.length + 1) * 8) + 'px';
+        var width = ((humanDate.length + 1) * 8) + 'px';
 
-        tooltip.text(toolTipText);
+        tooltip.text(humanDate);
         
         var css = {
                 top : toolTipTop,

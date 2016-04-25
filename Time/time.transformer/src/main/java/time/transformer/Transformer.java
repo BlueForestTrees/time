@@ -57,7 +57,9 @@ public class Transformer {
 		page.openParagraph();
 		final String[] phrases = splitPhrasePattern.split(paragraph);
 		for (String phrase : phrases) {
-			phrasesCount += handlePhrase(page, phrase);
+			if (phraseFilter.keepThisPhrase(phrase)) {
+				phrasesCount += handlePhrase(page, phrase);
+			}
 		}
 		page.closeParagraph();
 		return phrasesCount;
@@ -65,21 +67,19 @@ public class Transformer {
 
 	private long handlePhrase(final Page page, final String phrase) {
 		long phrasesCount = 0;
-		if (phraseFilter.keepThisPhrase(phrase)) {
-			final List<DatedPhrase> datedPhrases = datedPhrasesDetector.detect(phrase);
-			if (!datedPhrases.isEmpty()) {
-				page.startPhrase();
-			}
-			for (DatedPhrase datedPhrase : datedPhrases) {
-				datedPhrase.setPageUrl(page.getUrl());
-				storage.store(datedPhrase);
-				phrasesCount++;
-			}
-			if (!datedPhrases.isEmpty()) {
-				page.endPhrase();
-			}else{
-				page.appendHightlightContent(phrase);
-			}
+		final List<DatedPhrase> datedPhrases = datedPhrasesDetector.detect(phrase);
+		if (!datedPhrases.isEmpty()) {
+			page.startPhrase();
+		}
+		for (DatedPhrase datedPhrase : datedPhrases) {
+			datedPhrase.setPageUrl(page.getUrl());
+			storage.store(datedPhrase);
+			phrasesCount++;
+		}
+		if (!datedPhrases.isEmpty()) {
+			page.endPhrase();
+		} else {
+			page.appendHightlightContent(phrase);
 		}
 		return phrasesCount;
 	}

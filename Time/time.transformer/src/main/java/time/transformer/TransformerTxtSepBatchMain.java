@@ -37,4 +37,16 @@ public class TransformerMain extends AbstractModule{
 		return conf;
 	}
 
+	@Provides
+	@Named("notInDateWords")
+	public String notInDateWords(){
+		return conf.getNotInDateWords();
+	}
+
+	@Provides
+	@Named("finders")
+	public void finfers(){
+		return new DateFindersFactory().finders();
+	}
+
 }

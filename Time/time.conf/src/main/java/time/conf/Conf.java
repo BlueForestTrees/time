@@ -48,6 +48,7 @@ public class Conf {
 	private String datasourcePath;
 	private String indexDir;
 	private String[] phraseMustNotStartWith;
+	private String notInDateWords;
 
 	
 	public String getHome() {

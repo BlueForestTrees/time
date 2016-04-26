@@ -1,4 +1,4 @@
-package time.transformer.factory;
+package time.transformer.phrase.finder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,26 +24,31 @@ public class DateFindersFactory {
 	private final static String TEXT_NUMBERS_ = "(?<gt>(" + TEXT_NUMBERS + "))";
 	private final static String NUMBERS = "(?<g>\\d+([,\\.]\\d+)?)";
 	private static final String ILYAENVIRON = "([Ii]l y a|[Vv]oici|(datent|vie(ux|ille)) d(e)?|au cours des|dès)([ ']environ)?( quelque)?( près de)?";
-	private static final String EXCLUDEDS = "(?<ex>(degré|coup|pa|tour|heure|minute|seconde|mois)s?)?";
 
+	private final String notInDateWords;
 	private Map<String, PhraseFinder> finders;
 
-	public DateFindersFactory() {
+	@Inject
+	public DateFindersFactory(@Named("notInDateWords") final String notInDateWords) {
+		if(notInDateWords == null){
+			throw IllegalArgumentException("notInDateWords can't be null.");
+		}
+		notInDateWords = "(?<ex>("+notInDateWords+")s?)?"
 		finders = new HashMap<>();
+		build();
+	}
+
+	private void build() {
 		build("(?<neg>" + ILYAENVIRON + ") (?<g>\\d{1,3}( ?000)?) (ans|dernières années)", "ilYAFinder", new IlYAParser());
 		build("(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s? d['’]années", "milliardFinder", new MilliardParser());
-		build(START + "([Aà] partir de|date de|depuis|[Ee]n|dans les années) (l'an )?(?<g>(-)?\\d{2,9})" + REF + "?(;|,|\\.| " + EXCLUDEDS + "|$)", "jcFinder", new JCParser());
+		build(START + "([Aà] partir de|date de|depuis|[Ee]n|dans les années) (l'an )?(?<g>(-)?\\d{2,9})" + REF + "?(;|,|\\.| " + notInDateWords + "|$)", "jcFinder", new JCParser());
 		build(START + "([Ee]nviron) (?<g>\\d{2,4})(,? )ans" + REF, "nearJcFinder", new JCParser());
 		build(START + "([Vv]ers l'an|après) (?<g>(-)?\\d{2,4})(,?)" + REF + "?", "nearJcFinder2", new JCParser());
 		build(START + "[Vv]ers (?<g>\\d{2,4})" + REF, "nearJcFinder3", new JCParser());
-		build(START + "([Ee]nviron) (?<neg>-)(?<g>\\d{2,4})", "nearLessFinder", new JCParser());
+		build(START + "(remontant à [Ee]nviron) (?<neg>-)(?<g>\\d{2,4})", "nearLessFinder", new JCParser());
 		build(" (?<g>[ixvIXV]+)e siècle" + REF + "?", "romanFinder", new RomanParser());
 		build("^(([Vv]ers|[Ee]nviron|[Ee]n) )?(?<g>([ -])?\\d{4}) ?:", "annee2DotFinder", new AnneeParser());
 		build("(?<g>" + JOUR + MOIS + ANNEE + ")" + REF + "?", "preciseFinder", new PreciseParser());
-	}
-
-	private void build(final String regex, final String name, final IParser parser) {
-		finders.put(name, new PhraseFinder(Pattern.compile(regex), parser, name));
 	}
 
 	public PhraseFinder[] finders() {
@@ -52,6 +57,10 @@ public class DateFindersFactory {
 
 	public PhraseFinder get(final String key) {
 		return finders.get(key);
+	}
+
+	private void build(final String regex, final String name, final IParser parser) {
+		finders.put(name, new PhraseFinder(Pattern.compile(regex), parser, name));
 	}
 
 }

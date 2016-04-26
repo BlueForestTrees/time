@@ -9,9 +9,10 @@ import time.transformer.factory.DateFindersFactory;
 public class DatedPhraseDetector {
 	
 	private PhraseFinder[] finders;
-	
-	public DatedPhraseDetector() {
-		finders = new DateFindersFactory().finders();
+
+	@Inject
+	public DatedPhraseDetector(final PhraseFinder[] finders) {
+		this.finders = finders;
 	}
 
 	/**
@@ -20,7 +21,7 @@ public class DatedPhraseDetector {
 	 * @param rawPhrases
 	 * @return
 	 */
-	public List<DatedPhrase> detect(String rawPhrase) {
+	public List<DatedPhrase> detect(final String rawPhrase) {
 		final List<DatedPhrase> result = new ArrayList<>();
 		for (PhraseFinder finder : finders) {
 			result.addAll(finder.findPhrases(rawPhrase));

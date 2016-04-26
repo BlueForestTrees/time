@@ -28,11 +28,11 @@ public class Transformer {
 	private DatedPhraseDetector datedPhrasesDetector;
 
 	@Inject
-	public Transformer(@Named("conf") Conf conf, LuceneStorage storage, PhraseFilter phraseFilter) {
+	public Transformer(@Named("conf") final Conf conf, final LuceneStorage storage, final PhraseFilter phraseFilter, final DatedPhrasesDetector datedPhrasesDetector) {
 		this.storage = storage;
 		this.phraseFilter = phraseFilter;
 		this.splitParagraphPattern = Pattern.compile(conf.getSplitParagraphPattern());
-		this.datedPhrasesDetector = new DatedPhraseDetector();
+		this.datedPhrasesDetector = datedPhrasesDetector;
 	}
 
 	public void onStart() throws IOException {

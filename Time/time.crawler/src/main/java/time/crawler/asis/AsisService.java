@@ -8,6 +8,7 @@ import com.google.inject.Inject;
 
 import time.conf.Conf;
 import time.crawler.write.IWriter;
+import time.repo.bean.Page;
 
 public class AsisService {
 	
@@ -22,12 +23,12 @@ public class AsisService {
 	}
 
 	public void run() throws IOException {
-		final String source = conf.getSourceDir() + conf.getSource();
-		final String text = new String(Files.readAllBytes(Paths.get(source)));
-		final String url = conf.getUrl();
-		final String title = conf.getTitle();
+		final Page page = new Page();
+		page.setText(new String(Files.readAllBytes(Paths.get(conf.getSourceDir() + conf.getSource()))));
+		page.setUrl(conf.getUrl());
+		page.setTitle(conf.getTitle());
 		
-		writer.writePage(url, title, null, text);
+		writer.writePage(page);
 	}
 
 }

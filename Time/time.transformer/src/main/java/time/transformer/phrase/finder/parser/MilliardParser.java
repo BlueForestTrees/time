@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.stream.IntStream;
 
 import time.tool.date.Dates;
-import time.transformer.factory.DateFindersFactory;
+import time.transformer.phrase.finder.DateFindersFactory;
 
 public class MilliardParser implements IParser {
 

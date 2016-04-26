@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 
 import time.repo.bean.Page;
 
-public class PageReader implements IPageReader{
+public class PageReader {
 
     private static final Logger logger = LogManager.getLogger(PageReader.class);
 

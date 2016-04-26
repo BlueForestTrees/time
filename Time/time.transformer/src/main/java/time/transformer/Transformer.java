@@ -28,7 +28,7 @@ public class Transformer {
 	private DatedPhraseDetector datedPhrasesDetector;
 
 	@Inject
-	public Transformer(@Named("conf") final Conf conf, final LuceneStorage storage, final PhraseFilter phraseFilter, final DatedPhrasesDetector datedPhrasesDetector) {
+	public Transformer(@Named("conf") final Conf conf, final LuceneStorage storage, final PhraseFilter phraseFilter, final DatedPhraseDetector datedPhrasesDetector) {
 		this.storage = storage;
 		this.phraseFilter = phraseFilter;
 		this.splitParagraphPattern = Pattern.compile(conf.getSplitParagraphPattern());

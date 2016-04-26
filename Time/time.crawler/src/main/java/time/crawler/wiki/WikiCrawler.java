@@ -42,7 +42,11 @@ public class WikiCrawler extends BaseCrawler {
             final String content = ((HtmlParseData) page.getParseData()).getText();
             if (conf.getContentExclusion().stream().noneMatch(content::contains)) {               
             	final HtmlParseData htmlData = (HtmlParseData) page.getParseData();
-                writer.writePage(page.getWebURL().getURL(), htmlData.getTitle(),null, htmlData.getText());
+                time.repo.bean.Page mpage = new time.repo.bean.Page();
+                mpage.setUrl(page.getWebURL().getURL());
+                mpage.setTitle(htmlData.getTitle());
+                mpage.setText(htmlData.getText());
+                writer.writePage(mpage);
                 pageCount++;
                 if (LOGGER.isDebugEnabled() && (pageCount % conf.getNbPageLog() == 0)) {
                     nbLog++;

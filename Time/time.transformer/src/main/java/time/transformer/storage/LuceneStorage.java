@@ -53,7 +53,7 @@ public class LuceneStorage {
 		config = new FacetsConfig();
 	}
 
-	public void store(DatedPhrase phrase) {
+	public void store(final DatedPhrase phrase) {
 		final Document doc = new Document();
 		doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
 		doc.add(new TextField(Fields.PAGE_URL, phrase.getPageUrl(), Store.YES));

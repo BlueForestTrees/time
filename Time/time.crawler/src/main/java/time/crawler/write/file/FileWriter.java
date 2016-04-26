@@ -1,21 +1,20 @@
 package time.crawler.write.file;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import time.conf.Conf;
+import time.crawler.write.IWriter;
+import time.crawler.write.Write;
+import time.repo.bean.Page;
+import time.tool.file.Dirs;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-
-import time.conf.Conf;
-import time.crawler.write.IWriter;
-import time.crawler.write.Write;
-import time.tool.file.Dirs;
 
 public class FileWriter implements IWriter {
 
@@ -32,16 +31,16 @@ public class FileWriter implements IWriter {
 		Dirs.renew(outputDir);
 	}
 
-	public void writePage(final String url, final String title, final String metadata, final String text) {
+	public void writePage(final Page page) {
 		final String txtPagesDir = conf.getTxtOutputDir();
-		final String filename = Dirs.filenameAble(title);
+		final String filename = Dirs.filenameAble(page.getTitle());
 		final String filepath = txtPagesDir + filename;
 		if(txtPagesDir == null || filename == null){
 			LOGGER.error("invalid path: " + filepath);
 			return;
 		}
 		final Path path = Paths.get(filepath);
-		final byte[] content = Write.concat(url, metadata, text).toString().getBytes();
+		final byte[] content = Write.concat(page.getUrl(), page.getMetadata(), page.getTextString()).toString().getBytes();
 
 		try {
 			Files.write(path, content);

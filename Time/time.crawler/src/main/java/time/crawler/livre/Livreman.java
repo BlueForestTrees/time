@@ -1,23 +1,17 @@
 package time.crawler.livre;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.parser.AutoDetectParser;
-import org.apache.tika.sax.BodyContentHandler;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.SAXException;
 import time.conf.Conf;
 import time.crawler.write.IWriter;
-import time.crawler.write.tika.MyTikaMetadata;
+import time.tika.ToPage;
 import time.tool.file.Dirs;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class Livreman {
 
@@ -26,13 +20,13 @@ public class Livreman {
 	public IWriter writer;
 
 	private Conf conf;
-	
-	final ObjectMapper mapper = new ObjectMapper();
+	private ToPage toPage;
 
 	@Inject
 	public Livreman(final IWriter writer, @Named("conf") final Conf conf) {
 		this.writer = writer;
 		this.conf = conf;
+		this.toPage = new ToPage();
 	}
 
 	public void run() {
@@ -45,7 +39,7 @@ public class Livreman {
 
 	/**
 	 * Convertit une source epub/pdf en page.
-	 * 
+	 *
 	 * @param source
 	 */
 	private void writePage(final File source) {
@@ -56,34 +50,7 @@ public class Livreman {
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Lecture fichier", e);
 		}
-
-		toPages(input);
-	}
-	
-	private void toPages(final InputStream input){
-		final ContentHandler textHandler = new BodyContentHandler(Integer.MAX_VALUE);
-		final Metadata metadata = new Metadata();
-		try {
-			final AutoDetectParser parser = new AutoDetectParser();
-			parser.parse(input, textHandler, metadata);
-			input.close();
-		} catch (IOException | SAXException | TikaException e) {
-			throw new RuntimeException("Parsing fichier", e);
-		}
-
-		try {
-			final MyTikaMetadata metadatas = new MyTikaMetadata(metadata);
-			final String datas = mapper.writeValueAsString(metadatas);
-			writer.writePage("epub", metadatas.getTitle(), datas, textHandler.toString());
-		} catch (JsonProcessingException e) {
-			throw new RuntimeException("Ecriture fichier", e);
-		}
+		writer.writePage(toPage.from(input));
 	}
 
-	
 }
-
-/**
- * //TODO stocker toutes les métadonnées pour la référence. final String title =
- * metadata.get("title"); final String author = metadata.get("Author");
- */

@@ -23,8 +23,8 @@ import time.transformer.reader.PageReader;
  * @author slim
  *
  */
-public class TransformerBatch {
-	private static final Logger LOG = LogManager.getLogger(TransformerBatch.class);
+public class TransformerTxtSepBatch {
+	private static final Logger LOG = LogManager.getLogger(TransformerTxtSepBatch.class);
 
 	private Long pageSize;
 	private long pageTotal;
@@ -35,8 +35,8 @@ public class TransformerBatch {
 	private Transformer transformer;
 
 	@Inject
-	public TransformerBatch(@Named("conf") Conf conf, final Transformer transformer, PageReader pageReader,
-			PageFilter pageFilter, IPageTransformer pageTransformer) {
+	public TransformerTxtSepBatch(@Named("conf") Conf conf, final Transformer transformer, PageReader pageReader,
+								  PageFilter pageFilter, IPageTransformer pageTransformer) {
 		this.pageSize = conf.getPageSize();
 		this.pageTotal = conf.getPageTotal();
 		this.maxPhrasesToFetch = conf.getMaxPhrasesToFetch();

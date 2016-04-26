@@ -35,7 +35,7 @@ public class LogWriterConf {
         final String immediateFlush = "true";
         final String bufferSizeStr = String.valueOf(RollingRandomAccessFileManager.DEFAULT_BUFFER_SIZE);
         final TriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(conf.getMaxFileSize());
-        final RolloverStrategy strategy = DefaultRolloverStrategy.createStrategy("1000", null, null, null, logConfig);
+        final RolloverStrategy strategy = DefaultRolloverStrategy.createStrategy("1000", null, null, null, null, false, logConfig);
         final AbstractStringLayout layout = getLayout();
 
         new File(filename).mkdirs();

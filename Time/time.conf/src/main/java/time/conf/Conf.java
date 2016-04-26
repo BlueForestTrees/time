@@ -50,7 +50,8 @@ public class Conf {
 	private String[] phraseMustNotStartWith;
 	private String notInDateWords;
 
-	
+	public String getNotInDateWords() { return notInDateWords; }
+
 	public String getHome() {
 		return withSlash(home);
 	}

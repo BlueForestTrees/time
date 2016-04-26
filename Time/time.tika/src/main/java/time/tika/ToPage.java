@@ -7,6 +7,7 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
+import time.repo.bean.Page;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,11 +16,11 @@ import java.io.InputStream;
 
 public class ToPage {
 
-    public Page fromFilename(final String filename) throws FileNotFoundException {
-        return fromInputStream(new FileInputStream(filename));
+    public Page from(final String filename) throws FileNotFoundException {
+        return from(new FileInputStream(filename));
     }
 
-    public Page fromInputStream(final InputStream input){
+    public Page from(final InputStream input){
         final ContentHandler textHandler = new BodyContentHandler(Integer.MAX_VALUE);
         final Metadata metadata = new Metadata();
         try {
@@ -39,7 +40,7 @@ public class ToPage {
         page.setLanguage(metadata.get(TikaCoreProperties.LANGUAGE));
         page.setType(metadata.get(TikaCoreProperties.TYPE));
         page.setComments(metadata.get(TikaCoreProperties.COMMENTS));
-        page.setContent(textHandler.toString());
+        page.setText(textHandler.toString());
 
         return page;
     }

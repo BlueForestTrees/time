@@ -1,5 +1,6 @@
 package time.crawler.write.log;
 
+import org.apache.commons.compress.compressors.pack200.Pack200CompressorInputStream;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,6 +10,7 @@ import com.google.inject.name.Named;
 import time.conf.Conf;
 import time.crawler.write.IWriter;
 import time.crawler.write.Write;
+import time.repo.bean.Page;
 
 public class LogWriter implements IWriter {
 	
@@ -23,8 +25,8 @@ public class LogWriter implements IWriter {
 	}
 
     @Override
-    public void writePage(final String url, final String title, final String metadata, final String text) {
-       	PAGEWRITER.info(Write.concat(url, title, text));
+    public void writePage(final Page page) {
+       	PAGEWRITER.info(Write.concat(page.getUrl(), page.getTitle(), page.getTextString()));
     }
 
 }

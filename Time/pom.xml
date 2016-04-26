@@ -52,6 +52,11 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>com.google.inject</groupId>
+				<artifactId>guice</artifactId>
+				<version>${guice.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>slim</groupId>
 				<artifactId>time.tool</artifactId>
 				<version>${project.version}</version>

@@ -20,12 +20,6 @@ public class PhraseFinder {
 		this.name = name;
 	}
 
-	/**
-	 * Renvoie une {@link List<Phrase>} de Phrase detectées.
-	 * 
-	 * @param rawPhrases
-	 * @return
-	 */
 	public List<DatedPhrase> findPhrases(final String phrase) {
 		final List<DatedPhrase> result = new ArrayList<>();
 		final Matcher matcher = pattern.matcher(phrase);

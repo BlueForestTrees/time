@@ -12,7 +12,6 @@
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
-			<version>${guice.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>slim</groupId>

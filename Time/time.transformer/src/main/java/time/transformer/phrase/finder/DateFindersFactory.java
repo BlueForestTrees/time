@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import time.transformer.phrase.finder.PhraseFinder;
 import time.transformer.phrase.finder.parser.AnneeParser;
 import time.transformer.phrase.finder.parser.IParser;
@@ -26,15 +28,15 @@ public class DateFindersFactory {
 	private static final String ILYAENVIRON = "([Ii]l y a|[Vv]oici|(datent|vie(ux|ille)) d(e)?|au cours des|dès)([ ']environ)?( quelque)?( près de)?";
 
 	private final String notInDateWords;
-	private Map<String, PhraseFinder> finders;
+	private final Map<String, PhraseFinder> finders;
 
 	@Inject
 	public DateFindersFactory(@Named("notInDateWords") final String notInDateWords) {
 		if(notInDateWords == null){
-			throw IllegalArgumentException("notInDateWords can't be null.");
+			throw new IllegalArgumentException("notInDateWords can't be null.");
 		}
-		notInDateWords = "(?<ex>("+notInDateWords+")s?)?"
-		finders = new HashMap<>();
+		this.notInDateWords = "(?<ex>("+notInDateWords+")s?)?";
+		this.finders = new HashMap<>();
 		build();
 	}
 

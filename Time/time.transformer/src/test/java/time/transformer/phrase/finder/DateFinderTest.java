@@ -1,18 +1,16 @@
 package time.transformer.phrase.finder;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import org.assertj.core.api.Condition;
+import org.junit.Test;
+import time.repo.bean.DatedPhrase;
+import time.tool.date.Dates;
 
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
-import org.assertj.core.api.Condition;
-import org.junit.Test;
-
-import time.repo.bean.DatedPhrase;
-import time.tool.date.Dates;
-import time.transformer.factory.DateFindersFactory;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DateFinderTest {
 
@@ -29,7 +27,7 @@ public class DateFinderTest {
 	private PhraseFinder[] finders;
 	
 	public DateFinderTest(){
-		final DateFindersFactory factory = new DateFindersFactory();
+		final DateFindersFactory factory = new DateFindersFactory(null);
 		finders = factory.finders();
 		milliardFinder = factory.get("milliardFinder");
 		jcFinder = factory.get("jcFinder");

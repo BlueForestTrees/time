@@ -28,9 +28,7 @@ public class TransformerMain extends AbstractModule{
 	}
 	
 	public static void main(final String[] args) throws Exception {
-		final TransformerMain transformerBoot = new TransformerMain(args);
-		final Injector injector = Guice.createInjector(transformerBoot);
-		injector.getInstance(TransformerBatch.class).start();
+		Guice.createInjector(new TransformerMain(args)).getInstance(TransformerBatch.class).start();
 	}
 
 	@Provides

@@ -7,8 +7,15 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>time.transformer</artifactId>
-
 	<dependencies>
+		<dependency>
+			<groupId>slim</groupId>
+			<artifactId>time.repo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>slim</groupId>
+			<artifactId>time.tool</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
@@ -33,28 +40,21 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers-common</artifactId>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
-
 		<!-- LOGGING -->
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
@@ -84,15 +84,11 @@
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-jul</artifactId>
 		</dependency>
-
-
 		<!-- UTIL -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 		</dependency>
-
-
 		<!-- SPRING -->
 		<dependency>
 			<groupId>org.assertj</groupId>
@@ -101,15 +97,6 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>slim</groupId>
-			<artifactId>time.repo</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>slim</groupId>
-			<artifactId>time.tool</artifactId>
 		</dependency>
 	</dependencies>
 

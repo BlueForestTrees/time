@@ -4,10 +4,9 @@
     <parent>
         <groupId>slim</groupId>
         <artifactId>time</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>time.merger</artifactId>
-
     <dependencies>
         <dependency>
             <groupId>slim</groupId>
@@ -36,21 +35,6 @@
         <dependency>
             <groupId>slim</groupId>
             <artifactId>time.conf</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
 </project>

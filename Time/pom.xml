@@ -3,9 +3,8 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>slim</groupId>
 	<artifactId>time</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-
 	<modules>
 		<module>time.conf</module>
 		<module>time.repo</module>
@@ -16,41 +15,52 @@
 		<module>time.tika</module>
 		<module>time.merger</module>
 	</modules>
-
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<jdk.version>1.8</jdk.version>
-		<api.core.version>1.1.0-SNAPSHOT</api.core.version>
-		<guice.version>4.0</guice.version>
 		<argparse4j.version>0.7.0</argparse4j.version>
-		<jackson.version>2.7.3</jackson.version>
-		<commons-lang3.version>3.4</commons-lang3.version>
-		<jdbi.version>2.72</jdbi.version>
+		<assertj.version>2.0.0</assertj.version>
+		<api.core.version>1.1.0-SNAPSHOT</api.core.version>
+		<cglib.version>2.2.2</cglib.version>
 		<commons-dbcp2.version>2.1.1</commons-dbcp2.version>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<commons-io.version>2.5</commons-io.version>
+		<commons-lang3.version>3.4</commons-lang3.version>
+		<commons-logging.version>1.2</commons-logging.version>
+		<compiler.version>3.3</compiler.version>
+		<crawler4j.version>4.1</crawler4j.version>
+		<fileupload.version>1.2</fileupload.version>
+		<guice.version>4.0</guice.version>
+		<jackson.version>2.7.3</jackson.version>
+		<java.version>1.8</java.version>
+		<javax.servlet.version>3.1.0</javax.servlet.version>
+		<jdbi.version>2.72</jdbi.version>
+		<jdk.version>1.8</jdk.version>
+		<joda.version>2.7</joda.version>
+		<junit.version>4.11</junit.version>
+		<log4j.version>2.5</log4j.version>
+		<log4j-web.version>2.3</log4j-web.version>
+		<lucene.version>5.3.1</lucene.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-		<java.version>1.8</java.version>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<slf4j.version>1.7.12</slf4j.version>
 		<spring.version>4.1.6.RELEASE</spring.version>
-		<joda.version>2.7</joda.version>
-		<assertj.version>2.0.0</assertj.version>
-		<slf4j.version>1.7.10</slf4j.version>
-		<log4j.version>2.5</log4j.version>
-		<spring.version>4.1.6.RELEASE</spring.version>
-		<cglib.version>2.2.2</cglib.version>
-		<crawler4j.version>4.1</crawler4j.version>
-		<javax.servlet.version>3.1.0</javax.servlet.version>
-		<cglib.version>2.2.2</cglib.version>
-		<log4j-web.version>2.3</log4j-web.version>
-		<jackson.version>2.7.3</jackson.version>
-		<lucene.version>5.3.1</lucene.version>
-		<fileupload.version>1.2</fileupload.version>
-		<commons-io.version>2.5</commons-io.version>
+		<tika.version>1.12</tika.version>
 	</properties>
+
 
 	<dependencyManagement>
 		<dependencies>
+			<dependency>
+				<groupId>org.apache.tika</groupId>
+				<artifactId>tika-parsers</artifactId>
+				<version>${tika.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.tika</groupId>
+				<artifactId>tika-core</artifactId>
+				<version>${tika.version}</version>
+			</dependency>
 			<dependency>
 				<groupId>com.google.inject</groupId>
 				<artifactId>guice</artifactId>
@@ -70,15 +80,12 @@
 				<groupId>cglib</groupId>
 				<artifactId>cglib-nodep</artifactId>
 				<version>${cglib.version}</version>
-				<!--<scope>runtime</scope> -->
 			</dependency>
-
 			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>${commons-io.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
 				<artifactId>lucene-core</artifactId>
@@ -99,32 +106,25 @@
 				<artifactId>lucene-highlighter</artifactId>
 				<version>${lucene.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>commons-fileupload</groupId>
 				<artifactId>commons-fileupload</artifactId>
 				<version>${fileupload.version}</version>
 			</dependency>
-
-
-
-
-
 			<dependency>
 				<groupId>javax.servlet</groupId>
 				<artifactId>javax.servlet-api</artifactId>
 				<version>${javax.servlet.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-core</artifactId>
-				<version>2.6.2</version>
+				<version>${jackson.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-databind</artifactId>
-				<version>2.6.2</version>
+				<version>${jackson.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>edu.uci.ics</groupId>
@@ -135,7 +135,7 @@
 			<dependency>
 				<groupId>junit</groupId>
 				<artifactId>junit</artifactId>
-				<version>4.11</version>
+				<version>${junit.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
@@ -148,8 +148,6 @@
 				<artifactId>spring-webmvc</artifactId>
 				<version>${spring.version}</version>
 			</dependency>
-
-
 			<!-- LOGGING -->
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
@@ -160,9 +158,8 @@
 			<dependency>
 				<groupId>commons-logging</groupId>
 				<artifactId>commons-logging</artifactId>
-				<version>1.2</version>
+				<version>${commons-logging.version}</version>
 			</dependency>
-
 			<dependency>
 				<groupId>org.apache.logging.log4j</groupId>
 				<artifactId>log4j-api</artifactId>
@@ -200,12 +197,8 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.7.12</version>
+				<version>${slf4j.version}</version>
 			</dependency>
-
-
-
-
 			<!-- SPRING -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -238,7 +231,6 @@
 				<artifactId>spring-data-jpa</artifactId>
 				<version>${spring-jpa-data.version}</version>
 			</dependency>
-
 			<!--TEST -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -253,16 +245,14 @@
 				<version>${assertj.version}</version>
 				<scope>test</scope>
 			</dependency>
-
 		</dependencies>
 	</dependencyManagement>
-
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>${compiler.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -270,5 +260,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

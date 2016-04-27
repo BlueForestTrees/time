@@ -4,20 +4,14 @@
 	<parent>
 		<groupId>slim</groupId>
 		<artifactId>time</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>time.crawler</artifactId>
-
 	<dependencies>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-
 		<dependency>
 			<groupId>edu.uci.ics</groupId>
 			<artifactId>crawler4j</artifactId>
-			<version>5.0-SNAPSHOT</version>
+			<version>5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>slim</groupId>
@@ -31,19 +25,9 @@
 			<groupId>slim</groupId>
 			<artifactId>time.conf</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 </project>

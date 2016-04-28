@@ -9,6 +9,10 @@
     <artifactId>time.conf</artifactId>
     <dependencies>
         <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.tool</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
         </dependency>

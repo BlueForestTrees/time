@@ -1,4 +1,5 @@
-target
+target/
+/target/
 data/indexes/
 data/pages/
 data/temp/

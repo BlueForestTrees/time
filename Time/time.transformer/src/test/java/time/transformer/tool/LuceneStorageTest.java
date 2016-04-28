@@ -41,7 +41,8 @@ public class LuceneStorageTest {
     private DatedPhrase getPhrase(long l) {
         final DatedPhrase phrase = new DatedPhrase();
         phrase.setDate(l);
-        phrase.setText(String.valueOf(l));
+        phrase.setPageUrl("url " + l);
+        phrase.setText("text " + l);
         return phrase;
     }
 

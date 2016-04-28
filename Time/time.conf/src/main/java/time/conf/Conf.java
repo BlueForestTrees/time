@@ -1,5 +1,7 @@
 package time.conf;
 
+import time.tool.str.Strings;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -53,11 +55,11 @@ public class Conf {
 	public String getNotInDateWords() { return notInDateWords; }
 
 	public String getHome() {
-		return withSlash(home);
+		return Strings.withSlash(home);
 	}
 	
 	public String getTarget() {
-		return withSlash(target);
+		return Strings.withSlash(target);
 	}
 	
 	public String getSourceDir(){
@@ -106,10 +108,6 @@ public class Conf {
 
 	public String getMaxFileSize() {
 		return maxFileSize;
-	}
-	
-	private String withSlash(final String path) {
-		return path + (!path.endsWith("/")?"/":"");
 	}
 
 	public String getType() {

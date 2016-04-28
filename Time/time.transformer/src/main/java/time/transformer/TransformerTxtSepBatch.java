@@ -88,7 +88,8 @@ public class TransformerTxtSepBatch {
 			final Page page = pageReader.getNextPage();
 			if (pageFilter.isValidPage(page) && pageFilter.isNewPage(page)) {
 				pageTransformer.transform(page);
-				phraseCount += transformer.handlePage(page);
+				transformer.handlePage(page);
+				phraseCount += page.nbDatedPhrasesCount();
 				pageFilter.rememberThisPage(page);
 			}
 		}

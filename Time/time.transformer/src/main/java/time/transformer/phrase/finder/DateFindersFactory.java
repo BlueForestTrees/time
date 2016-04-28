@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import time.tool.str.Strings;
+import time.tool.string.Strings;
 import time.transformer.phrase.finder.parser.*;
 
 public class DateFindersFactory {

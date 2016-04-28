@@ -1,6 +1,6 @@
 package time.conf;
 
-import time.tool.str.Strings;
+import time.tool.string.Strings;
 
 import java.util.Arrays;
 import java.util.List;

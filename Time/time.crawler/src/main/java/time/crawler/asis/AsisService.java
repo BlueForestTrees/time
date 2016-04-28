@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 import com.google.inject.Inject;
 
 import time.conf.Conf;
-import time.crawler.write.IWriter;
+import time.crawler.work.write.IWriter;
 import time.repo.bean.Page;
 
 public class AsisService {

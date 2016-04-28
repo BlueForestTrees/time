@@ -1,4 +1,4 @@
-package time.crawler;
+package time.crawler.work.crawl;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -17,7 +17,7 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import time.conf.Conf;
 
-public abstract class BaseCrawler implements ICrawler{
+public abstract class BaseCrawler implements ICrawler {
 	private static final Logger LOGGER = LogManager.getLogger(BaseCrawler.class);
 
 	protected Conf conf;

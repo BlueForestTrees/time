@@ -11,9 +11,9 @@ import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
 import time.conf.Conf;
-import time.crawler.ICrawler;
-import time.crawler.write.IWriter;
-import time.crawler.write.file.FileWriter;
+import time.crawler.work.crawl.ICrawler;
+import time.crawler.work.write.IWriter;
+import time.crawler.work.write.file.FileWriter;
 
 public class Gutenberg extends AbstractModule {
 
@@ -30,9 +30,7 @@ public class Gutenberg extends AbstractModule {
 	}
 	
 	public static void main(final String[] args) throws Exception {
-		final Injector injector = Guice.createInjector(new Gutenberg(args));
-		final ICrawler crawler = injector.getInstance(ICrawler.class);
-		crawler.start();
+		Guice.createInjector(new Gutenberg(args)).getInstance(ICrawler.class).start();
 	}
 
 	@Provides

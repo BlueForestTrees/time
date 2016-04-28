@@ -8,8 +8,8 @@ import com.google.inject.name.Named;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import time.conf.Conf;
-import time.crawler.BaseCrawler;
-import time.crawler.write.IWriter;
+import time.crawler.work.crawl.BaseCrawler;
+import time.crawler.work.write.IWriter;
 import time.tool.chrono.Chrono;
 
 public class WikiCrawler extends BaseCrawler {

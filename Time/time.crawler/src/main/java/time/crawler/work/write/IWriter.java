@@ -1,4 +1,4 @@
-package time.crawler.write;
+package time.crawler.work.write;
 
 import time.repo.bean.Page;
 

@@ -15,7 +15,7 @@ import org.apache.lucene.search.WildcardQuery;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import time.tool.ref.Fields;
+import time.tool.reference.Fields;
 import time.web.bean.TermPeriodFilter;
 
 @Component

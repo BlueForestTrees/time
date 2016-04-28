@@ -5,7 +5,7 @@ import com.google.inject.name.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
-import time.crawler.write.IWriter;
+import time.crawler.work.write.IWriter;
 import time.tika.ToPage;
 import time.tool.file.Dirs;
 

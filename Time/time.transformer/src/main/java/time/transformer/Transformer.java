@@ -40,47 +40,36 @@ public class Transformer {
 		storage.start();
 	}
 
-	protected long handlePage(final Page page) throws IOException {
-		long phrasesCount = 0;
+	protected void handlePage(final Page page) throws IOException {
 		final String[] paragraphs = splitParagraphPattern.split(page.getTextString());
 		for (String paragraph : paragraphs) {
-			phrasesCount += handleParagraph(page, paragraph);
+			handleParagraph(page, paragraph);
 		}
-		LOG.info(paragraphs.length + " paragraphes, " + phrasesCount + " phrases");
-		
-		return phrasesCount;
+		LOG.info(paragraphs.length + " paragraphes, " + page.nbDatedPhrasesCount() + " phrases");
 	}
 
-	private long handleParagraph(final Page page, final String paragraph) throws IOException {
-		long phrasesCount = 0;
+	private void handleParagraph(final Page page, final String paragraph) throws IOException {
 		page.openParagraph();
 		final String[] phrases = splitPhrasePattern.split(paragraph);
 		for (String phrase : phrases) {
 			if (phraseFilter.keepThisPhrase(phrase)) {
-				phrasesCount += handlePhrase(page, phrase);
+				handlePhrase(page, phrase);
 			}
 		}
 		page.closeParagraph();
-		return phrasesCount;
 	}
 
-	private long handlePhrase(final Page page, final String phrase) {
-		long phrasesCount = 0;
-		final List<DatedPhrase> datedPhrases = datedPhrasesDetector.detect(phrase);
+	private void handlePhrase(final Page page, final String phrase) {
+		final List<DatedPhrase> datedPhrases = datedPhrasesDetector.detect(page, phrase);
 		if (!datedPhrases.isEmpty()) {
 			page.startPhrase();
 		}
-		for (DatedPhrase datedPhrase : datedPhrases) {
-			datedPhrase.setPageUrl(page.getUrl());
-			storage.store(datedPhrase);
-			phrasesCount++;
-		}
+		page.appendHightlightContent(phrase);
 		if (!datedPhrases.isEmpty()) {
 			page.endPhrase();
-		} else {
-			page.appendHightlightContent(phrase);
 		}
-		return phrasesCount;
+
+		page.addPhrases(datedPhrases);
 	}
 
 	public void onEnd() {

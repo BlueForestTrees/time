@@ -494,18 +494,18 @@ public class DateFinderTest {
 	}
 
 	private void assertNoDateIn(String phrases, PhraseFinder finder) {
-		assertThat(finder.findPhrases(phrases)).as(finder + " trouve des phrases").isEmpty();
+		assertThat(finder.findPhrases(page, phrases)).as(finder + " trouve des phrases").isEmpty();
 	}
 
 	private void assertOnly(final PhraseFinder finder, Condition<? super DatedPhrase> condition, String phrase) {
-		assertThat(finder.findPhrases(phrase)).as(finder + " ne trouve pas de phrases").haveExactly(1, condition);
+		assertThat(finder.findPhrases(page, phrase)).as(finder + " ne trouve pas de phrases").haveExactly(1, condition);
 
 		final PhraseFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new PhraseFinder[size]);
 		assertNoDateIn(phrase, filteredFinders);
 	}
 
 	private void assertTwo(final PhraseFinder finder, Condition<? super DatedPhrase> condition1, Condition<? super DatedPhrase> condition2, String phrase) {
-		final List<DatedPhrase> actualPhrases = finder.findPhrases(phrase);
+		final List<DatedPhrase> actualPhrases = finder.findPhrases(page, phrase);
 
 		assertThat(actualPhrases).as("doit trouver deux dates").hasSize(2);
 

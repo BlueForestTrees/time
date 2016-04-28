@@ -1,6 +1,7 @@
 package time.repo.bean;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 public class Page implements Serializable {
@@ -17,6 +18,11 @@ public class Page implements Serializable {
 	private String language;
 	private String type;
 	private String comments;
+	private List<DatedPhrase> phrases = Arrays.asList();
+
+	public void addPhrases(final List<DatedPhrase> phrases){
+		this.phrases.addAll(phrases);
+	}
 
 	public String getIdentifier() {
 		return identifier;
@@ -121,4 +127,7 @@ public class Page implements Serializable {
 		appendHightlightContent("</span>");
 	}
 
+	public long nbDatedPhrasesCount() {
+		return phrases.size();
+	}
 }

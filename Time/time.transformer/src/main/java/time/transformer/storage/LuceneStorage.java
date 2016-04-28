@@ -24,7 +24,7 @@ import com.google.inject.name.Named;
 import time.conf.Conf;
 import time.repo.bean.DatedPhrase;
 import time.repo.bean.SortableLongField;
-import time.tool.ref.Fields;
+import time.tool.reference.Fields;
 
 public class LuceneStorage {
 

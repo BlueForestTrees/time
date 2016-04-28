@@ -1,4 +1,4 @@
-package time.crawler.write.log;
+package time.crawler.work.write.log;
 
 import java.io.File;
 import java.nio.charset.Charset;

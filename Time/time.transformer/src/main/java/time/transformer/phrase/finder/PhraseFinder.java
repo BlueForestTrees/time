@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import time.repo.bean.DatedPhrase;
+import time.repo.bean.Page;
 import time.transformer.phrase.finder.parser.IParser;
 
 public class PhraseFinder {
@@ -20,7 +21,7 @@ public class PhraseFinder {
 		this.name = name;
 	}
 
-	public List<DatedPhrase> findPhrases(final String phrase) {
+	public List<DatedPhrase> findPhrases(final Page page, final String phrase) {
 		final List<DatedPhrase> result = new ArrayList<>();
 		final Matcher matcher = pattern.matcher(phrase);
 		while (matcher.find()) {
@@ -30,6 +31,7 @@ public class PhraseFinder {
 				final DatedPhrase datedPhrase = new DatedPhrase();
 				datedPhrase.setText(preparePhrase(phrase, dateExtract));
 				datedPhrase.setDate(date);
+				datedPhrase.setPageUrl(page.getUrl());
 				result.add(datedPhrase);
 			}
 		}

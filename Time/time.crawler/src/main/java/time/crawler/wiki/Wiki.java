@@ -11,7 +11,7 @@ import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
 import time.conf.Conf;
-import time.crawler.ICrawler;
+import time.crawler.work.crawl.ICrawler;
 
 public class Wiki extends AbstractModule {
 
@@ -27,14 +27,12 @@ public class Wiki extends AbstractModule {
 	}
 	
 	public static void main(final String[] args) throws Exception {
-		final Injector injector = Guice.createInjector(new Wiki(args));
-		final ICrawler crawler = injector.getInstance(ICrawler.class);
-		crawler.start();
+		Guice.createInjector(new Wiki(args)).getInstance(ICrawler.class).start();
 	}
 
 	@Provides
 	@Named("conf")
-	public Conf webConfiguration() {
+	public Conf conf() {
 		return configuration;
 	}
 }

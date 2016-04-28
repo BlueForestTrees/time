@@ -1,12 +1,12 @@
-package time.crawler.write.file;
+package time.crawler.work.write.file;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
-import time.crawler.write.IWriter;
-import time.crawler.write.Write;
+import time.crawler.work.write.Write;
+import time.crawler.work.write.IWriter;
 import time.repo.bean.Page;
 import time.tool.file.Dirs;
 

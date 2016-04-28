@@ -1,4 +1,4 @@
-package time.tool.str;
+package time.tool.string;
 
 /**
  * Created by slimane_medini on 28/04/2016.

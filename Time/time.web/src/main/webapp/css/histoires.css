@@ -63,16 +63,6 @@ p {
     background: url(/img/logo.png) no-repeat;
 }
 
-.logo-petit {
-    background-size:178px 134px;
-    height:134px;
-    width:250px;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    background: url(/img/logo-petit.png) no-repeat;
-}
-
 .search {
 	position: relative;
 	display: inline-block;
@@ -121,6 +111,16 @@ h1, h2, h3{
 	line-height: 55px;
 	text-align: center;
 	background: #f2f2f2;
+}
+
+.logo-petit {
+    background-size:178px 134px;
+    height:55px;
+    width:250px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    background: url(/img/logo-petit.png) no-repeat;
 }
 
 .content {

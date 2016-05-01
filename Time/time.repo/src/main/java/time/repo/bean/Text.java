@@ -18,6 +18,11 @@ public class Text implements Serializable {
 	private String language;
 	private String type;
 	private String comments;
+
+	public List<DatedPhrase> getPhrases() {
+		return phrases;
+	}
+
 	private List<DatedPhrase> phrases = Arrays.asList();
 
 	public void addPhrases(final List<DatedPhrase> phrases){

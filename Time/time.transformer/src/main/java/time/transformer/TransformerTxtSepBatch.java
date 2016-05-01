@@ -15,6 +15,7 @@ import time.transformer.page.filter.PageFilter;
 import time.transformer.page.transformer.IPageTransformer;
 import time.transformer.reader.FinDuScanException;
 import time.transformer.reader.PageReader;
+import time.transformer.storage.LuceneStorage;
 
 /**
  * Traite toutes les données par packets avec des logs intermédiaire. Compte le
@@ -25,36 +26,41 @@ import time.transformer.reader.PageReader;
  */
 public class TransformerTxtSepBatch {
 	private static final Logger LOG = LogManager.getLogger(TransformerTxtSepBatch.class);
-
+	private final LuceneStorage storage;
 	private Long pageSize;
 	private long pageTotal;
 	private long maxPhrasesToFetch;
 	private PageReader pageReader;
 	private PageFilter pageFilter;
 	private IPageTransformer pageTransformer;
-	private Transformer transformer;
+	private TextParser textParser;
 
 	@Inject
-	public TransformerTxtSepBatch(@Named("conf") Conf conf, final Transformer transformer, PageReader pageReader,
-								  PageFilter pageFilter, IPageTransformer pageTransformer) {
+	public TransformerTxtSepBatch(@Named("conf") Conf conf, final TextParser textParser, PageReader pageReader,
+								  PageFilter pageFilter, IPageTransformer pageTransformer, LuceneStorage storage) {
 		this.pageSize = conf.getPageSize();
 		this.pageTotal = conf.getPageTotal();
 		this.maxPhrasesToFetch = conf.getMaxPhrasesToFetch();
-		this.transformer = transformer;
+		this.textParser = textParser;
 		this.pageReader = pageReader;
 		this.pageFilter = pageFilter;
 		this.pageTransformer = pageTransformer;
+		this.storage = storage;
 	}
 
 	public void start() {
 		LOG.info("start");
 		try {
-			transformer.onStart();
+			storage.start();
 		} catch (IOException e) {
-			throw new RuntimeException("Transformer.start throw ", e);
+			throw new RuntimeException("TextParser.start throw ", e);
 		}
 		doitBaby();
-		transformer.onEnd();
+		try {
+			storage.end();
+		} catch (IOException e) {
+			throw new RuntimeException("TextParser.end throw ", e);
+		}
 		LOG.info("run end");
 	}
 
@@ -88,7 +94,8 @@ public class TransformerTxtSepBatch {
 			final Text text = pageReader.getNextPage();
 			if (pageFilter.isValidPage(text) && pageFilter.isNewPage(text)) {
 				pageTransformer.transform(text);
-				transformer.handlePage(text);
+				textParser.parseText(text);
+				text.getPhrases().forEach(storage::store);
 				phraseCount += text.nbDatedPhrasesCount();
 				pageFilter.rememberThisPage(text);
 			}

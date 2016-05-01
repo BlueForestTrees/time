@@ -12,6 +12,9 @@ public class Conf {
 	private String target;
 	private String home;
 	private String splitParagraphPattern = "[\r\n\t]+";
+
+	private String splitPhrasePattern = "(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))\\.) +";
+
 	private String basePath;
 	private String name;
 	private String baseUrl;
@@ -25,7 +28,7 @@ public class Conf {
 	private boolean resumable = false;
 	private String seedUrl;
 	private int nbCrawlers = 5;
-	private long pageSize = 100;	
+	private long pageSize = 100;
 	private String maxFileSize = "100MB";
 	private String type;
 	private List<String> excludeList;
@@ -51,21 +54,20 @@ public class Conf {
 	private String indexDir;
 	private String[] phraseMustNotStartWith;
 	private String notInDateWords;
-
 	public String getNotInDateWords() { return notInDateWords; }
 
 	public String getHome() {
 		return Strings.withSlash(home);
 	}
-	
+
 	public String getTarget() {
 		return Strings.withSlash(target);
 	}
-	
+
 	public String getSourceDir(){
 		return sourceDir;
 	}
-	
+
 	public String getTxtOutputDir() {
 		return txtOutputDir;
 	}
@@ -73,7 +75,11 @@ public class Conf {
 	public String getCrawlStorageDir() {
 		return crawlStorageDir;
 	}
-	
+
+	public String getSplitPhrasePattern() {
+		return splitPhrasePattern;
+	}
+
 	public Pattern getFilter() {
 		return Pattern.compile(urlFilter);
 	}

@@ -7,7 +7,7 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -16,11 +16,11 @@ import java.io.InputStream;
 
 public class ToPage {
 
-    public Page from(final String filename) throws FileNotFoundException {
+    public Text from(final String filename) throws FileNotFoundException {
         return from(new FileInputStream(filename));
     }
 
-    public Page from(final InputStream input){
+    public Text from(final InputStream input){
         final ContentHandler textHandler = new BodyContentHandler(Integer.MAX_VALUE);
         final Metadata metadata = new Metadata();
         try {
@@ -31,17 +31,17 @@ public class ToPage {
             throw new RuntimeException("Parsing fichier", e);
         }
 
-        final Page page = new Page();
+        final Text text = new Text();
 
-        page.setIdentifier(metadata.get(TikaCoreProperties.IDENTIFIER));
-        page.setTitle(metadata.get(TikaCoreProperties.TITLE));
-        page.setCreator(metadata.get(TikaCoreProperties.CREATOR));
-        page.setCreated(metadata.get(TikaCoreProperties.CREATED));
-        page.setLanguage(metadata.get(TikaCoreProperties.LANGUAGE));
-        page.setType(metadata.get(TikaCoreProperties.TYPE));
-        page.setComments(metadata.get(TikaCoreProperties.COMMENTS));
-        page.setText(textHandler.toString());
+        text.setIdentifier(metadata.get(TikaCoreProperties.IDENTIFIER));
+        text.setTitle(metadata.get(TikaCoreProperties.TITLE));
+        text.setCreator(metadata.get(TikaCoreProperties.CREATOR));
+        text.setCreated(metadata.get(TikaCoreProperties.CREATED));
+        text.setLanguage(metadata.get(TikaCoreProperties.LANGUAGE));
+        text.setType(metadata.get(TikaCoreProperties.TYPE));
+        text.setComments(metadata.get(TikaCoreProperties.COMMENTS));
+        text.setText(textHandler.toString());
 
-        return page;
+        return text;
     }
 }

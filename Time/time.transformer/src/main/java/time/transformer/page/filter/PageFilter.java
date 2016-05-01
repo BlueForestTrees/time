@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import time.conf.Conf;
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 
 public class PageFilter {
 
@@ -21,28 +21,28 @@ public class PageFilter {
 		this.urlMaxLength = conf.getUrlMaxLength();
 	}
 
-	public void rememberThisPage(Page page) {
-		urlsLowerCase.add(normalizedUrl(page));
+	public void rememberThisPage(Text text) {
+		urlsLowerCase.add(normalizedUrl(text));
 	}
 
-	public String normalizedUrl(Page page) {
-		return page.getUrl().toLowerCase().replace("-", "_");
+	public String normalizedUrl(Text text) {
+		return text.getUrl().toLowerCase().replace("-", "_");
 	}
 
-	public boolean isNewPage(Page page) {
-		return !urlsLowerCase.contains(normalizedUrl(page));
+	public boolean isNewPage(Text text) {
+		return !urlsLowerCase.contains(normalizedUrl(text));
 	}
 
-	public boolean isValidPage(Page page) {
-		final String url = page.getUrl();
+	public boolean isValidPage(Text text) {
+		final String url = text.getUrl();
 		final boolean urlBlackListed = urlBlackList.stream().anyMatch(term -> url.contains(term));
-		final boolean urlTooLong = page.getUrl().length() > urlMaxLength;
+		final boolean urlTooLong = text.getUrl().length() > urlMaxLength;
 
 		return !urlTooLong && !urlBlackListed;
 	}
 
-	public boolean isValidNewPage(Page page) {
-		return isNewPage(page) && isValidPage(page);
+	public boolean isValidNewPage(Text text) {
+		return isNewPage(text) && isValidPage(text);
 	}
 
 }

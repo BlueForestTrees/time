@@ -1,12 +1,12 @@
 package time.transformer.page.transformer;
 
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 
 public class NoOpPageTransformer implements IPageTransformer{
 
 	@Override
-	public Page transform(Page page) {
-		return page;
+	public Text transform(Text text) {
+		return text;
 	}
 
 }

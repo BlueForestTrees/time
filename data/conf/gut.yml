@@ -1,5 +1,5 @@
 #C:/dev/Histoire/time/data
-#/home/slimane/time/Histoire/data
+#/home/slimane/time/Time/data
 
 crawlStorageDir: ${TIME_HOME}/temp/gutenberg/
 txtPagesDir: ${TIME_HOME}/temp/gutenberg/epubs/

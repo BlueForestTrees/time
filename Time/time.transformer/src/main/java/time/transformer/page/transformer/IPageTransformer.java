@@ -1,6 +1,6 @@
 package time.transformer.page.transformer;
 
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 
 /**
  * Interface des classes qui trnasforme le contenu des pages pour les adapter au DateFinder.
@@ -8,5 +8,5 @@ import time.repo.bean.Page;
  *
  */
 public interface IPageTransformer {
-    public Page transform(final Page page);
+    public Text transform(final Text text);
 }

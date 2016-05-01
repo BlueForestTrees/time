@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import com.google.inject.Inject;
 
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 
 public class PageReader {
 
@@ -20,7 +20,7 @@ public class PageReader {
     	this.scanner = scanner;
     }
 
-    public Page getNextPage() throws IOException, FinDuScanException {
+    public Text getNextPage() throws IOException, FinDuScanException {
         final String url = scanner.nextString();
         final String title = scanner.nextString();
         //final String metadata = scanner.nextString();
@@ -33,7 +33,7 @@ public class PageReader {
             logger.debug("text=" + text.substring(0, 50) + "[...]" + text.substring(text.length() - 50));
         }
 
-        final Page page = new Page();
+        final Text page = new Text();
         page.setUrl(url);
         page.setTitle(title);
         page.setText(text);

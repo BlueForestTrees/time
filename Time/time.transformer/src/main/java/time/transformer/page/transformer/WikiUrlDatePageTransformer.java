@@ -3,7 +3,7 @@ package time.transformer.page.transformer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 
 /**
  * Supprime le contenu de la page situé après les mots clés {@link excludeAfter}
@@ -40,12 +40,12 @@ public class WikiUrlDatePageTransformer implements IPageTransformer {
     private final IPageTransformer milleniumTransformer = null;
     
     @Override
-    public Page transform(final Page page) {
-        final IPageTransformer transformer = getAvailableTransformer(page.getUrl());
+    public Text transform(final Text text) {
+        final IPageTransformer transformer = getAvailableTransformer(text.getUrl());
         if(transformer != null){
-            return transformer.transform(page);
+            return transformer.transform(text);
         }else{
-            return page;
+            return text;
         }
     }
     

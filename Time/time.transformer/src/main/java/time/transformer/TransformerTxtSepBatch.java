@@ -9,7 +9,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import time.conf.Conf;
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 import time.tool.chrono.Chrono;
 import time.transformer.page.filter.PageFilter;
 import time.transformer.page.transformer.IPageTransformer;
@@ -61,7 +61,7 @@ public class TransformerTxtSepBatch {
 	private void doitBaby(){
 		long pageCount = 0;
 		long phraseCount = 0;
-		final Chrono chrono = new Chrono("Page");
+		final Chrono chrono = new Chrono("Text");
 		final Chrono fullChrono = new Chrono("Full");
 
 		fullChrono.start();
@@ -85,12 +85,12 @@ public class TransformerTxtSepBatch {
 		LOG.info("run " + pageCount);
 		long phraseCount = 0;
 		for (long i = 0; i < pageCount; i++) {
-			final Page page = pageReader.getNextPage();
-			if (pageFilter.isValidPage(page) && pageFilter.isNewPage(page)) {
-				pageTransformer.transform(page);
-				transformer.handlePage(page);
-				phraseCount += page.nbDatedPhrasesCount();
-				pageFilter.rememberThisPage(page);
+			final Text text = pageReader.getNextPage();
+			if (pageFilter.isValidPage(text) && pageFilter.isNewPage(text)) {
+				pageTransformer.transform(text);
+				transformer.handlePage(text);
+				phraseCount += text.nbDatedPhrasesCount();
+				pageFilter.rememberThisPage(text);
 			}
 		}
 		return phraseCount;

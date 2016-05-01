@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
 import time.crawler.work.write.Write;
 import time.crawler.work.write.IWriter;
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 import time.tool.file.Dirs;
 
 import java.io.File;
@@ -31,16 +31,16 @@ public class FileWriter implements IWriter {
 		Dirs.renew(outputDir);
 	}
 
-	public void writePage(final Page page) {
+	public void writePage(final Text text) {
 		final String txtPagesDir = conf.getTxtOutputDir();
-		final String filename = Dirs.filenameAble(page.getTitle());
+		final String filename = Dirs.filenameAble(text.getTitle());
 		final String filepath = txtPagesDir + filename;
 		if(txtPagesDir == null || filename == null){
 			LOGGER.error("invalid path: " + filepath);
 			return;
 		}
 		final Path path = Paths.get(filepath);
-		final byte[] content = Write.concat(page.getUrl(), page.getMetadata(), page.getTextString()).toString().getBytes();
+		final byte[] content = Write.concat(text.getUrl(), text.getMetadata(), text.getTextString()).toString().getBytes();
 
 		try {
 			Files.write(path, content);

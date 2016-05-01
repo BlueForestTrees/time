@@ -12,7 +12,7 @@ import com.google.inject.name.Named;
 
 import time.conf.Conf;
 import time.repo.bean.DatedPhrase;
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 import time.transformer.phrase.filter.PhraseFilter;
 import time.transformer.phrase.finder.DatedPhraseDetector;
 import time.transformer.storage.LuceneStorage;
@@ -40,36 +40,36 @@ public class Transformer {
 		storage.start();
 	}
 
-	protected void handlePage(final Page page) throws IOException {
-		final String[] paragraphs = splitParagraphPattern.split(page.getTextString());
+	protected void handlePage(final Text text) throws IOException {
+		final String[] paragraphs = splitParagraphPattern.split(text.getTextString());
 		for (String paragraph : paragraphs) {
-			handleParagraph(page, paragraph);
+			handleParagraph(text, paragraph);
 		}
-		LOG.info(paragraphs.length + " paragraphes, " + page.nbDatedPhrasesCount() + " phrases");
+		LOG.info(paragraphs.length + " paragraphes, " + text.nbDatedPhrasesCount() + " phrases");
 	}
 
-	private void handleParagraph(final Page page, final String paragraph) throws IOException {
-		page.openParagraph();
+	private void handleParagraph(final Text text, final String paragraph) throws IOException {
+		text.openParagraph();
 		final String[] phrases = splitPhrasePattern.split(paragraph);
 		for (String phrase : phrases) {
 			if (phraseFilter.keepThisPhrase(phrase)) {
-				handlePhrase(page, phrase);
+				handlePhrase(text, phrase);
 			}
 		}
-		page.closeParagraph();
+		text.closeParagraph();
 	}
 
-	private void handlePhrase(final Page page, final String phrase) {
-		final List<DatedPhrase> datedPhrases = datedPhrasesDetector.detect(page, phrase);
+	private void handlePhrase(final Text text, final String phrase) {
+		final List<DatedPhrase> datedPhrases = datedPhrasesDetector.detect(text, phrase);
 		if (!datedPhrases.isEmpty()) {
-			page.startPhrase();
+			text.startPhrase();
 		}
-		page.appendHightlightContent(phrase);
+		text.appendHightlightContent(phrase);
 		if (!datedPhrases.isEmpty()) {
-			page.endPhrase();
+			text.endPhrase();
 		}
 
-		page.addPhrases(datedPhrases);
+		text.addPhrases(datedPhrases);
 	}
 
 	public void onEnd() {

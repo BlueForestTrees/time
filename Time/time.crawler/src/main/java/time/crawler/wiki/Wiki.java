@@ -12,6 +12,8 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
 import time.conf.Conf;
 import time.crawler.work.crawl.ICrawler;
+import time.crawler.work.write.IWriter;
+import time.crawler.work.write.log.LogWriter;
 
 public class Wiki extends AbstractModule {
 
@@ -24,6 +26,7 @@ public class Wiki extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(ICrawler.class).to(WikiCrawler.class);
+		bind(IWriter.class).to(LogWriter.class);
 	}
 	
 	public static void main(final String[] args) throws Exception {

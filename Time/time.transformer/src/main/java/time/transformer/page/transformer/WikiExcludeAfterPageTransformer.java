@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import time.conf.Conf;
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 
 /**
  * Supprime le contenu de la page situé après les mots clés {@link excludeAfter}
@@ -24,7 +24,7 @@ public class WikiExcludeAfterPageTransformer implements IPageTransformer {
 	}
 
 	@Override
-    public Page transform(final Page page) {
+    public Text transform(final Text page) {
         final StringBuilder text = page.getText();
         final OptionalInt whereToCut = excludeAfterList.stream().mapToInt(term -> text.indexOf(term)).filter(v -> v > 0).min();
         if (whereToCut.isPresent()) {

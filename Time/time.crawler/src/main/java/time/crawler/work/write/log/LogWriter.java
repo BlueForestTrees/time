@@ -9,7 +9,7 @@ import com.google.inject.name.Named;
 import time.conf.Conf;
 import time.crawler.work.write.IWriter;
 import time.crawler.work.write.Write;
-import time.repo.bean.Page;
+import time.repo.bean.Text;
 
 public class LogWriter implements IWriter {
 	
@@ -24,8 +24,8 @@ public class LogWriter implements IWriter {
 	}
 
     @Override
-    public void writePage(final Page page) {
-       	PAGEWRITER.info(Write.concat(page.getUrl(), page.getTitle(), page.getTextString()));
+    public void writePage(final Text text) {
+       	PAGEWRITER.info(Write.concat(text.getUrl(), text.getTitle(), text.getTextString()));
     }
 
 }

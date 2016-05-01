@@ -1,5 +1,6 @@
 package time.crawler.wiki;
 
+import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -10,6 +11,7 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import time.conf.Conf;
 import time.crawler.work.crawl.BaseCrawler;
 import time.crawler.work.write.IWriter;
+import time.repo.bean.Text;
 import time.tool.chrono.Chrono;
 
 public class WikiCrawler extends BaseCrawler {
@@ -24,7 +26,8 @@ public class WikiCrawler extends BaseCrawler {
     private long nbLog;
     private long pageCount;
     private int pageTotal;
-    
+
+    @Inject
 	public WikiCrawler(@Named("conf") final Conf conf, final IWriter writer) {
 		super(conf);
         if (LOGGER.isDebugEnabled()) {
@@ -42,7 +45,7 @@ public class WikiCrawler extends BaseCrawler {
             final String content = ((HtmlParseData) page.getParseData()).getText();
             if (conf.getContentExclusion().stream().noneMatch(content::contains)) {               
             	final HtmlParseData htmlData = (HtmlParseData) page.getParseData();
-                time.repo.bean.Page mpage = new time.repo.bean.Page();
+                Text mpage = new Text();
                 mpage.setUrl(page.getWebURL().getURL());
                 mpage.setTitle(htmlData.getTitle());
                 mpage.setText(htmlData.getText());

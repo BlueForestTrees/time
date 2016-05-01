@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-public class Page implements Serializable {
+public class Text implements Serializable {
 
     private static final long serialVersionUID = 1591695335410659944L;
     private String url;

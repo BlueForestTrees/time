@@ -1,5 +1,8 @@
-crawlStorageDir: C:/dev/Histoire/time/data/temp/gutenberg/
-txtPagesDir: C:/dev/Histoire/time/data/temp/gutenberg/epubs/
+#C:/dev/Histoire/time/data
+#/home/slimane/time/Histoire/data
+
+crawlStorageDir: ${TIME_HOME}/temp/gutenberg/
+txtPagesDir: ${TIME_HOME}/temp/gutenberg/epubs/
 seedUrl: http://www.gutenberg.org/robot/harvest?filetypes[]=epub.noimages&langs[]=fr
 baseUrl: http://www.gutenberg.org/robot/harvest
 nbCrawlers: 7
@@ -11,9 +14,11 @@ pageTotal: 2600
 urlMaxLength: 255
 maxPhrasesToFetch: -1
 pageSize: 100
-#sourcePath: /home/slimane/time/Histoire/data/sources/wiki
-sourcePath: C:/dev/Histoire/time/data/temp/gutenberg/epubs/
-#indexPath: /home/slimane/time/Histoire/data/indexes/wiki/
-indexPath: C:/dev/Histoire/time/data/indexes/gutenberg/
+sourcePath: ${TIME_HOME}/temp/gutenberg/epubs/
+indexPath: ${TIME_HOME}/indexes/gutenberg/
 minLength: 30
 maxLength: 500000
+txtOutputDir: ${TIME_HOME}/temp/gutenberg/livres/
+txtOutputFile: ${TIME_HOME}/temp/gutenberg/livres/Le_Naturalisme
+indexDir: ${TIME_HOME}/indexes/temp/
+splitParagraphPattern: '[\r\n\t]+'

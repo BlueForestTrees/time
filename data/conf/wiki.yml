@@ -1,0 +1,14 @@
+seedUrl: https://fr.wikipedia.org/wiki/Portail:Accueil
+baseUrl: https://fr.wikipedia.org/wiki/
+nbCrawlers: 3
+maxPages: 5000000
+nbPageLog: 3
+politenessDelay: 25
+urlFilter: .*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$
+
+contentExclusion: \t\t\t(Redirigé depuis
+excludeList: ['Discussion_utilisateur:', 'Discussion_utilisatrice:', 'Utilisatrice:', '#', 'Discussion_modèle:', 'Discussion_mod%C3%A8le:', 'Discussion:', 'spécial:', 'sp%c3%a9cial:', 'Discussion_wikipédia:', 'discussion_wikipédia:', 'discussion_wikip%c3%a9dia:', 'cat%c3%a9gorie:', 'catégorie:', 'utilisateur:', 'projet:', 'discussion_projet:', 'aide:', 'wikipédia:', 'wikip%c3%a9dia:', 'fichier:']
+
+excludeAfterList: ['Notes et références[', 'Bibliographie[', 'Liens externes[', 'Bibliographie[', 'Annexes[']
+urlBlackList: ['Discussion_utilisateur:','Discussion_utilisatrice:','Utilisatrice:', '#', 'Portail:', 'Discussion_modèle:', 'Discussion_mod%C3%A8le:', 'Discussion:']
+phraseMustNotStartWith: ['Catégories :']

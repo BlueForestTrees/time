@@ -1,0 +1,58 @@
+alias aliases="vi ~/.bash_aliases"
+alias update="source ~/.bash_aliases;"
+
+alias psgrep='function _psgrep(){ ps -aux | grep "$1"; };_psgrep'
+
+#supprimer les images docker inutiles
+alias docrmi='docker rmi -f $(docker images -f "dangling=true" -q)'
+alias docrmiall='docker rmi -f $(docker images)'
+#arrêter tout les containers docker
+alias docrmall='docker rm -f $(docker ps -aq)'
+alias docrm='function _rm(){ docker rm -f $1; };_rm'
+alias docps='docker ps -a'
+alias doci='docker images'
+
+#GIT
+alias rmorig="find . -name '*.orig' -type f -delete"
+alias st="git status"
+alias cho='function _checkout(){ git checkout "$1"; };_checkout'
+alias pull="git pull"
+alias push='function _push(){ git push origin "$1"; };_push'
+alias pushf='function _pushf(){ git push -f origin "$1"; };_pushf'
+alias stash="git stash"
+alias stash-pop="git stash pop"
+alias fetch="git fetch"
+#Créer une branche sur locale+serveur
+alias branch='function _branch(){ git branch "$1"; git checkout "$1"; git push --set-upstream origin "$1"; };_branch'
+alias unbranch='function _unbranch(){ git branch -D "$1"; git push origin --delete "$1"; };_unbranch'
+alias branches="git branch -a"
+alias addAll="git add -A"
+alias add='function _add(){ git add --all "$1"; };_add'
+alias commit='function _commit(){ git commit -m "$1"; };_commit'
+alias amend='function _amend(){ git commit --amend; };_amend'
+alias uncommit='git reset HEAD~'
+alias unstage='git reset'
+alias rebase='function _rebase(){ git rebase "$1"; };_rebase'
+alias diff='function _diff(){ git diff "$1" };_diff'
+alias full='function _full(){ st && addAll && commit "$1" && push "$2" && st; };_full'
+alias seeall='data; database; indices; core; api; front;'
+alias gmerge='function _merge(){ git merge --no-ff "$1"; };_merge'
+
+#TIME
+alias time="cd /D/dev/time/Time/"
+alias tdata="cd /D/dev/time/data"
+
+
+
+#git checkout .
+#If you want to revert changes made to the index (i.e., that you have added), do this. Warning this will reset all of your unpushed commits to master!:
+#git reset
+
+#If you want to revert a change that you have committed, do this:
+#git revert ...
+
+#If you want to remove untracked files (e.g., new files, generated files):
+#git clean -f
+
+#Or untracked directories:
+#git clean -d

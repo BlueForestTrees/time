@@ -69,7 +69,11 @@ public class Args {
     final StrSubstitutor envSubstitutor = new StrSubstitutor(new StrLookup<Object>() {
       @Override
       public String lookup(String key) {
-        return System.getenv(key);
+        final String value = System.getenv(key);
+        if(value == null){
+          throw new RuntimeException("variable d'environnement manquante : " + key);
+        }
+        return value;
       }
     });
     final String rawConfig = new String(ByteStreams.toByteArray(new FileInputStream(new File(ymlPath))), StandardCharsets.UTF_8);

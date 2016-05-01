@@ -56,7 +56,11 @@ public abstract class BaseCrawler implements ICrawler {
     private CrawlConfig crawlConfig() {
 		final CrawlConfig crawlConfig = new CrawlConfig();
 		crawlConfig.setPolitenessDelay(conf.getDelay());
-		crawlConfig.setCrawlStorageFolder(conf.getCrawlStorageDir());
+		final String crawlStorageDir = conf.getCrawlStorageDir();
+		if(crawlStorageDir == null){
+			throw new RuntimeException("crawlStorageDir n'est pas défini!");
+		}
+		crawlConfig.setCrawlStorageFolder(crawlStorageDir);
 		crawlConfig.setResumableCrawling(conf.isResumable());
 		crawlConfig.setMaxPagesToFetch(conf.getMaxPages());
 		return crawlConfig;

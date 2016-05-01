@@ -19,8 +19,5 @@
 		</Logger>
 		<Logger name="time.crawler" level="debug">
 		</Logger>
-		<Logger name="org.springframework" level="info">
-			<AppenderRef ref="Console" />
-		</Logger>
 	</Loggers>
 </Configuration>

@@ -32,10 +32,10 @@ public class FileWriter implements IWriter {
 	}
 
 	public void writePage(final Text text) {
-		final String txtPagesDir = conf.getTxtOutputDir();
+		final String txtOutputDir = conf.getTxtOutputDir();
 		final String filename = Dirs.filenameAble(text.getTitle());
-		final String filepath = txtPagesDir + filename;
-		if(txtPagesDir == null || filename == null){
+		final String filepath = txtOutputDir + filename;
+		if(txtOutputDir == null || filename == null){
 			LOGGER.error("invalid path: " + filepath);
 			return;
 		}

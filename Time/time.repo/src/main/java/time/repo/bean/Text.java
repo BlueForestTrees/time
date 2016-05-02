@@ -1,7 +1,7 @@
 package time.repo.bean;
 
 import java.io.Serializable;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Text implements Serializable {
@@ -23,7 +23,7 @@ public class Text implements Serializable {
 		return phrases;
 	}
 
-	private List<DatedPhrase> phrases = Arrays.asList();
+	private List<DatedPhrase> phrases = new ArrayList();
 
 	public void addPhrases(final List<DatedPhrase> phrases){
 		this.phrases.addAll(phrases);

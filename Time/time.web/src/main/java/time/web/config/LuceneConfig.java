@@ -17,16 +17,14 @@ import org.apache.lucene.search.SortField.Type;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import time.conf.Args;
 
 @Configuration
 public class LuceneConfig {
 
     @Bean
     public String indexPath() {
-        return "/home/slimane/dev/time/Histoire/data/indexes/.histoires";
-        //return "/Time/data/lucene/histoires";
-    	//return "/Time/data/lucene/phrases";
-        //return "/Time/data/lucene/sapiens";
+        return new Args().getEnvSubstitutor().replace("${Time_HOME}/indexes/local.tika/");
     }
 
     @Bean

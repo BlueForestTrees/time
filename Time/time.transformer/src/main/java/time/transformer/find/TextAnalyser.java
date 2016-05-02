@@ -24,7 +24,7 @@ public class TextAnalyser {
 	private DatedPhrasesFinders finders;
 
 	@Inject
-	public TextAnalyser(@Named("conf") final Conf conf, final PhraseFilter phraseFilter, final DatedPhrasesFinders finders) {
+	public TextAnalyser(@Named("conf") final Conf conf, final PhraseFilter phraseFilter,@Named("finders") final DatedPhrasesFinders finders) {
 		this.phraseFilter = phraseFilter;
 		this.splitParagraphPattern = Pattern.compile(conf.getSplitParagraphPattern());
 		this.splitPhrasePattern = Pattern.compile(conf.getSplitPhrasePattern());
@@ -46,6 +46,7 @@ public class TextAnalyser {
 					if (!datedPhrases.isEmpty()) {
 						text.endPhrase();
 					}
+					datedPhrases.stream().forEach(p -> p.setPageUrl(text.getUrl()));
 					text.addPhrases(datedPhrases);
 				}
 			}

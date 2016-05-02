@@ -31,21 +31,21 @@ public class LuceneStorage {
 
 	private static final Logger LOGGER = LogManager.getLogger(LuceneStorage.class);
 
-	private String indexPath;
+	private String indexDir;
 	private IndexWriter iwriter;
 	private FacetsConfig config;
 
 	@Inject
 	public LuceneStorage(@Named("conf") Conf conf) {
-		indexPath = conf.getIndexDir();
-		LOGGER.info("index: " + indexPath);
-		if (indexPath == null) {
-			throw new RuntimeException("indexPath is null");
+		indexDir = conf.getIndexDir();
+		LOGGER.info("index: " + indexDir);
+		if (indexDir == null) {
+			throw new RuntimeException("indexDir is null");
 		}
 	}
 
 	public void start() throws IOException {
-		final Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
+		final Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexDir));
 		final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new FrenchAnalyzer());
 		indexWriterConfig.setOpenMode(OpenMode.CREATE);
 		indexWriterConfig.setRAMBufferSizeMB(256.0);

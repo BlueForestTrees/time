@@ -26,8 +26,7 @@ public class DatedPhrasesFinders {
 	private final Map<String, DatedPhrasesFinder> finders;
     private final DatedPhrasesFinder[] findersArray;
 
-	@Inject
-	public DatedPhrasesFinders(@Named("notInDateWords") String notInDateWords) {
+	public DatedPhrasesFinders(String notInDateWords) {
 		this.notInDateWords = "(?<ex>(" + Strings.withPipe(notInDateWords) + "spectateur|degré|coup|pas|tour|heure|minute|seconde|mois|moto|titre|volt|salarié|arbre|commanderie|étudiant|degré|mètre|mot|ouvrier|mort|partenaire)s?)?";
 		this.finders = new HashMap<>();
 		build();

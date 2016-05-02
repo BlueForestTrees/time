@@ -2,7 +2,7 @@
 #/home/slimane/time/Time/data
 
 crawlStorageDir: ${TIME_HOME}/temp/gutenberg/
-txtPagesDir: ${TIME_HOME}/temp/gutenberg/epubs/
+txtOutputDir: ${TIME_HOME}/temp/gutenberg/epubs/
 seedUrl: http://www.gutenberg.org/robot/harvest?filetypes[]=epub.noimages&langs[]=fr
 baseUrl: http://www.gutenberg.org/robot/harvest
 nbCrawlers: 7

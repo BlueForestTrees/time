@@ -17,6 +17,9 @@ import net.sourceforge.argparse4j.ArgumentParsers;
 import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.spi.LoggerContext;
 
 /**
  * Allow building configuration beans.
@@ -24,7 +27,9 @@ import net.sourceforge.argparse4j.inf.Namespace;
  *
  */
 public class Args {
-  
+
+  private static final Logger LOGGER = LogManager.getLogger(Args.class);
+
   /**
    * @param args
    * @param beanClass
@@ -66,7 +71,17 @@ public class Args {
    * @throws IOException
    */
   public <T> T toBean(final String ymlPath, Class<T> beanClass) throws IOException{
-    final StrSubstitutor envSubstitutor = new StrSubstitutor(new StrLookup<Object>() {
+    final String rawConfig = new String(ByteStreams.toByteArray(new FileInputStream(new File(ymlPath))), StandardCharsets.UTF_8);
+    final String substituedConfig = getEnvSubstitutor().replace(rawConfig);
+    final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+
+    LOGGER.info(substituedConfig);
+
+    return mapper.readValue(substituedConfig, beanClass);
+  }
+
+  public StrSubstitutor getEnvSubstitutor() {
+    return new StrSubstitutor(new StrLookup<Object>() {
       @Override
       public String lookup(String key) {
         final String value = System.getenv(key);
@@ -76,11 +91,6 @@ public class Args {
         return value;
       }
     });
-    final String rawConfig = new String(ByteStreams.toByteArray(new FileInputStream(new File(ymlPath))), StandardCharsets.UTF_8);
-    final String substituedConfig = envSubstitutor.replace(rawConfig);
-    final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-    
-    return mapper.readValue(substituedConfig, beanClass);
   }
 
 }

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+
+    <script>
+        $('input[type=file]').on('change', upload);
+
+        function upload(event) {
+            var files = event.target.files;
+            console.log(files);
+            var data = new FormData();
+            $.each(files, function(key, value)
+            {
+                data.append(key, value);
+            });
+          $.ajax({
+                url: 'api/upload', type: 'POST', data: data, cache: false, dataType: 'json',
+                processData: false, contentType: false,
+                success: function(data, textStatus, jqXHR)
+                {
+                    if(typeof data.error !== 'undefined')
+                    {
+                       console.log('ERRORS: ' + data.error);
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown)
+                {
+                    console.log('ERRORS: ' + textStatus);
+                }
+            });
+        }
+
+    </script>
+
+</head>
+<body>
+<input type="file"></input>
+</body>
+</html>

@@ -14,6 +14,7 @@
         <module>time.tool</module>
         <module>time.transformer</module>
         <module>time.web</module>
+        <module>time.viewer</module>
     </modules>
     <properties>
         <argparse4j.version>0.7.0</argparse4j.version>

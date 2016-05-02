@@ -1,4 +1,4 @@
-package time.viewer;
+package time.analyser;
 
 import com.codahale.metrics.annotation.Timed;
 
@@ -9,9 +9,9 @@ import javax.ws.rs.core.MediaType;
 
 @Path("/view")
 @Produces(MediaType.APPLICATION_JSON)
-public class ViewerResource {
+public class LiveparseResource {
 
-    public ViewerResource() {
+    public LiveparseResource() {
 
     }
 

@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import time.conf.Conf;
 import time.repo.bean.DatedPhrase;
-import time.transformer.storage.LuceneStorage;
+import time.transformer.store.LuceneStorage;
 
 public class LuceneStorageTest {
 

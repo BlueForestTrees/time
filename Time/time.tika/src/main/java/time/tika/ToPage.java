@@ -8,16 +8,22 @@ import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import time.repo.bean.Text;
+import time.tool.url.UrlTo;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 public class ToPage {
 
     public Text from(final String filename) throws FileNotFoundException {
         return from(new FileInputStream(filename));
+    }
+
+    public Text fromUrl(final String url) throws IOException {
+        return from(UrlTo.inputStream(url));
     }
 
     public Text from(final InputStream input){

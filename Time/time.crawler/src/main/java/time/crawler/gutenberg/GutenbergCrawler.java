@@ -10,11 +10,12 @@ import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
 import time.crawler.work.crawl.BaseCrawler;
 import time.crawler.work.write.IWriter;
+import time.repo.bean.Text;
 import time.tika.ToPage;
 import time.tool.url.UrlTo;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 
 public class GutenbergCrawler extends BaseCrawler {
@@ -39,14 +40,13 @@ public class GutenbergCrawler extends BaseCrawler {
 	}
 
 	private void writePage(final WebURL webURL) {
-		final String url = webURL.getURL();
-		byte[] bytes;
+		Text text;
 		try {
-			bytes = UrlTo.bytes(url);
+			text = toPage.fromUrl(webURL.getURL());
 		} catch (IOException e) {
 			throw new RuntimeException("Téléchargement fichier", e);
 		}
-		writer.writePage(toPage.from(new ByteArrayInputStream(bytes)));
+		writer.writePage(text);
 	}
 
 }

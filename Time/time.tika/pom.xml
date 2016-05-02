@@ -15,6 +15,10 @@
             <artifactId>time.repo</artifactId>
         </dependency>
         <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.tool</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-parsers</artifactId>
         </dependency>

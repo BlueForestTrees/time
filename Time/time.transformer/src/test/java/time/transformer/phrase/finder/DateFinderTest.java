@@ -4,6 +4,9 @@ import org.assertj.core.api.Condition;
 import org.junit.Test;
 import time.repo.bean.DatedPhrase;
 import time.tool.date.Dates;
+import time.tool.string.Strings;
+import time.transformer.find.DatedPhrasesFinders;
+import time.transformer.find.DatedPhrasesFinder;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -14,21 +17,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DateFinderTest {
 
-	private PhraseFinder milliardFinder;
-	private PhraseFinder jcFinder;
-	private PhraseFinder nearJcFinder;
-	private PhraseFinder nearJcFinder2;
-	private PhraseFinder nearJcFinder3;
-	private PhraseFinder ilYAFinder;
-	private PhraseFinder romanFinder;
-	private PhraseFinder annee2DotFinder;
-	private PhraseFinder preciseFinder;
-	private PhraseFinder nearLessFinder;
-	private PhraseFinder[] finders;
-	
+	private DatedPhrasesFinder milliardFinder;
+	private DatedPhrasesFinder jcFinder;
+	private DatedPhrasesFinder nearJcFinder;
+	private DatedPhrasesFinder nearJcFinder2;
+	private DatedPhrasesFinder nearJcFinder3;
+	private DatedPhrasesFinder ilYAFinder;
+	private DatedPhrasesFinder romanFinder;
+	private DatedPhrasesFinder annee2DotFinder;
+	private DatedPhrasesFinder preciseFinder;
+	private DatedPhrasesFinder nearLessFinder;
+	private DatedPhrasesFinder[] finders;
+
 	public DateFinderTest(){
-		final DateFindersFactory factory = new DateFindersFactory(null);
-		finders = factory.finders();
+		final DatedPhrasesFinders factory = new DatedPhrasesFinders(null);
+		finders = factory.getFindersArray();
 		milliardFinder = factory.get("milliardFinder");
 		jcFinder = factory.get("jcFinder");
 		nearJcFinder = factory.get("nearJcFinder");
@@ -486,33 +489,33 @@ public class DateFinderTest {
 		assertNoDateIn(phrase, finders);
 	}
 
-	private void assertNoDateIn(String phrases, PhraseFinder[] finders) {
+	private void assertNoDateIn(String phrases, DatedPhrasesFinder[] finders) {
 		assertThat(finders).isNotEmpty().as("pas de finders");
-		for (PhraseFinder finder : finders) {
+		for (DatedPhrasesFinder finder : finders) {
 			assertNoDateIn(phrases, finder);
 		}
 	}
 
-	private void assertNoDateIn(String phrases, PhraseFinder finder) {
-		assertThat(finder.findPhrases(page, phrases)).as(finder + " trouve des phrases").isEmpty();
+	private void assertNoDateIn(String phrases, DatedPhrasesFinder finder) {
+		assertThat(finder.findPhrases(phrases)).as(finder + " trouve des phrases").isEmpty();
 	}
 
-	private void assertOnly(final PhraseFinder finder, Condition<? super DatedPhrase> condition, String phrase) {
-		assertThat(finder.findPhrases(page, phrase)).as(finder + " ne trouve pas de phrases").haveExactly(1, condition);
+	private void assertOnly(final DatedPhrasesFinder finder, Condition<? super DatedPhrase> condition, String phrase) {
+		assertThat(finder.findPhrases(phrase)).as(finder + " ne trouve pas de phrases").haveExactly(1, condition);
 
-		final PhraseFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new PhraseFinder[size]);
+		final DatedPhrasesFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new DatedPhrasesFinder[size]);
 		assertNoDateIn(phrase, filteredFinders);
 	}
 
-	private void assertTwo(final PhraseFinder finder, Condition<? super DatedPhrase> condition1, Condition<? super DatedPhrase> condition2, String phrase) {
-		final List<DatedPhrase> actualPhrases = finder.findPhrases(page, phrase);
+	private void assertTwo(final DatedPhrasesFinder finder, Condition<? super DatedPhrase> condition1, Condition<? super DatedPhrase> condition2, String phrase) {
+		final List<DatedPhrase> actualPhrases = finder.findPhrases(phrase);
 
 		assertThat(actualPhrases).as("doit trouver deux dates").hasSize(2);
 
 		assertThat(actualPhrases.get(0)).as("première date").has(condition1);
 		assertThat(actualPhrases.get(1)).as("deuxième date").has(condition2);
 
-		final PhraseFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new PhraseFinder[size]);
+		final DatedPhrasesFinder[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new DatedPhrasesFinder[size]);
 		assertNoDateIn(phrase, filteredFinders);
 	}
 
@@ -570,7 +573,7 @@ public class DateFinderTest {
 	}
 
 	private void testPreparePhrase(final String text, final String expectedText) {
-		final String actualText = milliardFinder.preparePhrase(text, "neverreachthis");
+		final String actualText = Strings.clean(text);
 		assertThat(actualText).as("phrase mal préparée").isEqualTo(expectedText);
 	}
 

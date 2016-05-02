@@ -19,4 +19,10 @@ public class Strings {
             return begin + end;
         }
     }
+    public static String bold(final String phrase, final String dateExtract) {
+        return phrase.replace(dateExtract, "<b>" + dateExtract + "</b>");
+    }
+    public static String clean(final String phrase){
+        return phrase.replaceAll("\\[.*?\\]", "");
+    }
 }

@@ -1,28 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
-
+    <script src="../js/jquery-2.2.0.min.js"></script>
     <script>
-        $('input[type=file]').on('change', upload);
+        $(document).ready(function() {
+            console.log('document ready');
+            $('input:file').change(upload);
+        });
 
         function upload(event) {
+            console.log('upload', event.target.files, event);
             var files = event.target.files;
-            console.log(files);
             var data = new FormData();
             $.each(files, function(key, value)
             {
                 data.append(key, value);
             });
-          $.ajax({
-                url: 'api/upload', type: 'POST', data: data, cache: false, dataType: 'json',
+            $.ajax({
+                url: '/api/upload', type: 'POST', data: data, cache: false, dataType: 'json',
                 processData: false, contentType: false,
                 success: function(data, textStatus, jqXHR)
                 {
                     if(typeof data.error !== 'undefined')
                     {
                        console.log('ERRORS: ' + data.error);
+                    }else{
+                        console.log('upload sucess', data);
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown)

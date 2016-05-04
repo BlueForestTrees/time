@@ -26,15 +26,15 @@ import org.springframework.util.StringUtils;
 import time.web.config.ComponentConfig;
 import time.web.service.BucketService;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes={ComponentConfig.class})
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes={ComponentConfig.class})
 public class LuceneServiceTest {
     
     @Autowired
     BucketService bucketService;
 
     
-    @Test
+    //@Test
     public void testLuceneDoc() throws IOException{
         String indexPath = "/Time/data/phrases";
         FSDirectory indexDir = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
@@ -52,7 +52,7 @@ public class LuceneServiceTest {
         }
     }
     
-    @Test
+    //@Test
     public void testSearchAfter() throws IOException{
         String indexPath = "/Time/data/somephrases";
         FSDirectory indexDir = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));

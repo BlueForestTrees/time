@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <script src="jquery-2.2.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            console.log('document ready');
+            $('input:file').change(upload);
+        });
+
+        function upload(event) {
+            console.log('uploading', event.target.files, event);
+            var files = event.target.files;
+            var data = new FormData();
+            $.each(files, function(key, value)
+            {
+                data.append(key, value);
+            });
+            $.ajax({
+                url: '/api/upload', type: 'POST', data: data, cache: false,
+                processData: false, contentType: false,
+                success: function(data, textStatus, jqXHR)
+                {
+                    console.log('uploaded', data);
+                    $('.book').val(data.text);
+                },
+                error: function(jqXHR, textStatus, errorThrown)
+                {
+                    console.log('ERROR', jqXHR, textStatus, errorThrown);
+                }
+            });
+        }
+
+    </script>
+
+</head>
+<body>
+<input type="file"></input>
+<div class="book"></div>
+</body>
+</html>

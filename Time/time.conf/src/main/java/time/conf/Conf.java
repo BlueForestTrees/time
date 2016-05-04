@@ -11,10 +11,8 @@ public class Conf {
 	
 	private String target;
 	private String home;
-	private String splitParagraphPattern = "[\r\n\t]+";
-
-	private String splitPhrasePattern = "(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))\\.) +";
-
+	private String homeDir;
+	private int port;
 	private String basePath;
 	private String name;
 	private String baseUrl;
@@ -54,6 +52,14 @@ public class Conf {
 	private String indexDir;
 	private String[] phraseMustNotStartWith;
 	private String notInDateWords;
+
+	public String getHomeDir() {
+		return homeDir;
+	}
+
+	public int getPort() {
+		return port;
+	}
 	public String getNotInDateWords() { return notInDateWords; }
 
 	public String getHome() {
@@ -74,10 +80,6 @@ public class Conf {
 
 	public String getCrawlStorageDir() {
 		return crawlStorageDir;
-	}
-
-	public String getSplitPhrasePattern() {
-		return splitPhrasePattern;
 	}
 
 	public Pattern getFilter() {
@@ -266,14 +268,6 @@ public class Conf {
 
 	public void setIndexDir(String indexPath) {
 		this.indexDir = indexPath;
-	}
-
-	public String getSplitParagraphPattern() {
-		return splitParagraphPattern;
-	}
-
-	public void setSplitParagraphPattern(String splitParagraphPattern) {
-		this.splitParagraphPattern = splitParagraphPattern;
 	}
 
 	public String[] getPhraseMustNotStartWith() {

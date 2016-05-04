@@ -11,18 +11,16 @@ import time.conf.Conf;
 import time.crawler.work.crawl.BaseCrawler;
 import time.crawler.work.write.IWriter;
 import time.repo.bean.Text;
-import time.tika.ToPage;
-import time.tool.url.UrlTo;
+import time.tika.ToText;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Set;
 
 public class GutenbergCrawler extends BaseCrawler {
 	private static final Logger LOGGER = LogManager.getLogger(GutenbergCrawler.class);
 
 	protected IWriter writer;
-	private final ToPage toPage = new ToPage();
+	private final ToText toText = new ToText();
 
 	@Inject
 	public GutenbergCrawler(@Named("conf") final Conf conf, final IWriter writer) {
@@ -42,7 +40,7 @@ public class GutenbergCrawler extends BaseCrawler {
 	private void writePage(final WebURL webURL) {
 		Text text;
 		try {
-			text = toPage.fromUrl(webURL.getURL());
+			text = toText.fromUrl(webURL.getURL());
 		} catch (IOException e) {
 			throw new RuntimeException("Téléchargement fichier", e);
 		}

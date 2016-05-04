@@ -1,27 +1,47 @@
 package time.analyser;
 
-import io.dropwizard.Application;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import time.analyser.find.DatedPhrasesFinders;
+import time.conf.Args;
+import time.conf.Conf;
 
-public class LiveparseApplication extends Application<LiveparseConfiguration> {
+import java.io.IOException;
+
+public class LiveparseApplication extends AbstractModule {
+
+    private Conf conf;
+
+    public LiveparseApplication(String[] args) throws IOException, ArgumentParserException {
+        conf = new Args().toBean(args, Conf.class);
+    }
+
     public static void main(String[] args) throws Exception {
-        new LiveparseApplication().run(args);
+        Guice.createInjector(new LiveparseApplication(args)).getInstance(LiveparseServer.class).start();
     }
 
     @Override
-    public String getName() {
-        return "viewer";
+    protected void configure() {
+
     }
 
-    @Override
-    public void initialize(Bootstrap<LiveparseConfiguration> bootstrap) {
-        // nothing to do yet
+    @Provides @Singleton @Named("conf")
+    public Conf conf() {
+        return conf;
     }
 
-    @Override
-    public void run(LiveparseConfiguration configuration, Environment environment) {
-        environment.jersey().register(new LiveparseResource());
+    @Provides @Singleton @Named("port")
+    public int port() {
+        return conf.getPort();
     }
 
+    @Provides @Singleton @Named("finders")
+    public DatedPhrasesFinders finders(){
+        return new DatedPhrasesFinders(conf.getNotInDateWords());
+    }
 }
+

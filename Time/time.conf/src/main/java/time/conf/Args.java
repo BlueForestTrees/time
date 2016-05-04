@@ -59,7 +59,7 @@ public class Args {
    */
   public ArgumentParser buildArgumentParser(){
     final ArgumentParser argParser = ArgumentParsers.newArgumentParser("java -jar path/to/jarname.jar -conf path/to/conf.yml", false);
-    argParser.addArgument("-conf").nargs("?").setDefault("/tmp/conf.yml").help("configuration File");
+    argParser.addArgument("-conf").nargs("?").setDefault("conf.yml").help("configuration File");
     return argParser;
   }
   

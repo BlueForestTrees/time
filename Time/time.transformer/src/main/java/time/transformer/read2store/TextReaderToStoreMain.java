@@ -9,11 +9,11 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import time.analyser.find.DatedPhrasesFinders;
 import time.conf.Args;
 import time.conf.Conf;
 import time.transformer.transform.ITextTransformer;
 import time.transformer.transform.NoOpTextTransformer;
-import time.transformer.find.DatedPhrasesFinders;
 
 public class TextReaderToStoreMain extends AbstractModule{
     

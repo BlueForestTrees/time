@@ -8,11 +8,11 @@ import org.apache.log4j.Logger;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
+import time.analyser.analyse.TextAnalyser;
 import time.conf.Conf;
 import time.repo.bean.Text;
 import time.tool.chrono.Chrono;
 import time.transformer.filter.TextFilter;
-import time.transformer.find.TextAnalyser;
 import time.transformer.transform.ITextTransformer;
 import time.transformer.read.FinDuScanException;
 import time.transformer.read.TextReader;

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
 import time.crawler.work.write.IWriter;
-import time.tika.ToPage;
+import time.tika.ToText;
 import time.tool.file.Dirs;
 
 import java.io.File;
@@ -20,13 +20,13 @@ public class Livreman {
 	public IWriter writer;
 
 	private Conf conf;
-	private ToPage toPage;
+	private ToText toText;
 
 	@Inject
 	public Livreman(final IWriter writer, @Named("conf") final Conf conf) {
 		this.writer = writer;
 		this.conf = conf;
-		this.toPage = new ToPage();
+		this.toText = new ToText();
 	}
 
 	public void run() {
@@ -50,7 +50,7 @@ public class Livreman {
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Lecture fichier", e);
 		}
-		writer.writePage(toPage.from(input));
+		writer.writePage(toText.from(input));
 	}
 
 }

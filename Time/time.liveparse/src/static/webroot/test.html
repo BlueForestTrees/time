@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="liveparse.css">
     <script src="jquery-2.2.0.min.js"></script>
     <script>
         $(document).ready(function() {
@@ -24,7 +25,8 @@
                 success: function(data, textStatus, jqXHR)
                 {
                     console.log('uploaded', data);
-                    $('.book').val(data.text);
+                    $('.book').empty();
+                    $('.book').append(data.text);
                 },
                 error: function(jqXHR, textStatus, errorThrown)
                 {

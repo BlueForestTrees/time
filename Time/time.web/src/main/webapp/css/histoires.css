@@ -38,15 +38,6 @@ p {
 	transform: translate(-50%, -50%);
 }
 
-.paragraph{
-	margin-bottom: 10px;
-	background-color: #F0F0F0;
-}
-
-.phrase{
-	background-color: yellow;
-}
-
 .phraseHeader{
 	text-align: center;
 	font-size: small;

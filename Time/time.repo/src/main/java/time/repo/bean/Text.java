@@ -9,8 +9,6 @@ public class Text implements Serializable {
     private static final long serialVersionUID = 1591695335410659944L;
     private String url;
     private String metadata;
-    private StringBuilder content;
-    private StringBuilder hightlightenContent;
 	private String identifier;
 	private String title;
 	private String creator;
@@ -18,12 +16,13 @@ public class Text implements Serializable {
 	private String language;
 	private String type;
 	private String comments;
+	private List<DatedPhrase> phrases = new ArrayList();
+	private StringBuilder content;
+	private StringBuilder hightlightenContent;
 
 	public List<DatedPhrase> getPhrases() {
 		return phrases;
 	}
-
-	private List<DatedPhrase> phrases = new ArrayList();
 
 	public void addPhrases(final List<DatedPhrase> phrases){
 		this.phrases.addAll(phrases);
@@ -90,6 +89,10 @@ public class Text implements Serializable {
     public String getTextString() {
         return content.toString();
     }
+
+	public String getHightlightTextString() {
+		return hightlightenContent.toString();
+	}
 
     public void setText(String text) {
         this.content = new StringBuilder(text);

@@ -27,7 +27,7 @@ public class TextAnalyser {
 	public TextAnalyser(final PhraseFilter phraseFilter,@Named("finders") final DatedPhrasesFinders finders) {
 		this.phraseFilter = phraseFilter;
 		this.splitParagraphPattern = Pattern.compile("[\r\n\t]+");
-		this.splitPhrasePattern = Pattern.compile("(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))\\.) +");
+		this.splitPhrasePattern = Pattern.compile("(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))(\\.|\\?|!)) +");
 		this.finders = finders;
 	}
 
@@ -41,10 +41,10 @@ public class TextAnalyser {
 					final List<DatedPhrase> datedPhrases = finders.detect(phrase);
 					if (!datedPhrases.isEmpty()) {
 						text.startPhrase();
-					}
-					text.appendHightlightContent(phrase);
-					if (!datedPhrases.isEmpty()) {
+						datedPhrases.forEach(dp -> text.appendHightlightContent(dp.getText()));
 						text.endPhrase();
+					}else{
+						text.appendHightlightContent(phrase);
 					}
 					datedPhrases.stream().forEach(p -> p.setPageUrl(text.getUrl()));
 					text.addPhrases(datedPhrases);

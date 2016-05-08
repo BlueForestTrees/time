@@ -1,21 +1,21 @@
 package time.analyser.find;
 
+import time.analyser.find.parser.IParser;
+import time.repo.bean.DatedPhrase;
+import time.tool.string.Strings;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import time.repo.bean.DatedPhrase;
-import time.tool.string.Strings;
-import time.analyser.find.parser.IParser;
-
 public class DatedPhrasesFinder {
 
 	private final Pattern pattern;
 	private final IParser parser;
-	private final String name;
+	private final Finder name;
 
-	public DatedPhrasesFinder(Pattern pattern, IParser parser, String name) {
+	public DatedPhrasesFinder(Pattern pattern, IParser parser, Finder name) {
 		this.pattern = pattern;
 		this.parser = parser;
 		this.name = name;
@@ -39,7 +39,7 @@ public class DatedPhrasesFinder {
 
 	@Override
 	public String toString() {
-		return name;
+		return name.name();
 	}
 
 }

@@ -6,7 +6,7 @@
 		<artifactId>time</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>time.transformer</artifactId>
+	<artifactId>time.storage</artifactId>
 	<dependencies>
 		<dependency>
 			<groupId>slim</groupId>

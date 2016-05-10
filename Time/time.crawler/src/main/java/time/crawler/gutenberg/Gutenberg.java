@@ -4,14 +4,13 @@ import java.io.IOException;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
-import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
 import time.conf.Conf;
-import time.crawler.work.crawl.ICrawler;
+import time.crawler.crawl.ICrawler;
 import time.crawler.work.write.IWriter;
 import time.crawler.work.write.file.FileWriter;
 

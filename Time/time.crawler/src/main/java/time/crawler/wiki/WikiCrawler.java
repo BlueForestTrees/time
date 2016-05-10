@@ -9,17 +9,16 @@ import com.google.inject.name.Named;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import time.conf.Conf;
-import time.crawler.work.crawl.BaseCrawler;
+import time.crawler.crawl.BaseCrawler;
 import time.crawler.work.write.IWriter;
 import time.repo.bean.Text;
 import time.tool.chrono.Chrono;
+import time.transformer.read2store.TextStore;
 
 public class WikiCrawler extends BaseCrawler {
 	
 	private static final Logger LOGGER = LogManager.getLogger(WikiCrawler.class);
 	        
-    protected IWriter writer;
-    
     protected Chrono chrono;
     protected Chrono fullChrono;
     	
@@ -28,7 +27,7 @@ public class WikiCrawler extends BaseCrawler {
     private int pageTotal;
 
     @Inject
-	public WikiCrawler(@Named("conf") final Conf conf, final IWriter writer) {
+	public WikiCrawler(@Named("conf") final Conf conf, final TextStore store) {
 		super(conf);
         if (LOGGER.isDebugEnabled()) {
             chrono = new Chrono("Writer");
@@ -36,7 +35,7 @@ public class WikiCrawler extends BaseCrawler {
             fullChrono = new Chrono("Full");
             fullChrono.start();
         }
-        this.writer = writer;
+        this.store = store;
     }
 
     @Override
@@ -45,11 +44,11 @@ public class WikiCrawler extends BaseCrawler {
             final String content = ((HtmlParseData) page.getParseData()).getText();
             if (conf.getContentExclusion().stream().noneMatch(content::contains)) {               
             	final HtmlParseData htmlData = (HtmlParseData) page.getParseData();
-                Text mpage = new Text();
-                mpage.setUrl(page.getWebURL().getURL());
-                mpage.setTitle(htmlData.getTitle());
-                mpage.setText(htmlData.getText());
-                writer.writePage(mpage);
+                final Text text = new Text();
+                text.setUrl(page.getWebURL().getURL());
+                text.setTitle(htmlData.getTitle());
+                text.setText(htmlData.getText());
+                text.storeText(text);
                 pageCount++;
                 if (LOGGER.isDebugEnabled() && (pageCount % conf.getNbPageLog() == 0)) {
                     nbLog++;

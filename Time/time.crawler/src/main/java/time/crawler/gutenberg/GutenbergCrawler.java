@@ -8,7 +8,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
-import time.crawler.work.crawl.BaseCrawler;
+import time.crawler.crawl.BaseCrawler;
 import time.crawler.work.write.IWriter;
 import time.repo.bean.Text;
 import time.tika.ToText;

@@ -8,19 +8,19 @@ import org.junit.Test;
 
 import time.conf.Conf;
 import time.repo.bean.DatedPhrase;
-import time.transformer.store.LuceneStorage;
+import time.transformer.store.PhraseStore;
 
-public class LuceneStorageTest {
+public class PhraseStoreTest {
 
-    private static final Logger LOG = LogManager.getLogger(LuceneStorageTest.class);
+    private static final Logger LOG = LogManager.getLogger(PhraseStoreTest.class);
 
-    private LuceneStorage storage;
+    private PhraseStore storage;
     private int logEvery = 1000;
 
-    public LuceneStorageTest(){
+    public PhraseStoreTest(){
     	Conf conf = new Conf();
     	conf.setIndexDir("C:/Time/data/testphrases");
-        storage = new LuceneStorage(conf);
+        storage = new PhraseStore(conf);
     }
     
     @Test

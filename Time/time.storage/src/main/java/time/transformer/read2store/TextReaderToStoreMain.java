@@ -29,7 +29,7 @@ public class TextReaderToStoreMain extends AbstractModule{
 	}
 	
 	public static void main(final String[] args) throws Exception {
-		Guice.createInjector(new TextReaderToStoreMain(args)).getInstance(TextReaderToStoreService.class).start();
+		Guice.createInjector(new TextReaderToStoreMain(args)).getInstance(TextStore.class).start();
 	}
 
 	@Provides

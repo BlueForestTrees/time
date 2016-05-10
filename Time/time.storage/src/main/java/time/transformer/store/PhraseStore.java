@@ -27,16 +27,16 @@ import time.repo.bean.Scale;
 import time.repo.bean.SortableLongField;
 import time.tool.reference.Fields;
 
-public class LuceneStorage {
+public class PhraseStore {
 
-	private static final Logger LOGGER = LogManager.getLogger(LuceneStorage.class);
+	private static final Logger LOGGER = LogManager.getLogger(PhraseStore.class);
 
 	private String indexDir;
 	private IndexWriter iwriter;
 	private FacetsConfig config;
 
 	@Inject
-	public LuceneStorage(@Named("conf") Conf conf) {
+	public PhraseStore(@Named("conf") Conf conf) {
 		indexDir = conf.getIndexDir();
 		LOGGER.info("index: " + indexDir);
 		if (indexDir == null) {

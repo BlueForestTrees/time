@@ -13,10 +13,7 @@
 			<artifactId>crawler4j</artifactId>
 			<version>5-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>slim</groupId>
-			<artifactId>time.storage</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>slim</groupId>
 			<artifactId>time.tika</artifactId>

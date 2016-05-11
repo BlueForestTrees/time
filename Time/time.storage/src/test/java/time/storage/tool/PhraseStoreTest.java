@@ -1,4 +1,4 @@
-package time.transformer.tool;
+package time.storage.tool;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import time.conf.Conf;
 import time.repo.bean.DatedPhrase;
-import time.transformer.store.PhraseStore;
+import time.storage.store.PhraseStore;
 
 public class PhraseStoreTest {
 

@@ -19,7 +19,6 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.spi.LoggerContext;
 
 /**
  * Allow building configuration beans.
@@ -75,7 +74,7 @@ public class Args {
     final String substituedConfig = getEnvSubstitutor().replace(rawConfig);
     final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-    LOGGER.info(substituedConfig);
+    LOGGER.info("yml: \n" + substituedConfig);
 
     return mapper.readValue(substituedConfig, beanClass);
   }

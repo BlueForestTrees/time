@@ -1,10 +1,10 @@
-package time.transformer.store;
+package time.storage.store;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;

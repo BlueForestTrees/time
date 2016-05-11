@@ -1,4 +1,4 @@
-package time.transformer.filter;
+package time.storage.filter;
 
 import java.util.HashSet;
 import java.util.List;
@@ -34,12 +34,12 @@ public class TextFilter {
 		urlsLowerCase.add(normalizedUrl(text));
 	}
 
-	private String normalizedUrl(Text text) {
-		return text.getUrl().toLowerCase().replace("-", "_");
-	}
-
 	private boolean isNew(Text text) {
 		return !urlsLowerCase.contains(normalizedUrl(text));
+	}
+
+	private String normalizedUrl(Text text) {
+		return text.getUrl().toLowerCase().replace("-", "_");
 	}
 
 	private boolean isValid(Text text) {

@@ -6,8 +6,8 @@ import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
 import time.conf.Conf;
-import time.transformer.transform.ITextTransformer;
-import time.transformer.transform.WikiExcludeAfterTextTransformer;
+import time.storage.transform.ITextTransformer;
+import time.storage.transform.WikiExcludeAfterTextTransformer;
 
 import java.io.IOException;
 

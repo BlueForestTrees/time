@@ -1,16 +1,16 @@
-package time.transformer.store;
+package time.storage.store;
 
 import java.io.IOException;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
 import time.liveparse.analyse.TextAnalyser;
 import time.repo.bean.Text;
-import time.transformer.filter.TextFilter;
-import time.transformer.transform.ITextTransformer;
+import time.storage.filter.TextFilter;
+import time.storage.transform.ITextTransformer;
 
 public class TextStore {
 	private static final Logger LOG = LogManager.getLogger(TextStore.class);

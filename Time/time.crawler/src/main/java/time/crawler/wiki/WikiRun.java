@@ -10,7 +10,7 @@ import time.conf.Conf;
 import time.crawler.crawl.BaseCrawler;
 import time.repo.bean.Text;
 import time.tool.chrono.Chrono;
-import time.transformer.store.TextStore;
+import time.storage.store.TextStore;
 
 import java.util.List;
 

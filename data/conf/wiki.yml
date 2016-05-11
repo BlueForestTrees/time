@@ -1,8 +1,8 @@
 seedUrl: https://fr.wikipedia.org/wiki/Portail:Accueil
 baseUrl: https://fr.wikipedia.org/wiki/
-nbCrawlers: 3
-maxPages: 5000000
-nbPageLog: 100
+nbCrawlers: 1
+maxPages: 50
+nbPageLog: 5
 politenessDelay: 25
 urlFilter: .*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$
 
@@ -14,3 +14,4 @@ urlBlackList: ['Discussion_utilisateur:','Discussion_utilisatrice:','Utilisatric
 phraseMustNotStartWith: ['Catégories :']
 txtOutputDir: ${TIME_HOME}/texts/wiki
 crawlStorageDir: ${TIME_HOME}/temp/wiki
+indexDir: ${TIME_HOME}/indexes/wiki/

@@ -46,6 +46,7 @@ public class ToText {
         text.setLanguage(metadata.get(TikaCoreProperties.LANGUAGE));
         text.setType(metadata.get(TikaCoreProperties.TYPE));
         text.setComments(metadata.get(TikaCoreProperties.COMMENTS));
+        text.setUrl(text.getTitle());
         text.setText(textHandler.toString());
 
         return text;

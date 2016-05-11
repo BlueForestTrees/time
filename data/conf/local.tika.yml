@@ -1,7 +1,3 @@
-
-#C:/dev/Histoire/time/data
-#/home/slimane/time/Histoire/data
-
 sourceDir: ${TIME_HOME}/sources/livres/
 txtOutputDir: ${TIME_HOME}/textes/livres/
-indexDir: ${Time_HOME}/indexes/local.tika/
+indexDir: ${TIME_HOME}/indexes/local.tika/

@@ -1,4 +1,4 @@
-package time.crawler.livre;
+package time.crawler.files;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -7,22 +7,22 @@ import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
 import time.tika.ToText;
 import time.tool.file.Dirs;
-import time.transformer.store.TextStore;
+import time.storage.store.TextStore;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class LivreRun {
+public class FilesRun {
 
-	private static final Logger LOGGER = LogManager.getLogger(LivreRun.class);
+	private static final Logger LOGGER = LogManager.getLogger(FilesRun.class);
 
 	private final String sourceDir;
 	private final ToText toText;
 	private final TextStore store;
 
 	@Inject
-	public LivreRun(@Named("conf") final Conf conf, final TextStore store) {
+	public FilesRun(@Named("conf") final Conf conf, final TextStore store) {
 		this.sourceDir = conf.getSourceDir();
 		if (this.sourceDir == null) {
 			throw new IllegalArgumentException("invalid sourceDir: " + sourceDir);

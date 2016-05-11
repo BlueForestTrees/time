@@ -7,6 +7,7 @@ import time.repo.bean.Text;
  * @author slim
  *
  */
+@FunctionalInterface
 public interface ITextTransformer {
     public Text transform(final Text text);
 }

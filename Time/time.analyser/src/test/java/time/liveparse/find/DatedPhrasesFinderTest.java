@@ -366,6 +366,16 @@ public class DatedPhrasesFinderTest {
 	}
 
 	@Test
+	public void testMilliard4() {
+		assertOnly(Finder.MILLIARD, milliardYearIs(25.49d), "Super il y a plus de 25,49 milliards d'années, à une autre époque.");
+	}
+
+	@Test
+	public void testMilliard5() {
+		assertOnly(Finder.MILLIARD, milliardYearIs(25.49d), "Super il y a plus d'25,49 milliards d'années, à une autre époque.");
+	}
+
+	@Test
 	public void testMillion1() {
 		assertOnly(Finder.MILLIARD, millionYearIs(65), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
 	}

@@ -35,7 +35,7 @@ public class DatedPhrasesFinders {
 
 	private void build() {
 		build(Finder.ILYA, "(?<neg>" + ILYAENVIRON + ") (?<g>\\d{1,3}( ?000)?) (ans|dernières années)", new IlYAParser());
-		build(Finder.MILLIARD, "((?<neg>[Dd]ans)|([Vv]oici|[Ii]l y a)) (environ )?(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s? d['’]années", new MilliardParser());
+		build(Finder.MILLIARD, "((?<neg>[Dd]ans)|([Vv]oici|[Ii]l y a)) (plus (de |d'))?(environ )?(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s? d['’]années", new MilliardParser());
 		build(Finder.JC, START + "([Aà] partir de|date de|[Dd]ébut|[Dd]epuis|[Ee]n|dans les années) (l'an )?(?<g>(-)?\\d{2,9})" + REF + "?(;|,|\\.| " + NOT_IN_DATE_WORDS + "|$)", new ExcludingJCParser());
 		build(Finder.NEARJC, START + "([Ee]nviron) (?<g>" + YEAR + ")(,? )ans" + REF, new JCParser());
 		build(Finder.NEARJC2, START + "([Vv]ers l'an|après) (?<g>(-)?" + YEAR + ")(,?)" + REF + "?", new JCParser());

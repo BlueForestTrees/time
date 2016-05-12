@@ -14,9 +14,9 @@ import io.vertx.ext.web.handler.StaticHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
-import time.liveparse.analyse.TextAnalyser;
+import time.analyser.TextAnalyser;
 import time.domain.Text;
-import time.tika.ToText;
+import time.tika.TextFactory;
 import time.tool.string.Strings;
 
 import java.io.FileNotFoundException;
@@ -30,17 +30,17 @@ public class LiveparseVerticle extends AbstractVerticle {
 
     private final int port;
     private final ObjectMapper mapper;
-    private final ToText toText;
+    private final TextFactory textFactory;
     private final TextAnalyser analyser;
     private final String webRoot;
 
     @Inject
-    public LiveparseVerticle(@Named("conf") Conf conf, TextAnalyser analyser, ObjectMapper mapper, ToText toText) {
+    public LiveparseVerticle(@Named("conf") Conf conf, TextAnalyser analyser, ObjectMapper mapper, TextFactory textFactory) {
         this.port = conf.getPort();
         this.webRoot = conf.getWebRoot();
         this.analyser = analyser;
         this.mapper = mapper;
-        this.toText = toText;
+        this.textFactory = textFactory;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class LiveparseVerticle extends AbstractVerticle {
         Router router = Router.router(vertx);
         router.get("/api/fromurl/:url").handler(this::fromUrl);
         router.route().handler(BodyHandler.create());
-        router.route("/*").handler(StaticHandler.create(webRoot).setCachingEnabled(false));
+        router.route("/*").handler(StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true).setWebRoot(webRoot));
         router.post("/api/upload").handler(BodyHandler.create().setMergeFormAttributes(true));
         router.post("/api/upload").handler(this::upload);
         vertx.createHttpServer().requestHandler(router::accept).listen(port);
@@ -82,14 +82,14 @@ public class LiveparseVerticle extends AbstractVerticle {
     }
 
     private String urlToText(final String url) throws IOException {
-        final Text text = toText.fromUrl(Strings.beginWith(url, "http://", "https://"));
+        final Text text = textFactory.buildFromUrl(Strings.beginWith(url, "http://", "https://"));
         final Text analysedText = analyser.analyse(text);
         final Map<String, Object> analysedTextDTO = toDTO(analysedText);
         return mapper.writeValueAsString(analysedTextDTO);
     }
 
     private String fileToText(final FileUpload file) throws JsonProcessingException, FileNotFoundException {
-        return mapper.writeValueAsString(toDTO(analyser.analyse(toText.from(file.uploadedFileName()))));
+        return mapper.writeValueAsString(toDTO(analyser.analyse(textFactory.build(file.uploadedFileName()))));
     }
 
     private Map<String, Object> toDTO(final Text analyse) {

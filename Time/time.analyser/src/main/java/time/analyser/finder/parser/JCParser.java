@@ -1,4 +1,4 @@
-package time.liveparse.find.parser;
+package time.analyser.finder.parser;
 
 import java.util.regex.Matcher;
 

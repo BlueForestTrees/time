@@ -8,9 +8,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
 import time.crawler.crawl.BaseCrawler;
-import time.domain.Text;
-import time.tool.chrono.Chrono;
 import time.storage.store.TextStore;
+import time.tika.TextFactory;
+import time.tool.chrono.Chrono;
 
 import java.util.List;
 
@@ -21,6 +21,7 @@ public class WikiRun extends BaseCrawler {
     private final List<String> contentExclusion;
     private final TextStore store;
     private final long nbPageLog;
+    private final TextFactory textFactory;
     private Chrono chrono;
     private Chrono fullChrono;
     private long nbLog;
@@ -28,7 +29,7 @@ public class WikiRun extends BaseCrawler {
     private long pageTotal;
 
     @Inject
-	public WikiRun(@Named("conf") final Conf conf, final TextStore store) {
+	public WikiRun(@Named("conf") final Conf conf, final TextStore store, final TextFactory textFactory) {
 		super(conf);
         this.contentExclusion = conf.getContentExclusion();
         this.nbPageLog = conf.getNbPageLog();
@@ -40,6 +41,7 @@ public class WikiRun extends BaseCrawler {
         }
         this.pageTotal = conf.getPageTotal();
         this.store = store;
+        this.textFactory = textFactory;
     }
 
     @Override
@@ -54,11 +56,7 @@ public class WikiRun extends BaseCrawler {
             final String content = ((HtmlParseData) page.getParseData()).getText();
             if (contentExclusion.stream().noneMatch(content::contains)) {
             	final HtmlParseData htmlData = (HtmlParseData) page.getParseData();
-                final Text text = new Text();
-                text.setUrl(page.getWebURL().getURL());
-                text.setTitle(htmlData.getTitle());
-                text.setText(htmlData.getText());
-                store.storeText(text);
+                store.storeText(textFactory.build(page.getWebURL().getURL(), htmlData.getTitle(), htmlData.getText()));
                 pageCount++;
                 if (LOGGER.isDebugEnabled() && (pageCount % nbPageLog == 0)) {
                     nbLog++;

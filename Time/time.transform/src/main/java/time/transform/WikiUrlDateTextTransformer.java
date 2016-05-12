@@ -1,15 +1,10 @@
-package time.storage.transform;
+package time.transform;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import time.domain.Text;
 
-/**
- * Supprime le contenu de la page situé après les mots clés {@link excludeAfter}
- * @author slim
- *
- */
 public class WikiUrlDateTextTransformer implements ITextTransformer {
 	
 	/*
@@ -29,7 +24,7 @@ public class WikiUrlDateTextTransformer implements ITextTransformer {
     //TODO si https://fr.wikipedia.org/wiki/Ann%C3%A9es_100 => décennies (_av._J.-C. négative)
     //TODO si https://fr.wikipedia.org/wiki/IIe_si%C3%A8cle => siècle (_av._J.-C. négative)
     //TODO si https://fr.wikipedia.org/wiki/Ier_mill%C3%A9naire => millenaire (_av._J.-C. négative)
-    private final Pattern yearPattern = Pattern.compile("/[0-9]+(?<neg>_av._J.-C.)?");
+    private final Pattern yearPattern = Pattern.compile("https://fr.wikipedia.org/wiki/[0-9]+(?<neg>_av._J.-C.)?");
     private final Pattern decadePattern = Pattern.compile("");
     private final Pattern centuryPattern = Pattern.compile("");
     private final Pattern milleniumPattern = Pattern.compile("");
@@ -40,12 +35,10 @@ public class WikiUrlDateTextTransformer implements ITextTransformer {
     private final ITextTransformer milleniumTransformer = null;
     
     @Override
-    public Text transform(final Text text) {
+    public void transform(final Text text) {
         final ITextTransformer transformer = getAvailableTransformer(text.getUrl());
         if(transformer != null){
-            return transformer.transform(text);
-        }else{
-            return text;
+            transformer.transform(text);
         }
     }
     

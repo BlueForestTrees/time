@@ -43,6 +43,7 @@
 
      upload.prototype.onLiveparseError = function(data){
         console.error('onLiveparseError', data);
+        alert("erreur :( l'adresse est-elle correcte?")
      }
 
     upload.prototype.buildMetaHtml = function(metaDico){

@@ -6,8 +6,8 @@ import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
 import time.conf.Conf;
-import time.storage.transform.ITextTransformer;
-import time.storage.transform.WikiExcludeAfterTextTransformer;
+import time.transform.CompositeTextTransformer;
+import time.transform.ITextTransformer;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ public class WikiModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(ITextTransformer.class).to(WikiExcludeAfterTextTransformer.class);
+		bind(ITextTransformer.class).to(CompositeTextTransformer.class);
 	}
 
 }

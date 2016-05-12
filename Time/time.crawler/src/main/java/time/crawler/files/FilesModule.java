@@ -6,8 +6,8 @@ import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
 import time.conf.Conf;
-import time.storage.transform.ITextTransformer;
-import time.storage.transform.NoOpTextTransformer;
+import time.transform.CompositeTextTransformer;
+import time.transform.ITextTransformer;
 
 import java.io.IOException;
 
@@ -27,6 +27,6 @@ public class FilesModule extends AbstractModule {
 
 	@Override
 	protected void configure() {
-		bind(ITextTransformer.class).to(NoOpTextTransformer.class);
+		bind(ITextTransformer.class).to(CompositeTextTransformer.class);
 	}
 }

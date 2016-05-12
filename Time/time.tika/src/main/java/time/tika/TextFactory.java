@@ -1,5 +1,6 @@
 package time.tika;
 
+import com.google.inject.Inject;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TikaCoreProperties;
@@ -9,24 +10,41 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 import time.domain.Text;
 import time.tool.url.UrlTo;
+import time.transform.CompositeTextTransformer;
+import time.transform.ITextTransformer;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
-public class ToText {
+public class TextFactory {
 
-    public Text from(final String filename) throws FileNotFoundException {
-        return from(new FileInputStream(filename));
+    private final ITextTransformer textTransformer;
+
+    @Inject
+    public TextFactory(final CompositeTextTransformer textTransformer){
+        this.textTransformer = textTransformer;
     }
 
-    public Text fromUrl(final String url) throws IOException {
-        return from(UrlTo.inputStream(url));
+    public Text build(final String filename) throws FileNotFoundException {
+        return build(new FileInputStream(filename));
     }
 
-    public Text from(final InputStream input){
+    public Text buildFromUrl(final String url) throws IOException {
+        return build(UrlTo.inputStream(url));
+    }
+
+    public Text build(final String url, final String title, final String textString){
+        final Text text = new Text();
+        text.setUrl(url);
+        text.setTitle(title);
+        text.setText(textString);
+        textTransformer.transform(text);
+        return text;
+    }
+
+    public Text build(final InputStream input){
         final ContentHandler textHandler = new BodyContentHandler(Integer.MAX_VALUE);
         final Metadata metadata = new Metadata();
         try {
@@ -49,6 +67,7 @@ public class ToText {
         text.setUrl(text.getTitle());
         text.setText(textHandler.toString());
 
+        textTransformer.transform(text);
         return text;
     }
 }

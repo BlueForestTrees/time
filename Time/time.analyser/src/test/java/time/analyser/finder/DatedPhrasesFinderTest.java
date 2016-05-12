@@ -1,5 +1,6 @@
-package time.liveparse.find;
+package time.analyser.finder;
 
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.Condition;
 import org.junit.Test;
 import time.domain.DatedPhrase;
@@ -530,7 +531,7 @@ public class DatedPhrasesFinderTest {
 	}
 
 	private final void assertNoDateIn(String phrases, DatedPhrasesFinder[] finders) {
-		assertThat(finders).isNotEmpty().as("pas de finders");
+		Assertions.assertThat(finders).isNotEmpty().as("pas de finders");
 		for (DatedPhrasesFinder finder : finders) {
 			assertNoDateIn(phrases, finder);
 		}

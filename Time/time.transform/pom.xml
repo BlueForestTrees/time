@@ -2,37 +2,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>slim</groupId>
         <artifactId>time</artifactId>
+        <groupId>slim</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
-    <artifactId>time.tika</artifactId>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>time.transform</artifactId>
     <dependencies>
         <dependency>
             <groupId>slim</groupId>
             <artifactId>time.domain</artifactId>
         </dependency>
         <dependency>
-            <groupId>slim</groupId>
-            <artifactId>time.tool</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tika</groupId>
-            <artifactId>tika-parsers</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.tika</groupId>
-            <artifactId>tika-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>slim</groupId>
-            <artifactId>time.transform</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
         </dependency>
+        <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.conf</artifactId>
+        </dependency>
     </dependencies>
+
 </project>

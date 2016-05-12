@@ -1,11 +1,11 @@
-package time.liveparse.find;
+package time.analyser.finder;
 
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import time.analyser.finder.parser.*;
 import time.domain.DatedPhrase;
-import time.liveparse.find.parser.*;
 
 public class DatedPhrasesFinders {
 

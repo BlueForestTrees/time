@@ -5,7 +5,7 @@ import com.google.inject.name.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
-import time.tika.ToText;
+import time.tika.TextFactory;
 import time.tool.file.Dirs;
 import time.storage.store.TextStore;
 
@@ -18,7 +18,7 @@ public class FilesRun {
 	private static final Logger LOGGER = LogManager.getLogger(FilesRun.class);
 
 	private final String sourceDir;
-	private final ToText toText;
+	private final TextFactory textFactory;
 	private final TextStore store;
 
 	@Inject
@@ -27,7 +27,7 @@ public class FilesRun {
 		if (this.sourceDir == null) {
 			throw new IllegalArgumentException("invalid sourceDir: " + sourceDir);
 		}
-		this.toText = new ToText();
+		this.textFactory = new TextFactory();
 		this.store = store;
 	}
 
@@ -45,7 +45,7 @@ public class FilesRun {
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Lecture fichier", e);
 		}
-		store.storeText(toText.from(input));
+		store.storeText(textFactory.build(input));
 	}
 
 }

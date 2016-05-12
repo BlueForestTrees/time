@@ -1,4 +1,4 @@
-package time.liveparse.find;
+package time.analyser.finder;
 
 public enum Finder{
     MILLIARD, ILYA, JC, NEARJC, NEARJC2,NEARJC3, NEARLESS, ROMAN, ANNEE2DOT, PRECISE, DOUBLEPARENTHESIS2, DOUBLEPARENTHESIS

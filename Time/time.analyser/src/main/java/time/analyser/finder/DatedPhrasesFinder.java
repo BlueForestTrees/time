@@ -1,6 +1,6 @@
-package time.liveparse.find;
+package time.analyser.finder;
 
-import time.liveparse.find.parser.IParser;
+import time.analyser.finder.parser.IParser;
 import time.domain.DatedPhrase;
 import time.tool.string.Strings;
 

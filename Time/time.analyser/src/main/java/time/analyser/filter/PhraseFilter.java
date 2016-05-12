@@ -1,4 +1,4 @@
-package time.liveparse.filter;
+package time.analyser.filter;
 
 import java.util.Arrays;
 

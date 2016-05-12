@@ -1,4 +1,4 @@
-package time.liveparse.find.parser;
+package time.analyser.finder.parser;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.stream.IntStream;
 
 import time.tool.date.Dates;
-import time.liveparse.find.DatedPhrasesFinders;
+import time.analyser.finder.DatedPhrasesFinders;
 
 public class MilliardParser implements IParser {
 

@@ -1,4 +1,4 @@
-package time.liveparse.analyse;
+package time.analyser;
 
 import java.util.List;
 import java.util.regex.Pattern;
@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.google.inject.Inject;
 
-import time.liveparse.filter.PhraseFilter;
-import time.liveparse.find.DatedPhrasesFinders;
+import time.analyser.filter.PhraseFilter;
+import time.analyser.finder.DatedPhrasesFinders;
 import time.domain.DatedPhrase;
 import time.domain.Text;
 

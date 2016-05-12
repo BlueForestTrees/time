@@ -1,4 +1,4 @@
-package time.liveparse.find;
+package time.analyser.finder;
 
 import org.junit.Test;
 

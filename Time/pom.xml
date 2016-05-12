@@ -16,6 +16,7 @@
         <module>time.web</module>
         <module>time.liveparse</module>
         <module>time.analyser</module>
+        <module>time.transform</module>
     </modules>
     <properties>
         <argparse4j.version>0.7.0</argparse4j.version>
@@ -51,6 +52,11 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>slim</groupId>
+                <artifactId>time.transform</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>slim</groupId>
                 <artifactId>time.storage</artifactId>

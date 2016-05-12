@@ -1,5 +1,7 @@
 package time.tool.string;
 
+import java.util.Arrays;
+
 /**
  * Created by slimane_medini on 28/04/2016.
  */
@@ -17,6 +19,13 @@ public class Strings {
             return begin;
         }else{
             return begin + end;
+        }
+    }
+    public static String beginWith(final String end, final String ... begins){
+        if(Arrays.stream(begins).anyMatch(begin -> end.startsWith(begin))){
+            return end;
+        }else{
+            return begins[0] + end;
         }
     }
     public static String bold(final String phrase, final String dateExtract) {

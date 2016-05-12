@@ -13,9 +13,11 @@
             $(document).ready(function() {
                 console.log("document ready");
                 Liveparse.view = {
-                    book : $(".book"),
-                    metadatas : $(".metadatas"),
-                    upload : $('input:file')
+                    book : $('.book'),
+                    metadatas : $('.metadatas'),
+                    upload : $('.uploadFile'),
+                    uploadUrlText : $('.uploadUrlText'),
+                    uploadUrlBt : $('.uploadUrlBt')
                 };
                 Liveparse.upload = new Liveparse.Upload();
                 Liveparse.upload.init();
@@ -23,7 +25,8 @@
         </script>
     </head>
     <body>
-        <input type="file"></input>
+        <div>Fichier : <input type="file" class="uploadFile"></input></div>
+        <div>Url : <input type="text" class="uploadUrlText"/><input type="button" class="uploadUrlBt" value="Envoyer"/></div>
         <div class="metadatas"></div>
         <div class="book"></div>
     </body>

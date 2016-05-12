@@ -17,6 +17,7 @@ import time.conf.Conf;
 import time.liveparse.analyse.TextAnalyser;
 import time.domain.Text;
 import time.tika.ToText;
+import time.tool.string.Strings;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,41 +46,46 @@ public class LiveparseVerticle extends AbstractVerticle {
     @Override
     public void start() {
         Router router = Router.router(vertx);
+        router.get("/api/fromurl/:url").handler(this::fromUrl);
         router.route().handler(BodyHandler.create());
         router.route("/*").handler(StaticHandler.create(webRoot).setCachingEnabled(false));
         router.post("/api/upload").handler(BodyHandler.create().setMergeFormAttributes(true));
         router.post("/api/upload").handler(this::upload);
-        router.get("/api/fromurl").handler(this::fromUrl);
         vertx.createHttpServer().requestHandler(router::accept).listen(port);
         LOGGER.info("started");
     }
 
     private void upload(final RoutingContext ctx) {
-        final FileUpload file = ctx.fileUploads().iterator().next();
         try {
+            final FileUpload file = ctx.fileUploads().iterator().next();
             ctx.response()
-                    .putHeader("Content-Type", "application/json")
                     .setChunked(true)
-                    .write(fileToText(file)).end();
-        } catch (IOException e) {
-            e.printStackTrace();
+                    .write(fileToText(file))
+                    .putHeader("Content-Type", "application/json")
+                    .end();
+        } catch (Exception e) {
+            ctx.fail(e);
         }
     }
 
     private void fromUrl(final RoutingContext ctx){
-        final String url = ctx.get("url");
         try {
+            final String url = ctx.request().getParam("url");
             ctx.response()
-                    .putHeader("Content-Type", "application/json")
                     .setChunked(true)
-                    .write(urlToText(url)).end();
-        } catch (IOException e) {
-            e.printStackTrace();
+                    .write(urlToText(url))
+                    .putHeader("Content-Type", "application/json")
+                    .end();
+        } catch (Exception e) {
+            ctx.fail(e);
         }
     }
 
     private String urlToText(final String url) throws IOException {
-        return mapper.writeValueAsString(toDTO(analyser.analyse(toText.fromUrl(url))));
+        final Text text = toText.fromUrl(Strings.beginWith(url, "http://", "https://"));
+        final Text analysedText = analyser.analyse(text);
+        final Map<String, Object> analysedTextDTO = toDTO(analysedText);
+        return mapper.writeValueAsString(analysedTextDTO);
     }
 
     private String fileToText(final FileUpload file) throws JsonProcessingException, FileNotFoundException {

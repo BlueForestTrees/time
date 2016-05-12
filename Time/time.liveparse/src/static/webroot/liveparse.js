@@ -34,7 +34,7 @@
      }
 
      upload.prototype.onLiveparse = function(data){
-        console.log('uploaded');
+        console.log('uploaded', data);
         Liveparse.view.metadatas.empty();
         Liveparse.view.metadatas.append(Liveparse.upload.buildMetaHtml(data.metadatas));
         Liveparse.view.book.empty();

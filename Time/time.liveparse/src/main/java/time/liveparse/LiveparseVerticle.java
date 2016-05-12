@@ -19,6 +19,7 @@ import time.domain.Text;
 import time.tika.TextFactory;
 import time.tool.string.Strings;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
@@ -38,6 +39,9 @@ public class LiveparseVerticle extends AbstractVerticle {
     public LiveparseVerticle(@Named("conf") Conf conf, TextAnalyser analyser, ObjectMapper mapper, TextFactory textFactory) {
         this.port = conf.getPort();
         this.webRoot = conf.getWebRoot();
+        if(!new File(this.webRoot).isDirectory()){
+            throw new RuntimeException("incorrect webroot: " + this.webRoot);
+        }
         this.analyser = analyser;
         this.mapper = mapper;
         this.textFactory = textFactory;
@@ -59,9 +63,9 @@ public class LiveparseVerticle extends AbstractVerticle {
         try {
             final FileUpload file = ctx.fileUploads().iterator().next();
             ctx.response()
+                    .putHeader("Content-Type", "application/json")
                     .setChunked(true)
                     .write(fileToText(file))
-                    .putHeader("Content-Type", "application/json")
                     .end();
         } catch (Exception e) {
             ctx.fail(e);
@@ -72,9 +76,9 @@ public class LiveparseVerticle extends AbstractVerticle {
         try {
             final String url = ctx.request().getParam("url");
             ctx.response()
+                    .putHeader("Content-Type", "application/json")
                     .setChunked(true)
                     .write(urlToText(url))
-                    .putHeader("Content-Type", "application/json")
                     .end();
         } catch (Exception e) {
             ctx.fail(e);

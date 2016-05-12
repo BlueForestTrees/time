@@ -24,6 +24,7 @@ public class WikiUrlDateTextTransformer implements ITextTransformer {
     //TODO si https://fr.wikipedia.org/wiki/Ann%C3%A9es_100 => décennies (_av._J.-C. négative)
     //TODO si https://fr.wikipedia.org/wiki/IIe_si%C3%A8cle => siècle (_av._J.-C. négative)
     //TODO si https://fr.wikipedia.org/wiki/Ier_mill%C3%A9naire => millenaire (_av._J.-C. négative)
+    //TODO https://fr.wikipedia.org/wiki/Naissance_en_1985
     private final Pattern yearPattern = Pattern.compile("https://fr.wikipedia.org/wiki/[0-9]+(?<neg>_av._J.-C.)?");
     private final Pattern decadePattern = Pattern.compile("");
     private final Pattern centuryPattern = Pattern.compile("");

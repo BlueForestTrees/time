@@ -13,6 +13,7 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import time.conf.Conf;
 import time.liveparse.analyse.TextAnalyser;
 import time.domain.Text;
 import time.tika.ToText;
@@ -22,18 +23,20 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Liveparse extends AbstractVerticle {
+public class LiveparseVerticle extends AbstractVerticle {
 
-    private static final Logger LOGGER = LogManager.getLogger(Liveparse.class);
+    private static final Logger LOGGER = LogManager.getLogger(LiveparseVerticle.class);
 
     private final int port;
     private final ObjectMapper mapper;
     private final ToText toText;
     private final TextAnalyser analyser;
+    private final String webRoot;
 
     @Inject
-    public Liveparse(@Named("port") int port, TextAnalyser analyser, ObjectMapper mapper, ToText toText) {
-        this.port = port;
+    public LiveparseVerticle(@Named("conf") Conf conf, TextAnalyser analyser, ObjectMapper mapper, ToText toText) {
+        this.port = conf.getPort();
+        this.webRoot = conf.getWebRoot();
         this.analyser = analyser;
         this.mapper = mapper;
         this.toText = toText;
@@ -43,7 +46,7 @@ public class Liveparse extends AbstractVerticle {
     public void start() {
         Router router = Router.router(vertx);
         router.route().handler(BodyHandler.create());
-        router.route("/*").handler(StaticHandler.create());
+        router.route("/*").handler(StaticHandler.create(webRoot).setCachingEnabled(false));
         router.post("/api/upload").handler(BodyHandler.create().setMergeFormAttributes(true));
         router.post("/api/upload").handler(this::upload);
         router.get("/api/fromurl").handler(this::fromUrl);
@@ -83,10 +86,17 @@ public class Liveparse extends AbstractVerticle {
         return mapper.writeValueAsString(toDTO(analyser.analyse(toText.from(file.uploadedFileName()))));
     }
 
-    private Map<String, String> toDTO(final Text analyse) {
-        final HashMap<String, String> text = new HashMap<>();
+    private Map<String, Object> toDTO(final Text analyse) {
+        final HashMap<String, Object> text = new HashMap<>();
+        final HashMap<String, Object> metadatas = new HashMap<>();
 
         text.put("text", analyse.getHightlightTextString());
+        text.put("metadatas", metadatas);
+        metadatas.put("Titre", analyse.getTitle());
+        metadatas.put("Auteur", analyse.getCreator());
+        metadatas.put("Date", analyse.getCreated());
+        metadatas.put("Paragraphes", analyse.getParagraphs().length);
+        metadatas.put("Phrases datées", analyse.getPhrases().size());
 
         return text;
     }

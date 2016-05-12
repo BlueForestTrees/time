@@ -17,6 +17,25 @@ public class Text implements Serializable {
 	private String type;
 	private String comments;
 	private List<DatedPhrase> phrases = new ArrayList();
+
+	public String[] getParagraphs() {
+		return paragraphs;
+	}
+
+	public void setParagraphs(String[] paragraphs) {
+		this.paragraphs = paragraphs;
+	}
+
+	private String[] paragraphs;
+
+	public StringBuilder getContent() {
+		return content;
+	}
+
+	public void setContent(StringBuilder content) {
+		this.content = content;
+	}
+
 	private StringBuilder content;
 	private StringBuilder hightlightenContent;
 
@@ -135,7 +154,4 @@ public class Text implements Serializable {
 		appendHightlightContent("</span>");
 	}
 
-	public long nbDatedPhrasesCount() {
-		return phrases.size();
-	}
 }

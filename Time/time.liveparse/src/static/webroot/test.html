@@ -1,45 +1,30 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="UTF-8"/>
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="liveparse.css">
-    <script src="jquery-2.2.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            console.log('document ready');
-            $('input:file').change(upload);
-        });
-
-        function upload(event) {
-            console.log('uploading', event.target.files, event);
-            var files = event.target.files;
-            var data = new FormData();
-            $.each(files, function(key, value)
-            {
-                data.append(key, value);
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Title</title>
+        <link rel="stylesheet" type="text/css" href="liveparse.css">
+        <script src="jquery-2.2.0.min.js"></script>
+        <script>
+            Liveparse = {};
+        </script>
+        <script src="liveparse.js"></script>
+        <script>
+            $(document).ready(function() {
+                console.log("document ready");
+                Liveparse.view = {
+                    book : $(".book"),
+                    metadatas : $(".metadatas"),
+                    upload : $('input:file')
+                };
+                Liveparse.upload = new Liveparse.Upload();
+                Liveparse.upload.init();
             });
-            $.ajax({
-                url: '/api/upload', type: 'POST', data: data, cache: false,
-                processData: false, contentType: false,
-                success: function(data, textStatus, jqXHR)
-                {
-                    console.log('uploaded', data);
-                    $('.book').empty();
-                    $('.book').append(data.text);
-                },
-                error: function(jqXHR, textStatus, errorThrown)
-                {
-                    console.log('ERROR', jqXHR, textStatus, errorThrown);
-                }
-            });
-        }
-
-    </script>
-
-</head>
-<body>
-<input type="file"></input>
-<div class="book"></div>
-</body>
+        </script>
+    </head>
+    <body>
+        <input type="file"></input>
+        <div class="metadatas"></div>
+        <div class="book"></div>
+    </body>
 </html>

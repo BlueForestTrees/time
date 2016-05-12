@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 
 public class Conf {
 	public static final String sep = "\\|¨";
-	
+
+	private String webRoot;
 	private String target;
 	private String home;
 	private String homeDir;
@@ -52,6 +53,14 @@ public class Conf {
 	private String indexDir;
 	private String[] phraseMustNotStartWith;
 	private String notInDateWords;
+
+	public String getWebRoot() {
+		return webRoot;
+	}
+
+	public void setWebRoot(String webRoot) {
+		this.webRoot = webRoot;
+	}
 
 	public String getHomeDir() {
 		return homeDir;

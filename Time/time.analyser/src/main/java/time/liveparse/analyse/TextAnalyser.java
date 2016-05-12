@@ -31,6 +31,7 @@ public class TextAnalyser {
 
 	public Text analyse(final Text text) {
 		final String[] paragraphs = splitParagraphPattern.split(text.getTextString());
+		text.setParagraphs(paragraphs);
 		for (String paragraph : paragraphs) {
 			text.openParagraph();
 			final String[] phrases = splitPhrasePattern.split(paragraph);
@@ -50,7 +51,7 @@ public class TextAnalyser {
 			}
 			text.closeParagraph();
 		}
-		LOG.info(paragraphs.length + " paragraphes, " + text.nbDatedPhrasesCount() + " phrases");
+		LOG.info(text.getParagraphs().length + " paragraphes, " + text.getPhrases().size() + " phrases");
 		return text;
 	}
 

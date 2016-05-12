@@ -522,6 +522,11 @@ public class DatedPhrasesFinderTest {
 	}
 
 	@Test
+	public void none17() {
+		assertNoDateIn("Ce direct fermera exceptionnellement un peu après 20 heures, Didier Deschamps");
+	}
+
+	@Test
 	public void precise12() {
 		assertOnly(Finder.PRECISE, dateIs(date(10, Month.FEBRUARY, 1984)), "Slimane Médini est né le 10 Février 1984 à Gournay-en-bray");
 	}

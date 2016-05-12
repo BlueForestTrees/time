@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
 import time.crawler.crawl.BaseCrawler;
-import time.repo.bean.Text;
+import time.domain.Text;
 import time.tool.chrono.Chrono;
 import time.storage.store.TextStore;
 

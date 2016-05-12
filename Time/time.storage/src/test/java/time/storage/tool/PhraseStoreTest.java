@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import time.conf.Conf;
-import time.repo.bean.DatedPhrase;
+import time.domain.DatedPhrase;
 import time.storage.store.PhraseStore;
 
 public class PhraseStoreTest {

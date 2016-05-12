@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import time.repo.bean.DatedPhrase;
+import time.domain.DatedPhrase;
 import time.liveparse.find.parser.*;
 
 public class DatedPhrasesFinders {

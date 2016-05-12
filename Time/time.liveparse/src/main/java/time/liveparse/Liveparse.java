@@ -14,7 +14,7 @@ import io.vertx.ext.web.handler.StaticHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.liveparse.analyse.TextAnalyser;
-import time.repo.bean.Text;
+import time.domain.Text;
 import time.tika.ToText;
 
 import java.io.FileNotFoundException;

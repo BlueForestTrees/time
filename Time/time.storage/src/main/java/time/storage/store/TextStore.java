@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import com.google.inject.Inject;
 
 import time.liveparse.analyse.TextAnalyser;
-import time.repo.bean.Text;
+import time.domain.Text;
 import time.storage.filter.TextFilter;
 import time.storage.transform.ITextTransformer;
 

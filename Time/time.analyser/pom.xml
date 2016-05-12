@@ -22,7 +22,7 @@
         </dependency>
         <dependency>
             <groupId>slim</groupId>
-            <artifactId>time.repo</artifactId>
+            <artifactId>time.domain</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

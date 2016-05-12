@@ -24,7 +24,7 @@ import org.apache.lucene.search.highlight.QueryScorer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import time.repo.bean.DatedPhrase;
+import time.domain.DatedPhrase;
 import time.web.bean.Last;
 import time.web.bean.Phrases;
 import time.web.exception.LuceneRuntimeException;

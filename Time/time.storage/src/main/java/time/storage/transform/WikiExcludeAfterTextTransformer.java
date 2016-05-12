@@ -7,7 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import time.conf.Conf;
-import time.repo.bean.Text;
+import time.domain.Text;
 
 /**
  * Supprime le contenu de la page situé après les mots clés {@link excludeAfter}

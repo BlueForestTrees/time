@@ -2,7 +2,7 @@ package time.liveparse.find;
 
 import org.assertj.core.api.Condition;
 import org.junit.Test;
-import time.repo.bean.DatedPhrase;
+import time.domain.DatedPhrase;
 import time.tool.date.Dates;
 import time.tool.string.Strings;
 

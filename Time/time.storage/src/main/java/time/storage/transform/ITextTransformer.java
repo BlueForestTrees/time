@@ -1,6 +1,6 @@
 package time.storage.transform;
 
-import time.repo.bean.Text;
+import time.domain.Text;
 
 /**
  * Interface des classes qui trnasforme le contenu des pages pour les adapter au DateFinder.

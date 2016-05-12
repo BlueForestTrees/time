@@ -1,6 +1,6 @@
 package time.storage.transform;
 
-import time.repo.bean.Text;
+import time.domain.Text;
 
 public class NoOpTextTransformer implements ITextTransformer {
 

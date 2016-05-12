@@ -3,7 +3,7 @@ package time.storage.transform;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import time.repo.bean.Text;
+import time.domain.Text;
 
 /**
  * Supprime le contenu de la page situé après les mots clés {@link excludeAfter}

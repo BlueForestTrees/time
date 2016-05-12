@@ -3,7 +3,7 @@ package time.crawler.file;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import time.conf.Conf;
-import time.repo.bean.Text;
+import time.domain.Text;
 import time.storage.store.TextStore;
 
 import java.io.IOException;

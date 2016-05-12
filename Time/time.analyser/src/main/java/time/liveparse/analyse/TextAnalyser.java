@@ -10,8 +10,8 @@ import com.google.inject.Inject;
 
 import time.liveparse.filter.PhraseFilter;
 import time.liveparse.find.DatedPhrasesFinders;
-import time.repo.bean.DatedPhrase;
-import time.repo.bean.Text;
+import time.domain.DatedPhrase;
+import time.domain.Text;
 
 public class TextAnalyser {
 

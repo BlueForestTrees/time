@@ -22,9 +22,9 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 
 import time.conf.Conf;
-import time.repo.bean.DatedPhrase;
-import time.repo.bean.Scale;
-import time.repo.bean.SortableLongField;
+import time.domain.DatedPhrase;
+import time.domain.Scale;
+import time.domain.SortableLongField;
 import time.tool.reference.Fields;
 
 public class PhraseStore {

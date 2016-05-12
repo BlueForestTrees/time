@@ -2,7 +2,7 @@ package time.web.bean;
 
 import java.util.List;
 
-import time.repo.bean.DatedPhrase;
+import time.domain.DatedPhrase;
 
 public class Phrases {
 

@@ -1,7 +1,7 @@
 package time.liveparse.find;
 
 import time.liveparse.find.parser.IParser;
-import time.repo.bean.DatedPhrase;
+import time.domain.DatedPhrase;
 import time.tool.string.Strings;
 
 import java.util.ArrayList;

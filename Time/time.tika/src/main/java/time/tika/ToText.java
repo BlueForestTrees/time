@@ -7,7 +7,7 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
-import time.repo.bean.Text;
+import time.domain.Text;
 import time.tool.url.UrlTo;
 
 import java.io.FileInputStream;

@@ -14,6 +14,8 @@
 
     upload.prototype.doUpload = function(event) {
         console.log('uploading. . .');
+        Liveparse.view.metadatas.empty();
+        Liveparse.view.book.empty();
         var files = event.target.files;
         var data = new FormData();
         $.each(files, function(key, value)
@@ -29,15 +31,15 @@
 
     upload.prototype.doUrlUpload = function(event) {
             console.log('uploading url. . .');
+            Liveparse.view.metadatas.empty();
+            Liveparse.view.book.empty();
             var url = "api/fromurl/" + encodeURIComponent(Liveparse.view.uploadUrlText.val());
             $.get(url).done(Liveparse.upload.onLiveparse).fail(Liveparse.upload.onLiveparseError);
      }
 
      upload.prototype.onLiveparse = function(data){
         console.log('uploaded', data);
-        Liveparse.view.metadatas.empty();
         Liveparse.view.metadatas.append(Liveparse.upload.buildMetaHtml(data.metadatas));
-        Liveparse.view.book.empty();
         Liveparse.view.book.append(data.text);
      }
 

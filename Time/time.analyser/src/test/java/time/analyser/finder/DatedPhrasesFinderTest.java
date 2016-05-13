@@ -322,6 +322,11 @@ public class DatedPhrasesFinderTest {
 	}
 
     @Test
+    public void jc30() {
+        assertOnly(Finder.JC, yearIs(1904), "Le sang versé en 1904 aurait épargné son décuple de 1914 à 1918.");
+    }
+
+    @Test
     public void doubleP1() {
         assertTwo(Finder.DOUBLEPARENTHESIS, yearIs(1539),Finder.DOUBLEPARENTHESIS2, yearIs(1619), "Olivier de Serres (1539-1619) écrit");
     }

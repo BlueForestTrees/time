@@ -1,3 +1,3 @@
 sourceDir: ${TIME_HOME}/sources/livres/
-txtOutputDir: ${TIME_HOME}/textes/livres/
 indexDir: ${TIME_HOME}/indexes/local.tika/
+excludeAfterList: []

@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebMvc
-@ComponentScan({ "time.web.controller", "time.web.init" })
+@ComponentScan({ "time.web.controller" })
 @Import(ComponentConfig.class)
 public class WebConfig extends WebMvcConfigurerAdapter {
 

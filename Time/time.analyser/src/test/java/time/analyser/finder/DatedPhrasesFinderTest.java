@@ -303,7 +303,7 @@ public class DatedPhrasesFinderTest {
 
 	@Test
 	public void jc19() {
-		assertOnly(Finder.NEARJC2, yearIs(1990), "Or, après 1990, on a eu la surprise de constater le contraire.");
+		assertOnly(Finder.JC, yearIs(1990), "Or, après 1990, on a eu la surprise de constater le contraire.");
 	}
 
 	@Test
@@ -325,6 +325,16 @@ public class DatedPhrasesFinderTest {
     public void doubleP1() {
         assertTwo(Finder.DOUBLEPARENTHESIS, yearIs(1539),Finder.DOUBLEPARENTHESIS2, yearIs(1619), "Olivier de Serres (1539-1619) écrit");
     }
+
+	@Test
+	public void tiret() {
+		assertTwo(Finder.TIRET, yearIs(1870),Finder.TIRET2, yearIs(1871), "dont une édition populaire de la guerre franco allemande de 1870-1871.");
+	}
+
+	@Test
+	public void et() {
+		assertTwo(Finder.JC, yearIs(1909), Finder.ET, yearIs(1910), "En 1909 et 1910, ma situation s'était modifiée et je n'avais plus à gagner ma vie comme manœuvre.");
+	}
 
 	@Test
 	public void jc23() {

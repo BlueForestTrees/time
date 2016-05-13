@@ -333,7 +333,7 @@ public class DatedPhrasesFinderTest {
 
 	@Test
 	public void et() {
-		assertTwo(Finder.JC, yearIs(1909), Finder.ET, yearIs(1910), "En 1909 et 1910, ma situation s'était modifiée et je n'avais plus à gagner ma vie comme manœuvre.");
+		assertTwo(Finder.JC, yearIs(1909), Finder.JCET, yearIs(1910), "En 1909 et 1910, ma situation s'était modifiée et je n'avais plus à gagner ma vie comme manœuvre.");
 	}
 
 	@Test

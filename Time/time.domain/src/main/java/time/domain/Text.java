@@ -104,6 +104,7 @@ public class Text implements Serializable {
     		hightlightenContent = new StringBuilder();
     	}
     	hightlightenContent.append(part);
+		hightlightenContent.append(" ");
     }
     public String getTextString() {
         return content.toString();

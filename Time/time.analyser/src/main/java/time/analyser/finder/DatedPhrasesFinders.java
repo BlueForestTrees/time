@@ -17,8 +17,10 @@ public class DatedPhrasesFinders {
 	private final static String YEAR = "\\d{2,4}";
     private final static String YEARFOUR = "\\d{4}";
 	private final static String REF = "(?<neg> (avant|av.) (J.-?C.|notre ère|le présent))";
+	private final static String REFET = "( (avant|av.) (J.-?C.|notre ère|le présent))";
 	private final static String TEXT_NUMBERS_ = "(?<gt>(" + TEXT_NUMBERS + "))";
 	private final static String NUMBERS = "(?<g>\\d+([,\\.]\\d+)?)";
+	private final static String ET = "( (jusque|à|et) (vers )?(environ )?(l'an )?"+"(?<g>(-)?\\d{2,9})" + REF + "?)?";
 	private static final String ILYAENVIRON = "([Ii]l y a|[Vv]oici|(datent|vie(ux|ille)) d(e)?|au cours des|dès)([ ']environ)?( quelque)?( près de)?";
 	private final static String NOT_IN_DATE_WORDS = "(?<ex>(spectateur|degré|coup|pas|tour|heure|minute|seconde|mois|moto|titre|volt|salarié|arbre|commanderie|étudiant|degré|mètre|mot|ouvrier|mort|partenaire)s?)?";
 	private final Map<Finder, DatedPhrasesFinder> finders;
@@ -38,7 +40,7 @@ public class DatedPhrasesFinders {
 		build(Finder.ILYA, "(?<neg>" + ILYAENVIRON + ") (?<g>\\d{1,3}( ?000)?) (ans|dernières années)", new IlYAParser());
 		build(Finder.MILLIARD, "((?<neg>[Dd]ans)|([Vv]oici|[Ii]l y a)) (plus (de |d'))?(environ )?(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s? d['’]années", new MilliardParser());
 		build(Finder.JC, START + "([Aà] partir de|date de|[Dd]ébut|[Aa]près|[Dd]epuis|[Ee]n(tre)?|dans les années) (l'an )?(?<g>(-)?\\d{2,9})" + REF + "?(;|,|\\.| " + NOT_IN_DATE_WORDS + "|$)", new ExcludingJCParser());
-        build(Finder.ET, START + "")
+		build(Finder.JCET, START + "([Aà] partir de|date de|[Dd]ébut|[Aa]près|[Dd]epuis|[Ee]n(tre)?|dans les années) (l'an )?((-)?\\d{2,9})" + REFET + "?" + ET + "(;|,|\\.| " + NOT_IN_DATE_WORDS + "|$)", new ExcludingJCParser());
 		build(Finder.NEARJC, START + "([Ee]nviron) (?<g>" + YEAR + ")(,? )ans" + REF, new JCParser());
 		build(Finder.NEARJC2, START + "([Vv]ers l'an) (?<g>(-)?" + YEAR + ")(,?)" + REF + "?", new JCParser());
 		build(Finder.NEARJC3, START + "[Vv]ers (?<g>" + YEAR + ")" + REF, new JCParser());

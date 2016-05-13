@@ -8,7 +8,11 @@ public class JCParser implements IParser {
 
     @Override
     public Long from(Matcher matcher) {
-        int annees = Integer.parseInt(matcher.group("g"));
+        final String group = matcher.group("g");
+        if(group == null){
+            return null;
+        }
+        int annees = Integer.parseInt(group);
 		if(matcher.group("neg") != null){
 			annees = -annees;
 		}

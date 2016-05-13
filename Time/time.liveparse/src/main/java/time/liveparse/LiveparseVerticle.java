@@ -62,10 +62,11 @@ public class LiveparseVerticle extends AbstractVerticle {
     private void upload(final RoutingContext ctx) {
         try {
             final FileUpload file = ctx.fileUploads().iterator().next();
+            final String text = fileToText(file);
             ctx.response()
                     .putHeader("Content-Type", "application/json")
                     .setChunked(true)
-                    .write(fileToText(file))
+                    .write(text)
                     .end();
         } catch (Exception e) {
             ctx.fail(e);
@@ -75,10 +76,11 @@ public class LiveparseVerticle extends AbstractVerticle {
     private void fromUrl(final RoutingContext ctx){
         try {
             final String url = ctx.request().getParam("url");
+            final String text = urlToText(url);
             ctx.response()
                     .putHeader("Content-Type", "application/json")
                     .setChunked(true)
-                    .write(urlToText(url))
+                    .write(text)
                     .end();
         } catch (Exception e) {
             ctx.fail(e);

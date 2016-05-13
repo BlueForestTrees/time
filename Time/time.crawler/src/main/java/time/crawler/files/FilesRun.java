@@ -22,12 +22,12 @@ public class FilesRun {
 	private final TextStore store;
 
 	@Inject
-	public FilesRun(@Named("conf") final Conf conf, final TextStore store) {
+	public FilesRun(@Named("conf") final Conf conf, final TextStore store, final TextFactory textFactory) {
 		this.sourceDir = conf.getSourceDir();
 		if (this.sourceDir == null) {
 			throw new IllegalArgumentException("invalid sourceDir: " + sourceDir);
 		}
-		this.textFactory = new TextFactory();
+		this.textFactory = textFactory;
 		this.store = store;
 	}
 

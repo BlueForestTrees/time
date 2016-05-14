@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
 import time.crawler.crawl.Crawler;
-import time.storage.store.TextStore;
+import time.storage.store.TextHandler;
 import time.tika.TextFactory;
 import time.tool.chrono.Chrono;
 
@@ -19,7 +19,7 @@ public class WikiCrawler extends Crawler {
 	private static final Logger LOGGER = LogManager.getLogger(WikiCrawler.class);
 
     private final List<String> contentExclusion;
-    private final TextStore store;
+    private final TextHandler store;
     private final long nbPageLog;
     private final TextFactory textFactory;
     private Chrono chrono;
@@ -29,7 +29,7 @@ public class WikiCrawler extends Crawler {
     private long chronoPageTotal;
 
     @Inject
-	public WikiCrawler(@Named("conf") final Conf conf, final TextStore store, final TextFactory textFactory) {
+	public WikiCrawler(@Named("conf") final Conf conf, final TextHandler store, final TextFactory textFactory) {
 		super(conf);
         this.contentExclusion = conf.getContentExclusion();
         this.nbPageLog = conf.getNbPageLog();
@@ -58,7 +58,7 @@ public class WikiCrawler extends Crawler {
             final String content = ((HtmlParseData) page.getParseData()).getText();
             if (contentExclusion.stream().noneMatch(content::contains)) {
             	final HtmlParseData htmlData = (HtmlParseData) page.getParseData();
-                store.storeText(textFactory.build(page.getWebURL().getURL(), htmlData.getTitle(), htmlData.getText()));
+                store.handleText(textFactory.build(page.getWebURL().getURL(), htmlData.getTitle(), htmlData.getText()));
                 pageCount++;
                 if (LOGGER.isDebugEnabled() && (pageCount % nbPageLog == 0)) {
                     nbLog++;

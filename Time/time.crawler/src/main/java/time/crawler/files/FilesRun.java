@@ -5,9 +5,9 @@ import com.google.inject.name.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
+import time.storage.store.TextHandler;
 import time.tika.TextFactory;
 import time.tool.file.Dirs;
-import time.storage.store.TextStore;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,10 +19,10 @@ public class FilesRun {
 
 	private final String sourceDir;
 	private final TextFactory textFactory;
-	private final TextStore store;
+	private final TextHandler store;
 
 	@Inject
-	public FilesRun(@Named("conf") final Conf conf, final TextStore store, final TextFactory textFactory) {
+	public FilesRun(@Named("conf") final Conf conf, final TextHandler store, final TextFactory textFactory) {
 		this.sourceDir = conf.getSourceDir();
 		if (this.sourceDir == null) {
 			throw new IllegalArgumentException("invalid sourceDir: " + sourceDir);
@@ -45,7 +45,7 @@ public class FilesRun {
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Lecture fichier", e);
 		}
-		store.storeText(textFactory.build(input));
+		store.handleText(textFactory.build(input));
 	}
 
 }

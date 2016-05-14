@@ -10,7 +10,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
 import time.domain.Text;
-import time.storage.store.TextStore;
 
 public class TextFilter {
 	private static final Logger LOGGER = LogManager.getLogger(TextFilter.class);

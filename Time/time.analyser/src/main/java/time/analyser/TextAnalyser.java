@@ -51,7 +51,6 @@ public class TextAnalyser {
 						text.appendHightlightContent(phrase);
 						text.appendHightlightContent(" ");
 					}
-					datedPhrases.stream().forEach(p -> p.setPageUrl(text.getUrl()));
 					text.addPhrases(datedPhrases);
 				}
 			}

@@ -95,7 +95,7 @@ public class PhraseService {
             final String text = highlighter.getBestFragment(analyzer, "text", doc.get("text"));
 
             phrase.setText(text != null ? text : doc.get("text"));
-            phrase.setPageUrl(doc.get("pageUrl"));
+            phrase.setUrl(doc.get("pageUrl"));
             phrase.setDate((long) doc.getField("date").numericValue());
             return phrase;
         } catch (IOException | InvalidTokenOffsetsException e) {

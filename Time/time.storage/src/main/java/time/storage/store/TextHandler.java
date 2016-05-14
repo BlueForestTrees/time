@@ -11,16 +11,16 @@ import time.analyser.TextAnalyser;
 import time.domain.Text;
 import time.storage.filter.TextFilter;
 
-public class TextStore {
-	private static final Logger LOGGER = LogManager.getLogger(TextStore.class);
+public class TextHandler {
+	private static final Logger LOGGER = LogManager.getLogger(TextHandler.class);
 	private final PhraseStore phraseStore;
 	private TextFilter textFilter;
 	private TextAnalyser textAnalyser;
 
 	@Inject
-	public TextStore(final TextAnalyser textAnalyser,
-					 final TextFilter textFilter,
-					 final PhraseStore phraseStore) {
+	public TextHandler(final TextAnalyser textAnalyser,
+					   final TextFilter textFilter,
+					   final PhraseStore phraseStore) {
 		this.textAnalyser = textAnalyser;
 		this.textFilter = textFilter;
 		this.phraseStore = phraseStore;
@@ -28,18 +28,19 @@ public class TextStore {
 	}
 
 	public void start() {
-		LOGGER.info("TextStore.start()");
+		LOGGER.info("TextHandler.start()");
 		try {
 			phraseStore.start();
 		} catch (IOException e) {
-			throw new RuntimeException("TextStore.start throw ", e);
+			throw new RuntimeException("TextHandler.start throw ", e);
 		}
 	}
 
-    public long storeText(final Text text) {
+    public long handleText(final Text text) {
 		if (textFilter.keep(text)) {
-            textAnalyser.analyse(text).getPhrases().forEach(phraseStore::store);
-            return text.getPhrases().size();
+            textAnalyser.analyse(text);
+			phraseStore.store(text);
+			return text.getPhrases().size();
         }
         return 0;
     }
@@ -49,13 +50,13 @@ public class TextStore {
 		try {
 			phraseStore.stop();
 		} catch (IOException e) {
-			throw new RuntimeException("TextStore.stop throw ", e);
+			throw new RuntimeException("TextHandler.stop throw ", e);
 		}
 	}
 
 	@Override
 	public String toString() {
-		return "TextStore{" +
+		return "TextHandler{" +
 				"phraseStore=" + phraseStore +
 				", textFilter=" + textFilter +
 				", textAnalyser=" + textAnalyser +

@@ -8,14 +8,14 @@ package time.domain;
 public class DatedPhrase {
     private String text;
     private long date;
-    private String pageUrl;
+    private String url;
 
-    public String getPageUrl() {
-        return pageUrl;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPageUrl(String pageUrl) {
-        this.pageUrl = pageUrl;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public long getDate() {
@@ -36,7 +36,7 @@ public class DatedPhrase {
 
     @Override
     public String toString() {
-        return "Phrase [pageUrl=" + pageUrl + " date=" + date + ", text=" + text + ",]";
+        return "Phrase [url=" + url + " date=" + date + ", text=" + text + ",]";
     }
 
 }

@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.LongField;
 import org.apache.lucene.document.TextField;
@@ -25,6 +26,7 @@ import time.conf.Conf;
 import time.domain.DatedPhrase;
 import time.domain.Scale;
 import time.domain.SortableLongField;
+import time.domain.Text;
 import time.tool.reference.Fields;
 
 public class PhraseStore {
@@ -54,29 +56,38 @@ public class PhraseStore {
 		config = new FacetsConfig();
 	}
 
-	public void store(final DatedPhrase phrase) {
-		if(LOGGER.isDebugEnabled()){
-			LOGGER.debug(phrase.getPageUrl() + " " + phrase.getText());
-		}
-		final Document doc = new Document();
-		doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
-		doc.add(new TextField(Fields.PAGE_URL, phrase.getPageUrl(), Store.YES));
-		doc.add(new SortableLongField(Fields.DATE, phrase.getDate(), Store.YES));
-
-		for (int i = 0; i < Scale.scales.length; i++) {
-			doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.scales[i], Store.NO));
-			doc.add(new SortedSetDocValuesFacetField(String.valueOf(i),
-					String.valueOf(phrase.getDate() / Scale.scales[i])));
-		}
-
-		try {
-			iwriter.addDocument(config.build(doc));
-		} catch (IOException e) {
-			throw new RuntimeException("IndexWriter.addDocument error", e);
-		}
+	public void store(final Text text) {
+        text.getPhrases().forEach(phrase -> this.storePhrase(text, phrase));
 	}
 
-	public void stop() throws IOException {
+    private void storePhrase(final Text text, final DatedPhrase phrase) {
+        if(LOGGER.isDebugEnabled()){
+            LOGGER.debug(phrase.getUrl() + " " + phrase.getText());
+        }
+        final Document doc = new Document();
+        if(text.getTitle() != null){
+            doc.add(new TextField(Fields.TITLE, text.getTitle(), Store.YES));
+        }
+        if(text.getCreator() != null){
+            doc.add(new TextField(Fields.AUTHOR, text.getCreator(), Store.YES));
+        }
+        doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
+        doc.add(new TextField(Fields.URL, phrase.getUrl(), Store.YES));
+        doc.add(new SortableLongField(Fields.DATE, phrase.getDate(), Store.YES));
+        for (int i = 0; i < Scale.scales.length; i++) {
+            doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.scales[i], Store.NO));
+            doc.add(new SortedSetDocValuesFacetField(String.valueOf(i),
+                    String.valueOf(phrase.getDate() / Scale.scales[i])));
+        }
+
+        try {
+            iwriter.addDocument(config.build(doc));
+        } catch (IOException e) {
+            throw new RuntimeException("IndexWriter.addDocument error", e);
+        }
+    }
+
+    public void stop() throws IOException {
         LOGGER.info("stop (merge & close index)");
 		iwriter.forceMerge(1);
 		iwriter.close();

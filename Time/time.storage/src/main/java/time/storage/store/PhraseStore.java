@@ -38,10 +38,10 @@ public class PhraseStore {
 	@Inject
 	public PhraseStore(@Named("conf") Conf conf) {
 		indexDir = conf.getIndexDir();
-		LOGGER.info("index: " + indexDir);
 		if (indexDir == null) {
 			throw new RuntimeException("indexDir is null");
 		}
+        LOGGER.info(this);
 	}
 
 	public void start() throws IOException {
@@ -55,6 +55,9 @@ public class PhraseStore {
 	}
 
 	public void store(final DatedPhrase phrase) {
+		if(LOGGER.isDebugEnabled()){
+			LOGGER.debug(phrase.getPageUrl() + " " + phrase.getText());
+		}
 		final Document doc = new Document();
 		doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
 		doc.add(new TextField(Fields.PAGE_URL, phrase.getPageUrl(), Store.YES));
@@ -78,4 +81,12 @@ public class PhraseStore {
 		iwriter.close();
 	}
 
+    @Override
+    public String toString() {
+        return "PhraseStore{" +
+                "indexDir='" + indexDir + '\'' +
+                ", iwriter=" + iwriter +
+                ", config=" + config +
+                '}';
+    }
 }

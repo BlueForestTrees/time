@@ -8,26 +8,16 @@
 	</parent>
 	<artifactId>time.storage</artifactId>
 	<dependencies>
-		<dependency>
-			<groupId>slim</groupId>
-			<artifactId>time.domain</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>slim</groupId>
-			<artifactId>time.tool</artifactId>
-		</dependency>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>slim</groupId>
-			<artifactId>time.tika</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>slim</groupId>
-			<artifactId>time.conf</artifactId>
-		</dependency>
+
+        <!-- LUCENE -->
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-core</artifactId>
@@ -40,41 +30,8 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-analyzers-common</artifactId>
 		</dependency>
-		<!-- LOGGING -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-		<!-- Log4j 1.x API Bridge -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-1.2-api</artifactId>
-		</dependency>
-		<!-- Apache Commons Logging Bridge -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-jcl</artifactId>
-		</dependency>
-		<!-- SLF4J Bridge -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-		</dependency>
-		<!-- JUL Adapter -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-jul</artifactId>
-		</dependency>
-		<!-- UTIL -->
-		<dependency>
-			<groupId>joda-time</groupId>
-			<artifactId>joda-time</artifactId>
-		</dependency>
-		<!-- SPRING -->
+
+		<!-- TEST -->
 		<dependency>
 			<groupId>org.assertj</groupId>
 			<artifactId>assertj-core</artifactId>
@@ -85,6 +42,29 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- SLIM -->
+        <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.tool</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.tika</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.conf</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>slim</groupId>
 			<artifactId>time.analyser</artifactId>

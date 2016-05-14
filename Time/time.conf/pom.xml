@@ -8,10 +8,7 @@
     </parent>
     <artifactId>time.conf</artifactId>
     <dependencies>
-        <dependency>
-            <groupId>slim</groupId>
-            <artifactId>time.tool</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
@@ -32,9 +29,10 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-api</artifactId>
+            <groupId>slim</groupId>
+            <artifactId>time.tool</artifactId>
         </dependency>
     </dependencies>
 </project>

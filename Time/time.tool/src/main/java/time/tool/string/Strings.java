@@ -34,4 +34,8 @@ public class Strings {
     public static String clean(final String phrase){
         return phrase.replaceAll("\\[.*?\\]", "");
     }
+
+    public static String noReturns(final String s) {
+        return s.replaceAll("\r\n", "\\air\\haine");
+    }
 }

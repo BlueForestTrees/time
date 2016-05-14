@@ -17,8 +17,8 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import edu.uci.ics.crawler4j.url.WebURL;
 import time.conf.Conf;
 
-public abstract class BaseCrawler implements ICrawler {
-	private static final Logger LOGGER = LogManager.getLogger(BaseCrawler.class);
+public abstract class Crawler implements ICrawler {
+	private static final Logger LOGGER = LogManager.getLogger(Crawler.class);
 
 	protected final String baseUrl;
 	protected final int nbCrawlers;
@@ -28,11 +28,11 @@ public abstract class BaseCrawler implements ICrawler {
 	protected final int maxPages;
 	protected final String seedUrl;
 
-	protected Pattern excludePattern;
+	protected Pattern urlFilterPattern;
     protected Pattern includePattern;
     protected List<String> excludeList;
 	
-    public BaseCrawler(@Named("conf") final Conf conf) {
+    public Crawler(@Named("conf") final Conf conf) {
     	this.baseUrl = conf.getBaseUrl();
 		this.nbCrawlers = conf.getNbCrawlers();
 		this.delay = conf.getDelay();
@@ -40,13 +40,13 @@ public abstract class BaseCrawler implements ICrawler {
 		this.resumable = conf.isResumable();
 		this.maxPages = conf.getMaxPages();
 		this.seedUrl = conf.getSeedUrl();
-
-        excludePattern = conf.getExcludePattern() == null ? null : Pattern.compile(conf.getExcludePattern());
-        includePattern = conf.getIncludePattern() == null ? null : Pattern.compile(conf.getIncludePattern());
+        this.urlFilterPattern = conf.getUrlFilter() == null ? null : Pattern.compile(conf.getUrlFilter());
+        this.includePattern = conf.getIncludePattern() == null ? null : Pattern.compile(conf.getIncludePattern());
     }
     
 	@Override
 	public void start() {
+		LOGGER.info("START WITH CRAWLER : " + this);
 		CrawlAdapter.crawler = this;
 		final CrawlController crawlController = crawlController();
 		crawlController.start(CrawlAdapter.class, nbCrawlers);
@@ -56,10 +56,21 @@ public abstract class BaseCrawler implements ICrawler {
     public boolean shouldVisit(Page page, WebURL url) {
         final String href = url.getURL().toLowerCase();
         final boolean isBaseUrlOk = baseUrl == null || href.startsWith(baseUrl);
-        final boolean isPatternExcluded = excludePattern != null && excludePattern.matcher(href).matches();
+        final boolean isUrlFilterExcluded = urlFilterPattern != null && urlFilterPattern.matcher(href).matches();
         final boolean isPatternIncluded = includePattern == null || includePattern.matcher(href).matches();
         final boolean isListExcluded = excludeList != null && excludeList.stream().anyMatch(href::contains);
-        return isBaseUrlOk && !isPatternExcluded && isPatternIncluded && !isListExcluded;
+        boolean shouldVisit = isBaseUrlOk && !isUrlFilterExcluded && isPatternIncluded && !isListExcluded;
+
+        if(LOGGER.isDebugEnabled()){
+            LOGGER.debug("should visit " + href);
+            LOGGER.debug("isBaseUrlOk " + isBaseUrlOk);
+            LOGGER.debug("isUrlFilterExcluded " + isUrlFilterExcluded);
+            LOGGER.debug("isPatternIncluded " + isPatternIncluded);
+            LOGGER.debug("isListExcluded " + isListExcluded);
+            LOGGER.debug("shouldVisit " + shouldVisit);
+        }
+
+        return shouldVisit;
     }
     
     private CrawlConfig crawlConfig() {
@@ -89,5 +100,21 @@ public abstract class BaseCrawler implements ICrawler {
 			LOGGER.error("crawlerController Construction", e);
 			return null;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "Crawler{" +
+				"baseUrl='" + baseUrl + '\'' +
+				", nbCrawlers=" + nbCrawlers +
+				", delay=" + delay +
+				", crawlStorageDir='" + crawlStorageDir + '\'' +
+				", resumable=" + resumable +
+				", maxPages=" + maxPages +
+				", seedUrl='" + seedUrl + '\'' +
+				", urlFilterPattern=" + urlFilterPattern +
+				", includePattern=" + includePattern +
+				", excludeList=" + excludeList +
+				'}';
 	}
 }

@@ -1,8 +1,8 @@
 package time.merger.service;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
@@ -16,8 +16,8 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 
 public class MergeIndexService {
-	
-	private static final Log LOG = LogFactory.getLog(MergeIndexService.class);
+
+    private static final Logger LOG = LogManager.getLogger(MergeIndexService.class);
 	   
 	public void merge(final String src, final String dest) throws IOException{
 		final File destPath = new File(dest);

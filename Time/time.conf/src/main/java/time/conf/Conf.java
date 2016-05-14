@@ -91,10 +91,6 @@ public class Conf {
 		return crawlStorageDir;
 	}
 
-	public Pattern getFilter() {
-		return Pattern.compile(urlFilter);
-	}
-
 	public String getBaseUrl() {
 		return baseUrl;
 	}

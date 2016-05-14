@@ -7,16 +7,16 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
-import time.crawler.crawl.BaseCrawler;
+import time.crawler.crawl.Crawler;
 import time.storage.store.TextStore;
 import time.tika.TextFactory;
 import time.tool.chrono.Chrono;
 
 import java.util.List;
 
-public class WikiRun extends BaseCrawler {
+public class WikiCrawler extends Crawler {
 	
-	private static final Logger LOGGER = LogManager.getLogger(WikiRun.class);
+	private static final Logger LOGGER = LogManager.getLogger(WikiCrawler.class);
 
     private final List<String> contentExclusion;
     private final TextStore store;
@@ -29,7 +29,7 @@ public class WikiRun extends BaseCrawler {
     private long pageTotal;
 
     @Inject
-	public WikiRun(@Named("conf") final Conf conf, final TextStore store, final TextFactory textFactory) {
+	public WikiCrawler(@Named("conf") final Conf conf, final TextStore store, final TextFactory textFactory) {
 		super(conf);
         this.contentExclusion = conf.getContentExclusion();
         this.nbPageLog = conf.getNbPageLog();
@@ -42,12 +42,13 @@ public class WikiRun extends BaseCrawler {
         this.pageTotal = conf.getPageTotal();
         this.store = store;
         this.textFactory = textFactory;
+        LOGGER.info(this);
     }
 
     @Override
     public void start() {
-        super.start();
         store.start();
+        super.start();
     }
 
     @Override
@@ -74,4 +75,16 @@ public class WikiRun extends BaseCrawler {
         store.stop();
     }
 
+    @Override
+    public String toString() {
+        return "WikiCrawler{" +
+                "contentExclusion=" + contentExclusion +
+                ", store=" + store +
+                ", nbPageLog=" + nbPageLog +
+                ", textFactory=" + textFactory +
+                ", nbLog=" + nbLog +
+                ", pageCount=" + pageCount +
+                ", pageTotal=" + pageTotal +
+                '}';
+    }
 }

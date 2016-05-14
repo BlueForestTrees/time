@@ -5,14 +5,10 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.regex.Matcher;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import time.tool.date.Dates;
 
-/**
- * Created by slimane.medini on 04/12/2015.
- */
 public class PreciseParser implements IParser {
     
     private static final Logger LOG = LogManager.getLogger(PreciseParser.class);

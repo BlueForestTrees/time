@@ -8,12 +8,27 @@
 	</parent>
 	<artifactId>time.crawler</artifactId>
 	<dependencies>
-		<dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+
+        <!-- bridges -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-jcl</artifactId>
+        </dependency>
+
+
+        <dependency>
 			<groupId>edu.uci.ics</groupId>
 			<artifactId>crawler4j</artifactId>
 			<version>5-SNAPSHOT</version>
 		</dependency>
-
 		<dependency>
 			<groupId>slim</groupId>
 			<artifactId>time.tika</artifactId>
@@ -26,18 +41,6 @@
 			<groupId>slim</groupId>
 			<artifactId>time.conf</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-1.2-api</artifactId>
-        </dependency>
         <dependency>
             <groupId>slim</groupId>
             <artifactId>time.storage</artifactId>

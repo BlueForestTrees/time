@@ -74,7 +74,7 @@ public class Args {
     final String substituedConfig = getEnvSubstitutor().replace(rawConfig);
     final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-    LOGGER.info("yml: \n" + substituedConfig);
+    LOGGER.info(ymlPath + " content\n" + substituedConfig);
 
     return mapper.readValue(substituedConfig, beanClass);
   }

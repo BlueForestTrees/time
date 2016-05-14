@@ -17,19 +17,6 @@
             <artifactId>guice</artifactId>
         </dependency>
         <dependency>
-            <groupId>slim</groupId>
-            <artifactId>time.conf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>slim</groupId>
-            <artifactId>time.domain</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-1.2-api</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
@@ -38,6 +25,21 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
+        <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.conf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.domain</artifactId>
         </dependency>
     </dependencies>
 

@@ -8,20 +8,10 @@
 	<Loggers>
 		<Root level="error">
 		</Root>
-		<Logger name="org.apache.http" level="error">
-			<AppenderRef ref="Console" />
-		</Logger>
-		<Logger name="edu.uci.ics.crawler4j" level="info">
-			<AppenderRef ref="Console" />
-		</Logger>
-		<Logger name="time" level="debug">
+		<Logger name="time" level="info">
 			<AppenderRef ref="Console" />
 		</Logger>
 		<Logger name="time.crawler" level="debug">
-		</Logger>
-		<Logger name="time.crawler.crawl" level="info">
-		</Logger>
-		<Logger name="time.storage.filter" level="info">
 		</Logger>
 	</Loggers>
 </Configuration>

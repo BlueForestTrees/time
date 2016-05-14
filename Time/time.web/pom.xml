@@ -6,7 +6,7 @@
 		<artifactId>time</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>ROOT</artifactId>
+	<artifactId>time.web</artifactId>
 	<packaging>war</packaging>
 
 	<dependencies>
@@ -26,8 +26,6 @@
 			<groupId>org.apache.lucene</groupId>
 			<artifactId>lucene-highlighter</artifactId>
 		</dependency>
-
-
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
@@ -55,23 +53,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 		</dependency>
-
-		<!-- LOGGING -->
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>commons-logging</groupId>
-			<artifactId>commons-logging</artifactId>
-		</dependency>
-
-
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -95,6 +76,7 @@
 			<artifactId>junit</artifactId>
 		</dependency>
 
+		<!-- SLIM -->
 		<dependency>
 			<groupId>slim</groupId>
 			<artifactId>time.domain</artifactId>

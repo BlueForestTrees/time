@@ -4,11 +4,15 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import time.analyser.TextAnalyser;
 import time.analyser.finder.parser.*;
 import time.domain.DatedPhrase;
 
 public class DatedPhrasesFinders {
 
+    private static final Logger LOGGER = LogManager.getLogger(DatedPhrasesFinders.class);
 	public final static String TEXT_NUMBERS = "un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|treize|quatorze|quinze|seize|dix-sept|dix-huit|dix-neuf|vingt";
 	private static final String START = "(^| |,|;)";
 	private final static String JOUR = "((?<d>\\d{1,2})(er)? )?";
@@ -31,6 +35,7 @@ public class DatedPhrasesFinders {
 		this.finders = new HashMap<>();
 		build();
 		findersArray = finders.values().toArray(new DatedPhrasesFinder[finders.values().size()]);
+        LOGGER.info(this);
 	}
 
     public DatedPhrasesFinder[] getFindersArray() {
@@ -67,4 +72,11 @@ public class DatedPhrasesFinders {
 		return Arrays.stream(findersArray).map(f -> f.findPhrases(phrase)).flatMap(l -> l.stream()).collect(Collectors.toCollection(ArrayList::new));
 	}
 
+    @Override
+    public String toString() {
+        return "DatedPhrasesFinders{" +
+                "finders=" + finders +
+                ", findersArray=" + Arrays.toString(findersArray) +
+                '}';
+    }
 }

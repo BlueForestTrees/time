@@ -12,12 +12,13 @@
     <artifactId>time.transform</artifactId>
     <dependencies>
         <dependency>
-            <groupId>slim</groupId>
-            <artifactId>time.domain</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.domain</artifactId>
         </dependency>
         <dependency>
             <groupId>slim</groupId>

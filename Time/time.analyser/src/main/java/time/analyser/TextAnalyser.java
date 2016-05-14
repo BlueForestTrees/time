@@ -12,10 +12,11 @@ import time.analyser.filter.PhraseFilter;
 import time.analyser.finder.DatedPhrasesFinders;
 import time.domain.DatedPhrase;
 import time.domain.Text;
+import time.tool.string.Strings;
 
 public class TextAnalyser {
 
-	private static final Logger LOG = LogManager.getLogger(TextAnalyser.class);
+	private static final Logger LOGGER = LogManager.getLogger(TextAnalyser.class);
 	private Pattern splitParagraphPattern;
 	private Pattern splitPhrasePattern;
 	private PhraseFilter phraseFilter;
@@ -27,9 +28,13 @@ public class TextAnalyser {
 		this.splitParagraphPattern = Pattern.compile("[\r\n\t]+");
 		this.splitPhrasePattern = Pattern.compile("(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))(\\.|\\?|!)) +");
 		this.finders = finders;
+        LOGGER.info(this);
 	}
 
 	public Text analyse(final Text text) {
+        if(LOGGER.isDebugEnabled()){
+            LOGGER.debug("analyse " + text.getUrl());
+        }
 		final String[] paragraphs = splitParagraphPattern.split(text.getTextString());
 		text.setParagraphs(paragraphs);
 		for (String paragraph : paragraphs) {
@@ -52,8 +57,17 @@ public class TextAnalyser {
 			}
 			text.closeParagraph();
 		}
-		LOG.info(text.getParagraphs().length + " paragraphes, " + text.getPhrases().size() + " phrases");
+		LOGGER.info(text.getParagraphs().length + " paragraphes, " + text.getPhrases().size() + " phrases");
 		return text;
 	}
 
+    @Override
+    public String toString() {
+        return Strings.noReturns("TextAnalyser{" +
+                "splitParagraphPattern=" + splitParagraphPattern +
+                ", splitPhrasePattern=" + splitPhrasePattern +
+                ", phraseFilter=" + phraseFilter +
+                ", finders=" + finders +
+                '}');
+    }
 }

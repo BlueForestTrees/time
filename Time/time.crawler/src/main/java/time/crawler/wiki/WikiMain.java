@@ -9,7 +9,7 @@ public class WikiMain {
 	}
 
 	public static void main(final String[] args) throws Exception {
-		Guice.createInjector(new WikiModule(args)).getInstance(WikiRun.class).start();
+		Guice.createInjector(new WikiModule(args)).getInstance(WikiCrawler.class).start();
 	}
 
 }

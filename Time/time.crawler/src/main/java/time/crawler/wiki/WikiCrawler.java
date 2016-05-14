@@ -49,6 +49,7 @@ public class WikiCrawler extends Crawler {
     public void start() {
         store.start();
         super.start();
+        store.stop();
     }
 
     @Override
@@ -68,11 +69,6 @@ public class WikiCrawler extends Crawler {
                 }
             }
         }
-    }
-
-    @Override
-    public void end() {
-        store.stop();
     }
 
     @Override

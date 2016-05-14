@@ -2,9 +2,9 @@
 seedUrl: https://fr.wikipedia.org/wiki/Fichier:L%27origine_de_l%27%C3%A9volution.jpg
 baseUrl: https://fr.wikipedia.org/wiki/
 nbCrawlers: 7
-maxPages: 30000
-chronoPageTotal: 30000
-nbPageLog: 1000
+maxPages: 100
+chronoPageTotal: 100
+nbPageLog: 10
 politenessDelay: 25
 urlFilter: .*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$
 contentExclusion: ['\t\t\t(Redirigé depuis']

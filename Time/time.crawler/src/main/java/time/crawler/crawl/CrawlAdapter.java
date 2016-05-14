@@ -34,6 +34,6 @@ public class CrawlAdapter extends WebCrawler {
 
     @Override
     public void onBeforeExit() {
-        crawler.end();
+
     }
 }

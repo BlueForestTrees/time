@@ -6,7 +6,7 @@
 		<artifactId>time</artifactId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>time.storage</artifactId>
+	<artifactId>time.phraseStore</artifactId>
 	<dependencies>
         <dependency>
             <groupId>joda-time</groupId>

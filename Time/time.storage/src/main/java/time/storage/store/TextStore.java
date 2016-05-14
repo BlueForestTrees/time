@@ -13,24 +13,24 @@ import time.storage.filter.TextFilter;
 
 public class TextStore {
 	private static final Logger LOGGER = LogManager.getLogger(TextStore.class);
-	private final PhraseStore storage;
+	private final PhraseStore phraseStore;
 	private TextFilter textFilter;
 	private TextAnalyser textAnalyser;
 
 	@Inject
 	public TextStore(final TextAnalyser textAnalyser,
 					 final TextFilter textFilter,
-					 final PhraseStore storage) {
+					 final PhraseStore phraseStore) {
 		this.textAnalyser = textAnalyser;
 		this.textFilter = textFilter;
-		this.storage = storage;
+		this.phraseStore = phraseStore;
 		LOGGER.info(this);
 	}
 
 	public void start() {
 		LOGGER.info("TextStore.start()");
 		try {
-			storage.start();
+			phraseStore.start();
 		} catch (IOException e) {
 			throw new RuntimeException("TextStore.start throw ", e);
 		}
@@ -38,25 +38,25 @@ public class TextStore {
 
     public long storeText(final Text text) {
 		if (textFilter.keep(text)) {
-            textAnalyser.analyse(text).getPhrases().forEach(storage::store);
+            textAnalyser.analyse(text).getPhrases().forEach(phraseStore::store);
             return text.getPhrases().size();
         }
         return 0;
     }
 
 	public void stop(){
+		LOGGER.info("stop");
 		try {
-			storage.end();
+			phraseStore.stop();
 		} catch (IOException e) {
 			throw new RuntimeException("TextStore.stop throw ", e);
 		}
-		LOGGER.info("run end");
 	}
 
 	@Override
 	public String toString() {
 		return "TextStore{" +
-				"storage=" + storage +
+				"phraseStore=" + phraseStore +
 				", textFilter=" + textFilter +
 				", textAnalyser=" + textAnalyser +
 				'}';

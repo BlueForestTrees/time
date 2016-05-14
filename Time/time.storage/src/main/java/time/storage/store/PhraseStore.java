@@ -76,7 +76,8 @@ public class PhraseStore {
 		}
 	}
 
-	public void end() throws IOException {
+	public void stop() throws IOException {
+        LOGGER.info("stop (merge & close index)");
 		iwriter.forceMerge(1);
 		iwriter.close();
 	}

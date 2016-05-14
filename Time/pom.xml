@@ -12,7 +12,7 @@
         <module>time.domain</module>
         <module>time.tika</module>
         <module>time.tool</module>
-        <module>time.storage</module>
+        <module>time.phraseStore</module>
         <module>time.web</module>
         <module>time.liveparse</module>
         <module>time.analyser</module>
@@ -67,7 +67,7 @@
             </dependency>
             <dependency>
                 <groupId>slim</groupId>
-                <artifactId>time.storage</artifactId>
+                <artifactId>time.phraseStore</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

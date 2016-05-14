@@ -7,5 +7,4 @@ public interface ICrawler {
 	void start();
     boolean shouldVisit(Page page, WebURL url);
     void visit(Page page);
-    void end();
 }

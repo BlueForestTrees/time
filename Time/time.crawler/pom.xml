@@ -43,7 +43,7 @@
 		</dependency>
         <dependency>
             <groupId>slim</groupId>
-            <artifactId>time.storage</artifactId>
+            <artifactId>time.phraseStore</artifactId>
         </dependency>
 		<dependency>
 			<groupId>slim</groupId>

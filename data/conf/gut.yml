@@ -10,7 +10,7 @@ maxPages: 5000000
 nbPageLog: 3
 politenessDelay: 25
 urlFilter: .*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$
-pageTotal: 2600
+chronoPageTotal: 2600
 urlMaxLength: 255
 maxPhrasesToFetch: -1
 pageSize: 100

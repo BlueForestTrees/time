@@ -17,12 +17,12 @@ public class TextFilter {
 
 	private HashSet<String> urlsLowerCase = new HashSet<String>();
 	private int urlMaxLength;
-	private List<String> urlBlackList;
+	protected List<String> urlMustNotContain;
 
 	@Inject
 	public TextFilter(@Named("conf") Conf conf) {
-		this.urlBlackList = conf.getUrlBlackList();
 		this.urlMaxLength = conf.getUrlMaxLength();
+		this.urlMustNotContain = conf.getUrlMustNotContain();
 		LOGGER.info(this);
 	}
 
@@ -60,15 +60,16 @@ public class TextFilter {
 	}
 
 	private boolean isValid(Text text) {
-		final String url = text.getUrl();
-		final boolean urlBlackListed = urlBlackList.stream().anyMatch(term -> url.contains(term));
+		final String url = text.getUrl().toLowerCase();
 		final boolean urlTooLong = text.getUrl().length() > urlMaxLength;
+		final boolean isUrlMustNotContainExcluded = urlMustNotContain != null && urlMustNotContain.stream().anyMatch(url::contains);
 
-		boolean isValid = !urlTooLong && !urlBlackListed;
+
+		boolean isValid = !urlTooLong && !isUrlMustNotContainExcluded;
 
 		if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("urlTooLong " + urlTooLong);
-			LOGGER.debug("urlBlackListed " + urlBlackListed);
+			LOGGER.debug("isUrlMustNotContainExcluded" + isUrlMustNotContainExcluded);
 			LOGGER.debug("isValid " + isValid);
 		}
 		return isValid;
@@ -79,7 +80,6 @@ public class TextFilter {
 		return "TextFilter{" +
 				"urlsLowerCase=" + urlsLowerCase +
 				", urlMaxLength=" + urlMaxLength +
-				", urlBlackList=" + urlBlackList +
 				'}';
 	}
 

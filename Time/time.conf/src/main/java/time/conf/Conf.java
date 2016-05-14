@@ -4,7 +4,6 @@ import time.tool.string.Strings;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class Conf {
 	public static final String sep = "\\|¨";
@@ -30,7 +29,6 @@ public class Conf {
 	private long pageSize = 100;
 	private String maxFileSize = "100MB";
 	private String type;
-	private List<String> excludeList;
 	private List<String> contentExclusion;
 	private String source;
 	private String url;
@@ -41,13 +39,13 @@ public class Conf {
 	private String txtOutputFile;
 	private String txtOutputDir;
 	private String crawlStorageDir;
-	private long pageTotal;
+	private long chronoPageTotal;
 	private long maxPhrasesToFetch;
 	private int maxLength = 1000;
 	private int minLength = 40;
 	private List<String> excludeAfterList;
 	private int urlMaxLength = 255;
-	private List<String> urlBlackList = Arrays.asList();
+	private List<String> urlMustNotContain = Arrays.asList();
 	private String sourcePath;
 	private String datasourcePath;
 	private String indexDir;
@@ -103,10 +101,6 @@ public class Conf {
 		return maxPages;
 	}
 
-	public int getDelay() {
-		return politenessDelay;
-	}
-
 	public boolean isResumable() {
 		return resumable;
 	}
@@ -119,18 +113,10 @@ public class Conf {
 		return nbCrawlers;
 	}
 
-	public String getMaxFileSize() {
-		return maxFileSize;
-	}
-
 	public String getType() {
 		return type;
 	}
 
-	public List<String> getExcludeList() {
-		return excludeList;
-	}
-	
 	public List<String> getContentExclusion() {
 		return contentExclusion;
 	}
@@ -146,25 +132,9 @@ public class Conf {
 	public String getTitle() {
 		return title;
 	}
-	
-	public String getRegexUrlFilter() {
-		return regexUrlFilter;
-	}
 
 	public String getIncludePattern() {
 		return includePattern;
-	}
-	
-	public String getExcludePattern() {
-		return excludePattern;
-	}
-	
-	public static String getSep() {
-		return sep;
-	}
-
-	public String getBasePath() {
-		return basePath;
 	}
 
 	public String getName() {
@@ -195,12 +165,12 @@ public class Conf {
 		this.pageSize = pageSize;
 	}
 
-	public long getPageTotal() {
-		return pageTotal;
+	public long getChronoPageTotal() {
+		return chronoPageTotal;
 	}
 
-	public void setPageTotal(long pageTotal) {
-		this.pageTotal = pageTotal;
+	public void setChronoPageTotal(long chronoPageTotal) {
+		this.chronoPageTotal = chronoPageTotal;
 	}
 
 	public long getMaxPhrasesToFetch() {
@@ -243,12 +213,12 @@ public class Conf {
 		this.urlMaxLength = urlMaxLength;
 	}
 
-	public List<String> getUrlBlackList() {
-		return urlBlackList;
+	public List<String> getUrlMustNotContain() {
+		return urlMustNotContain;
 	}
 
-	public void setUrlBlackList(List<String> urlBlackList) {
-		this.urlBlackList = urlBlackList;
+	public void setUrlMustNotContain(List<String> urlMustNotContain) {
+		this.urlMustNotContain = urlMustNotContain;
 	}
 
 	public String getSourcePath() {

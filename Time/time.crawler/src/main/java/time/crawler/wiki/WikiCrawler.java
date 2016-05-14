@@ -26,7 +26,7 @@ public class WikiCrawler extends Crawler {
     private Chrono fullChrono;
     private long nbLog;
     private long pageCount;
-    private long pageTotal;
+    private long chronoPageTotal;
 
     @Inject
 	public WikiCrawler(@Named("conf") final Conf conf, final TextStore store, final TextFactory textFactory) {
@@ -39,7 +39,7 @@ public class WikiCrawler extends Crawler {
             fullChrono = new Chrono("Full");
             fullChrono.start();
         }
-        this.pageTotal = conf.getPageTotal();
+        this.chronoPageTotal = conf.getChronoPageTotal();
         this.store = store;
         this.textFactory = textFactory;
         LOGGER.info(this);
@@ -63,7 +63,7 @@ public class WikiCrawler extends Crawler {
                     nbLog++;
                     chrono.stop();
                     fullChrono.stop();
-                    LOGGER.debug("#" + pageCount + ", Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(nbLog) + ", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, pageTotal));
+                    LOGGER.debug("#" + pageCount + ", Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(nbLog) + ", last:" + chrono + ", reste:" + fullChrono.getRemaining(pageCount, chronoPageTotal));
                     chrono.start();
                 }
             }
@@ -78,13 +78,14 @@ public class WikiCrawler extends Crawler {
     @Override
     public String toString() {
         return "WikiCrawler{" +
-                "contentExclusion=" + contentExclusion +
+                super.toString() +
+                ", contentExclusion=" + contentExclusion +
                 ", store=" + store +
                 ", nbPageLog=" + nbPageLog +
                 ", textFactory=" + textFactory +
                 ", nbLog=" + nbLog +
                 ", pageCount=" + pageCount +
-                ", pageTotal=" + pageTotal +
+                ", chronoPageTotal=" + chronoPageTotal +
                 '}';
     }
 }

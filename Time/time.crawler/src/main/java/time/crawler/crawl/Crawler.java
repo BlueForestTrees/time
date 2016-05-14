@@ -30,18 +30,19 @@ public abstract class Crawler implements ICrawler {
 
 	protected Pattern urlFilterPattern;
     protected Pattern includePattern;
-    protected List<String> excludeList;
+    protected List<String> urlMustNotContain;
 	
     public Crawler(@Named("conf") final Conf conf) {
     	this.baseUrl = conf.getBaseUrl();
 		this.nbCrawlers = conf.getNbCrawlers();
-		this.delay = conf.getDelay();
+		this.delay = conf.getPolitenessDelay();
 		this.crawlStorageDir = conf.getCrawlStorageDir();
 		this.resumable = conf.isResumable();
 		this.maxPages = conf.getMaxPages();
 		this.seedUrl = conf.getSeedUrl();
         this.urlFilterPattern = conf.getUrlFilter() == null ? null : Pattern.compile(conf.getUrlFilter());
         this.includePattern = conf.getIncludePattern() == null ? null : Pattern.compile(conf.getIncludePattern());
+        this.urlMustNotContain = conf.getUrlMustNotContain();
     }
     
 	@Override
@@ -58,15 +59,16 @@ public abstract class Crawler implements ICrawler {
         final boolean isBaseUrlOk = baseUrl == null || href.startsWith(baseUrl);
         final boolean isUrlFilterExcluded = urlFilterPattern != null && urlFilterPattern.matcher(href).matches();
         final boolean isPatternIncluded = includePattern == null || includePattern.matcher(href).matches();
-        final boolean isListExcluded = excludeList != null && excludeList.stream().anyMatch(href::contains);
-        boolean shouldVisit = isBaseUrlOk && !isUrlFilterExcluded && isPatternIncluded && !isListExcluded;
+        final boolean isUrlMustNotContainExcluded = urlMustNotContain != null && urlMustNotContain.stream().anyMatch(href::contains);
+
+        boolean shouldVisit = isBaseUrlOk && !isUrlFilterExcluded && isPatternIncluded && !isUrlMustNotContainExcluded;
 
         if(LOGGER.isDebugEnabled()){
             LOGGER.debug("should visit " + href);
             LOGGER.debug("isBaseUrlOk " + isBaseUrlOk);
             LOGGER.debug("isUrlFilterExcluded " + isUrlFilterExcluded);
             LOGGER.debug("isPatternIncluded " + isPatternIncluded);
-            LOGGER.debug("isListExcluded " + isListExcluded);
+            LOGGER.debug("isUrlMustNotContainExcluded " + isUrlMustNotContainExcluded);
             LOGGER.debug("shouldVisit " + shouldVisit);
         }
 
@@ -102,19 +104,19 @@ public abstract class Crawler implements ICrawler {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return "Crawler{" +
-				"baseUrl='" + baseUrl + '\'' +
-				", nbCrawlers=" + nbCrawlers +
-				", delay=" + delay +
-				", crawlStorageDir='" + crawlStorageDir + '\'' +
-				", resumable=" + resumable +
-				", maxPages=" + maxPages +
-				", seedUrl='" + seedUrl + '\'' +
-				", urlFilterPattern=" + urlFilterPattern +
-				", includePattern=" + includePattern +
-				", excludeList=" + excludeList +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Crawler{" +
+                "baseUrl='" + baseUrl + '\'' +
+                ", nbCrawlers=" + nbCrawlers +
+                ", delay=" + delay +
+                ", crawlStorageDir='" + crawlStorageDir + '\'' +
+                ", resumable=" + resumable +
+                ", maxPages=" + maxPages +
+                ", seedUrl='" + seedUrl + '\'' +
+                ", urlFilterPattern=" + urlFilterPattern +
+                ", includePattern=" + includePattern +
+                ", urlMustNotContain=" + urlMustNotContain +
+                '}';
+    }
 }

@@ -57,7 +57,9 @@ public class TextAnalyser {
 			}
 			text.closeParagraph();
 		}
-		LOGGER.info(text.getParagraphs().length + " paragraphes, " + text.getPhrases().size() + " phrases");
+        if(LOGGER.isDebugEnabled()) {
+            LOGGER.debug(text.getParagraphs().length + " paragraphes, " + text.getPhrases().size() + " phrases");
+        }
 		return text;
 	}
 

@@ -10,11 +10,6 @@ import java.util.stream.Stream;
 import org.apache.commons.io.FileUtils;
 
 public class Dirs {
-	
-	public static void renew(final File file) throws IOException{
-		FileUtils.deleteDirectory(file);
-		file.mkdirs();
-	}
 
 	public static void move(final String from, final String to) throws IOException {
         final File srcDir = new File(from);
@@ -40,11 +35,6 @@ public class Dirs {
 		} catch (final IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public static String filenameAble(final String title) {
-		final String titleTemp = title.replaceAll("[^a-zA-Z0-9.-]", "_");
-		return titleTemp.substring(0, Math.min(50, titleTemp.length()));
 	}
 	
 }

@@ -115,6 +115,9 @@ public class Text implements Serializable {
 	}
 
     public void setText(String text) {
+		if(text == null){
+			throw new RuntimeException("Text.setText(null)");
+		}
         this.content = new StringBuilder(text);
     }
     

@@ -15,6 +15,13 @@ public class Dirs {
 		FileUtils.deleteDirectory(file);
 		file.mkdirs();
 	}
+
+	public static void move(final String from, final String to) throws IOException {
+        final File srcDir = new File(from);
+        final File destDir = new File(to);
+        FileUtils.deleteDirectory(destDir);
+        FileUtils.moveDirectory(srcDir, destDir);
+	}
 	
 	public static Stream<File> files(final String dir) {
 			return list(dir)

@@ -20,6 +20,7 @@ public class Conf {
 	private String urlFilter;
 	private String storagePath;
 	private Long nbPageLog = 1000L;
+    private Long nbPhraseLog = 10000L;
 	private int maxPages = -1;
 	private int politenessDelay = 25;
 	private String crawlStorageFolder;
@@ -49,8 +50,17 @@ public class Conf {
 	private String sourcePath;
 	private String datasourcePath;
 	private String indexDir;
+	private String finalIndexDir;
 	private String[] phraseMustNotStartWith;
 	private String notInDateWords;
+
+	public String getFinalIndexDir() {
+		return finalIndexDir;
+	}
+
+	public void setFinalIndexDir(String finalIndexDir) {
+		this.finalIndexDir = finalIndexDir;
+	}
 
 	public String getWebRoot() {
 		return webRoot;
@@ -252,4 +262,12 @@ public class Conf {
 	public String getTxtOutputFile() {
 		return txtOutputFile;
 	}
+
+    public Long getNbPhraseLog() {
+        return nbPhraseLog;
+    }
+
+    public void setNbPhraseLog(Long nbPhraseLog) {
+        this.nbPhraseLog = nbPhraseLog;
+    }
 }

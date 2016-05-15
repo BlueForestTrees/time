@@ -1,10 +1,11 @@
 #seedUrl: https://fr.wikipedia.org/wiki/Portail:Accueil
 seedUrl: https://fr.wikipedia.org/wiki/Fichier:L%27origine_de_l%27%C3%A9volution.jpg
 baseUrl: https://fr.wikipedia.org/wiki/
-nbCrawlers: 7
-maxPages: 100
-chronoPageTotal: 100
+nbCrawlers: 1
+maxPages: 50
+chronoPageTotal: 50
 nbPageLog: 10
+nbPhraseLog: 100
 politenessDelay: 25
 urlFilter: .*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$
 contentExclusion: ['\t\t\t(Redirigé depuis']
@@ -12,5 +13,5 @@ urlMustNotContain: ['fichier:','discussion_utilisateur:', 'discussion_utilisatri
 excludeAfterList: ['Notes et références[', 'Bibliographie[', 'Liens externes[', 'Bibliographie[', 'Annexes[']
 phraseMustNotStartWith: ['Catégories :']
 crawlStorageDir: ${TIME_HOME}/temp/wiki
-indexDir: ${TIME_HOME}/indexes/wiki/
-
+indexDir: ${TIME_HOME}/indexes/fresh/wiki/
+finalIndexDir: ${TIME_HOME}/indexes/mergeable/wiki

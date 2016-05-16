@@ -1,5 +1,6 @@
 .vertx/
 file-uploads/
+node_modules/
 target/
 /target/
 data/indexes/

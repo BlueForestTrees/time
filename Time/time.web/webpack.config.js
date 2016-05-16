@@ -28,7 +28,7 @@ module.exports = function makeWebpackConfig () {
 	 * Reference: http://webpack.github.io/docs/configuration.html#entry
 	 */
 	config.entry = {
-		index:  ['./src/js/app.js']
+		index:  ['./src/main/webapp/app.js']
 	};
 
 	/**
@@ -36,7 +36,7 @@ module.exports = function makeWebpackConfig () {
 	 * Reference: http://webpack.github.io/docs/configuration.html#output
 	 */
 	config.output = {
-		path : __dirname + '/dist',
+		path : __dirname + '/target/webapp',
 		publicPath : '/',
 		filename : 'js/[name].[hash].js',
 		chunkFilename : '[id].[hash].chunk.js'
@@ -47,7 +47,7 @@ module.exports = function makeWebpackConfig () {
 	 * Reference: http://webpack.github.io/docs/configuration.html#resolve
 	 */
 	config.resolve = {
-		root : __dirname,
+		root : __dirname + '/src/main/webapp',
 		// only discover files that have those extensions
 		extensions : ['', '.js', '.json', '.css', '.html']
 	};
@@ -68,15 +68,6 @@ module.exports = function makeWebpackConfig () {
 				exclude: /node_modules/,
 				loaders: []
 			},
-			// Support for minify images
-			// https://github.com/tcoopman/image-webpack-loader
-			{
-				test: /\.(jpe?g|png|gif|svg|ico)$/i,
-				loaders: [
-					'file?hash=sha512&digest=hex&name=[name].[hash].[ext]',
-					'image-webpack?bypassOnDebug&optimizationLevel=7&interlaced=false'
-				]
-			},
 
 			// Support for *.json files.
 			{test : /\.json$/, loader : 'json'},
@@ -84,7 +75,6 @@ module.exports = function makeWebpackConfig () {
 			// Support for CSS as raw text
 			{
 				test : /\.css$/,
-				exclude: /node_modules/,
 				loaders : ['style', 'css']
 			},
 			
@@ -113,8 +103,9 @@ module.exports = function makeWebpackConfig () {
 		// Inject script and link tags into html files
 		// Reference: https://github.com/ampedandwired/html-webpack-plugin
 		new HtmlWebpackPlugin({
-			template : './src/public/index.html',
-			inject : 'body'
+			template : './src/main/webapp/view/histoires.html',
+			inject : 'body',
+			hash : 'true'
 		})
 	];
 
@@ -128,7 +119,7 @@ module.exports = function makeWebpackConfig () {
 			// Copy assets from the public folder
 			// Reference: https://github.com/kevlened/copy-webpack-plugin
 			new CopyWebpackPlugin([{
-				from : __dirname + '/src/public'
+				from : __dirname + '/src/main/webapp/public'
 			}])
 		);
 	}

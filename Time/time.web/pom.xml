@@ -94,7 +94,7 @@
 	<build>
 		<resources>
 			<resource>
-				<directory>src/main/webapp</directory>
+				<directory>target/webapp</directory>
 			</resource>
 		</resources>
 		<plugins>

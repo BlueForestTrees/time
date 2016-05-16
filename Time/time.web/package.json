@@ -1,0 +1,30 @@
+{
+  "name": "poc",
+  "version": "1.0.0",
+  "description": "Pour Slimane !!!",
+  "main": "index.js",
+  "scripts": {
+    "clean-install": "npm prune && npm install",
+    "build": "rimraf dist && webpack --progress --profile",
+    "start": "webpack-dev-server --progress --profile"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^6.3.2",
+    "copy-webpack-plugin": "^1.1.1",
+    "css-loader": "^0.23.0",
+    "file-loader": "^0.8.4",
+    "html-loader": "^0.4.0",
+    "html-webpack-plugin": "^2.8.1",
+    "image-webpack-loader": "^1.8.0",
+    "null-loader": "git+https://github.com/webpack/null-loader.git",
+    "postcss-loader": "^0.8.0",
+    "raw-loader": "0.5.1",
+    "rimraf": "^2.5.1",
+    "style-loader": "^0.13.0",
+    "url-loader": "^0.5.6",
+    "webpack": "^1.12.13",
+    "webpack-dev-server": "^1.14.1"
+  }
+}

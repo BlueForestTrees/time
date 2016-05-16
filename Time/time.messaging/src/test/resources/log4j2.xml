@@ -11,5 +11,7 @@
 		<Logger name="time" level="info">
 			<AppenderRef ref="Console" />
 		</Logger>
+		<Logger name="time.crawler" level="debug">
+		</Logger>
 	</Loggers>
 </Configuration>

@@ -1,4 +1,4 @@
-package time.merger.service;
+package time.merger;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -15,13 +15,13 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-public class MergeIndexService {
+public class MergeService {
 
-    private static final Logger LOG = LogManager.getLogger(MergeIndexService.class);
+    private static final Logger LOG = LogManager.getLogger(MergeService.class);
 	   
-	public void merge(final String src, final String dest) throws IOException{
-		final File destPath = new File(dest);
-		final File[] allIndexes = allIndexes(src);
+	public void merge(final Merge merge) throws IOException{
+		final File[] allIndexes = allIndexes(merge.getMergeableIndexesDir());
+		final File destPath = new File(merge.getMergedIndexDir());
 		final File biggerIndex = Arrays.stream(allIndexes).max((f1,f2) -> Long.compare(FileUtils.sizeOfDirectory(f1), FileUtils.sizeOfDirectory(f2))).get();
 		final Directory destDirectory = directoryFromFile(destPath);
     	final File[] mergeableIndexesFile = Arrays.stream(allIndexes).filter(f -> f != biggerIndex).toArray(File[]::new);
@@ -44,12 +44,12 @@ public class MergeIndexService {
         LOG.info("Ok.");
 	}
 	
-    protected File[] allIndexes(final String src){
-        final File parent = new File(src);
+    protected File[] allIndexes(final String mergeIndexSrcDir){
+        final File parent = new File(mergeIndexSrcDir);
         if(parent.isDirectory()){
             return Arrays.stream(parent.listFiles()).filter(f -> !f.getName().startsWith(".")).filter(f -> !"ignore".equals(f.getName())).toArray(File[]::new);
         }else{
-            return null;
+            throw new RuntimeException("mergeIndexSrcDir must be a directory");
         }
     }
     

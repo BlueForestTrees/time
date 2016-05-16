@@ -12,11 +12,12 @@
         <module>time.domain</module>
         <module>time.tika</module>
         <module>time.tool</module>
-        <module>time.phraseStore</module>
+        <module>time.storage</module>
         <module>time.web</module>
         <module>time.liveparse</module>
         <module>time.analyser</module>
         <module>time.transform</module>
+        <module>time.messaging</module>
     </modules>
     <properties>
         <argparse4j.version>0.7.0</argparse4j.version>
@@ -60,6 +61,11 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>slim</groupId>
+                <artifactId>time.messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>slim</groupId>
                 <artifactId>time.transform</artifactId>

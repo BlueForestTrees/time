@@ -49,5 +49,9 @@
 			<groupId>slim</groupId>
 			<artifactId>time.transform</artifactId>
 		</dependency>
-    </dependencies>
+		<dependency>
+			<groupId>slim</groupId>
+			<artifactId>time.messaging</artifactId>
+		</dependency>
+	</dependencies>
 </project>

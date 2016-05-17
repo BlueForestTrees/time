@@ -50,32 +50,37 @@ public class LiveparseVerticle extends AbstractVerticle {
     @Override
     public void start() {
         Router router = Router.router(vertx);
-        router.get("/api/fromurl/:url").handler(this::fromUrl);
         router.route().handler(BodyHandler.create());
+        router.get("/api/liveparse/url/:url").handler(this::fromUrl);
         router.route("/*").handler(StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true).setWebRoot(webRoot));
-        router.post("/api/upload").handler(BodyHandler.create().setMergeFormAttributes(true));
-        router.post("/api/upload").handler(this::upload);
+        router.post("/api/liveparse/file").handler(this::fromFile);
         vertx.createHttpServer().requestHandler(router::accept).listen(port);
         LOGGER.info("started");
     }
 
-    private void upload(final RoutingContext ctx) {
-        try {
-            final FileUpload file = ctx.fileUploads().iterator().next();
-            final String text = fileToText(file);
+    private void fromFile(final RoutingContext ctx) {
+        vertx.executeBlocking(future -> {
+            try {
+                final FileUpload file = ctx.fileUploads().iterator().next();
+                LOGGER.info("fromFile " + file.fileName());
+                final String text = fileToText(file);
+                future.complete(text);
+            } catch (Exception e) {
+                ctx.fail(e);
+            }
+        }, res -> {
             ctx.response()
                     .putHeader("Content-Type", "application/json")
                     .setChunked(true)
-                    .write(text)
+                    .write((String)res.result())
                     .end();
-        } catch (Exception e) {
-            ctx.fail(e);
-        }
+        });
     }
 
     private void fromUrl(final RoutingContext ctx){
         try {
             final String url = ctx.request().getParam("url");
+            LOGGER.info("fromUrl " + url);
             final String text = urlToText(url);
             ctx.response()
                     .putHeader("Content-Type", "application/json")

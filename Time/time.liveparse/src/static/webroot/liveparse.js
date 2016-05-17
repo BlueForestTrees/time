@@ -23,7 +23,7 @@
             data.append(key, value);
         });
         $.ajax({
-            url: '/api/upload', type: 'POST', data: data, cache: false, processData: false, contentType: false,
+            url: '/api/liveparse/file', type: 'POST', data: data, cache: false, processData: false, contentType: false,
             success: Liveparse.upload.onLiveparse,
             error: Liveparse.upload.onLiveparseError
         });
@@ -33,7 +33,7 @@
             console.log('uploading url. . .');
             Liveparse.view.metadatas.empty();
             Liveparse.view.book.empty();
-            var url = "api/fromurl/" + encodeURIComponent(Liveparse.view.uploadUrlText.val());
+            var url = "api/liveparse/url/" + encodeURIComponent(Liveparse.view.uploadUrlText.val());
             $.get(url).done(Liveparse.upload.onLiveparse).fail(Liveparse.upload.onLiveparseError);
      }
 

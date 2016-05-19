@@ -18,11 +18,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DatedPhrasesFinderTest {
 
 	private final DatedPhrasesFinder[] finders;
-    private final DatedPhrasesFinders datedPhrasesFinders;
+	private final DatedPhrasesFinders datedPhrasesFinders;
 
-	public DatedPhrasesFinderTest(){
-        datedPhrasesFinders = new DatedPhrasesFinders();
-        finders = datedPhrasesFinders.getFindersArray();
+	public DatedPhrasesFinderTest() {
+		datedPhrasesFinders = new DatedPhrasesFinders();
+		finders = datedPhrasesFinders.getFindersArray();
 	}
 
 	// L’apparition de nouvelles façons de penser et de communiquer, entre 70
@@ -321,19 +321,19 @@ public class DatedPhrasesFinderTest {
 		assertOnly(Finder.JC, yearIs(2012), "Début 2012, j’étais en Champagne avec mon ami Michel Guillard");
 	}
 
-    @Test
-    public void jc30() {
-        assertOnly(Finder.JC, yearIs(1904), "Le sang versé en 1904 aurait épargné son décuple de 1914 à 1918.");
-    }
+	@Test
+	public void jc30() {
+		assertOnly(Finder.JC, yearIs(1904), "Le sang versé en 1904 aurait épargné son décuple de 1914 à 1918.");
+	}
 
-    @Test
-    public void doubleP1() {
-        assertTwo(Finder.DOUBLEPARENTHESIS, yearIs(1539),Finder.DOUBLEPARENTHESIS2, yearIs(1619), "Olivier de Serres (1539-1619) écrit");
-    }
+	@Test
+	public void doubleP1() {
+		assertTwo(Finder.DOUBLEPARENTHESIS, yearIs(1539), Finder.DOUBLEPARENTHESIS2, yearIs(1619), "Olivier de Serres (1539-1619) écrit");
+	}
 
 	@Test
 	public void tiret() {
-		assertTwo(Finder.TIRET, yearIs(1870),Finder.TIRET2, yearIs(1871), "dont une édition populaire de la guerre franco allemande de 1870-1871.");
+		assertTwo(Finder.TIRET, yearIs(1870), Finder.TIRET2, yearIs(1871), "dont une édition populaire de la guerre franco allemande de 1870-1871.");
 	}
 
 	@Test
@@ -539,6 +539,11 @@ public class DatedPhrasesFinderTest {
 	@Test
 	public void none17() {
 		assertNoDateIn("Ce direct fermera exceptionnellement un peu après 20 heures, Didier Deschamps");
+	}
+
+	@Test
+	public void none18() {
+		assertNoDateIn("mur d'enceinte et poterne », au profit dudit comte, pour environ 3600 m² par an");
 	}
 
 	@Test

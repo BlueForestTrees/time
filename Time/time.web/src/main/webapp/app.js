@@ -1,4 +1,4 @@
-require ("css/histoires.css");
+require ("histoires.css");
 Time = {};
 require('expose?$!expose?jQuery!jquery');
 require ("js/ga.js");

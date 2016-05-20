@@ -24,7 +24,15 @@ module.exports = {
 	    new CopyWebpackPlugin([{ from: srcDir + '/vendor', to: 'vendor'}]),
 	    new CopyWebpackPlugin([{ from: srcDir + '/img', to: 'img'}]),
 		new HtmlWebpackPlugin({template : srcDir + '/index.html',inject : 'body',hash : 'true'})
-	]
+	],
+	proxy: {
+      '/api/*': {
+        target: 'localhost:8080'
+      }
+    },
+    devServer: {
+        port: 8081
+    }
 };
 
 if(isProd){

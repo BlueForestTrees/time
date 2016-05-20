@@ -1,14 +1,16 @@
 var webpack = require('webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ENV = process.env.npm_lifecycle_event;
-var isProd = false;//ENV === 'build';
+var isProd = ENV === 'build';
 var srcDir = __dirname + "/src/main/html.js";
+var destDir = __dirname + '/target/webapp';
 
 module.exports = {
 	debug: !isProd,
     entry: srcDir + "/app.js",
     output: {
-		path : __dirname + '/target/webapp',
+		path : destDir,
 		publicPath : '/',
 		filename : 'js/[name].[hash].js',
 		chunkFilename : '[id].[hash].chunk.js'
@@ -17,12 +19,15 @@ module.exports = {
         loaders: [
             { test: /\.css$/, loader: "style!css" }
         ]
-    },commonschunkplugin
+    },
 	plugins: [
+	    new CopyWebpackPlugin([{ from: srcDir + '/vendor', to: 'vendor'}]),
+	    new CopyWebpackPlugin([{ from: srcDir + '/img', to: 'img'}]),
 		new HtmlWebpackPlugin({template : srcDir + '/index.html',inject : 'body',hash : 'true'})
 	]
 };
 
-if(!isProd){
+if(isProd){
+    console.log("isProd so uglify");
     module.exports.plugins.push(new webpack.optimize.UglifyJsPlugin());
 }

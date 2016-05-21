@@ -12,8 +12,7 @@ module.exports = {
     output: {
 		path : destDir,
 		publicPath : '/',
-		filename : 'js/[name].[hash].js',
-		chunkFilename : '[id].[hash].chunk.js'
+		filename : 'js/time.[hash].js'
 	},
     module: {
         loaders: [
@@ -26,9 +25,7 @@ module.exports = {
 		new HtmlWebpackPlugin({template : srcDir + '/index.html',inject : 'body',hash : 'true'})
 	],
 	proxy: {
-      '/api/*': {
-        target: 'localhost:8080'
-      }
+      '/api/*': { target: 'localhost:8080' }
     },
     devServer: {
         port: 8081

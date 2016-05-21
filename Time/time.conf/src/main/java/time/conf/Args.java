@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import org.apache.commons.lang3.text.StrLookup;
 import org.apache.commons.lang3.text.StrSubstitutor;
@@ -37,10 +38,13 @@ public class Args {
    * @throws FileNotFoundException
    * @throws IOException
    */
-  public <T> T toBean(final String[] args, final Class<T> beanClass) throws ArgumentParserException, IOException{
+  public <T> T toBean(final String[] args, final Class<T> beanClass, final String def) throws ArgumentParserException, IOException{
+	return toBean(getString(args, "conf").orElse(def), beanClass);
+  }
+
+  public Optional<String> getString(String[] args, final String key) throws ArgumentParserException {
     final Namespace namespace = parse(args);
-    final String confPath = namespace.getString("conf");
-	return toBean(confPath, beanClass);
+    return Optional.of(namespace.getString(key));
   }
 
   /**

@@ -18,7 +18,7 @@ public class FileModule extends AbstractModule {
 	private Conf configuration;
 
 	public FileModule(final String[] args) throws ArgumentParserException, IOException {
-		configuration = new Args().toBean(args, Conf.class);
+		configuration = new Args().toBean(args, Conf.class, "~/time/data/conf/file.yml");
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class FilesModule extends AbstractModule {
 	private Conf configuration;
 
 	public FilesModule(final String[] args) throws ArgumentParserException, IOException {
-		configuration = new Args().toBean(args, Conf.class, "~/time/data/conf/files.yml");
+		configuration = new Args().toBean(args, Conf.class, "${TIME_HOME}/conf/local.tika.yml");
 	}
 
 	@Provides

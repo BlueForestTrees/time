@@ -39,12 +39,12 @@ public class Args {
    * @throws IOException
    */
   public <T> T toBean(final String[] args, final Class<T> beanClass, final String def) throws ArgumentParserException, IOException{
-	return toBean(getString(args, "conf").orElse(def), beanClass);
+	return toBean(getString(args, "conf").orElse(getEnvSubstitutor().replace(def)), beanClass);
   }
 
   public Optional<String> getString(String[] args, final String key) throws ArgumentParserException {
     final Namespace namespace = parse(args);
-    return Optional.of(namespace.getString(key));
+    return Optional.ofNullable(namespace.getString(key));
   }
 
   /**
@@ -62,7 +62,7 @@ public class Args {
    */
   public ArgumentParser buildArgumentParser(){
     final ArgumentParser argParser = ArgumentParsers.newArgumentParser("java -jar path/to/jarname.jar -conf path/to/conf.yml", false);
-    argParser.addArgument("-conf").nargs("?").setDefault("conf.yml").help("configuration File");
+    argParser.addArgument("-conf").nargs("?").help("configuration File");
     return argParser;
   }
   

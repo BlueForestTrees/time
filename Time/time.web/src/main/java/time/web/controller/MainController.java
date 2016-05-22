@@ -9,7 +9,7 @@ public class MainController {
     
     @RequestMapping(value = "/*", method = RequestMethod.GET)
     public String histoires(){
-        return "view/histoires.html";
+        return "index.html";
     }
     
 }

@@ -30,13 +30,15 @@ public class Messager {
     }
 
     //SIMPLE
-    public void addReceiver(final time.messaging.SimpleConsumer timeConsumer) throws IOException {
+    public Messager addReceiver(final time.messaging.SimpleConsumer timeConsumer) throws IOException {
         LOGGER.info(timeConsumer + " simply listen " + timeConsumer.getQueue());
 
         final Queue receiverQueue = timeConsumer.getQueue();
         final com.rabbitmq.client.Consumer consumer = new SimpleConsumer(timeConsumer);
         channel.queueDeclare(receiverQueue.name(), false, false, false, null);
         channel.basicConsume(receiverQueue.name(), true, consumer);
+
+        return this;
     }
 
     public time.messaging.SimpleSender getSender(final Queue queue){
@@ -50,13 +52,15 @@ public class Messager {
         return new TypedSender(queue, type);
     }
 
-    public <T> void addReceiver(final Consumer<T> timeConsumer, final Class<T> type) throws IOException {
+    public <T> Messager addReceiver(final Consumer<T> timeConsumer, final Class<T> type) throws IOException {
         LOGGER.info(timeConsumer + " listen " + timeConsumer.getQueue() + "("+type.getSimpleName()+")");
 
         final Queue receiverQueue = timeConsumer.getQueue();
         final com.rabbitmq.client.Consumer consumer = new TypedConsumer(timeConsumer, type);
         channel.queueDeclare(receiverQueue.name(), false, false, false, null);
         channel.basicConsume(receiverQueue.name(), true, consumer);
+
+        return this;
     }
 
 

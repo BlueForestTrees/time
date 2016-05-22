@@ -19,7 +19,7 @@ public class WikiMain  implements SimpleConsumer {
 
 	public WikiMain(final String[] args) throws IOException, ArgumentParserException, TimeoutException {
         wikiCrawler = Guice.createInjector(new WikiModule(args)).getInstance(WikiCrawler.class);
-        new Messager().addReceiver(this);
+        new Messager().addReceiver(this).getSender(Queue.START_WIKI_CRAWL).signal();
 	}
 
 	public static void main(final String[] args) throws IOException, ArgumentParserException, TimeoutException {
@@ -35,7 +35,7 @@ public class WikiMain  implements SimpleConsumer {
     public void message() {
         wikiCrawler.start();
         try {
-            new Messager().getSender(Queue.WIKI_CRAWL_DONE).signal();
+            new Messager().getSender(Queue.MERGE).signal();
         } catch (IOException | TimeoutException e) {
             LOGGER.error(e);
         }

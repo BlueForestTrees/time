@@ -1,0 +1,2 @@
+mergeableIndexesDir: ${TIME_HOME}/indexes/mergeables
+mergedIndexDir: ${TIME_HOME}/indexes/prod

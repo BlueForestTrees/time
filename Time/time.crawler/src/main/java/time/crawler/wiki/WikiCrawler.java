@@ -44,6 +44,8 @@ public class WikiCrawler extends Crawler {
 
     @Override
     public void start() {
+        this.pageCount = 0;
+        this.nbLog = 0;
         this.pageChrono.start();
         this.fullChrono.start();
         store.start();

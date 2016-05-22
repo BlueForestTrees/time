@@ -22,7 +22,7 @@ public class WikiModule extends AbstractModule {
 	}
 
 	public WikiModule(final String[] args) throws ArgumentParserException, IOException {
-		conf = new Args().toBean(args, Conf.class, "~/dev/time/data/conf/wiki.yml");
+		conf = new Args().toBean(args, Conf.class, "${TIME_HOME}/conf/wiki.yml");
 	}
 
 	@Override

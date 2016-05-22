@@ -1,3 +1,3 @@
 sourceDir: ${TIME_HOME}/sources/livres/
-indexDir: ${TIME_HOME}/indexes/mergeable/local.tika/
+indexDir: ${TIME_HOME}/indexes/mergeables/local.tika/
 excludeAfterList: []

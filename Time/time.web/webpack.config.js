@@ -24,11 +24,11 @@ module.exports = {
 	    new CopyWebpackPlugin([{ from: srcDir + '/img', to: 'img'}]),
 		new HtmlWebpackPlugin({template : srcDir + '/index.html',inject : 'body',hash : 'true'})
 	],
-	proxy: {
-      '/api/*': { target: 'http://localhost:8080' }
-    },
     devServer: {
-        port: 8081
+        port: 8081,
+        proxy: {
+            '/api/*': { target: 'http://localhost:8080' }
+        },
     }
 };
 

@@ -33,13 +33,13 @@ public class Messager {
     public void addReceiver(final time.messaging.SimpleConsumer timeConsumer) throws IOException {
         LOGGER.info(timeConsumer + " simply listen " + timeConsumer.getQueue());
 
-        final String receiverQueue = timeConsumer.getQueue();
+        final Queue receiverQueue = timeConsumer.getQueue();
         final com.rabbitmq.client.Consumer consumer = new SimpleConsumer(timeConsumer);
-        channel.queueDeclare(receiverQueue, false, false, false, null);
-        channel.basicConsume(receiverQueue, true, consumer);
+        channel.queueDeclare(receiverQueue.name(), false, false, false, null);
+        channel.basicConsume(receiverQueue.name(), true, consumer);
     }
 
-    public time.messaging.SimpleSender getSender(final String queue){
+    public time.messaging.SimpleSender getSender(final Queue queue){
         LOGGER.info("creating simple sender queue " + queue);
         return new SimpleSender(queue);
     }
@@ -53,24 +53,24 @@ public class Messager {
     public <T> void addReceiver(final Consumer<T> timeConsumer, final Class<T> type) throws IOException {
         LOGGER.info(timeConsumer + " listen " + timeConsumer.getQueue() + "("+type.getSimpleName()+")");
 
-        final String receiverQueue = timeConsumer.getQueue();
+        final Queue receiverQueue = timeConsumer.getQueue();
         final com.rabbitmq.client.Consumer consumer = new TypedConsumer(timeConsumer, type);
-        channel.queueDeclare(receiverQueue, false, false, false, null);
-        channel.basicConsume(receiverQueue, true, consumer);
+        channel.queueDeclare(receiverQueue.name(), false, false, false, null);
+        channel.basicConsume(receiverQueue.name(), true, consumer);
     }
 
 
 
     //SIMPLE
     private class SimpleSender implements time.messaging.SimpleSender {
-        public String queue;
-        public SimpleSender(final String queue){
+        public Queue queue;
+        public SimpleSender(final Queue queue){
             this.queue = queue;
         }
         @Override
         public void signal() throws IOException {
             LOGGER.info("sending signal to queue " + queue);
-            channel.basicPublish("", queue, null, null);
+            channel.basicPublish("", queue.name(), null, null);
         }
     }
 

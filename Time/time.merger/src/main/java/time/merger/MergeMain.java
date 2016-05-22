@@ -3,7 +3,7 @@ package time.merger;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.messaging.Messager;
-import time.messaging.Queues;
+import time.messaging.Queue;
 import time.messaging.Consumer;
 
 import java.io.IOException;
@@ -26,8 +26,8 @@ public class MergeMain extends Consumer<Merge> {
     }
 
     @Override
-    public String getQueue() {
-        return Queues.MERGE.name();
+    public Queue getQueue() {
+        return Queue.MERGE;
     }
 
     @Override

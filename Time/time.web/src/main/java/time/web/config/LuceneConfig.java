@@ -24,7 +24,7 @@ public class LuceneConfig {
 
     @Bean
     public String indexPath() {
-        return new Args().getEnvSubstitutor().replace("${TIME_HOME}/indexes/mergeable/local.tika/");
+        return new Args().getEnvSubstitutor().replace("${TIME_HOME}/indexes/prod/");
     }
 
     @Bean

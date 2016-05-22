@@ -3,7 +3,7 @@ package time.merge;
 import org.junit.Test;
 import time.merger.Merge;
 import time.messaging.Messager;
-import time.messaging.Queues;
+import time.messaging.Queue;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -16,6 +16,6 @@ public class TestMerge {
         merge.setMergedIndexDir("destDir you you");
         merge.setMergeableIndexesDir("srcDir now now");
 
-        new Messager().getSender(Queues.MERGE.name(), Merge.class).send(merge);
+        new Messager().getSender(Queue.MERGE.name(), Merge.class).send(merge);
     }
 }

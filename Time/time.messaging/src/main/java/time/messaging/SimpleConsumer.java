@@ -1,6 +1,6 @@
 package time.messaging;
 
 public interface SimpleConsumer {
-    String getQueue();
+    Queue getQueue();
     void message();
 }

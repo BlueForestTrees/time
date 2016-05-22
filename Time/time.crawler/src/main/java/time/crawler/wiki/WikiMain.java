@@ -2,14 +2,18 @@ package time.crawler.wiki;
 
 import com.google.inject.Guice;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import time.messaging.Messager;
-import time.messaging.Queues;
+import time.messaging.Queue;
 import time.messaging.SimpleConsumer;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 public class WikiMain  implements SimpleConsumer {
+
+    private static final Logger LOGGER = LogManager.getLogger(WikiMain.class);
 
     private final WikiCrawler wikiCrawler;
 
@@ -23,12 +27,17 @@ public class WikiMain  implements SimpleConsumer {
 	}
 
     @Override
-    public String getQueue() {
-        return Queues.START_WIKI_CRAWL.name();
+    public Queue getQueue() {
+        return Queue.START_WIKI_CRAWL;
     }
 
     @Override
     public void message() {
         wikiCrawler.start();
+        try {
+            new Messager().getSender(Queue.WIKI_CRAWL_DONE).signal();
+        } catch (IOException | TimeoutException e) {
+            LOGGER.error(e);
+        }
     }
 }

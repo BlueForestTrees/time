@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 @Configuration
 @EnableWebMvc
+@EnableWebSecurity
 @ComponentScan({ "time.web.controller" })
 @Import(ComponentConfig.class)
 public class WebConfig extends WebMvcConfigurerAdapter {

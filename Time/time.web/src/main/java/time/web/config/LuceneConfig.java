@@ -1,23 +1,18 @@
 package time.web.config;
 
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.facet.sortedset.DefaultSortedSetDocValuesReaderState;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
-import org.apache.lucene.search.SortField.Type;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import time.conf.Args;
+
+import java.io.IOException;
+import java.nio.file.FileSystems;
 
 @Configuration
 public class LuceneConfig {

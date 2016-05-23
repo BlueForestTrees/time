@@ -2,6 +2,7 @@ package time.web.service;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,21 +42,21 @@ public class BucketService {
 		return toBucketsDTO(facets, scale);
 	}
 
-	protected BucketGroup toBucketsDTO(final FacetResult facetResult, final String scale) {
+	private BucketGroup toBucketsDTO(final FacetResult facetResult, final String scale) {
 		final BucketGroup bucketsDTO = new BucketGroup();
 		bucketsDTO.setBuckets(toBucketsDTO(facetResult));
 		bucketsDTO.setScale(scale);
 		return bucketsDTO;
 	}
 
-	protected List<Bucket> toBucketsDTO(final FacetResult facetResult) {
+	private List<Bucket> toBucketsDTO(final FacetResult facetResult) {
 		if (facetResult == null) {
-			return Arrays.asList();
+			return Collections.emptyList();
 		}
-		return Arrays.stream(facetResult.labelValues).map(elt -> toBucketDTO(elt)).collect(Collectors.toList());
+		return Arrays.stream(facetResult.labelValues).map(this::toBucketDTO).collect(Collectors.toList());
 	}
 
-	protected Bucket toBucketDTO(LabelAndValue facet) {
+	private Bucket toBucketDTO(LabelAndValue facet) {
 		final Bucket facetDTO = new Bucket();
 		facetDTO.setBucket(new Long(facet.label));
 		facetDTO.setCount((int) facet.value);

@@ -23,18 +23,8 @@ import time.conf.Args;
 public class LuceneConfig {
 
     @Bean
-    public String indexPath() {
-        return new Args().getEnvSubstitutor().replace("${TIME_HOME}/indexes/prod/");
-    }
-
-    @Bean
-    public FSDirectory indexDir() throws IOException {
-        return FSDirectory.open(FileSystems.getDefault().getPath(indexPath()));
-    }
-
-    @Bean
-    public DirectoryReader directoryReader() throws IOException {
-        return DirectoryReader.open(indexDir());
+    public Analyzer analyzer(){
+        return new StandardAnalyzer();
     }
 
     @Bean
@@ -48,18 +38,10 @@ public class LuceneConfig {
     }
 
     @Bean
-    public Map<String, Object> cache() {
-        return new ConcurrentHashMap<>();
-    }
-
-    @Bean
-    public Sort sortDateAsc() {
-        return new Sort(new SortField("date", Type.LONG));
-    }
-    
-    @Bean
-    public Analyzer analyzer(){
-        return new StandardAnalyzer();
+    protected DirectoryReader directoryReader() throws IOException {
+        final String indexPath = new Args().getEnvSubstitutor().replace("${TIME_HOME}/indexes/prod/");
+        final FSDirectory indexDir = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
+        return DirectoryReader.open(indexDir);
     }
 
 }

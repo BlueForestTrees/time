@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -32,8 +33,7 @@ import time.web.exception.LuceneRuntimeException;
 @Service
 public class PhraseService {
 
-    @Autowired
-    private int pageSize;
+    private int pageSize = 20;
 
     @Autowired
     private IndexSearcher indexSearcher;
@@ -42,16 +42,14 @@ public class PhraseService {
     private QueryService queryHelper;
 
     @Autowired
-    private Map<String, Object> cache;
-
-    @Autowired
-    private Sort sortDateAsc;
-
-    @Autowired
     private Analyzer analyzer;
     
     @Autowired
     private FindBetterService tryWithService;
+
+    private Map<String, Object> cache = new ConcurrentHashMap<>();
+
+    private Sort sortDateAsc = new Sort(new SortField("date", Type.LONG));
 
     public Phrases find(final String request, final String field, final Long from,  final Long to, String lastKey) throws IOException {    	
         final Last last = (Last) cache.remove(lastKey);
@@ -88,7 +86,7 @@ public class PhraseService {
 		return htmlToSlackFormat(findFirst(term));
 	}
 
-    protected DatedPhrase getPhrase(final ScoreDoc scoreDoc, final Highlighter highlighter) {
+    private DatedPhrase getPhrase(final ScoreDoc scoreDoc, final Highlighter highlighter) {
         try {
             final Document doc = indexSearcher.doc(scoreDoc.doc);
             final DatedPhrase phrase = new DatedPhrase();
@@ -103,7 +101,7 @@ public class PhraseService {
         }
     }
 
-	protected String findFirst(final String term) {
+	private String findFirst(final String term) {
 		String result = "";
 		final Query query = queryHelper.getQueryForFirstPhrase(term);
 		final Sort sort = new Sort(new SortField("date", Type.LONG));

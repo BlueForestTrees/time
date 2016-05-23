@@ -11,19 +11,19 @@ import time.messaging.SimpleConsumer;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class WikiMain  implements SimpleConsumer {
+public class CrawlWikiMain implements SimpleConsumer {
 
-    private static final Logger LOGGER = LogManager.getLogger(WikiMain.class);
+    private static final Logger LOGGER = LogManager.getLogger(CrawlWikiMain.class);
 
-    private final WikiCrawler wikiCrawler;
+    private final CrawlWiki crawlWiki;
 
-	public WikiMain(final String[] args) throws IOException, ArgumentParserException, TimeoutException {
-        wikiCrawler = Guice.createInjector(new WikiModule(args)).getInstance(WikiCrawler.class);
+	public CrawlWikiMain(final String[] args) throws IOException, ArgumentParserException, TimeoutException {
+        crawlWiki = Guice.createInjector(new CrawlWikiModule(args)).getInstance(CrawlWiki.class);
         new Messager().addReceiver(this).getSender(Queue.START_WIKI_CRAWL).signal();
 	}
 
 	public static void main(final String[] args) throws IOException, ArgumentParserException, TimeoutException {
-		new WikiMain(args);
+		new CrawlWikiMain(args);
 	}
 
     @Override
@@ -33,7 +33,7 @@ public class WikiMain  implements SimpleConsumer {
 
     @Override
     public void message() {
-        wikiCrawler.start();
+        crawlWiki.start();
         try {
             new Messager().getSender(Queue.MERGE).signal();
         } catch (IOException | TimeoutException e) {

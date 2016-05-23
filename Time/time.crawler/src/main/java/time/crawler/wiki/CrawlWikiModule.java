@@ -11,7 +11,7 @@ import time.transform.ITextTransformer;
 
 import java.io.IOException;
 
-public class WikiModule extends AbstractModule {
+public class CrawlWikiModule extends AbstractModule {
 
 	private Conf conf;
 
@@ -21,7 +21,7 @@ public class WikiModule extends AbstractModule {
 		return conf;
 	}
 
-	public WikiModule(final String[] args) throws ArgumentParserException, IOException {
+	public CrawlWikiModule(final String[] args) throws ArgumentParserException, IOException {
 		conf = new Args().toBean(args, Conf.class, "${TIME_HOME}/conf/wiki.yml");
 	}
 

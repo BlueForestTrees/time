@@ -15,9 +15,9 @@ import time.tool.chrono.Chrono;
 
 import java.util.List;
 
-public class WikiCrawler extends Crawler {
+public class CrawlWiki extends Crawler {
 	
-	private static final Logger LOGGER = LogManager.getLogger(WikiCrawler.class);
+	private static final Logger LOGGER = LogManager.getLogger(CrawlWiki.class);
 
     private final List<String> contentExclusion;
     private final TextHandler store;
@@ -30,7 +30,7 @@ public class WikiCrawler extends Crawler {
     private long chronoPageTotal;
 
     @Inject
-	public WikiCrawler(@Named("conf") final Conf conf, final TextHandler store, final TextFactory textFactory) {
+	public CrawlWiki(@Named("conf") final Conf conf, final TextHandler store, final TextFactory textFactory) {
 		super(conf);
         this.contentExclusion = conf.getContentExclusion();
         this.nbPageLog = conf.getNbPageLog();
@@ -93,7 +93,7 @@ public class WikiCrawler extends Crawler {
 
     @Override
     public String toString() {
-        return "WikiCrawler{" +
+        return "CrawlWiki{" +
                 super.toString() +
                 ", contentExclusion=" + contentExclusion +
                 ", store=" + store +

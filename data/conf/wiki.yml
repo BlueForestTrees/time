@@ -1,6 +1,6 @@
 seedUrl: https://fr.wikipedia.org/wiki/Portail:Accueil
 baseUrl: https://fr.wikipedia.org/wiki/
-nbCrawlers: 1
+nbCrawlers: 3
 maxPages: 50
 chronoPageTotal: 50
 nbPageLog: 10

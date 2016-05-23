@@ -33,14 +33,19 @@ public class MergeService {
         FileUtils.deleteDirectory(destPath);
 		LOG.info("FileUtils.copyDirectory(" + biggerIndex + " -> " + destPath + ") . . .");
         FileUtils.copyDirectory(biggerIndex, destPath);
-        LOG.info("creation de indexWriter sur " + destPath + " . . .");
-		final IndexWriter indexWriter = new IndexWriter(destDirectory, indexWriterConfig);
-		LOG.info("indexWriter.addIndexes("+Arrays.toString(mergeableIndexesFile)+") . . .");
-		indexWriter.addIndexes(mergeableIndexes);
-        LOG.info("indexWriter.forceMerge(1) . . .");
-        indexWriter.forceMerge(1);
-        LOG.info("indexWriter.close() . . .");
-        indexWriter.close();
+
+        if(mergeableIndexesFile.length > 0) {
+            LOG.info("creation de indexWriter sur " + destPath + " . . .");
+            final IndexWriter indexWriter = new IndexWriter(destDirectory, indexWriterConfig);
+            LOG.info("indexWriter.addIndexes(" + Arrays.toString(mergeableIndexesFile) + ") . . .");
+            indexWriter.addIndexes(mergeableIndexes);
+            LOG.info("indexWriter.forceMerge(1) . . .");
+            indexWriter.forceMerge(1);
+            LOG.info("indexWriter.close() . . .");
+            indexWriter.close();
+        }else{
+            LOG.info("pas de merge d'index à faire.");
+        }
         LOG.info("Ok.");
 	}
 	

@@ -7,15 +7,20 @@ import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.store.FSDirectory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import time.conf.Args;
+import time.conf.Conf;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
 
 @Configuration
 public class LuceneConfig {
+
+    @Autowired
+    private Conf conf;
 
     @Bean
     public Analyzer analyzer(){
@@ -34,9 +39,9 @@ public class LuceneConfig {
 
     @Bean
     protected DirectoryReader directoryReader() throws IOException {
-        final String indexPath = new Args().getEnvSubstitutor().replace("${TIME_HOME}/indexes/prod/");
-        final FSDirectory indexDir = FSDirectory.open(FileSystems.getDefault().getPath(indexPath));
-        return DirectoryReader.open(indexDir);
+        final String indexDir = new Args().getEnvSubstitutor().replace(conf.getIndexDir());
+        final FSDirectory fsDirectory = FSDirectory.open(FileSystems.getDefault().getPath(indexDir));
+        return DirectoryReader.open(fsDirectory);
     }
 
 }

@@ -15,7 +15,7 @@ public class LiveparseModule extends AbstractModule {
     private Conf conf;
 
     public LiveparseModule(String[] args) throws IOException, ArgumentParserException {
-        conf = new Args().toBean(args, Conf.class, "~/time/data/conf/liveparse.yml");
+        conf = new Args().toBean(args, Conf.class, "${TIME_HOME}/conf/liveparse.yml");
     }
 
     @Override

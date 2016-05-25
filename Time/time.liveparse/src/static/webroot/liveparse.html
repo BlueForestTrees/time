@@ -14,10 +14,12 @@
                 console.log("document ready");
                 Liveparse.view = {
                     book : $('.book'),
+                    datedPhrases : $('.datedPhrases'),
                     metadatas : $('.metadatas'),
                     upload : $('.uploadFile'),
                     uploadUrlText : $('.uploadUrlText'),
-                    uploadUrlBt : $('.uploadUrlBt')
+                    uploadUrlBt : $('.uploadUrlBt'),
+                    throbber : $('#throbber')
                 };
                 Liveparse.upload = new Liveparse.Upload();
                 Liveparse.upload.init();
@@ -25,9 +27,19 @@
         </script>
     </head>
     <body>
-        <div>Fichier : <input type="file" class="uploadFile"></input></div>
-        <div>Url : <input type="text" class="uploadUrlText"/><input type="button" class="uploadUrlBt" value="Envoyer"/></div>
+        <div class="header">
+            <div>Fichier : <input type="file" class="uploadFile"></input></div>
+            <div>Url : <input type="text" class="uploadUrlText"/><input type="button" class="uploadUrlBt" value="Envoyer"/></div>
+            <div>Display :
+                <input type="button" value="Book" onClick="Liveparse.upload.showBook()"/>
+                <input type="button" value="Phrases" onClick="Liveparse.upload.showDatedPhrases()"/>
+            </div>
+            <div id="throbber">
+                <img class="throbber" src="throbber.gif" />
+            </div>
+        </div>
         <div class="metadatas"></div>
         <div class="book"></div>
+        <div class="datedPhrases"></div>
     </body>
 </html>

@@ -15,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
 import time.analyser.TextAnalyser;
+import time.domain.DatedPhrase;
 import time.domain.Text;
 import time.tika.TextFactory;
 import time.tool.string.Strings;
@@ -23,6 +24,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class LiveparseVerticle extends AbstractVerticle {
@@ -62,8 +64,9 @@ public class LiveparseVerticle extends AbstractVerticle {
         vertx.executeBlocking(future -> {
             try {
                 final FileUpload file = ctx.fileUploads().iterator().next();
-                LOGGER.info("fromFile " + file.fileName());
+                LOGGER.info("fromFile {}", file.fileName());
                 final String text = fileToText(file);
+                LOGGER.info("fromFile {} done" , file.fileName());
                 future.complete(text);
             } catch (Exception e) {
                 ctx.fail(e);
@@ -100,22 +103,38 @@ public class LiveparseVerticle extends AbstractVerticle {
     }
 
     private String fileToText(final FileUpload file) throws JsonProcessingException, FileNotFoundException {
-        return mapper.writeValueAsString(toDTO(analyser.analyse(textFactory.build(file.uploadedFileName()))));
+        final String filename = file.uploadedFileName();
+        LOGGER.info("textFactory.build({})", filename);
+        final Text text = textFactory.build(filename);
+        LOGGER.info("analyser.analyse(text)");
+        final Text analysedText = analyser.analyse(text);
+        LOGGER.info("toDTO(analysedText)");
+        final Map<String, Object> analysedTextDTO = toDTO(analysedText);
+        LOGGER.info("mapper.writeValueAsString(analysedTextDTO)");
+        final String analysedTextDTOString = mapper.writeValueAsString(analysedTextDTO);
+
+        return analysedTextDTOString;
     }
 
-    private Map<String, Object> toDTO(final Text analyse) {
-        final HashMap<String, Object> text = new HashMap<>();
+    private Map<String, Object> toDTO(final Text analysedText) {
+        final HashMap<String, Object> dto = new HashMap<>();
+
+        final String text = analysedText.getHightlightTextString();
         final HashMap<String, Object> metadatas = new HashMap<>();
+        final List<DatedPhrase> datedPhrases = analysedText.getPhrases();
 
-        text.put("text", analyse.getHightlightTextString());
-        text.put("metadatas", metadatas);
-        metadatas.put("Titre", analyse.getTitle());
-        metadatas.put("Auteur", analyse.getCreator());
-        metadatas.put("Date", analyse.getCreated());
-        metadatas.put("Paragraphes", analyse.getParagraphs().length);
-        metadatas.put("Phrases datées", analyse.getPhrases().size());
+        dto.put("text", text);
+        dto.put("metadatas", metadatas);
+        dto.put("datedPhrases", datedPhrases);
 
-        return text;
+        metadatas.put("Titre", analysedText.getTitle());
+        metadatas.put("Auteur", analysedText.getCreator());
+        metadatas.put("Date", analysedText.getCreated());
+        metadatas.put("Paragraphes", analysedText.getParagraphs().length);
+        metadatas.put("Phrases datées", analysedText.getPhrases().size());
+
+
+        return dto;
     }
 
 }

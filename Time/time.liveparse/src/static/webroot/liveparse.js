@@ -1,8 +1,10 @@
 (function() {
-    function upload() {
+    function Upload() {
     }
-    upload.prototype.init = function(){
+    Upload.prototype.init = function(){
         console.log("init");
+        Liveparse.upload.showBook();
+        Liveparse.view.throbber.hide();
         Liveparse.view.upload.change(this.doUpload);
         Liveparse.view.uploadUrlBt.click(this.doUrlUpload);
         Liveparse.view.uploadUrlText.keypress(function (e) {
@@ -10,9 +12,9 @@
                 Liveparse.upload.doUrlUpload();
             }
         });
-    }
+    };
 
-    upload.prototype.doUpload = function(event) {
+    Upload.prototype.doUpload = function(event) {
         console.log('uploading. . .');
         Liveparse.view.metadatas.empty();
         Liveparse.view.book.empty();
@@ -27,34 +29,58 @@
             success: Liveparse.upload.onLiveparse,
             error: Liveparse.upload.onLiveparseError
         });
-    }
+    };
 
-    upload.prototype.doUrlUpload = function(event) {
+    Upload.prototype.doUrlUpload = function(event) {
             console.log('uploading url. . .');
             Liveparse.view.metadatas.empty();
             Liveparse.view.book.empty();
+            Liveparse.view.datedPhrases.empty();
+            Liveparse.view.throbber.show();
             var url = "api/liveparse/url/" + encodeURIComponent(Liveparse.view.uploadUrlText.val());
             $.get(url).done(Liveparse.upload.onLiveparse).fail(Liveparse.upload.onLiveparseError);
-     }
+     };
 
-     upload.prototype.onLiveparse = function(data){
+     Upload.prototype.onLiveparse = function(data){
         console.log('uploaded', data);
+        Liveparse.view.throbber.hide();
         Liveparse.view.metadatas.append(Liveparse.upload.buildMetaHtml(data.metadatas));
         Liveparse.view.book.append(data.text);
-     }
+        Liveparse.view.datedPhrases.append(Liveparse.upload.buildPhrasesHtml(data.datedPhrases))
+     };
 
-     upload.prototype.onLiveparseError = function(data){
+     Upload.prototype.onLiveparseError = function(data){
         console.error('onLiveparseError', data);
-        alert("erreur :( l'adresse est-elle correcte?")
-     }
+        alert("erreur :( TODO remonter l'erreur");
+     };
 
-    upload.prototype.buildMetaHtml = function(metaDico){
+    Upload.prototype.buildMetaHtml = function(metaDico){
         console.log("buildMetaHtml", metaDico);
         var html = "";
         for(var key in metaDico){
             html += "<div class=\"metadata\">" + key + ": " + metaDico[key] + "</div>";
         }
         return html;
+    };
+
+    Upload.prototype.buildPhrasesHtml = function(phrases){
+        console.log("buildPhrasesHtml ");
+        var html = "";
+        phrases.forEach(function(phrase){
+            html += "<div class=\"phrase\">" + phrase.text + "</div>";
+        });
+        return html;
+    };
+
+    Upload.prototype.showBook = function(){
+        Liveparse.view.datedPhrases.hide();
+        Liveparse.view.book.show();
     }
-    Liveparse.Upload = upload;
+
+    Upload.prototype.showDatedPhrases = function(){
+        Liveparse.view.book.hide();
+        Liveparse.view.datedPhrases.show();
+    }
+
+    Liveparse.Upload = Upload;
 })();

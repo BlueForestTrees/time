@@ -6,6 +6,8 @@ import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.Args;
 import time.conf.Conf;
+import time.conf.ConfManager;
+import time.conf.Confs;
 import time.transform.CompositeTextTransformer;
 import time.transform.ITextTransformer;
 
@@ -22,7 +24,7 @@ public class CrawlWikiModule extends AbstractModule {
 	}
 
 	public CrawlWikiModule(final String[] args) throws ArgumentParserException, IOException {
-		conf = new Args().toBean(args, Conf.class, "${TIME_HOME}/conf/wiki.yml");
+		conf = ConfManager.get(Confs.WIKICRAWL);
 	}
 
 	@Override

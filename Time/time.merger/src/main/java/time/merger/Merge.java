@@ -2,14 +2,14 @@ package time.merger;
 
 public class Merge {
     private String mergeableIndexesDir;
-    private String mergedIndexDir;
+    private String mergedIndexesDir;
 
-    public String getMergedIndexDir() {
-        return mergedIndexDir;
+    public String getMergedIndexesDir() {
+        return mergedIndexesDir;
     }
 
-    public void setMergedIndexDir(String mergedIndexDir) {
-        this.mergedIndexDir = mergedIndexDir;
+    public void setMergedIndexesDir(String mergedIndexesDir) {
+        this.mergedIndexesDir = mergedIndexesDir;
     }
 
     public String getMergeableIndexesDir() {
@@ -24,7 +24,7 @@ public class Merge {
     public String toString() {
         return "Merge{" +
                 "mergeableIndexesDir='" + mergeableIndexesDir + '\'' +
-                ", mergedIndexDir='" + mergedIndexDir + '\'' +
+                ", mergedIndexesDir='" + mergedIndexesDir + '\'' +
                 '}';
     }
 }

@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import time.conf.Args;
 import time.conf.Conf;
+import time.conf.ConfManager;
+import time.conf.Confs;
 
 import java.io.IOException;
 
@@ -16,7 +18,7 @@ public class ComponentConfig {
 
     @Bean
     public Conf conf() throws IOException {
-        return new Args().toBean("${TIME_HOME}/conf/wiki.web.yml", Conf.class);
+        return ConfManager.get(Confs.WIKIWEB);
     }
 
 }

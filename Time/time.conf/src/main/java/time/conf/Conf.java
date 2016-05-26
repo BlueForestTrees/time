@@ -50,7 +50,15 @@ public class Conf {
 	private String indexDir;
 	private String finalIndexDir;
 	private String[] phraseMustNotStartWith;
+	private String mergeableIndexesDir;
+	private String mergedIndexDir;
 
+	public String getMergedIndexDir() {
+		return mergedIndexDir;
+	}
+	public String getMergeableIndexesDir() {
+		return mergeableIndexesDir;
+	}
 	public String getFinalIndexDir() {
 		return finalIndexDir;
 	}

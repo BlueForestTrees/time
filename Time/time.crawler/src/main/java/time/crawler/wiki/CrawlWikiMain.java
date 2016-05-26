@@ -35,7 +35,7 @@ public class CrawlWikiMain implements SimpleConsumer {
     public void message() {
         crawlWiki.start();
         try {
-            new Messager().getSender(Queue.MERGE).signal();
+            new Messager().getSender(Queue.START_WIKI_CRAWL_END).signal();
         } catch (IOException | TimeoutException e) {
             LOGGER.error(e);
         }

@@ -1,5 +1,5 @@
 package time.messaging;
 
 public enum Queue {
-    START_WIKI_CRAWL, MERGE
+    START_WIKI_CRAWL, START_WIKI_CRAWL_END, MERGE, MERGED, WIKI_WEB_REFRESH, WIKI_WEB_REFRESH_END
 }

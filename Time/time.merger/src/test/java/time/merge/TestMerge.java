@@ -13,7 +13,7 @@ public class TestMerge {
     public void sendMerge() throws IOException, TimeoutException {
 
         Merge merge = new Merge();
-        merge.setMergedIndexesDir("destDir you you");
+        merge.setMergedIndexDir("destDir you you");
         merge.setMergeableIndexesDir("srcDir now now");
 
         new Messager().getSender(Queue.MERGE.name(), Merge.class).send(merge);

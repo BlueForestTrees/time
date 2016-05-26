@@ -39,7 +39,7 @@ public class Args {
    * @throws IOException
    */
   public <T> T toBean(final String[] args, final Class<T> beanClass, final String def) throws ArgumentParserException, IOException{
-	return toBean(getString(args, "conf").orElse(getEnvSubstitutor().replace(def)), beanClass);
+	return toBean(getString(args, "conf").orElse(Resolver.get(def)), beanClass);
   }
 
   public Optional<String> getString(String[] args, final String key) throws ArgumentParserException {
@@ -75,7 +75,7 @@ public class Args {
    */
   public <T> T toBean(final String ymlPath, Class<T> beanClass) throws IOException{
     final String rawConfig = new String(ByteStreams.toByteArray(new FileInputStream(new File(ymlPath))), StandardCharsets.UTF_8);
-    final String substituedConfig = getEnvSubstitutor().replace(rawConfig);
+    final String substituedConfig = Resolver.get(rawConfig);
     final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
     LOGGER.info(ymlPath + " content\n" + substituedConfig);
@@ -83,18 +83,7 @@ public class Args {
     return mapper.readValue(substituedConfig, beanClass);
   }
 
-  public StrSubstitutor getEnvSubstitutor() {
-    return new StrSubstitutor(new StrLookup<Object>() {
-      @Override
-      public String lookup(String key) {
-        final String value = System.getenv(key);
-        if(value == null){
-          throw new RuntimeException("variable d'environnement manquante : " + key);
-        }
-        return value;
-      }
-    });
-  }
+
 
 }
 

@@ -53,6 +53,10 @@ public class Conf {
 	private String mergeableIndexesDir;
 	private String mergedIndexDir;
 
+	public void setMergedIndexDir(String mergedIndexDir) {
+		this.mergedIndexDir = mergedIndexDir;
+	}
+
 	public String getMergedIndexDir() {
 		return mergedIndexDir;
 	}

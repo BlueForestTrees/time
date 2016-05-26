@@ -21,7 +21,7 @@ public class MergeService {
 	   
 	public void merge(final Merge merge) throws IOException{
 		final File[] allIndexes = allIndexes(merge.getMergeableIndexesDir());
-		final File destPath = new File(merge.getMergedIndexesDir());
+		final File destPath = new File(merge.getMergedIndexDir());
 		final File biggerIndex = Arrays.stream(allIndexes).max((f1,f2) -> Long.compare(FileUtils.sizeOfDirectory(f1), FileUtils.sizeOfDirectory(f2))).get();
 		final Directory destDirectory = directoryFromFile(destPath);
     	final File[] mergeableIndexesFile = Arrays.stream(allIndexes).filter(f -> f != biggerIndex).toArray(File[]::new);

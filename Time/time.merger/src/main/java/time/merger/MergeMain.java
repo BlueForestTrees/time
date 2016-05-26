@@ -16,7 +16,8 @@ public class MergeMain implements SimpleConsumer {
 
     private static final Logger LOGGER = LogManager.getLogger(MergeMain.class);
 
-    final MergeService mergeService;
+    private final MergeService mergeService;
+    private final IndexChooser indexChooser;
 
     public static void main(final String[] args) throws IOException, TimeoutException, ArgumentParserException {
         new MergeMain(args);
@@ -25,6 +26,7 @@ public class MergeMain implements SimpleConsumer {
     public MergeMain(final String[] args) throws IOException, TimeoutException, ArgumentParserException {
         LOGGER.info("MergeMain()");
         mergeService = new MergeService();
+        indexChooser = new IndexChooser();
         new Messager().addReceiver(this);
     }
 
@@ -37,10 +39,10 @@ public class MergeMain implements SimpleConsumer {
     public void message() {
         LOGGER.info("received signal " + Queue.MERGE);
         try {
+            final Merge merge = indexChooser.prepareMerge();
             mergeService.merge(merge);
-
-
-            new Messager().getSender(Queue.START_WIKI_CRAWL).signal();
+            ConfManager.update(Confs.WIKICRAWL, conf -> conf.setMergedIndexDir(merge.getMergedIndexDir()));
+            new Messager().getSender(Queue.MERGED).signal();
         } catch (TimeoutException | IOException e) {
             LOGGER.error(e);
         }

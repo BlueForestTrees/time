@@ -43,13 +43,13 @@ public class CrawlWiki extends Crawler {
     }
 
     @Override
-    public void start() {
+    public void crawl() {
         this.pageCount = 0;
         this.nbLog = 0;
         this.pageChrono.start();
         this.fullChrono.start();
         store.start();
-        super.start();
+        super.crawl();
         store.stop();
     }
 

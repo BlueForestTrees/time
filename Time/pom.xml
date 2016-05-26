@@ -18,6 +18,7 @@
         <module>time.analyser</module>
         <module>time.transform</module>
         <module>time.messaging</module>
+        <module>time.messaging.console</module>
     </modules>
     <properties>
         <argparse4j.version>0.7.0</argparse4j.version>

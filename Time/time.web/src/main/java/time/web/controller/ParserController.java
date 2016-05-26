@@ -23,9 +23,9 @@ public class ParserController {
 		try {
 			final InputStream uploadStream = file.getInputStream();
 			final InputStream response = parserService.parse(uploadStream);
-			redirectAttributes.addFlashAttribute("message", "You successfully uploaded !");
+			redirectAttributes.addFlashAttribute("signal", "You successfully uploaded !");
 		} catch (Exception e) {
-			redirectAttributes.addFlashAttribute("message", "You failed to upload => " + e.getMessage());
+			redirectAttributes.addFlashAttribute("signal", "You failed to upload => " + e.getMessage());
 		}
 
 		return "redirect:upload";

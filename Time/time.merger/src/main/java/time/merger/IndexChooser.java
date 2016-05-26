@@ -7,8 +7,8 @@ import java.io.IOException;
 
 public class IndexChooser {
     public Merge prepareMerge() throws IOException {
-        final Merge merge = ConfManager.get(Confs.MERGER, Merge.class);
-        final String currentWikiCrawlindexDir = ConfManager.get(Confs.WIKIWEB).getIndexDir();
+        final Merge merge = new ConfManager().get(Confs.MERGER, Merge.class);
+        final String currentWikiCrawlindexDir = new ConfManager().get(Confs.WIKIWEB).getIndexDir();
 
         if(currentWikiCrawlindexDir.endsWith("red")){
             merge.setMergedIndexDir("${TIME_HOME}/indexes/merged/blue");

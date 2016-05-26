@@ -7,12 +7,11 @@ import time.conf.ConfManager;
 import time.conf.Confs;
 import time.messaging.Messager;
 import time.messaging.Queue;
-import time.messaging.SimpleConsumer;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class MergeMain implements SimpleConsumer {
+public class MergeMain {
 
     private static final Logger LOGGER = LogManager.getLogger(MergeMain.class);
 
@@ -27,25 +26,19 @@ public class MergeMain implements SimpleConsumer {
         LOGGER.info("MergeMain()");
         mergeService = new MergeService();
         indexChooser = new IndexChooser();
-        new Messager().addReceiver(this);
-    }
-
-    @Override
-    public Queue getQueue() {
-        return Queue.MERGE;
-    }
-
-    @Override
-    public void message() {
-        LOGGER.info("received signal " + Queue.MERGE);
-        try {
-            final Merge merge = indexChooser.prepareMerge();
-            mergeService.merge(merge);
-            ConfManager.update(Confs.WIKICRAWL, conf -> conf.setMergedIndexDir(merge.getMergedIndexDir()));
-            new Messager().getSender(Queue.MERGED).signal();
-        } catch (TimeoutException | IOException e) {
-            LOGGER.error(e);
-        }
+        final Messager messager = new Messager();
+        messager.when(Queue.MERGE)
+                .then(()->{
+                    LOGGER.info("received signal " + Queue.MERGE);
+                    try {
+                        final Merge merge = indexChooser.prepareMerge();
+                        mergeService.merge(merge);
+                        new ConfManager().update(Confs.WIKICRAWL, conf -> conf.setMergedIndexDir(merge.getMergedIndexDir()));
+                        new Messager().signal(Queue.MERGED);
+                    } catch (TimeoutException | IOException e) {
+                        LOGGER.error(e);
+                    }
+                });
     }
 
     @Override

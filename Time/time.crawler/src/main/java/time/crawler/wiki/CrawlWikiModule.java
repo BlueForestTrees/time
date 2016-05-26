@@ -4,7 +4,6 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import time.conf.Args;
 import time.conf.Conf;
 import time.conf.ConfManager;
 import time.conf.Confs;
@@ -24,7 +23,7 @@ public class CrawlWikiModule extends AbstractModule {
 	}
 
 	public CrawlWikiModule(final String[] args) throws ArgumentParserException, IOException {
-		conf = ConfManager.get(Confs.WIKICRAWL);
+		conf = new ConfManager().get(Confs.WIKICRAWL);
 	}
 
 	@Override

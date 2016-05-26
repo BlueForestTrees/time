@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import time.conf.Args;
 import time.conf.Conf;
+import time.conf.Resolver;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -39,7 +40,7 @@ public class LuceneConfig {
 
     @Bean
     protected DirectoryReader directoryReader() throws IOException {
-        final String indexDir = new Args().getEnvSubstitutor().replace(conf.getIndexDir());
+        final String indexDir = Resolver.get(conf.getIndexDir());
         final FSDirectory fsDirectory = FSDirectory.open(FileSystems.getDefault().getPath(indexDir));
         return DirectoryReader.open(fsDirectory);
     }

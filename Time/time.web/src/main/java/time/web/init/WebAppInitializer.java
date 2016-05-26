@@ -8,7 +8,6 @@ import org.springframework.web.servlet.support.AbstractDispatcherServletInitiali
 
 import time.messaging.Messager;
 import time.messaging.Queue;
-import time.messaging.SimpleConsumer;
 import time.web.config.WebConfig;
 
 import java.io.IOException;
@@ -26,20 +25,12 @@ public class WebAppInitializer extends AbstractDispatcherServletInitializer {
 
         try {
             final Messager messager = new Messager();
-            messager.addReceiver(new SimpleConsumer() {
-                @Override
-                public Queue getQueue() {
-                    return Queue.WIKI_WEB_REFRESH;
-                }
-
-                @Override
-                public void message() {
-                    webContext.refresh();
-                    try {
-                        messager.getSender(Queue.WIKI_WEB_REFRESH_END).signal();
-                    } catch (IOException e) {
-                        LOGGER.error(e);
-                    }
+            messager.when(Queue.WIKI_WEB_REFRESH).then(() -> {
+                webContext.refresh();
+                try {
+                    messager.signal(Queue.WIKI_WEB_REFRESH_END);
+                } catch (IOException e) {
+                    LOGGER.error(e);
                 }
             });
         } catch (IOException | TimeoutException e) {
@@ -52,7 +43,7 @@ public class WebAppInitializer extends AbstractDispatcherServletInitializer {
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] {"/"};
+        return new String[]{"/"};
     }
 
     @Override

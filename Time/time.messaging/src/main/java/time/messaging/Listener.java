@@ -2,6 +2,7 @@ package time.messaging;
 
 import java.io.IOException;
 
-public interface SimpleSender {
+@FunctionalInterface
+public interface Listener {
     void signal() throws IOException;
 }

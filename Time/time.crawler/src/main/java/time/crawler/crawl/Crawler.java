@@ -46,7 +46,7 @@ public abstract class Crawler implements ICrawler {
     }
     
 	@Override
-	public void start() {
+	public void crawl() {
 		LOGGER.info("START WITH CRAWLER : " + this);
 		CrawlAdapter.crawler = this;
 		final CrawlController crawlController = crawlController();

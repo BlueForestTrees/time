@@ -6,8 +6,8 @@ import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import time.conf.Args;
 import time.conf.Conf;
+import time.conf.ConfManager;
 import time.transform.CompositeTextTransformer;
 import time.transform.ITextTransformer;
 
@@ -18,7 +18,7 @@ public class FileModule extends AbstractModule {
 	private Conf configuration;
 
 	public FileModule(final String[] args) throws ArgumentParserException, IOException {
-		configuration = new Args().toBean(args, Conf.class, "~/time/data/conf/file.yml");
+		configuration = new ConfManager().toBean(args, Conf.class, "~/time/data/conf/file.yml");
 	}
 
 	@Override

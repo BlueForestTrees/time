@@ -38,7 +38,7 @@ public class LiveparseVerticle extends AbstractVerticle {
     private final String webRoot;
 
     @Inject
-    public LiveparseVerticle(@Named("conf") Conf conf, TextAnalyser analyser, ObjectMapper mapper, TextFactory textFactory) {
+    public LiveparseVerticle(Conf conf, TextAnalyser analyser, ObjectMapper mapper, TextFactory textFactory) {
         this.port = conf.getPort();
         this.webRoot = conf.getWebRoot();
         if(!new File(this.webRoot).isDirectory()){

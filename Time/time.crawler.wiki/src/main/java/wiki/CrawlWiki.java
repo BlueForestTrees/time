@@ -1,4 +1,4 @@
-package time.crawler.wiki;
+package wiki;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -30,7 +30,7 @@ public class CrawlWiki extends Crawler {
     private long chronoPageTotal;
 
     @Inject
-	public CrawlWiki(@Named("conf") final Conf conf, final TextHandler store, final TextFactory textFactory) {
+	public CrawlWiki(final Conf conf, final TextHandler store, final TextFactory textFactory) {
 		super(conf);
         this.contentExclusion = conf.getContentExclusion();
         this.nbPageLog = conf.getNbPageLog();

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import time.conf.Conf;
 import time.conf.ConfManager;
-import time.conf.Confs;
+import time.conf.ConfEnum;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ public class ComponentConfig {
 
     @Bean
     public Conf conf() throws IOException {
-        return new ConfManager().get(Confs.WIKIWEB);
+        return new ConfManager().get(ConfEnum.WIKIWEB);
     }
 
 }

@@ -15,7 +15,7 @@ public class LiveparseModule extends AbstractModule {
     private Conf conf;
 
     public LiveparseModule(String[] args) throws IOException, ArgumentParserException {
-        conf = new ConfManager().toBean(args, Conf.class, "${TIME_HOME}/conf/liveparse.yml");
+        conf = new ConfManager().get(args, Conf.class, "${TIME_HOME}/conf/liveparse.yml");
     }
 
     @Override
@@ -23,7 +23,7 @@ public class LiveparseModule extends AbstractModule {
 
     }
 
-    @Provides @Singleton @Named("conf")
+    @Provides @Singleton
     public Conf conf() {
         return conf;
     }

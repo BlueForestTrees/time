@@ -22,7 +22,7 @@ public class PhraseFilter {
 	private String[] phraseMustNotStartWith;
 
 	@Inject
-	public PhraseFilter(@Named("conf") Conf conf) {
+	public PhraseFilter(final Conf conf) {
 		this.minLength = conf.getMinLength();
 		this.maxLength = conf.getMaxLength();
 		this.phraseMustNotStartWith = conf.getPhraseMustNotStartWith();

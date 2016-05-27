@@ -1,4 +1,4 @@
-package time.crawler.files;
+package time.local.tika.files;
 
 import com.google.inject.Guice;
 

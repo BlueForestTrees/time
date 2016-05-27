@@ -19,7 +19,6 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 import time.conf.Conf;
 import time.domain.DatedPhrase;
@@ -41,7 +40,7 @@ public class PhraseStore {
     private long nbPhraseLog;
 
 	@Inject
-	public PhraseStore(@Named("conf") Conf conf) {
+	public PhraseStore(final Conf conf) {
 		indexDir = conf.getIndexDir();
         finalIndexDir = conf.getFinalIndexDir();
         nbPhraseLog = conf.getNbPhraseLog();

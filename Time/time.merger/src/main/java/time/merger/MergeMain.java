@@ -4,7 +4,7 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.ConfManager;
-import time.conf.Confs;
+import time.conf.ConfEnum;
 import time.messaging.Messager;
 import time.messaging.Queue;
 
@@ -33,8 +33,8 @@ public class MergeMain {
                     try {
                         final Merge merge = indexChooser.prepareMerge();
                         mergeService.merge(merge);
-                        new ConfManager().update(Confs.WIKICRAWL, conf -> conf.setMergedIndexDir(merge.getMergedIndexDir()));
-                        new Messager().signal(Queue.MERGED);
+                        new ConfManager().update(ConfEnum.WIKICRAWL, conf -> conf.setMergedIndexDir(merge.getMergedIndexDir()));
+                        new Messager().signal(Queue.WIKI_WEB_REFRESH);
                     } catch (TimeoutException | IOException e) {
                         LOGGER.error(e);
                     }

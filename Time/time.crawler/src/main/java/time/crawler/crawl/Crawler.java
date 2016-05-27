@@ -3,6 +3,7 @@ package time.crawler.crawl;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,8 +32,9 @@ public abstract class Crawler implements ICrawler {
 	protected Pattern urlFilterPattern;
     protected Pattern includePattern;
     protected List<String> urlMustNotContain;
-	
-    public Crawler(@Named("conf") final Conf conf) {
+
+	@Inject
+    public Crawler(final Conf conf) {
     	this.baseUrl = conf.getBaseUrl();
 		this.nbCrawlers = conf.getNbCrawlers();
 		this.delay = conf.getPolitenessDelay();

@@ -23,15 +23,7 @@ public class WebAppInitializer extends AbstractDispatcherServletInitializer {
         webContext.register(WebConfig.class);
 
         try {
-            final Messager messager = new Messager();
-            messager.when(Queue.WIKI_WEB_REFRESH).then(() -> {
-                webContext.refresh();
-                try {
-                    messager.signal(Queue.WIKI_WEB_REFRESH_END);
-                } catch (IOException e) {
-                    LOGGER.error(e);
-                }
-            });
+            new Messager().when(Queue.WIKI_WEB_REFRESH).then(() -> webContext.refresh());
         } catch (IOException | TimeoutException e) {
             LOGGER.error(e);
             throw new RuntimeException(e);

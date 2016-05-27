@@ -19,7 +19,7 @@ public class TextFilter {
 	protected List<String> urlMustNotContain;
 
 	@Inject
-	public TextFilter(@Named("conf") Conf conf) {
+	public TextFilter(final Conf conf) {
 		this.urlMaxLength = conf.getUrlMaxLength();
 		this.urlMustNotContain = conf.getUrlMustNotContain();
 		LOGGER.info(this);

@@ -1,4 +1,4 @@
-package time.crawler.wiki;
+package wiki;
 
 import com.google.inject.Guice;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
@@ -14,20 +14,18 @@ public class CrawlWikiMain {
 
     private static final Logger LOGGER = LogManager.getLogger(CrawlWikiMain.class);
 
-    private final CrawlWiki crawlWiki;
-
     public CrawlWikiMain(final String[] args) throws IOException, ArgumentParserException, TimeoutException {
-        crawlWiki = Guice.createInjector(new CrawlWikiModule(args)).getInstance(CrawlWiki.class);
+        final CrawlWiki crawlWiki = Guice.createInjector(new CrawlWikiModule(args)).getInstance(CrawlWiki.class);
         final Messager messager = new Messager();
         messager.when(Queue.WIKI_CRAWL).then(() -> {
                     crawlWiki.crawl();
                     try {
-                        messager.signal(Queue.WIKI_CRAWL_END);
+                        messager.signal(Queue.MERGE);
                     } catch (IOException e) {
                         LOGGER.error(e);
                     }
                 })
-                .signal(Queue.WIKI_CRAWL);
+                .signal(Queue.WIKI_CRAWL_END);
     }
 
     public static void main(final String[] args) throws IOException, ArgumentParserException, TimeoutException {

@@ -14,7 +14,7 @@ public class WikiExcludeAfterTextTransformer implements ITextTransformer {
     private List<String> excludeAfterList;
     
     @Inject
-    public WikiExcludeAfterTextTransformer(@Named("conf") Conf conf) {
+    public WikiExcludeAfterTextTransformer(Conf conf) {
 		this.excludeAfterList = conf.getExcludeAfterList();
         if(this.excludeAfterList == null){
             throw new RuntimeException("excludeAfterList null");

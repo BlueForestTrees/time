@@ -24,12 +24,6 @@ public class MessageLinker {
 
     public void on(){
 
-        try {
-            messager.signal(Queue.WIKI_CRAWL_END);
-        } catch (IOException e) {
-            LOGGER.error(e);
-        }
-
         links.getQueueLinks().forEach(link -> {
             try {
                 messager.when(link.getFrom()).then(() -> messager.signal(link.getTo()));

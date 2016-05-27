@@ -1,4 +1,4 @@
-package time.crawler.file;
+package time.local.tika.file;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
@@ -19,7 +19,7 @@ public class FileRun {
     private final TextFactory textFactory;
 
     @Inject
-	public FileRun(@Named("conf") Conf conf, final TextHandler store, final TextFactory textFactory) {
+	public FileRun(final Conf conf, final TextHandler store, final TextFactory textFactory) {
 		this.source = conf.getSource();
 		this.url = conf.getUrl();
 		this.title = conf.getTitle();

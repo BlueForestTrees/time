@@ -1,10 +1,11 @@
-package time.crawler.files;
+package time.local.tika.files;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.Conf;
+import time.messaging.Messager;
+import time.messaging.Queue;
 import time.storage.store.TextHandler;
 import time.tika.TextFactory;
 import time.tool.file.Dirs;
@@ -12,6 +13,8 @@ import time.tool.file.Dirs;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 public class FilesRun {
 
@@ -22,10 +25,10 @@ public class FilesRun {
 	private final TextHandler store;
 
 	@Inject
-	public FilesRun(@Named("conf") final Conf conf, final TextHandler store, final TextFactory textFactory) {
+	public FilesRun(final Conf conf, final TextHandler store, final TextFactory textFactory) {
 		this.sourceDir = conf.getSourceDir();
 		if (this.sourceDir == null) {
-			throw new IllegalArgumentException("invalid sourceDir: " + sourceDir);
+			throw new IllegalArgumentException("invalid sourceDir: {}" + sourceDir);
 		}
 		this.textFactory = textFactory;
 		this.store = store;
@@ -35,6 +38,11 @@ public class FilesRun {
 		store.start();
 		Dirs.files(sourceDir).forEach(this::writeFile);
 		store.stop();
+		try {
+			new Messager().signal(Queue.MERGE);
+		} catch (IOException | TimeoutException e) {
+			LOGGER.error(e);
+		}
 	}
 
 	private void writeFile(final File source) {

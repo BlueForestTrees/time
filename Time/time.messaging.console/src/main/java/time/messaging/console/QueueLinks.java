@@ -6,10 +6,20 @@ import java.util.List;
 
 public class QueueLinks {
 
-    public List<QueueLink> queueLinks;
+    public List<QueueLink> getQueueLinks() {
+        return queueLinks;
+    }
 
-    public class QueueLink {
+    private List<QueueLink> queueLinks;
+
+    public static class QueueLink {
         private Queue from;
         private Queue to;
+        public Queue getFrom() {
+            return from;
+        }
+        public Queue getTo() {
+            return to;
+        }
     }
 }

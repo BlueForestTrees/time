@@ -20,7 +20,6 @@ public class WebAppInitializer extends AbstractDispatcherServletInitializer {
     @Override
     protected WebApplicationContext createServletApplicationContext() {
         AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
-
         webContext.register(WebConfig.class);
 
         try {

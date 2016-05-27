@@ -23,7 +23,10 @@
             <artifactId>log4j-jcl</artifactId>
         </dependency>
 
-
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+		</dependency>
         <dependency>
 			<groupId>edu.uci.ics</groupId>
 			<artifactId>crawler4j</artifactId>

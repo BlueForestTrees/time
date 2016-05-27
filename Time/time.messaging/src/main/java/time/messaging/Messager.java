@@ -21,12 +21,17 @@ public class Messager {
         connection = new ConnectionFactory().newConnection();
         channel = connection.createChannel();
         mapper = new ObjectMapper();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> stop()));
     }
 
-    public void stop() throws IOException, TimeoutException {
+    public void stop() {
         LOGGER.info("Messager.stop()");
-        channel.close();
-        connection.close();
+        try {
+            channel.close();
+            connection.close();
+        } catch (IOException | TimeoutException e) {
+            LOGGER.error(e);
+        }
     }
 
     public QueueConsumer when(final Queue queue) {
@@ -34,7 +39,7 @@ public class Messager {
     }
 
     public Messager signal(final Queue queue) throws IOException {
-        LOGGER.info("sending signal to queue " + queue);
+        LOGGER.info("sending signal {}", queue);
         channel.basicPublish("", queue.name(), null, null);
         return this;
     }
@@ -45,18 +50,15 @@ public class Messager {
             this.queue = queue;
         }
         public Messager then(final Listener receiver) throws IOException {
-            LOGGER.info(receiver + " simply listen " + queue);
+            LOGGER.info(receiver + "{} simply listen {}", receiver, queue);
             channel.queueDeclare(queue.name(), false, false, false, null);
             channel.basicConsume(queue.name(), true, new DefaultConsumer(channel){
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                    LOGGER.info("received {}", queue);
                     receiver.signal();
                 }
             });
-            return Messager.this;
-        }
-        public Messager signal(Queue queue) throws IOException {
-            Messager.this.signal(queue);
             return Messager.this;
         }
     }

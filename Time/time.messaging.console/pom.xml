@@ -20,6 +20,10 @@
             <groupId>slim</groupId>
             <artifactId>time.conf</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

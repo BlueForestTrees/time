@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
 public class Messager {
@@ -43,9 +44,20 @@ public class Messager {
         return new QueueConsumer(queue);
     }
 
+    public <T> TypedQueueConsumer<T> when(final Queue queue, final Class<T> type) {
+        return new TypedQueueConsumer(queue, type);
+    }
+
     public Messager signal(final Queue queue) throws IOException {
         LOGGER.info("sending signal {}", queue);
         channel.basicPublish("", queue.name(), null, null);
+        return this;
+    }
+
+    public <T> Messager signal(final Queue queue, T message) throws IOException {
+        LOGGER.info("sending message to queue " + queue);
+        final String messageString = mapper.writeValueAsString(message);
+        channel.basicPublish("", queue.name(), null, messageString.getBytes());
         return this;
     }
 
@@ -60,7 +72,7 @@ public class Messager {
             channel.basicConsume(queue.name(), true, new DefaultConsumer(channel){
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-                    LOGGER.info("received {}", queue);
+                    LOGGER.info("received message {}", queue);
                     receiver.signal();
                 }
             });
@@ -68,58 +80,29 @@ public class Messager {
         }
     }
 
-/*
-    //TYPED
-
-        //TYPED
-    public <T> Sender use(final String queue, final Class<T> type){
-        LOGGER.info("creating sender queue " + queue + " use type " + type.getSimpleName());
-        return new TypedSender(queue, type);
-    }
-
-    public <T> Messager addReceiver(final Consumer<T> receiver, final Class<T> type) throws IOException {
-        LOGGER.info(receiver + " listen " + receiver.getQueue() + "("+type.getSimpleName()+")");
-
-        final Queue receiverQueue = receiver.getQueue();
-        final com.rabbitmq.client.Consumer consumer = new TypedConsumer(receiver, type);
-        channel.queueDeclare(receiverQueue.name(), false, false, false, null);
-        channel.basicConsume(receiverQueue.name(), true, consumer);
-
-        return this;
-    }
-
-    private class TypedSender<T> implements Sender<T> {
+    public class TypedQueueConsumer<T> {
+        private final Queue queue;
         private final Class<T> type;
-        public String queue;
-        public TypedSender(final String queue, final Class<T> type){
+        private TypedQueueConsumer(final Queue queue, final Class<T> type) {
             this.queue = queue;
             this.type = type;
         }
-        @Override
-        public void send(T signal) throws IOException {
-            LOGGER.info("sending signal to queue " + queue);
-            final String messageString = mapper.writeValueAsString(signal);
-            channel.basicPublish("", queue, null, messageString.getBytes());
+        public CompletableFuture<String> then(final TypedListener<T> receiver) throws IOException {
+            LOGGER.info(receiver + "{} listen {}({})", receiver, queue, type.getSimpleName());
+            final CompletableFuture<String> future = new CompletableFuture<>();
+            channel.queueDeclare(queue.name(), false, false, false, null);
+            channel.basicConsume(queue.name(), true, new DefaultConsumer(channel){
+                @Override
+                public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
+                    LOGGER.info("received {}", queue);
+                    final String messageString = new String(body, "UTF-8");
+                    final T signal = mapper.readValue(messageString, type);
+                    receiver.signal(signal);
+                    future.complete("COUSCOUS");
+                }
+            });
+            return future;
         }
     }
 
-    private class TypedConsumer<T> extends DefaultConsumer {
-        private final Consumer<T> receiver;
-        private final Class<T> type;
-
-        public TypedConsumer(final Consumer<T> receiver, final Class<T> type) {
-            super(channel);
-            this.receiver = receiver;
-            this.type = type;
-        }
-
-        @Override
-        public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
-            final String messageString = new String(body, "UTF-8");
-
-            final T signal = mapper.readValue(messageString, type);
-
-            receiver.signal(signal);
-        }
-    }*/
 }

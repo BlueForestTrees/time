@@ -50,6 +50,12 @@ public class PhraseStore {
         LOGGER.info(this);
 	}
 
+    public PhraseStore(final String indexDir) {
+        this.indexDir = indexDir;
+        nbPhraseLog = 100;
+        LOGGER.info(this);
+    }
+
 	public void start() throws IOException {
 		final Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexDir));
 		final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new FrenchAnalyzer());

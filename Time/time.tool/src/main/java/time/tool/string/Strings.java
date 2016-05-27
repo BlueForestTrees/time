@@ -38,4 +38,8 @@ public class Strings {
     public static String noReturns(final String s) {
         return s.replaceAll("\r\n", "\\air\\haine");
     }
+
+    public static String forFilename(final String s){
+        return s.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
+    }
 }

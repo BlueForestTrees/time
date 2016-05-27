@@ -1,4 +1,4 @@
-package time.local.tika.file;
+package time.append;
 
 public class Append {
     private String source;
@@ -26,4 +26,5 @@ public class Append {
                 ", title='" + title + '\'' +
                 '}';
     }
+
 }

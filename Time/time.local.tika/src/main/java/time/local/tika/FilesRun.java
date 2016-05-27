@@ -1,4 +1,4 @@
-package time.local.tika.files;
+package time.local.tika;
 
 import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;

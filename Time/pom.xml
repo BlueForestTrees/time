@@ -21,6 +21,7 @@
         <module>time.messaging.console</module>
         <module>time.local.tika</module>
         <module>time.crawler.wiki</module>
+        <module>time.append</module>
     </modules>
     <properties>
         <argparse4j.version>0.7.0</argparse4j.version>

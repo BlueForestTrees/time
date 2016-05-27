@@ -12,6 +12,7 @@
 		<Logger name="time" level="debug">
 			<AppenderRef ref="Console" />
 		</Logger>
+
 		<Logger name="time.storage" level="info"/>
         <Logger name="time.analyser" level="info"/>
 	</Loggers>

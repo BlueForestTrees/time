@@ -1,7 +1,5 @@
 queueLinks:
-    - from: WIKI_CRAWL_END
-      to: MERGE
-    - from: MERGE
-      to: MERGED
-    - from: MERGED
-      to: WIKI_WEB_REFRESH
+  - from: WIKI_CRAWL_END
+    to: MERGE
+  - from: MERGED
+    to: WIKI_WEB_REFRESH

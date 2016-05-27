@@ -1,4 +1,4 @@
-package time.local.tika.files;
+package time.local.tika;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;

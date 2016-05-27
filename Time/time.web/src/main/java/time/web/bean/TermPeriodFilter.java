@@ -80,10 +80,22 @@ public class TermPeriodFilter {
 		return request;
 	}
 
+	/**
+	 * @-1000000min
+	 * @1Mmax
+	 * @1950
+	 * @2000+-10%
+	 * @param part
+	 * @return
+     */
 	protected static Period parsePeriod(final String part) {
 		final Period period = new Period();
-		final Pattern pattern = Pattern.compile("@(?<value>-?[0-9]+?)(?<decimalValue>[,.]?[0-9]*?)(?<suffix>[Mmk])?(\\+-(?<pm>[0-9]+?)%)?(?<min>min)?(?<max>max)?");
-		final Matcher matcher = pattern.matcher(part);
+		final String value = "(?<value>-?[0-9]+?)(?<decimalValue>[,.]?[0-9]*?)";
+		final String suffix = "(?<suffix>[Mmk])?";
+		final String percent = "(\\+-(?<percent>[0-9]+?)%)?";
+		final String minOrMax = "(?<min>min)?(?<max>max)?";
+		final Pattern periodPattern = Pattern.compile("@" + value + suffix + percent + minOrMax);
+		final Matcher matcher = periodPattern.matcher(part);
 		
 		if(!matcher.matches()){
 			return period;
@@ -104,7 +116,7 @@ public class TermPeriodFilter {
 	}
 
 	private static void parsePercentMargin(final Matcher matcher, final Period period) {
-		final String percentMargin = matcher.group("pm");
+		final String percentMargin = matcher.group("percent");
 		int intPercentMargin = 0;
 		if(percentMargin != null){
 			intPercentMargin = Integer.parseInt(percentMargin);

@@ -12,20 +12,25 @@ public class Messager {
 
     private static final Logger LOGGER = LogManager.getLogger(Messager.class);
 
-    final Channel channel;
-    final Connection connection;
+    Channel channel;
+    Connection connection;
     final ObjectMapper mapper;
 
     public Messager() throws IOException, TimeoutException {
         LOGGER.info("Messager()");
-        connection = new ConnectionFactory().newConnection();
-        channel = connection.createChannel();
         mapper = new ObjectMapper();
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> stop()));
+        on();
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> off()));
     }
 
-    public void stop() {
-        LOGGER.info("Messager.stop()");
+    public void on() throws IOException, TimeoutException {
+        LOGGER.info("ON");
+        connection = new ConnectionFactory().newConnection();
+        channel = connection.createChannel();
+    }
+
+    public void off() {
+        LOGGER.info("OFF");
         try {
             channel.close();
             connection.close();

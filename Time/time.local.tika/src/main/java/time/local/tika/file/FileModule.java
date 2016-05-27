@@ -1,8 +1,8 @@
 package time.local.tika.file;
 
 import com.google.inject.*;
-import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import org.apache.logging.log4j.LogManager;
 import time.conf.Conf;
 import time.conf.ConfManager;
 import time.transform.CompositeTextTransformer;
@@ -12,9 +12,14 @@ import java.io.IOException;
 
 public class FileModule extends AbstractModule {
 
+	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(FileModule.class);
+
 	private Conf configuration;
 
 	public FileModule(final String[] args) throws ArgumentParserException, IOException {
+		if(args.length == 0){
+			LOGGER.error("manque: --conf=${TIME_HOME}/conf/fileconf.yml");
+		}
 		configuration = new ConfManager().get(args);
 	}
 
@@ -22,15 +27,9 @@ public class FileModule extends AbstractModule {
 	protected void configure() {
 		bind(ITextTransformer.class).to(CompositeTextTransformer.class);
 	}
-	
-	public static void main(final String[] args) throws Exception {
-		final Injector injector = Guice.createInjector(new FileModule(args));
-		final FileRun service = injector.getInstance(FileRun.class);
-		service.run();
-	}
 
 	@Provides @Singleton
-	public Conf webConfiguration() {
+	public Conf conf() {
 		return configuration;
 	}
 

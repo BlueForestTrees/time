@@ -20,12 +20,12 @@ public class CrawlWikiMain {
         messager.when(Queue.WIKI_CRAWL).then(() -> {
                     crawlWiki.crawl();
                     try {
+                        messager.signal(Queue.WIKI_CRAWL_END);
                         messager.signal(Queue.MERGE);
                     } catch (IOException e) {
                         LOGGER.error(e);
                     }
-                })
-                .signal(Queue.WIKI_CRAWL_END);
+                });
     }
 
     public static void main(final String[] args) throws IOException, ArgumentParserException, TimeoutException {

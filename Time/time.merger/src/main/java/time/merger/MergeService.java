@@ -20,6 +20,9 @@ public class MergeService {
     private static final Logger LOG = LogManager.getLogger(MergeService.class);
 	   
 	public void merge(final Merge merge) throws IOException{
+
+        LOG.info(merge);
+
 		final File[] allIndexes = allIndexes(merge.getMergeableIndexesDir());
 		final File destPath = new File(merge.getMergedIndexDir());
 		final File biggerIndex = Arrays.stream(allIndexes).max((f1,f2) -> Long.compare(FileUtils.sizeOfDirectory(f1), FileUtils.sizeOfDirectory(f2))).get();

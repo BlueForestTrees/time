@@ -14,3 +14,14 @@ phraseMustNotStartWith: ['Catégories :']
 crawlStorageDir: ${TIME_HOME}/temp/wiki
 indexDir: ${TIME_HOME}/indexes/fresh/wiki/
 finalIndexDir: ${TIME_HOME}/indexes/mergeables/wiki
+maxFileSize: 100MB
+nbPageLog: 1000
+nbPhraseLog: 10000
+pageSize: 100
+nbCrawlers: 5
+maxPages: -1
+politenessDelay: 25
+maxLength: 1000
+minLength: 40
+urlMaxLength: 255
+urlMustNotContain: []

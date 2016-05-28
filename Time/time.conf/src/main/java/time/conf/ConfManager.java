@@ -49,7 +49,7 @@ public class ConfManager {
         final String substituedConfig = Resolver.get(rawConfig);
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-        LOGGER.info("{} content\n{}", ymlPath, substituedConfig);
+        LOGGER.debug("{} content\n{}", ymlPath, substituedConfig);
 
         return mapper.readValue(substituedConfig, beanClass);
     }

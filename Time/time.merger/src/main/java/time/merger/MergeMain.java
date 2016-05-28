@@ -17,6 +17,7 @@ public class MergeMain {
 
     private final MergeService mergeService;
     private final IndexChooser indexChooser;
+    private final Messager messager;
 
     public static void main(final String[] args) throws IOException, TimeoutException, ArgumentParserException {
         new MergeMain(args);
@@ -26,19 +27,23 @@ public class MergeMain {
         LOGGER.info("MergeMain()");
         mergeService = new MergeService();
         indexChooser = new IndexChooser();
-        final Messager messager = new Messager();
+        messager = new Messager();
         messager.when(Queue.MERGE)
                 .then(()->{
-                    LOGGER.info("received signal " + Queue.MERGE);
-                    try {
-                        final Merge merge = indexChooser.prepareMerge();
-                        mergeService.merge(merge);
-                        new ConfManager().update(ConfEnum.WIKICRAWL, conf -> conf.setMergedIndexDir(merge.getMergedIndexDir()));
-                        new Messager().signal(Queue.WIKI_WEB_REFRESH);
-                    } catch (TimeoutException | IOException e) {
-                        LOGGER.error(e);
-                    }
+                    final Merge merge = indexChooser.prepareMerge();
+                    mergeService.merge(merge);
+                    updateWikiWebConf(merge);
+                    messager.signal(Queue.WIKI_WEB_REFRESH);
                 });
+    }
+
+    private void updateWikiWebConf(Merge merge) {
+        LOGGER.info("set wikiWeb.indexDir: {}", merge.getMergedIndexDir());
+        try {
+            new ConfManager().update(ConfEnum.WIKIWEB, conf -> conf.setIndexDir(merge.getMergedIndexDir()));
+        } catch (IOException e) {
+            LOGGER.error(e);
+        }
     }
 
     @Override

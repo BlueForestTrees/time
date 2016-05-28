@@ -1,3 +1,8 @@
 sourceDir: ${TIME_HOME}/sources/livres/
 indexDir: ${TIME_HOME}/indexes/mergeables/local.tika/
 excludeAfterList: []
+minLength: 40
+maxLength: 1000
+urlMaxLength: 255
+urlMustNotContain: []
+nbPhraseLog: 1000

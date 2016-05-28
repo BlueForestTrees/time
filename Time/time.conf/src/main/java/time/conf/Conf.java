@@ -1,32 +1,27 @@
 package time.conf;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import time.tool.string.Strings;
 
 import java.util.Arrays;
 import java.util.List;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Conf {
 	private String webRoot;
 	private String target;
 	private String home;
 	private String homeDir;
-	private int port;
+	private Integer port;
 	private String basePath;
 	private String name;
 	private String baseUrl;
 	private String regexUrlFilter;
 	private String urlFilter;
 	private String storagePath;
-	private Long nbPageLog = 1000L;
-    private Long nbPhraseLog = 10000L;
-	private int maxPages = -1;
-	private int politenessDelay = 25;
-	private String crawlStorageFolder;
-	private boolean resumable = false;
+	private Boolean resumable;
 	private String seedUrl;
-	private int nbCrawlers = 5;
-	private long pageSize = 100;
-	private String maxFileSize = "100MB";
+	private String crawlStorageFolder;
 	private String type;
 	private List<String> contentExclusion;
 	private String source;
@@ -38,13 +33,9 @@ public class Conf {
 	private String txtOutputFile;
 	private String txtOutputDir;
 	private String crawlStorageDir;
-	private long chronoPageTotal;
-	private long maxPhrasesToFetch;
-	private int maxLength = 1000;
-	private int minLength = 40;
+	private Long chronoPageTotal;
+	private Long maxPhrasesToFetch;
 	private List<String> excludeAfterList;
-	private int urlMaxLength = 255;
-	private List<String> urlMustNotContain = Arrays.asList();
 	private String sourcePath;
 	private String datasourcePath;
 	private String indexDir;
@@ -52,111 +43,208 @@ public class Conf {
 	private String[] phraseMustNotStartWith;
 	private String mergeableIndexesDir;
 	private String mergedIndexDir;
+	private String baseAppendIndexDir;
+	private String maxFileSize;
+	private Long nbPageLog;
+    private Long nbPhraseLog;
+	private Long pageSize;
+	private Integer nbCrawlers;
+	private Integer maxPages;
+	private Integer politenessDelay;
+	private Integer maxLength;
+	private Integer minLength;
+	private Integer urlMaxLength;
+	private List<String> urlMustNotContain;
 
-	public String getBaseAppendIndexDir() {
-		return baseAppendIndexDir;
+	public void setIndexDir(String indexDir) {
+		this.indexDir = indexDir;
 	}
 
-	private String baseAppendIndexDir;
+	public String getWebRoot() {
+		return webRoot;
+	}
 
-	public void setMergedIndexDir(String mergedIndexDir) {
-		this.mergedIndexDir = mergedIndexDir;
+	public String getTarget() {
+		return target;
+	}
+
+	public String getHome() {
+		return home;
+	}
+
+	public String getHomeDir() {
+		return homeDir;
+	}
+
+	public Integer getPort() {
+		return port;
+	}
+
+	public String getBasePath() {
+		return basePath;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getBaseUrl() {
+		return baseUrl;
+	}
+
+	public String getRegexUrlFilter() {
+		return regexUrlFilter;
+	}
+
+	public String getUrlFilter() {
+		return urlFilter;
+	}
+
+	public String getStoragePath() {
+		return storagePath;
+	}
+
+	public Boolean getResumable() {
+		return resumable;
+	}
+
+	public String getSeedUrl() {
+		return seedUrl;
+	}
+
+	public String getCrawlStorageFolder() {
+		return crawlStorageFolder;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public List<String> getContentExclusion() {
+		return contentExclusion;
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getIncludePattern() {
+		return includePattern;
+	}
+
+	public String getExcludePattern() {
+		return excludePattern;
+	}
+
+	public String getSourceDir() {
+		return sourceDir;
+	}
+
+	public String getTxtOutputFile() {
+		return txtOutputFile;
+	}
+
+	public String getTxtOutputDir() {
+		return txtOutputDir;
+	}
+
+	public String getCrawlStorageDir() {
+		return crawlStorageDir;
+	}
+
+	public Long getChronoPageTotal() {
+		return chronoPageTotal;
+	}
+
+	public Long getMaxPhrasesToFetch() {
+		return maxPhrasesToFetch;
+	}
+
+	public List<String> getExcludeAfterList() {
+		return excludeAfterList;
+	}
+
+	public String getSourcePath() {
+		return sourcePath;
+	}
+
+	public String getDatasourcePath() {
+		return datasourcePath;
+	}
+
+	public String getIndexDir() {
+		return indexDir;
+	}
+
+	public String getFinalIndexDir() {
+		return finalIndexDir;
+	}
+
+	public String[] getPhraseMustNotStartWith() {
+		return phraseMustNotStartWith;
+	}
+
+	public String getMergeableIndexesDir() {
+		return mergeableIndexesDir;
 	}
 
 	public String getMergedIndexDir() {
 		return mergedIndexDir;
 	}
-	public String getMergeableIndexesDir() {
-		return mergeableIndexesDir;
+
+	public String getBaseAppendIndexDir() {
+		return baseAppendIndexDir;
 	}
-	public String getFinalIndexDir() {
-		return finalIndexDir;
+
+	public String getMaxFileSize() {
+		return maxFileSize;
 	}
-	public String getWebRoot() {
-		return webRoot;
-	}
-	public int getPort() {
-		return port;
-	}
-	public String getTarget() {
-		return Strings.withSlash(target);
-	}
-	public String getSourceDir(){
-		return sourceDir;
-	}
-	public String getCrawlStorageDir() {
-		return crawlStorageDir;
-	}
-	public String getBaseUrl() {
-		return baseUrl;
-	}
-	public long getNbPageLog() {
+
+	public Long getNbPageLog() {
 		return nbPageLog;
 	}
-	public int getMaxPages() {
-		return maxPages;
+
+	public Long getNbPhraseLog() {
+		return nbPhraseLog;
 	}
-	public boolean isResumable() {
-		return resumable;
+
+	public Long getPageSize() {
+		return pageSize;
 	}
-	public String getSeedUrl() {
-		return seedUrl;
-	}
-	public int getNbCrawlers() {
+
+	public Integer getNbCrawlers() {
 		return nbCrawlers;
 	}
-	public String getType() {
-		return type;
+
+	public Integer getMaxPages() {
+		return maxPages;
 	}
-	public List<String> getContentExclusion() {
-		return contentExclusion;
-	}
-	public String getSource() {
-		return source;
-	}
-	public String getUrl() {
-		return url;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public String getIncludePattern() {
-		return includePattern;
-	}
-	public String getName() {
-		return name;
-	}
-	public String getUrlFilter() {
-		return urlFilter;
-	}
-	public int getPolitenessDelay() {
+
+	public Integer getPolitenessDelay() {
 		return politenessDelay;
 	}
-	public long getChronoPageTotal() {
-		return chronoPageTotal;
-	}
-	public int getMaxLength() {
+
+	public Integer getMaxLength() {
 		return maxLength;
 	}
-	public int getMinLength() {
+
+	public Integer getMinLength() {
 		return minLength;
 	}
-	public List<String> getExcludeAfterList() {
-		return excludeAfterList;
-	}
-	public int getUrlMaxLength() {
+
+	public Integer getUrlMaxLength() {
 		return urlMaxLength;
 	}
+
 	public List<String> getUrlMustNotContain() {
 		return urlMustNotContain;
 	}
-	public String getIndexDir() {
-		return indexDir;
-	}
-	public String[] getPhraseMustNotStartWith() {
-		return phraseMustNotStartWith;
-	}
-    public Long getNbPhraseLog() {
-        return nbPhraseLog;
-    }
 }

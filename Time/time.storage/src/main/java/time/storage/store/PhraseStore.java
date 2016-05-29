@@ -6,6 +6,7 @@ import java.nio.file.FileSystems;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.fr.FrenchAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.LongField;
@@ -59,7 +60,7 @@ public class PhraseStore {
 	public void start() throws IOException {
         LOGGER.info("PhraseStore.start({})", indexDir);
 		final Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexDir));
-		final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new FrenchAnalyzer());
+		final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new StandardAnalyzer());
 		indexWriterConfig.setOpenMode(OpenMode.CREATE);
 		indexWriterConfig.setRAMBufferSizeMB(256.0);
 

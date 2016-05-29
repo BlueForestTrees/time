@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class FileRun {
+public class AppendRun {
 
     private static final Logger LOGGER = LogManager.getLogger(DatedPhrasesFinders.class);
 
@@ -24,7 +24,7 @@ public class FileRun {
     private TextAnalyser textAnalyser;
 
     @Inject
-	public FileRun(final Conf conf, final TextFactory textFactory, final TextAnalyser textAnalyser) {
+	public AppendRun(final Conf conf, final TextFactory textFactory, final TextAnalyser textAnalyser) {
         this.textFactory = textFactory;
 		this.textAnalyser = textAnalyser;
         this.baseAppendIndexDir = conf.getBaseAppendIndexDir();

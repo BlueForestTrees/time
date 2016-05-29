@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 
 public class MessageConsole {
 
@@ -19,6 +20,7 @@ public class MessageConsole {
     }
 
     public void on() throws IOException {
+        System.out.println(Arrays.asList(Queue.values()));
         while(!finished) {
             final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             System.out.print("MessageConsole > ");
@@ -33,6 +35,7 @@ public class MessageConsole {
             messager.signal(queue);
         }catch(IllegalArgumentException e){
             System.out.println("unkwown command: " + command);
+            System.out.println(Arrays.asList(Queue.values()));
         } catch (IOException e) {
             System.out.println("IOException while signaling " + command + " " + e.getMessage());
         }

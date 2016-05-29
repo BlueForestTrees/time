@@ -11,13 +11,13 @@ import time.transform.ITextTransformer;
 
 import java.io.IOException;
 
-public class FileModule extends AbstractModule {
+public class AppendModule extends AbstractModule {
 
-	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(FileModule.class);
+	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(AppendModule.class);
 
 	private Conf configuration;
 
-	public FileModule(final String[] args) throws ArgumentParserException, IOException {
+	public AppendModule(final String[] args) throws ArgumentParserException, IOException {
 		configuration = new ConfManager().get(ConfEnum.APPEND);
 	}
 

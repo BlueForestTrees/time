@@ -21,8 +21,6 @@ pageSize: 100
 nbCrawlers: 5
 maxPages: 1000
 politenessDelay: 25
-maxLength: 1000
-minLength: 40
 urlMaxLength: 255
 urlMustNotContain: []
 resumable: false

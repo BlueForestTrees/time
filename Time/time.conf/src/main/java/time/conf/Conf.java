@@ -1,13 +1,13 @@
 package time.conf;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import time.tool.string.Strings;
 
-import java.util.Arrays;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Conf {
+	private String splitParagraphPattern;
+	private String splitPhrasePattern;
 	private String webRoot;
 	private String target;
 	private String home;
@@ -51,8 +51,8 @@ public class Conf {
 	private Integer nbCrawlers;
 	private Integer maxPages;
 	private Integer politenessDelay;
-	private Integer maxLength;
-	private Integer minLength;
+	private Integer phraseMaxLength;
+	private Integer phraseMinLength;
 	private Integer urlMaxLength;
 	private List<String> urlMustNotContain;
 
@@ -232,12 +232,20 @@ public class Conf {
 		return politenessDelay;
 	}
 
-	public Integer getMaxLength() {
-		return maxLength;
+	public Integer getPhraseMaxLength() {
+		return phraseMaxLength;
 	}
 
-	public Integer getMinLength() {
-		return minLength;
+	public Integer getPhraseMinLength() {
+		return phraseMinLength;
+	}
+
+	public String getSplitParagraphPattern() {
+		return splitParagraphPattern;
+	}
+
+	public String getSplitPhrasePattern() {
+		return splitPhrasePattern;
 	}
 
 	public Integer getUrlMaxLength() {

@@ -10,6 +10,7 @@ import com.google.inject.Inject;
 
 import time.analyser.filter.PhraseFilter;
 import time.analyser.finder.DatedPhrasesFinders;
+import time.conf.Conf;
 import time.domain.DatedPhrase;
 import time.domain.Text;
 import time.tool.string.Strings;
@@ -23,10 +24,10 @@ public class TextAnalyser {
 	private DatedPhrasesFinders finders;
 
 	@Inject
-	public TextAnalyser(final PhraseFilter phraseFilter, final DatedPhrasesFinders finders) {
+	public TextAnalyser(final Conf conf, final PhraseFilter phraseFilter, final DatedPhrasesFinders finders) {
 		this.phraseFilter = phraseFilter;
-		this.splitParagraphPattern = Pattern.compile("[\r\n\t]+");
-		this.splitPhrasePattern = Pattern.compile("(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))(\\.|\\?|!)) +");
+		this.splitParagraphPattern = Pattern.compile(conf.getSplitParagraphPattern());
+		this.splitPhrasePattern = Pattern.compile(conf.getSplitPhrasePattern());
 		this.finders = finders;
         LOGGER.info(this);
 	}

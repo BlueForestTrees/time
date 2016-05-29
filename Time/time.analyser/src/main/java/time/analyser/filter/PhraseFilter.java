@@ -3,11 +3,9 @@ package time.analyser.filter;
 import java.util.Arrays;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import time.analyser.TextAnalyser;
 import time.conf.Conf;
 
 /**
@@ -17,22 +15,22 @@ public class PhraseFilter {
 
 	private static final Logger LOGGER = LogManager.getLogger(PhraseFilter.class);
 
-	private int maxLength;
-	private int minLength;
+	private int phraseMaxLength;
+	private int phraseMinLength;
 	private String[] phraseMustNotStartWith;
 
 	@Inject
 	public PhraseFilter(final Conf conf) {
-		this.minLength = conf.getMinLength();
-		this.maxLength = conf.getMaxLength();
+		this.phraseMinLength = conf.getPhraseMinLength();
+		this.phraseMaxLength = conf.getPhraseMaxLength();
 		this.phraseMustNotStartWith = conf.getPhraseMustNotStartWith();
 		LOGGER.info(this);
 	}
 
 	public boolean keep(final String phrase) {
 		boolean startWithCategories = phraseMustNotStartWith != null && Arrays.stream(phraseMustNotStartWith).anyMatch(phrase::startsWith);
-		boolean tooLong = phrase.length() > maxLength;
-		boolean tooShort = phrase.length() < minLength;
+		boolean tooLong = phrase.length() > phraseMaxLength;
+		boolean tooShort = phrase.length() < phraseMinLength;
 
 		return !startWithCategories && !tooLong && !tooShort;
 	}
@@ -40,8 +38,8 @@ public class PhraseFilter {
 	@Override
 	public String toString() {
 		return "PhraseFilter{" +
-				"maxLength=" + maxLength +
-				", minLength=" + minLength +
+				"phraseMaxLength=" + phraseMaxLength +
+				", phraseMinLength=" + phraseMinLength +
 				", phraseMustNotStartWith=" + Arrays.toString(phraseMustNotStartWith) +
 				'}';
 	}

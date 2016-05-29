@@ -546,6 +546,13 @@ public class DatedPhrasesFinderTest {
 		assertNoDateIn("mur d'enceinte et poterne », au profit dudit comte, pour environ 3600 m² par an");
 	}
 
+
+	@Test
+	public void none19() {
+		assertNoDateIn("Portail comptant entre 100 et 999 articlesPage de portail ou de projet thématique");
+	}
+
+
 	@Test
 	public void precise12() {
 		assertOnly(Finder.PRECISE, dateIs(date(10, Month.FEBRUARY, 1984)), "Slimane Médini est né le 10 Février 1984 à Gournay-en-bray");

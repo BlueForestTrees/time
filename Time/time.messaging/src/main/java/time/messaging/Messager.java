@@ -5,10 +5,12 @@ import com.rabbitmq.client.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.inject.Singleton;
 import java.io.IOException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
+@Singleton
 public class Messager {
 
     private static final Logger LOGGER = LogManager.getLogger(Messager.class);

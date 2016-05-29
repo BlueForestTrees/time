@@ -1,5 +1,1 @@
-queueLinks:
-  - from: WIKI_CRAWL_END
-    to: MERGE
-  - from: MERGED
-    to: WIKI_WEB_REFRESH
+queueLinks: []

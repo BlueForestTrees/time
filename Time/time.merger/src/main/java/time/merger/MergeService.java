@@ -9,6 +9,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import time.conf.Resolver;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,8 +24,8 @@ public class MergeService {
 
         LOG.info(merge);
 
-		final File[] allIndexes = allIndexes(merge.getMergeableIndexesDir());
-		final File destPath = new File(merge.getMergedIndexDir());
+		final File[] allIndexes = allIndexes(Resolver.get(merge.getMergeableIndexesDir()));
+		final File destPath = new File(Resolver.get(merge.getMergedIndexDir()));
 		final File biggerIndex = Arrays.stream(allIndexes).max((f1,f2) -> Long.compare(FileUtils.sizeOfDirectory(f1), FileUtils.sizeOfDirectory(f2))).get();
 		final Directory destDirectory = directoryFromFile(destPath);
     	final File[] mergeableIndexesFile = Arrays.stream(allIndexes).filter(f -> f != biggerIndex).toArray(File[]::new);

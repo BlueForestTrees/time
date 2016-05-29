@@ -104,7 +104,7 @@ public class Conf {
 		return storagePath;
 	}
 
-	public Boolean getResumable() {
+	public Boolean isResumable() {
 		return resumable;
 	}
 

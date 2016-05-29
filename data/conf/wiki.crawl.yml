@@ -1,10 +1,10 @@
 seedUrl: https://fr.wikipedia.org/wiki/Portail:Accueil
 baseUrl: https://fr.wikipedia.org/wiki/
 nbCrawlers: 3
-maxPages: 50
-chronoPageTotal: 50
-nbPageLog: 10
-nbPhraseLog: 100
+maxPages: 500
+chronoPageTotal: 500
+nbPageLog: 100
+nbPhraseLog: 1000
 politenessDelay: 25
 urlFilter: .*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf|rm|smil|wmv|swf|wma|zip|rar|gz|svg|ogg|ogv|oga|djvu|webm))$
 contentExclusion: ['\t\t\t(Redirigé depuis']
@@ -15,13 +15,14 @@ crawlStorageDir: ${TIME_HOME}/temp/wiki
 indexDir: ${TIME_HOME}/indexes/fresh/wiki/
 finalIndexDir: ${TIME_HOME}/indexes/mergeables/wiki
 maxFileSize: 100MB
-nbPageLog: 1000
-nbPhraseLog: 10000
+nbPageLog: 100
+nbPhraseLog: 1000
 pageSize: 100
 nbCrawlers: 5
-maxPages: -1
+maxPages: 1000
 politenessDelay: 25
 maxLength: 1000
 minLength: 40
 urlMaxLength: 255
 urlMustNotContain: []
+resumable: false

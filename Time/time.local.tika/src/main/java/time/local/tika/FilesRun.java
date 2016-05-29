@@ -23,15 +23,17 @@ public class FilesRun {
 	private final String sourceDir;
 	private final TextFactory textFactory;
 	private final TextHandler store;
+	private final Messager messager;
 
 	@Inject
-	public FilesRun(final Conf conf, final TextHandler store, final TextFactory textFactory) {
+	public FilesRun(final Conf conf, final TextHandler store, final TextFactory textFactory, final Messager messager) {
 		this.sourceDir = conf.getSourceDir();
 		if (this.sourceDir == null) {
 			throw new IllegalArgumentException("invalid sourceDir: {}" + sourceDir);
 		}
 		this.textFactory = textFactory;
 		this.store = store;
+		this.messager = messager;
 	}
 
 	public void run() {
@@ -39,14 +41,14 @@ public class FilesRun {
 		Dirs.files(sourceDir).forEach(this::writeFile);
 		store.stop();
 		try {
-			new Messager().signal(Queue.MERGE);
-		} catch (IOException | TimeoutException e) {
+			messager.signal(Queue.MERGE);
+		} catch (IOException e) {
 			LOGGER.error(e);
 		}
 	}
 
 	private void writeFile(final File source) {
-		LOGGER.info(source);
+		LOGGER.debug(source);
 		FileInputStream input;
 		try {
 			input = new FileInputStream(source);

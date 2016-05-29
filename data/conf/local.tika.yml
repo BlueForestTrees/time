@@ -5,4 +5,4 @@ minLength: 40
 maxLength: 1000
 urlMaxLength: 255
 urlMustNotContain: []
-nbPhraseLog: 1000
+nbPhraseLog: 10000

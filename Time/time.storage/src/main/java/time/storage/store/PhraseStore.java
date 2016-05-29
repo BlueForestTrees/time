@@ -57,6 +57,7 @@ public class PhraseStore {
     }
 
 	public void start() throws IOException {
+        LOGGER.info("PhraseStore.start({})", indexDir);
 		final Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexDir));
 		final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new FrenchAnalyzer());
 		indexWriterConfig.setOpenMode(OpenMode.CREATE);

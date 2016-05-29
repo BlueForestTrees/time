@@ -9,7 +9,7 @@
 		<Root level="error">
 		</Root>
 
-		<Logger name="time" level="debug">
+		<Logger name="time" level="info">
 			<AppenderRef ref="Console" />
 		</Logger>
 		<Logger name="time.storage" level="info"/>

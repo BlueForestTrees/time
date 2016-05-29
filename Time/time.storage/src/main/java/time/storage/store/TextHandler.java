@@ -28,7 +28,6 @@ public class TextHandler {
 	}
 
 	public void start() {
-		LOGGER.info("TextHandler.start()");
 		try {
 			phraseStore.start();
 		} catch (IOException e) {
@@ -46,7 +45,6 @@ public class TextHandler {
     }
 
 	public void stop(){
-		LOGGER.info("stop");
 		try {
 			phraseStore.stop();
 		} catch (IOException e) {

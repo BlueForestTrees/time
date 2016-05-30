@@ -1,5 +1,3 @@
 phraseMaxLength: 1000
 phraseMinLength: 40
 phraseMustNotStartWith: []
-splitParagraphPattern: [\r\n\t]+
-splitPhrasePattern: (?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))(\\.|\\?|!)) +

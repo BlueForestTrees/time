@@ -1,4 +1,2 @@
-indexDir: ${TIME_HOME}/indexes/mergeables/append/
-excludeAfterList: []
-maxLength: 1000
-minLength: 40
+appendBaseIndexDir: ${TIME_HOME}/indexes/mergeables/append/
+ignoreTextAfterAny: []

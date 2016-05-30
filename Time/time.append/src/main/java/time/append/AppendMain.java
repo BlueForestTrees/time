@@ -1,23 +1,35 @@
 package time.append;
 
-import com.google.inject.Guice;
-import time.messaging.Messager;
-import time.messaging.Queue;
+        import com.google.inject.Guice;
+        import org.apache.logging.log4j.LogManager;
+        import org.apache.logging.log4j.Logger;
+        import time.messaging.Messager;
+        import time.messaging.Queue;
 
 public class AppendMain {
 
-	public static void main(final String[] args) throws Exception {
-		final AppendRun appendRun = Guice.createInjector(new AppendModule(args)).getInstance(AppendRun.class);
+    private static final Logger LOGGER = LogManager.getLogger(AppendMain.class);
 
-		final Messager messager = new Messager();
-		messager.when(Queue.APPEND, Append.class)
-					  .then((Append append)-> appendRun.run(append))
-                      .thenAccept(toto -> System.out.println(toto));
+    public static void main(final String[] args) throws Exception {
+        final Messager messager = new Messager();
 
-        messager.signal(Queue.APPEND, new Append());
+        final AppendRun appendRun = Guice.createInjector(new AppendModule(args)).getInstance(AppendRun.class);
 
-		//.then((DoneAppend doneAppend) -> messager.signal(doneAppend));
+        messager.when(Queue.APPEND, Append.class)
+                .then(append -> {return appendRun.run(append);})
+                .thenAccept(appendDone -> LOGGER.info(appendDone));
 
-	}
+        messager.signal(Queue.APPEND, getMessage());
+
+    }
+
+    private static Append getMessage() {
+        Append append = new Append();
+
+        //append.setSource("D:\\dev\\time\\time\\data\\sources\\livres\\Adolf Hitler - Mon Combat - Mein Kampf.Ebook-Gratuit.co.epub");
+        append.setSource("D:\\dev\\time\\time\\data\\sources\\timeline\\timeline.txt");
+
+        return append;
+    }
 
 }

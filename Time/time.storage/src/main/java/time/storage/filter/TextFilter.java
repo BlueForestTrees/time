@@ -4,11 +4,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import time.conf.Conf;
+import time.domain.Conf;
 import time.domain.Text;
 
 public class TextFilter {

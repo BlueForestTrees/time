@@ -5,7 +5,7 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
-import time.conf.Conf;
+import time.domain.Conf;
 import time.conf.ConfManager;
 
 import java.io.IOException;

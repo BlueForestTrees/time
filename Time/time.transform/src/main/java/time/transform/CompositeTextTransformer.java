@@ -14,7 +14,7 @@ public class CompositeTextTransformer implements ITextTransformer{
     public CompositeTextTransformer(final WikiExcludeAfterTextTransformer wikiExclude, final WikiUrlDateTextTransformer wikiUrlDate){
         transformers = new ArrayList<>();
         transformers.add(wikiExclude);
-        transformers.add(wikiUrlDate);
+        //transformers.add(wikiUrlDate);
     }
 
     @Override

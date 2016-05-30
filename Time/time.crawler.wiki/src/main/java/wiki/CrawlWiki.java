@@ -1,12 +1,11 @@
 package wiki;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import time.conf.Conf;
+import time.domain.Conf;
 import time.crawler.crawl.Crawler;
 import time.domain.Text;
 import time.storage.store.TextHandler;

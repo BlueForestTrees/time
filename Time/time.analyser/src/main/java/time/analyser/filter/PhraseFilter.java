@@ -1,12 +1,14 @@
 package time.analyser.filter;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import com.google.inject.Inject;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import time.conf.Conf;
+import time.domain.Analyser;
+import time.domain.Conf;
 
 /**
  * Filtre pour phrase.
@@ -20,10 +22,10 @@ public class PhraseFilter {
 	private String[] phraseMustNotStartWith;
 
 	@Inject
-	public PhraseFilter(final Conf conf) {
-		this.phraseMinLength = conf.getPhraseMinLength();
-		this.phraseMaxLength = conf.getPhraseMaxLength();
-		this.phraseMustNotStartWith = conf.getPhraseMustNotStartWith();
+	public PhraseFilter(final Analyser analyser) {
+		this.phraseMinLength = analyser.getPhraseMinLength();
+		this.phraseMaxLength = analyser.getPhraseMaxLength();
+		this.phraseMustNotStartWith = analyser.getPhraseMustNotStartWith();
 		LOGGER.info(this);
 	}
 

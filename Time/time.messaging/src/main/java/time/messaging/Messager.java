@@ -20,24 +20,29 @@ public class Messager {
     final ObjectMapper mapper;
 
     public Messager() throws IOException, TimeoutException {
-        LOGGER.info("Messager()");
         mapper = new ObjectMapper();
         on();
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> off()));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {LOGGER.info("shutdown hook received");off();}));
     }
 
     public void on() throws IOException, TimeoutException {
-        LOGGER.info("ON");
+        LOGGER.info("on");
         connection = new ConnectionFactory().newConnection();
         channel = connection.createChannel();
     }
 
-    public void off() {
-        LOGGER.info("OFF");
+    private void off() {
+        LOGGER.info("off");
         try {
             channel.close();
-            connection.close();
         } catch (IOException | TimeoutException e) {
+            LOGGER.error(e);
+        } catch (AlreadyClosedException e){
+            LOGGER.info("allready closed");
+        }
+        try {
+            connection.close();
+        } catch (IOException e) {
             LOGGER.error(e);
         }
     }
@@ -89,9 +94,9 @@ public class Messager {
             this.queue = queue;
             this.type = type;
         }
-        public CompletableFuture<String> then(final TypedListener<T> receiver) throws IOException {
+        public <U> CompletableFuture<U> then(final TypedListener<T,U> receiver) throws IOException {
             LOGGER.info(receiver + "{} listen {}({})", receiver, queue, type.getSimpleName());
-            final CompletableFuture<String> future = new CompletableFuture<>();
+            final CompletableFuture<U> future = new CompletableFuture<>();
             channel.queueDeclare(queue.name(), false, false, false, null);
             channel.basicConsume(queue.name(), true, new DefaultConsumer(channel){
                 @Override
@@ -99,8 +104,8 @@ public class Messager {
                     LOGGER.info("received {}", queue);
                     final String messageString = new String(body, "UTF-8");
                     final T signal = mapper.readValue(messageString, type);
-                    receiver.signal(signal);
-                    future.complete("COUSCOUS");
+                    U signalResponse = receiver.signal(signal);
+                    future.complete(signalResponse);
                 }
             });
             return future;

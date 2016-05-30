@@ -1,4 +1,4 @@
-package time.conf;
+package time.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -6,8 +6,6 @@ import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Conf {
-	private String splitParagraphPattern;
-	private String splitPhrasePattern;
 	private String webRoot;
 	private String target;
 	private String home;
@@ -35,15 +33,14 @@ public class Conf {
 	private String crawlStorageDir;
 	private Long chronoPageTotal;
 	private Long maxPhrasesToFetch;
-	private List<String> excludeAfterList;
+	private List<String> ignoreTextAfterAny;
 	private String sourcePath;
 	private String datasourcePath;
 	private String indexDir;
 	private String finalIndexDir;
-	private String[] phraseMustNotStartWith;
 	private String mergeableIndexesDir;
 	private String mergedIndexDir;
-	private String baseAppendIndexDir;
+	private String appendBaseIndexDir;
 	private String maxFileSize;
 	private Long nbPageLog;
     private Long nbPhraseLog;
@@ -51,8 +48,6 @@ public class Conf {
 	private Integer nbCrawlers;
 	private Integer maxPages;
 	private Integer politenessDelay;
-	private Integer phraseMaxLength;
-	private Integer phraseMinLength;
 	private Integer urlMaxLength;
 	private List<String> urlMustNotContain;
 
@@ -168,8 +163,8 @@ public class Conf {
 		return maxPhrasesToFetch;
 	}
 
-	public List<String> getExcludeAfterList() {
-		return excludeAfterList;
+	public List<String> getIgnoreTextAfterAny() {
+		return ignoreTextAfterAny;
 	}
 
 	public String getSourcePath() {
@@ -188,10 +183,6 @@ public class Conf {
 		return finalIndexDir;
 	}
 
-	public String[] getPhraseMustNotStartWith() {
-		return phraseMustNotStartWith;
-	}
-
 	public String getMergeableIndexesDir() {
 		return mergeableIndexesDir;
 	}
@@ -200,8 +191,8 @@ public class Conf {
 		return mergedIndexDir;
 	}
 
-	public String getBaseAppendIndexDir() {
-		return baseAppendIndexDir;
+	public String getAppendBaseIndexDir() {
+		return appendBaseIndexDir;
 	}
 
 	public String getMaxFileSize() {
@@ -230,22 +221,6 @@ public class Conf {
 
 	public Integer getPolitenessDelay() {
 		return politenessDelay;
-	}
-
-	public Integer getPhraseMaxLength() {
-		return phraseMaxLength;
-	}
-
-	public Integer getPhraseMinLength() {
-		return phraseMinLength;
-	}
-
-	public String getSplitParagraphPattern() {
-		return splitParagraphPattern;
-	}
-
-	public String getSplitPhrasePattern() {
-		return splitPhrasePattern;
 	}
 
 	public Integer getUrlMaxLength() {

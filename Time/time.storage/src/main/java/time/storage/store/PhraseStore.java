@@ -5,7 +5,6 @@ import java.nio.file.FileSystems;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field.Store;
@@ -21,7 +20,7 @@ import org.apache.lucene.store.FSDirectory;
 
 import com.google.inject.Inject;
 
-import time.conf.Conf;
+import time.domain.Conf;
 import time.domain.DatedPhrase;
 import time.domain.Scale;
 import time.domain.SortableLongField;
@@ -37,7 +36,7 @@ public class PhraseStore {
     private String finalIndexDir;
 	private IndexWriter iwriter;
 	private FacetsConfig config;
-    private long storedPhraseCount;
+    private long phraseCount;
     private long nbPhraseLog;
 
 	@Inject
@@ -66,12 +65,27 @@ public class PhraseStore {
 
 		iwriter = new IndexWriter(directory, indexWriterConfig);
 		config = new FacetsConfig();
-        storedPhraseCount = 0;
+        phraseCount = 0;
 	}
 
-	public void store(final Text text) {
+	public long store(final Text text) {
         text.getPhrases().forEach(phrase -> this.storePhrase(text, phrase));
+        phraseCount += text.getPhrases().size();
+        return phraseCount;
 	}
+
+    public long stop() throws IOException {
+        LOGGER.info("stop (merge & close index), " + phraseCount + " documents in index");
+        iwriter.forceMerge(1);
+        iwriter.close();
+        if(finalIndexDir != null){
+            LOGGER.info("move Index from " + indexDir + " to " + finalIndexDir);
+            Dirs.move(indexDir, finalIndexDir);
+        }else{
+            LOGGER.info("no move since no finalIndexDir");
+        }
+        return phraseCount;
+    }
 
     private void storePhrase(final Text text, final DatedPhrase phrase) {
         if(LOGGER.isDebugEnabled()){
@@ -114,29 +128,17 @@ public class PhraseStore {
     private void addDoc(Document doc) {
         try {
             iwriter.addDocument(config.build(doc));
-            storedPhraseCount++;
+            phraseCount++;
         } catch (IOException e) {
             throw new RuntimeException("IndexWriter.addDocument error", e);
         }
     }
 
     private void logProgress() {
-        if(storedPhraseCount%nbPhraseLog == 0){
-            LOGGER.info(storedPhraseCount + " phrases stored.");
+        if(phraseCount %nbPhraseLog == 0){
+            LOGGER.info(phraseCount + " phrases stored.");
         }
     }
-
-    public void stop() throws IOException {
-        LOGGER.info("stop (merge & close index), " + storedPhraseCount + " documents in index");
-		iwriter.forceMerge(1);
-		iwriter.close();
-        if(finalIndexDir != null){
-            LOGGER.info("move Index from " + indexDir + " to " + finalIndexDir);
-            Dirs.move(indexDir, finalIndexDir);
-        }else{
-            LOGGER.info("no move since no finalIndexDir");
-        }
-	}
 
     @Override
     public String toString() {

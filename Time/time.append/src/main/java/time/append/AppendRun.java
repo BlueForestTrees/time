@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.analyser.TextAnalyser;
+import time.conf.Resolver;
 import time.domain.Append;
 import time.domain.AppendDone;
 import time.domain.Conf;
@@ -44,7 +45,7 @@ public class AppendRun {
         //ANALYSE
         FileInputStream input;
         try {
-            input = new FileInputStream(append.getSource());
+            input = new FileInputStream(Resolver.get(append.getSource()));
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Lecture fichier", e);
         }

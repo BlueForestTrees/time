@@ -4,8 +4,11 @@ package time.append;
         import org.apache.logging.log4j.LogManager;
         import org.apache.logging.log4j.Logger;
         import time.domain.Append;
+        import time.domain.AppendDone;
         import time.messaging.Messager;
         import time.messaging.Queue;
+
+        import java.io.IOException;
 
 public class AppendMain {
 
@@ -18,7 +21,13 @@ public class AppendMain {
 
         messager.when(Queue.APPEND, Append.class)
                 .then(append -> appendRun.run(append))
-                .thenAccept(appendDone -> LOGGER.info(appendDone));
+                .thenAccept(appendDone -> {
+                    try {
+                        messager.signal(Queue.APPEND_DONE, appendDone);
+                    } catch (IOException e) {
+                        LOGGER.error(e);
+                    }
+                });
 
         messager.signal(Queue.APPEND, getMessage());
 
@@ -27,8 +36,7 @@ public class AppendMain {
     private static Append getMessage() {
         final Append append = new Append();
 
-        //append.setSource("D:\\dev\\time\\time\\data\\sources\\livres\\Adolf Hitler - Mon Combat - Mein Kampf.Ebook-Gratuit.co.epub");
-        append.setSource("D:\\dev\\time\\time\\data\\sources\\timeline\\timeline.txt");
+        append.setSource("${TIME_HOME}/sources/tika/timeline.txt");
         append.setUrl("timeline.fr");
         append.setTitle("Timeline - Le jeu de société");
 

@@ -62,7 +62,7 @@ public class Messager {
     }
 
     public <T> Messager signal(final Queue queue, T message) throws IOException {
-        LOGGER.info("sending message to queue " + queue);
+        LOGGER.info("sending message to queue " + queue + " " + message);
         final String messageString = mapper.writeValueAsString(message);
         channel.basicPublish("", queue.name(), null, messageString.getBytes());
         return this;

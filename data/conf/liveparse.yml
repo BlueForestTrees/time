@@ -1,3 +1,0 @@
-port: 9999
-webRoot: ${TIME_WEBROOT}
-excludeAfterList: ['Notes et références[', 'Bibliographie[', 'Liens externes[', 'Bibliographie[', 'Annexes[']

@@ -21,7 +21,7 @@ public class IndexService {
 
     private static final Logger LOG = LogManager.getLogger(IndexService.class);
 
-    public void append(final AppendDone appendDone) throws IOException {
+    public AppendDone append(final AppendDone appendDone) throws IOException {
         final String sourceIndexDir = appendDone.getSourceIndexDir();
         final String appendToDir = appendDone.getDestIndexDir();
 
@@ -40,6 +40,8 @@ public class IndexService {
         indexWriter.forceMerge(1);
         LOG.info("indexWriter.close() . . .");
         indexWriter.close();
+
+        return appendDone;
     }
 
 	public void merge(final Merge merge) throws IOException{

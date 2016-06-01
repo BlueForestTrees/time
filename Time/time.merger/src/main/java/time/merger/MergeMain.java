@@ -39,8 +39,8 @@ public class MergeMain {
                     messager.signal(Queue.WIKI_WEB_REFRESH);
                 });
 
-        messager.when(Queue.APPEND, AppendDone.class)
-                .then((appendDone)-> indexService.append(appendDone));
+        messager.when(Queue.APPEND_DONE, AppendDone.class)
+                .then(appendDone -> indexService.append(appendDone));
     }
 
     private void updateWikiWebConf(Merge merge) {

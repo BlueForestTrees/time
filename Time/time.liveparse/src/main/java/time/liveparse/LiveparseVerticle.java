@@ -12,8 +12,8 @@ import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import time.domain.Conf;
 import time.analyser.TextAnalyser;
+import time.domain.Conf;
 import time.domain.DatedPhrase;
 import time.domain.Text;
 import time.tika.TextFactory;
@@ -33,17 +33,17 @@ public class LiveparseVerticle extends AbstractVerticle {
     private final int port;
     private final ObjectMapper mapper;
     private final TextFactory textFactory;
-    private final TextAnalyser analyser;
+    private final TextAnalyser textAnalyser;
     private final String webRoot;
 
     @Inject
-    public LiveparseVerticle(Conf conf, TextAnalyser analyser, ObjectMapper mapper, TextFactory textFactory) {
+    public LiveparseVerticle(Conf conf, TextAnalyser textAnalyser, ObjectMapper mapper, TextFactory textFactory) {
         this.port = conf.getPort();
         this.webRoot = conf.getWebRoot();
         if(!new File(this.webRoot).isDirectory()){
             throw new RuntimeException("incorrect webroot: " + this.webRoot);
         }
-        this.analyser = analyser;
+        this.textAnalyser = textAnalyser;
         this.mapper = mapper;
         this.textFactory = textFactory;
     }
@@ -96,7 +96,7 @@ public class LiveparseVerticle extends AbstractVerticle {
 
     private String urlToText(final String url) throws IOException {
         final Text text = textFactory.buildFromUrl(Strings.beginWith(url, "http://", "https://"));
-        final Text analysedText = analyser.analyse(text);
+        final Text analysedText = textAnalyser.analyse(text);
         final Map<String, Object> analysedTextDTO = toDTO(analysedText);
         return mapper.writeValueAsString(analysedTextDTO);
     }
@@ -105,8 +105,8 @@ public class LiveparseVerticle extends AbstractVerticle {
         final String filename = file.uploadedFileName();
         LOGGER.info("textFactory.build({})", filename);
         final Text text = textFactory.build(filename);
-        LOGGER.info("analyser.analyse(text)");
-        final Text analysedText = analyser.analyse(text);
+        LOGGER.info("textAnalyser.analyse(text)");
+        final Text analysedText = textAnalyser.analyse(text);
         LOGGER.info("toDTO(analysedText)");
         final Map<String, Object> analysedTextDTO = toDTO(analysedText);
         LOGGER.info("mapper.writeValueAsString(analysedTextDTO)");

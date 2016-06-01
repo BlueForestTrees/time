@@ -10,16 +10,38 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import time.conf.Resolver;
+import time.domain.AppendDone;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-public class MergeService {
+public class IndexService {
 
-    private static final Logger LOG = LogManager.getLogger(MergeService.class);
-	   
+    private static final Logger LOG = LogManager.getLogger(IndexService.class);
+
+    public void append(final AppendDone appendDone) throws IOException {
+        final String sourceIndexDir = appendDone.getSourceIndexDir();
+        final String appendToDir = appendDone.getDestIndexDir();
+
+        final File sourceIndexFile = new File(Resolver.get(sourceIndexDir));
+        final Directory sourceDirectory = directoryFromFile(sourceIndexFile);
+
+        final File destPath = new File(Resolver.get(appendToDir));
+        final Directory destDirectory = directoryFromFile(destPath);
+        final IndexWriterConfig indexWriterConfig = indexWriterConfig();
+
+        LOG.info("creation de indexWriter sur " + destPath + " . . .");
+        final IndexWriter indexWriter = new IndexWriter(destDirectory, indexWriterConfig);
+        LOG.info("indexWriter.addIndexes(" + sourceDirectory + ") . . .");
+        indexWriter.addIndexes(destDirectory);
+        LOG.info("indexWriter.forceMerge(1) . . .");
+        indexWriter.forceMerge(1);
+        LOG.info("indexWriter.close() . . .");
+        indexWriter.close();
+    }
+
 	public void merge(final Merge merge) throws IOException{
 
         LOG.info(merge);

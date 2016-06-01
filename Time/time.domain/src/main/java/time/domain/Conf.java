@@ -37,6 +37,7 @@ public class Conf {
 	private String sourcePath;
 	private String datasourcePath;
 	private String indexDir;
+	private String appendToDir;
 	private String finalIndexDir;
 	private String mergeableIndexesDir;
 	private String mergedIndexDir;
@@ -53,6 +54,10 @@ public class Conf {
 
 	public void setIndexDir(String indexDir) {
 		this.indexDir = indexDir;
+	}
+
+	public String getAppendToDir() {
+		return appendToDir;
 	}
 
 	public String getWebRoot() {

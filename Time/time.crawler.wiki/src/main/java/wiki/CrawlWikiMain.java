@@ -16,6 +16,7 @@ public class CrawlWikiMain {
 
     public CrawlWikiMain(final String[] args) throws IOException, ArgumentParserException, TimeoutException {
         final CrawlWiki crawlWiki = Guice.createInjector(new CrawlWikiModule(args)).getInstance(CrawlWiki.class);
+
         final Messager messager = new Messager();
         messager.when(Queue.WIKI_CRAWL).then(() -> {
                     crawlWiki.crawl();

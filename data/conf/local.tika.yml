@@ -1,5 +1,5 @@
 sourceDir: ${TIME_HOME}/sources/livres/
-indexDir: ${TIME_HOME}/indexes/mergeables/local.tika/
+sourceIndexDir: ${TIME_HOME}/indexes/mergeables/local.tika/
 ignoreTextAfterAny: []
 urlMaxLength: 255
 urlMustNotContain: []

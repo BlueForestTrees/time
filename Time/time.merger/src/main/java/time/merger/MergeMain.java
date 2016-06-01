@@ -5,6 +5,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.ConfManager;
 import time.conf.ConfEnum;
+import time.domain.Append;
+import time.domain.AppendDone;
 import time.messaging.Messager;
 import time.messaging.Queue;
 
@@ -15,7 +17,7 @@ public class MergeMain {
 
     private static final Logger LOGGER = LogManager.getLogger(MergeMain.class);
 
-    private final MergeService mergeService;
+    private final IndexService indexService;
     private final IndexChooser indexChooser;
     private final Messager messager;
 
@@ -25,16 +27,20 @@ public class MergeMain {
 
     public MergeMain(final String[] args) throws IOException, TimeoutException, ArgumentParserException {
         LOGGER.info("MergeMain()");
-        mergeService = new MergeService();
+        indexService = new IndexService();
         indexChooser = new IndexChooser();
         messager = new Messager();
+
         messager.when(Queue.MERGE)
                 .then(()->{
                     final Merge merge = indexChooser.prepareMerge();
-                    mergeService.merge(merge);
+                    indexService.merge(merge);
                     updateWikiWebConf(merge);
                     messager.signal(Queue.WIKI_WEB_REFRESH);
                 });
+
+        messager.when(Queue.APPEND, AppendDone.class)
+                .then((appendDone)-> indexService.append(appendDone));
     }
 
     private void updateWikiWebConf(Merge merge) {

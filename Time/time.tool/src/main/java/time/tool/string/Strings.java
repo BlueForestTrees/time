@@ -42,4 +42,8 @@ public class Strings {
     public static String forFilename(final String s){
         return s.replaceAll("[^a-zA-Z0-9-_\\.]", "_");
     }
+
+    public static String firstValued(final String... ss) {
+        return Arrays.stream(ss).filter((s) -> s != null && !"".equals(s)).findFirst().get();
+    }
 }

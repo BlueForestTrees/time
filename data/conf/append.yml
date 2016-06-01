@@ -1,2 +1,3 @@
 appendBaseIndexDir: ${TIME_HOME}/indexes/mergeables/append/
+appendToDir: ${TIME_HOME}/indexes/prod/
 ignoreTextAfterAny: []

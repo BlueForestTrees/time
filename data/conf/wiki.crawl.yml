@@ -12,7 +12,7 @@ urlMustNotContain: ['fichier:','discussion_utilisateur:', 'discussion_utilisatri
 excludeAfterList: ['Notes et références[', 'Bibliographie[', 'Liens externes[', 'Bibliographie[', 'Annexes[']
 phraseMustNotStartWith: ['Catégories :']
 crawlStorageDir: ${TIME_HOME}/temp/wiki
-indexDir: ${TIME_HOME}/indexes/fresh/wiki/
+sourceIndexDir: ${TIME_HOME}/indexes/fresh/wiki/
 finalIndexDir: ${TIME_HOME}/indexes/mergeables/wiki
 maxFileSize: 100MB
 nbPageLog: 100

@@ -3,6 +3,7 @@ package time.append;
         import com.google.inject.Guice;
         import org.apache.logging.log4j.LogManager;
         import org.apache.logging.log4j.Logger;
+        import time.domain.Append;
         import time.messaging.Messager;
         import time.messaging.Queue;
 
@@ -16,7 +17,7 @@ public class AppendMain {
         final AppendRun appendRun = Guice.createInjector(new AppendModule(args)).getInstance(AppendRun.class);
 
         messager.when(Queue.APPEND, Append.class)
-                .then(append -> {return appendRun.run(append);})
+                .then(append -> appendRun.run(append))
                 .thenAccept(appendDone -> LOGGER.info(appendDone));
 
         messager.signal(Queue.APPEND, getMessage());
@@ -24,10 +25,12 @@ public class AppendMain {
     }
 
     private static Append getMessage() {
-        Append append = new Append();
+        final Append append = new Append();
 
         //append.setSource("D:\\dev\\time\\time\\data\\sources\\livres\\Adolf Hitler - Mon Combat - Mein Kampf.Ebook-Gratuit.co.epub");
         append.setSource("D:\\dev\\time\\time\\data\\sources\\timeline\\timeline.txt");
+        append.setUrl("timeline.fr");
+        append.setTitle("Timeline - Le jeu de société");
 
         return append;
     }

@@ -1,4 +1,4 @@
-package time.analyser.finder.parser;
+package time.analyser.parser;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;

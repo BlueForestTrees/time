@@ -14,6 +14,6 @@
 		</Logger>
 
 		<Logger name="time.storage" level="info"/>
-        <Logger name="time.analyser" level="info"/>
+        <Logger name="time.textAnalyser" level="info"/>
 	</Loggers>
 </Configuration>

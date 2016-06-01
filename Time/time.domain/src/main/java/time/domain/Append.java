@@ -1,9 +1,12 @@
-package time.append;
+package time.domain;
 
 public class Append {
     private String source;
     private String url;
     private String title;
+    private String appendToDir;
+
+    public String getAppendToDir() { return appendToDir; }
 
     public String getUrl() {
         return url;
@@ -27,6 +30,10 @@ public class Append {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setAppendToDir(String appendToDir) {
+        this.appendToDir = appendToDir;
     }
 
     @Override

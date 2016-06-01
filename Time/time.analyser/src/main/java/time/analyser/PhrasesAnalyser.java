@@ -1,6 +1,6 @@
-package time.analyser.finder;
+package time.analyser;
 
-import time.analyser.finder.parser.IParser;
+import time.analyser.parser.IParser;
 import time.domain.DatedPhrase;
 import time.tool.string.Strings;
 
@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class DatedPhrasesFinder {
+public class PhrasesAnalyser {
 
 	private final Pattern pattern;
 	private final IParser parser;
-	private final Finder name;
+	private final DateType name;
 
-	public DatedPhrasesFinder(Pattern pattern, IParser parser, Finder name) {
+	public PhrasesAnalyser(Pattern pattern, IParser parser, DateType name) {
 		this.pattern = pattern;
 		this.parser = parser;
 		this.name = name;
@@ -39,7 +39,7 @@ public class DatedPhrasesFinder {
 
 	@Override
 	public String toString() {
-		return name.name();
+		return name.name() + " \""+pattern.pattern()+"\"";
 	}
 
 }

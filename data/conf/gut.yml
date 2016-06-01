@@ -20,5 +20,5 @@ minLength: 30
 maxLength: 500000
 txtOutputDir: ${TIME_HOME}/temp/gutenberg/livres/
 txtOutputFile: ${TIME_HOME}/temp/gutenberg/livres/Le_Naturalisme
-indexDir: ${TIME_HOME}/indexes/temp/
+sourceIndexDir: ${TIME_HOME}/indexes/temp/
 splitParagraphPattern: '[\r\n\t]+'

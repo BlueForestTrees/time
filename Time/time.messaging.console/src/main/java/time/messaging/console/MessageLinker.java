@@ -8,6 +8,7 @@ import time.messaging.Messager;
 import time.messaging.Queue;
 
 import java.io.IOException;
+import java.util.function.Consumer;
 
 public class MessageLinker {
 
@@ -22,19 +23,15 @@ public class MessageLinker {
         this.links = links;
     }
 
-    public void on(){
-
-        links.getQueueLinks().forEach(link -> {
-            try {
-                messager.when(link.getFrom()).then(() -> messager.signal(link.getTo()));
-            } catch (IOException e) {
-                LOGGER.error(e);
-            }
-        });
-
+    public void on() {
+        links.getQueueLinks().forEach(this::linkFromWithTo);
     }
 
-    public void off(){
-        //TODO Link.OFF
+    private void linkFromWithTo(final QueueLinks.QueueLink link) {
+        try {
+            messager.when(link.getFrom()).then(() -> messager.signal(link.getTo()));
+        } catch (IOException e) {
+            LOGGER.error(e);
+        }
     }
 }

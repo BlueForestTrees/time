@@ -21,6 +21,6 @@
 		<Logger name="time.crawler" level="debug"/>
 		<Logger name="time.crawler.crawl" level="info"/>
 		<Logger name="time.storage" level="info"/>
-        <Logger name="time.analyser" level="info"/>
+        <Logger name="time.textAnalyser" level="info"/>
 	</Loggers>
 </Configuration>

@@ -1,4 +1,4 @@
 source: ${TIME_HOME}/sources/timeline/timeline.txt
 url: http://www.espritjeu.com/serie-jeu-timeline.html
 title: Jeu de société Timeline. Jouez avec les inventions au fil du temps!
-indexDir: ${TIME_HOME}/indexes/mergeable/timeline/
+sourceIndexDir: ${TIME_HOME}/indexes/mergeable/timeline/

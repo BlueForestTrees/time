@@ -1,21 +1,21 @@
-package time.append;
+package time.domain;
 
 public class AppendDone {
-    private Append append;
-    private String indexDir;
+    private String sourceIndexDir;
+    private String destIndexDir;
     private long phraseCount;
     private boolean overwriteOccurs;
 
-    public AppendDone(Append append) {
-        this.append = append;
+    public void setDestIndexDir(String destIndexDir) { this.destIndexDir = destIndexDir;}
+
+    public String getDestIndexDir() { return destIndexDir; }
+
+    public String getSourceIndexDir() {
+        return sourceIndexDir;
     }
 
-    public String getIndexDir() {
-        return indexDir;
-    }
-
-    public void setIndexDir(String indexDir) {
-        this.indexDir = indexDir;
+    public void setSourceIndexDir(String sourceIndexDir) {
+        this.sourceIndexDir = sourceIndexDir;
     }
 
     public long getPhraseCount() {
@@ -37,10 +37,10 @@ public class AppendDone {
     @Override
     public String toString() {
         return "AppendDone{" +
-                "append=" + append +
-                ", indexDir='" + indexDir + '\'' +
+                "sourceIndexDir='" + sourceIndexDir + '\'' +
                 ", phraseCount=" + phraseCount +
                 ", overwriteOccurs=" + overwriteOccurs +
+                ", destIndexDir='" + destIndexDir + '\'' +
                 '}';
     }
 }

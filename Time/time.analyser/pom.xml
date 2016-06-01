@@ -17,6 +17,16 @@
             <artifactId>guice</artifactId>
         </dependency>
         <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.conf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>slim</groupId>
+            <artifactId>time.domain</artifactId>
+        </dependency>
+
+        <!--TEST-->
+        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <scope>test</scope>
@@ -25,14 +35,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>slim</groupId>
-            <artifactId>time.conf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>slim</groupId>
-            <artifactId>time.domain</artifactId>
         </dependency>
     </dependencies>
 

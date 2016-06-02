@@ -23,13 +23,16 @@ public class IndexService {
     private static final Logger LOG = LogManager.getLogger(IndexService.class);
 
     public AppendDone append(final AppendDone appendDone) throws IOException {
-        final Directory sourceDirectory = directoryFromFile(new File(Resolver.get(appendDone.getSourceIndexDir())));
-        final Directory destDirectory = directoryFromFile(new File(Resolver.get(appendDone.getDestIndexDir())));
+        final File sourceFile = new File(Resolver.get(appendDone.getSourceIndexDir()));
+        final Directory sourceDirectory = directoryFromFile(sourceFile);
+        final File destFile = new File(Resolver.get(appendDone.getDestIndexDir()));
+        final Directory destDirectory = directoryFromFile(destFile);
         final IndexWriterConfig indexWriterConfig = indexWriterConfig();
 
-        LOG.info("indexWriter = " + destDirectory + " . . .");
+        LOG.info("FROM {}", sourceFile);
+        LOG.info("TO {}", destFile);
         final IndexWriter destIndexWriter = new IndexWriter(destDirectory, indexWriterConfig);
-        LOG.info("append " + sourceDirectory + " . . .");
+        LOG.info("APPEND. . .");
         destIndexWriter.addIndexes(sourceDirectory);
         LOG.info("indexWriter.forceMerge(1) . . .");
         destIndexWriter.forceMerge(1);

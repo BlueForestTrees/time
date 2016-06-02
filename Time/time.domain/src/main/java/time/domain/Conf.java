@@ -51,6 +51,11 @@ public class Conf {
 	private Integer politenessDelay;
 	private Integer urlMaxLength;
 	private List<String> urlMustNotContain;
+	private String uploadDir;
+
+	public String getUploadDir() {
+		return uploadDir;
+	}
 
 	public void setIndexDir(String indexDir) {
 		this.indexDir = indexDir;

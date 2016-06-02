@@ -11,7 +11,7 @@ public class CompositeTextTransformer implements ITextTransformer{
     private List<ITextTransformer> transformers;
 
     @Inject
-    public CompositeTextTransformer(final WikiExcludeAfterTextTransformer wikiExclude, final WikiUrlDateTextTransformer wikiUrlDate){
+    public CompositeTextTransformer(final CutAfterTextTransformer wikiExclude){
         transformers = new ArrayList<>();
         transformers.add(wikiExclude);
         //transformers.add(wikiUrlDate);

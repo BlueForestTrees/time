@@ -5,19 +5,24 @@ import java.util.OptionalInt;
 
 import com.google.inject.Inject;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import time.domain.Conf;
 import time.domain.Text;
 
-public class WikiExcludeAfterTextTransformer implements ITextTransformer {
+public class CutAfterTextTransformer implements ITextTransformer {
+
+    private static final Logger LOGGER = LogManager.getLogger(CutAfterTextTransformer.class);
 
     private List<String> ignoreTextAfterAny;
     
     @Inject
-    public WikiExcludeAfterTextTransformer(Conf conf) {
+    public CutAfterTextTransformer(Conf conf) {
 		this.ignoreTextAfterAny = conf.getIgnoreTextAfterAny();
         if(this.ignoreTextAfterAny == null){
             throw new RuntimeException("ignoreTextAfterAny is null");
         }
+        LOGGER.info(this);
 	}
 
 	@Override
@@ -28,5 +33,11 @@ public class WikiExcludeAfterTextTransformer implements ITextTransformer {
             text.delete(whereToCut.getAsInt(), text.length());
         }
     }
-    
+
+    @Override
+    public String toString() {
+        return "CutAfterTextTransformer{" +
+                "ignoreTextAfterAny=" + ignoreTextAfterAny +
+                '}';
+    }
 }

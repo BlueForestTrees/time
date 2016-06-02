@@ -29,7 +29,7 @@ public class DatedPhraseDetector {
 	private final static String NOT_IN_DATE_WORDS = "(?<ex>(spectateur|degré|coup|pas|tour|heure|minute|seconde|mois|moto|titre|volt|salarié|arbre|commanderie|étudiant|degré|mètre|mot|ouvrier|mort|partenaire)s?)?";
 	private static final String END = "(;|,|\\.| " + NOT_IN_DATE_WORDS + "|$)";
 	private static final String END2 = "(;|:|,|\\.|$)";
-	private static final String JCSTART = "([Aà] partir de|date de|[Dd]ébut|[Aa]près|[Dd]epuis|[Ee]n|dans les années) ";
+	private static final String JCSTART = "([Aà] partir de|[Dd]ate(nt)? de|[Dd]ébut|[Aa]près|[Dd]epuis|[Ee]n|[Dd]ans les années) ";
     private final Map<DateType, PhrasesAnalyser> finders;
     private final PhrasesAnalyser[] findersArray;
 

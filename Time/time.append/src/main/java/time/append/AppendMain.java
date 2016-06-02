@@ -15,13 +15,14 @@ public class AppendMain {
     private static final Logger LOGGER = LogManager.getLogger(AppendMain.class);
 
     public static void main(final String[] args) throws Exception {
+
         final Messager messager = new Messager();
 
         final AppendRun appendRun = Guice.createInjector(new AppendModule()).getInstance(AppendRun.class);
 
         messager.when(Queue.APPEND, Append.class)
-                .then(append -> appendRun.run(append))
-                .thenAccept(appendDone -> {
+                .then(append -> {
+                    final AppendDone appendDone = appendRun.run(append);
                     try {
                         messager.signal(Queue.APPEND_DONE, appendDone);
                     } catch (IOException e) {
@@ -29,7 +30,9 @@ public class AppendMain {
                     }
                 });
 
-        messager.signal(Queue.APPEND, getMessage());
+        messager.when(Queue.APPEND_TEST)
+                .then(() -> messager.signal(Queue.APPEND, getMessage()));
+
 
     }
 

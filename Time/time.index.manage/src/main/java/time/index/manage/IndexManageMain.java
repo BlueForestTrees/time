@@ -40,13 +40,9 @@ public class IndexManageMain {
                 });
 
         messager.when(Queue.APPEND_DONE, AppendDone.class)
-                .then(indexService::append)
-                .thenAccept(appendDone -> {
-                    try {
-                        messager.signal(Queue.WIKI_WEB_REFRESH);
-                    } catch (IOException e) {
-                        LOGGER.error(e);
-                    }
+                .then((appendDone) -> {
+                    indexService.append(appendDone);
+                    messager.signal(Queue.WIKI_WEB_REFRESH);
                 });
     }
 

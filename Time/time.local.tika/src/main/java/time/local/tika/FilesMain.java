@@ -16,15 +16,19 @@ public class FilesMain {
 
         final Messager messager = new Messager();
 
-        Guice.createInjector(new FilesModule(args)).getInstance(FilesRun.class).run();
+        final FilesRun filesRun = Guice.createInjector(new FilesModule(args)).getInstance(FilesRun.class);
 
-        try {
-            messager.signal(Queue.MERGE);
-        } catch (IOException e) {
-            LOGGER.error(e);
-        }
+        messager.when(Queue.RELOAD)
+                .then(() -> {
+                    filesRun.run();
+                    try {
+                        messager.signal(Queue.MERGE);
+                    } catch (IOException e) {
+                        LOGGER.error(e);
+                    }
+                });
 
-        System.exit(0);
+        messager.signal(Queue.RELOAD);
     }
 
 }

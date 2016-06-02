@@ -2,12 +2,16 @@ package time.liveparse;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
+import time.conf.ConfEnum;
+import time.domain.Analyser;
 import time.domain.Conf;
 import time.conf.ConfManager;
+import time.transform.CompositeTextTransformer;
+import time.transform.ITextTransformer;
 
+import javax.inject.Singleton;
 import java.io.IOException;
 
 public class LiveparseModule extends AbstractModule {
@@ -20,7 +24,7 @@ public class LiveparseModule extends AbstractModule {
 
     @Override
     protected void configure() {
-
+        bind(ITextTransformer.class).to(CompositeTextTransformer.class);
     }
 
     @Provides @Singleton
@@ -28,9 +32,15 @@ public class LiveparseModule extends AbstractModule {
         return conf;
     }
 
-    @Provides @Singleton @Named("port")
+    @Provides @Singleton
+    @Named("port")
     public int port() {
         return conf.getPort();
+    }
+
+    @Provides @Singleton
+    public Analyser analyser() throws IOException {
+        return new ConfManager().get(ConfEnum.ANALYSER, Analyser.class);
     }
 
 }

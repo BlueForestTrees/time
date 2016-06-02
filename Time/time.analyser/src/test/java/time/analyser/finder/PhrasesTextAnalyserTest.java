@@ -28,6 +28,19 @@ public class PhrasesTextAnalyserTest {
 		finders = datedPhraseDetector.getFindersArray();
 	}
 
+	@Test
+	public void testFindersCount(){
+		assertThat(DateType.values().length).as("nombre de finders").isEqualTo(datedPhraseDetector.getFindersArray().length);
+	}
+
+	@Test
+	public void testNoNullFinder(){
+		Arrays.stream(DateType.values()).forEach(finder -> {
+			final PhrasesAnalyser actual = datedPhraseDetector.get(finder);
+			assertThat(actual).as(finder + " est absent!").isNotNull();
+		});
+	}
+
 	// L’apparition de nouvelles façons de penser et de communiquer, entre 70
 	// 000 et 30 000 ans, constitue la Révolution cognitive.
 	// La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
@@ -363,6 +376,11 @@ public class PhrasesTextAnalyserTest {
 	public void jc28() {
 		assertOnly(DateType.JC, yearIs(1456), "Les chats sont bleus depuis 1456.");
 	}
+
+    @Test
+    public void jc31(){
+        assertOnly(DateType.JC, yearIs(1725),"Les Quatre Saisons de Vivaldi datent de 1725.");
+    }
 
 	@Test
 	public void testMilliard0() {

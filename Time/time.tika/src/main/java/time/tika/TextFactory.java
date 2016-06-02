@@ -23,7 +23,7 @@ public class TextFactory {
     private final ITextTransformer textTransformer;
 
     @Inject
-    public TextFactory(final CompositeTextTransformer textTransformer){
+    public TextFactory(final ITextTransformer textTransformer){
         this.textTransformer = textTransformer;
     }
 

@@ -35,23 +35,32 @@ public class LiveparseVerticle extends AbstractVerticle {
     private final TextFactory textFactory;
     private final TextAnalyser textAnalyser;
     private final String webRoot;
+    private final String uploadDir;
 
     @Inject
     public LiveparseVerticle(Conf conf, TextAnalyser textAnalyser, ObjectMapper mapper, TextFactory textFactory) {
         this.port = conf.getPort();
         this.webRoot = conf.getWebRoot();
+        this.uploadDir = conf.getUploadDir();
         if(!new File(this.webRoot).isDirectory()){
             throw new RuntimeException("incorrect webroot: " + this.webRoot);
+        }
+        if(!new File(this.uploadDir).isDirectory()){
+            throw new RuntimeException("incorrect uploadDir: " + this.uploadDir);
         }
         this.textAnalyser = textAnalyser;
         this.mapper = mapper;
         this.textFactory = textFactory;
+
+        LOGGER.info("port {}", port);
+        LOGGER.info("webRoot {}", webRoot);
+        LOGGER.info("uploadDir {}", uploadDir);
     }
 
     @Override
     public void start() {
         Router router = Router.router(vertx);
-        router.route().handler(BodyHandler.create());
+        router.route().handler(BodyHandler.create().setUploadsDirectory(uploadDir));
         router.get("/api/liveparse/url/:url").handler(this::fromUrl);
         router.route("/*").handler(StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true).setWebRoot(webRoot));
         router.post("/api/liveparse/file").handler(this::fromFile);
@@ -70,13 +79,11 @@ public class LiveparseVerticle extends AbstractVerticle {
             } catch (Exception e) {
                 ctx.fail(e);
             }
-        }, res -> {
-            ctx.response()
+        }, res -> ctx.response()
                     .putHeader("Content-Type", "application/json")
                     .setChunked(true)
                     .write((String)res.result())
-                    .end();
-        });
+                    .end());
     }
 
     private void fromUrl(final RoutingContext ctx){
@@ -110,22 +117,17 @@ public class LiveparseVerticle extends AbstractVerticle {
         LOGGER.info("toDTO(analysedText)");
         final Map<String, Object> analysedTextDTO = toDTO(analysedText);
         LOGGER.info("mapper.writeValueAsString(analysedTextDTO)");
-        final String analysedTextDTOString = mapper.writeValueAsString(analysedTextDTO);
-
-        return analysedTextDTOString;
+        return mapper.writeValueAsString(analysedTextDTO);
     }
 
     private Map<String, Object> toDTO(final Text analysedText) {
         final HashMap<String, Object> dto = new HashMap<>();
-
         final String text = analysedText.getHightlightTextString();
         final HashMap<String, Object> metadatas = new HashMap<>();
         final List<DatedPhrase> datedPhrases = analysedText.getPhrases();
-
         dto.put("text", text);
         dto.put("metadatas", metadatas);
         dto.put("datedPhrases", datedPhrases);
-
         metadatas.put("Titre", analysedText.getTitle());
         metadatas.put("Auteur", analysedText.getCreator());
         metadatas.put("Date", analysedText.getCreated());

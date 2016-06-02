@@ -74,7 +74,7 @@ public class Messager {
             this.queue = queue;
         }
         public Messager then(final Listener receiver) throws IOException {
-            LOGGER.info(receiver + "{} simply listen {}", receiver, queue);
+            LOGGER.info("listen {}", queue);
             channel.queueDeclare(queue.name(), false, false, false, null);
             channel.basicConsume(queue.name(), true, new DefaultConsumer(channel){
                 @Override
@@ -94,9 +94,8 @@ public class Messager {
             this.queue = queue;
             this.type = type;
         }
-        public <U> CompletableFuture<U> then(final TypedListener<T,U> receiver) throws IOException {
-            LOGGER.info(receiver + "{} listen {}({})", receiver, queue, type.getSimpleName());
-            final CompletableFuture<U> future = new CompletableFuture<>();
+        public void then(final TypedListener<T> receiver) throws IOException {
+            LOGGER.info("listen {}({})", queue, type.getSimpleName());
             channel.queueDeclare(queue.name(), false, false, false, null);
             channel.basicConsume(queue.name(), true, new DefaultConsumer(channel){
                 @Override
@@ -104,11 +103,10 @@ public class Messager {
                     LOGGER.info("received {}", queue);
                     final String messageString = new String(body, "UTF-8");
                     final T signal = mapper.readValue(messageString, type);
-                    U signalResponse = receiver.signal(signal);
-                    future.complete(signalResponse);
+                    receiver.signal(signal);
                 }
             });
-            return future;
+
         }
     }
 

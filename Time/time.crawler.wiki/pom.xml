@@ -18,7 +18,7 @@
         </dependency>
         <dependency>
             <groupId>slim</groupId>
-            <artifactId>time.phraseStore</artifactId>
+            <artifactId>time.index.create</artifactId>
         </dependency>
     </dependencies>
 

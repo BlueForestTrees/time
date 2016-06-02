@@ -17,7 +17,7 @@ public class AppendMain {
     public static void main(final String[] args) throws Exception {
         final Messager messager = new Messager();
 
-        final AppendRun appendRun = Guice.createInjector(new AppendModule(args)).getInstance(AppendRun.class);
+        final AppendRun appendRun = Guice.createInjector(new AppendModule()).getInstance(AppendRun.class);
 
         messager.when(Queue.APPEND, Append.class)
                 .then(append -> appendRun.run(append))

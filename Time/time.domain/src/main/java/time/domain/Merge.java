@@ -1,4 +1,4 @@
-package time.merger;
+package time.domain;
 
 public class Merge {
     private String mergeableIndexesDir;

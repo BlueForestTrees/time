@@ -1,34 +1,34 @@
-package time.merger;
+package time.index.manage;
 
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.ConfManager;
 import time.conf.ConfEnum;
-import time.domain.Append;
 import time.domain.AppendDone;
+import time.domain.Merge;
 import time.messaging.Messager;
 import time.messaging.Queue;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-public class MergeMain {
+public class IndexManageMain {
 
-    private static final Logger LOGGER = LogManager.getLogger(MergeMain.class);
+    private static final Logger LOGGER = LogManager.getLogger(IndexManageMain.class);
 
     private final IndexService indexService;
-    private final IndexChooser indexChooser;
+    private final BlueRedSwitcher indexChooser;
     private final Messager messager;
 
     public static void main(final String[] args) throws IOException, TimeoutException, ArgumentParserException {
-        new MergeMain(args);
+        new IndexManageMain();
     }
 
-    public MergeMain(final String[] args) throws IOException, TimeoutException, ArgumentParserException {
-        LOGGER.info("MergeMain()");
+    public IndexManageMain() throws IOException, TimeoutException, ArgumentParserException {
+        LOGGER.info("IndexManageMain()");
         indexService = new IndexService();
-        indexChooser = new IndexChooser();
+        indexChooser = new BlueRedSwitcher();
         messager = new Messager();
 
         messager.when(Queue.MERGE)
@@ -40,13 +40,20 @@ public class MergeMain {
                 });
 
         messager.when(Queue.APPEND_DONE, AppendDone.class)
-                .then(appendDone -> indexService.append(appendDone));
+                .then(indexService::append)
+                .thenAccept(appendDone -> {
+                    try {
+                        messager.signal(Queue.WIKI_WEB_REFRESH);
+                    } catch (IOException e) {
+                        LOGGER.error(e);
+                    }
+                });
     }
 
-    private void updateWikiWebConf(Merge merge) {
+    private void updateWikiWebConf(final Merge merge) {
         LOGGER.info("set wikiWeb.indexDir: {}", merge.getMergedIndexDir());
         try {
-            new ConfManager().update(ConfEnum.WIKIWEB, conf -> conf.setIndexDir(merge.getMergedIndexDir()));
+            new ConfManager().update(ConfEnum.TIMEWEB, conf -> conf.setIndexDir(merge.getMergedIndexDir()));
         } catch (IOException e) {
             LOGGER.error(e);
         }
@@ -54,6 +61,6 @@ public class MergeMain {
 
     @Override
     public String toString() {
-        return "MergeMain";
+        return "IndexManageMain";
     }
 }

@@ -17,13 +17,8 @@ import java.io.IOException;
 public class AppendModule extends AbstractModule {
 
 	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(AppendModule.class);
-	private final String[] args;
 
 	private Conf conf;
-
-	public AppendModule(final String[] args) throws ArgumentParserException, IOException {
-		this.args = args;
-	}
 
 	@Override
 	protected void configure() {

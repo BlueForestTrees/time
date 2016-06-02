@@ -1,4 +1,4 @@
-package time.merger;
+package time.index.manage;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
@@ -11,6 +11,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import time.conf.Resolver;
 import time.domain.AppendDone;
+import time.domain.Merge;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,24 +23,18 @@ public class IndexService {
     private static final Logger LOG = LogManager.getLogger(IndexService.class);
 
     public AppendDone append(final AppendDone appendDone) throws IOException {
-        final String sourceIndexDir = appendDone.getSourceIndexDir();
-        final String appendToDir = appendDone.getDestIndexDir();
-
-        final File sourceIndexFile = new File(Resolver.get(sourceIndexDir));
-        final Directory sourceDirectory = directoryFromFile(sourceIndexFile);
-
-        final File destPath = new File(Resolver.get(appendToDir));
-        final Directory destDirectory = directoryFromFile(destPath);
+        final Directory sourceDirectory = directoryFromFile(new File(Resolver.get(appendDone.getSourceIndexDir())));
+        final Directory destDirectory = directoryFromFile(new File(Resolver.get(appendDone.getDestIndexDir())));
         final IndexWriterConfig indexWriterConfig = indexWriterConfig();
 
-        LOG.info("creation de indexWriter sur " + destPath + " . . .");
-        final IndexWriter indexWriter = new IndexWriter(destDirectory, indexWriterConfig);
-        LOG.info("indexWriter.addIndexes(" + sourceDirectory + ") . . .");
-        indexWriter.addIndexes(destDirectory);
+        LOG.info("indexWriter = " + destDirectory + " . . .");
+        final IndexWriter destIndexWriter = new IndexWriter(destDirectory, indexWriterConfig);
+        LOG.info("append " + sourceDirectory + " . . .");
+        destIndexWriter.addIndexes(sourceDirectory);
         LOG.info("indexWriter.forceMerge(1) . . .");
-        indexWriter.forceMerge(1);
+        destIndexWriter.forceMerge(1);
         LOG.info("indexWriter.close() . . .");
-        indexWriter.close();
+        destIndexWriter.close();
 
         return appendDone;
     }
@@ -97,7 +92,7 @@ public class IndexService {
     
     protected IndexWriterConfig indexWriterConfig(){
         final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new StandardAnalyzer());
-        indexWriterConfig.setOpenMode(OpenMode.APPEND);
+        indexWriterConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
         indexWriterConfig.setRAMBufferSizeMB(256.0);
         return indexWriterConfig;
     }

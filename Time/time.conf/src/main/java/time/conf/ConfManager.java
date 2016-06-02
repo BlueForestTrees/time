@@ -46,11 +46,12 @@ public class ConfManager {
         return get(confInArgs(args, "conf").orElse(Resolver.get(def)), beanClass);
     }
     public <T> T get(final String ymlPath, Class<T> beanClass) throws IOException{
-        final String rawConfig = new String(ByteStreams.toByteArray(new FileInputStream(new File(Resolver.get(ymlPath)))), StandardCharsets.UTF_8);
+        final String resolvedYmlPath = Resolver.get(ymlPath);
+        final String rawConfig = new String(ByteStreams.toByteArray(new FileInputStream(new File(resolvedYmlPath))), StandardCharsets.UTF_8);
         final String substituedConfig = Resolver.get(rawConfig);
         final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
-        LOGGER.debug("{} content\n{}", ymlPath, substituedConfig);
+        LOGGER.debug("{} content\n{}", resolvedYmlPath, substituedConfig);
 
         return mapper.readValue(substituedConfig, beanClass);
     }

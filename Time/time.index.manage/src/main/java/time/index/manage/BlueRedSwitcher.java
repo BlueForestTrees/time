@@ -1,18 +1,19 @@
-package time.merger;
+package time.index.manage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.ConfManager;
 import time.conf.ConfEnum;
+import time.domain.Merge;
 
 import java.io.IOException;
 
-public class IndexChooser {
-    private static final Logger LOGGER = LogManager.getLogger(IndexChooser.class);
+public class BlueRedSwitcher {
+    private static final Logger LOGGER = LogManager.getLogger(BlueRedSwitcher.class);
 
     public Merge prepareMerge() throws IOException {
-        final Merge merge = new ConfManager().get(ConfEnum.MERGER, Merge.class);
-        final String currentWikiCrawlindexDir = new ConfManager().get(ConfEnum.WIKIWEB).getIndexDir();
+        final Merge merge = new ConfManager().get(ConfEnum.INDEX_MANAGE, Merge.class);
+        final String currentWikiCrawlindexDir = new ConfManager().get(ConfEnum.TIMEWEB).getIndexDir();
 
         LOGGER.info("wiki.web is {}", currentWikiCrawlindexDir);
 

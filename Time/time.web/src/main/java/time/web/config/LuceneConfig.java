@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import time.domain.Conf;
 import time.conf.Resolver;
+import time.domain.TimeWebConf;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -24,7 +25,7 @@ public class LuceneConfig {
     private static final Logger LOGGER = LogManager.getLogger(LuceneConfig.class);
 
     @Autowired
-    private Conf conf;
+    private TimeWebConf conf;
 
     @Bean
     public Analyzer analyzer(){

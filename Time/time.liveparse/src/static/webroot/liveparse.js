@@ -5,6 +5,7 @@
         console.log("init");
         Liveparse.upload.showBook();
         Liveparse.view.throbber.hide();
+        Liveparse.view.metadatas.hide();
         Liveparse.view.upload.change(this.doUpload);
         Liveparse.view.uploadUrlBt.click(this.doUrlUpload);
         Liveparse.view.uploadUrlText.keypress(function (e) {
@@ -16,8 +17,9 @@
 
     Upload.prototype.doUpload = function(event) {
         console.log('uploading. . .');
-        Liveparse.view.metadatas.empty();
         Liveparse.view.book.empty();
+        Liveparse.view.metadatas.hide();
+        Liveparse.view.throbber.show();
         var files = event.target.files;
         var data = new FormData();
         $.each(files, function(key, value)
@@ -33,7 +35,7 @@
 
     Upload.prototype.doUrlUpload = function(event) {
             console.log('uploading url. . .');
-            Liveparse.view.metadatas.empty();
+            Liveparse.view.metadatas.hide();
             Liveparse.view.book.empty();
             Liveparse.view.datedPhrases.empty();
             Liveparse.view.throbber.show();
@@ -45,6 +47,7 @@
         console.log('uploaded', data);
         Liveparse.view.throbber.hide();
         Liveparse.upload.updateMetadatas(data.metadatas);
+        Liveparse.view.metadatas.show();
         Liveparse.view.book.append(data.text);
         Liveparse.view.datedPhrases.append(Liveparse.upload.buildPhrasesHtml(data.datedPhrases))
      };
@@ -56,11 +59,12 @@
 
     Upload.prototype.updateMetadatas = function(metaDico){
         console.log("buildMetaHtml", metaDico);
-        Liveparse.view.titre = metaDico.titre;
-        Liveparse.view.auteur = metaDico.auteur;
-        Liveparse.view.date = metaDico.date;
-        Liveparse.view.paragraphes = metaDico.paragraphes;
-        Liveparse.view.phrases = metaDico.phrases;
+        Liveparse.view.titre.val(metaDico.titre);
+        Liveparse.view.auteur.val(metaDico.auteur);
+        Liveparse.view.date.val(metaDico.date);
+        Liveparse.view.paragraphes.val(metaDico.paragraphes);
+        Liveparse.view.phrases.val(metaDico.phrases);
+        Liveparse.view.url.val(metaDico.url);
     };
 
     Upload.prototype.buildPhrasesHtml = function(phrases){

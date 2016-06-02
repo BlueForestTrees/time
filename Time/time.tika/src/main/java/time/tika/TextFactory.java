@@ -32,7 +32,9 @@ public class TextFactory {
     }
 
     public Text buildFromUrl(final String url) throws IOException {
-        return build(UrlTo.inputStream(url));
+        final Text text = build(UrlTo.inputStream(url));
+        text.setUrl(url);
+        return text;
     }
 
     public Text build(final String url, final String title, final String textString){

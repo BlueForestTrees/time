@@ -128,11 +128,12 @@ public class LiveparseVerticle extends AbstractVerticle {
         dto.put("text", text);
         dto.put("metadatas", metadatas);
         dto.put("datedPhrases", datedPhrases);
-        metadatas.put("Titre", analysedText.getTitle());
-        metadatas.put("Auteur", analysedText.getCreator());
-        metadatas.put("Date", analysedText.getCreated());
-        metadatas.put("Paragraphes", analysedText.getParagraphs().length);
-        metadatas.put("Phrases datées", analysedText.getPhrases().size());
+        metadatas.put("titre", analysedText.getTitle());
+        metadatas.put("auteur", analysedText.getCreator());
+        metadatas.put("date", analysedText.getCreated());
+        metadatas.put("paragraphes", analysedText.getParagraphs().length);
+        metadatas.put("phrases", analysedText.getPhrases().size());
+        metadatas.put("url", analysedText.getUrl());
 
 
         return dto;

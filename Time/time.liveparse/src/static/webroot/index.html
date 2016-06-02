@@ -23,7 +23,9 @@
                     auteur : $('.auteur'),
                     date : $('.date'),
                     paragraphes : $('.paragraphes'),
-                    phrases : $('.phrases')
+                    phrases : $('.phrases'),
+                    url : $('.url'),
+                    metadatas : $('.metadatas')
                 };
                 Liveparse.upload = new Liveparse.Upload();
                 Liveparse.upload.init();
@@ -42,12 +44,13 @@
                 <img class="throbber" src="throbber.gif" />
             </div>
         </div>
-        <div>
-            <input type="text" class="titre"/>
-            <input type="text" class="auteur"/>
-            <input type="text" class="date"/>
-            <input type="text" class="paragraphes"/>
-            <input type="text" class="phrases"/>
+        <div class="metadatas">
+            <p>Url: <input type="text" class="url"/></p>
+            <p>Titre: <input type="text" class="titre"/></p>
+            <p>Auteur: <input type="text" class="auteur"/></p>
+            <p>Date: <input type="text" class="date"/></p>
+            <p>Paragraphes: <input type="text" class="paragraphes"/></p>
+            <p>Phrases: <input type="text" class="phrases"/></p>
         </div>
         <div class="book"></div>
         <div class="datedPhrases"></div>

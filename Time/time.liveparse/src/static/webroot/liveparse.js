@@ -44,7 +44,7 @@
      Upload.prototype.onLiveparse = function(data){
         console.log('uploaded', data);
         Liveparse.view.throbber.hide();
-        Liveparse.view.metadatas.append(Liveparse.upload.buildMetaHtml(data.metadatas));
+        Liveparse.upload.updateMetadatas(data.metadatas);
         Liveparse.view.book.append(data.text);
         Liveparse.view.datedPhrases.append(Liveparse.upload.buildPhrasesHtml(data.datedPhrases))
      };
@@ -54,13 +54,13 @@
         alert("erreur :( TODO remonter l'erreur");
      };
 
-    Upload.prototype.buildMetaHtml = function(metaDico){
+    Upload.prototype.updateMetadatas = function(metaDico){
         console.log("buildMetaHtml", metaDico);
-        var html = "";
-        for(var key in metaDico){
-            html += "<div class=\"metadata\">" + key + ": " + metaDico[key] + "</div>";
-        }
-        return html;
+        Liveparse.view.titre = metaDico.titre;
+        Liveparse.view.auteur = metaDico.auteur;
+        Liveparse.view.date = metaDico.date;
+        Liveparse.view.paragraphes = metaDico.paragraphes;
+        Liveparse.view.phrases = metaDico.phrases;
     };
 
     Upload.prototype.buildPhrasesHtml = function(phrases){

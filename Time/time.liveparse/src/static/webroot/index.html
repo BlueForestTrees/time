@@ -15,11 +15,15 @@
                 Liveparse.view = {
                     book : $('.book'),
                     datedPhrases : $('.datedPhrases'),
-                    metadatas : $('.metadatas'),
                     upload : $('.uploadFile'),
                     uploadUrlText : $('.uploadUrlText'),
                     uploadUrlBt : $('.uploadUrlBt'),
-                    throbber : $('#throbber')
+                    throbber : $('#throbber'),
+                    titre : $('.titre'),
+                    auteur : $('.auteur'),
+                    date : $('.date'),
+                    paragraphes : $('.paragraphes'),
+                    phrases : $('.phrases')
                 };
                 Liveparse.upload = new Liveparse.Upload();
                 Liveparse.upload.init();
@@ -38,7 +42,13 @@
                 <img class="throbber" src="throbber.gif" />
             </div>
         </div>
-        <div class="metadatas"></div>
+        <div>
+            <input type="text" class="titre"/>
+            <input type="text" class="auteur"/>
+            <input type="text" class="date"/>
+            <input type="text" class="paragraphes"/>
+            <input type="text" class="phrases"/>
+        </div>
         <div class="book"></div>
         <div class="datedPhrases"></div>
     </body>

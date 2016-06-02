@@ -46,7 +46,7 @@
      Upload.prototype.onLiveparse = function(data){
         console.log('uploaded', data);
         Liveparse.view.throbber.hide();
-        Liveparse.upload.updateMetadatas(data.metadatas);
+        Liveparse.upload.updateMetadatas(data.metadata);
         Liveparse.view.metadatas.show();
         Liveparse.view.book.append(data.text);
         Liveparse.view.datedPhrases.append(Liveparse.upload.buildPhrasesHtml(data.datedPhrases))
@@ -58,13 +58,14 @@
      };
 
     Upload.prototype.updateMetadatas = function(metaDico){
-        console.log("buildMetaHtml", metaDico);
+        console.log("updateMetadatas", metaDico);
         Liveparse.view.titre.val(metaDico.titre);
         Liveparse.view.auteur.val(metaDico.auteur);
         Liveparse.view.date.val(metaDico.date);
         Liveparse.view.paragraphes.val(metaDico.paragraphes);
         Liveparse.view.phrases.val(metaDico.phrases);
         Liveparse.view.url.val(metaDico.url);
+        Liveparse.view.file.val(metaDico.file);
     };
 
     Upload.prototype.buildPhrasesHtml = function(phrases){
@@ -76,15 +77,36 @@
         return html;
     };
 
+    Upload.prototype.add = function(){
+        var data = {
+            titre : Liveparse.view.titre.val(),
+            auteur : Liveparse.view.auteur.val(),
+            date : Liveparse.view.date.val(),
+            paragraphes : Liveparse.view.paragraphes.val(),
+            phrases : Liveparse.view.phrases.val(),
+            url : Liveparse.view.url.val(),
+            file : Liveparse.view.file.val()
+        };
+        $.post("api/liveparse/add", JSON.stringify(data)).done(Liveparse.upload.onAdd).fail(Liveparse.upload.onAddError);
+    };
+
+    Upload.prototype.onAdd = function(){
+        console.log("bravo for add!!");
+    };
+
+    Upload.prototype.onAddError = function(){
+        console.log("shit for add error!!");
+    }
+
     Upload.prototype.showBook = function(){
         Liveparse.view.datedPhrases.hide();
         Liveparse.view.book.show();
-    }
+    };
 
     Upload.prototype.showDatedPhrases = function(){
         Liveparse.view.book.hide();
         Liveparse.view.datedPhrases.show();
-    }
+    };
 
     Liveparse.Upload = Upload;
 })();

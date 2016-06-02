@@ -50,12 +50,12 @@ public class AppendRun {
             throw new RuntimeException("Lecture fichier", e);
         }
         final Text text = textFactory.build(input);
-        text.setUrl(append.getUrl());
-        text.setTitle(append.getTitle());
+        text.getMetadata().setUrl(append.getUrl());
+        text.getMetadata().setTitre(append.getTitle());
         textAnalyser.analyse(text);
 
         //STORE
-        final String indexDir = withSlash(appendBaseIndexDir) + forFilename(text.getTitle());
+        final String indexDir = withSlash(appendBaseIndexDir) + forFilename(text.getMetadata().getTitre());
         final boolean overwrite = Files.isDirectory(Paths.get(indexDir));
         PhraseStore store = new PhraseStore(indexDir);
 

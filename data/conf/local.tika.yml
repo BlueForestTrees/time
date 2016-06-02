@@ -1,6 +1,0 @@
-sourceDir: ${TIME_HOME}/sources/livres/
-sourceIndexDir: ${TIME_HOME}/indexes/mergeables/local.tika/
-ignoreTextAfterAny: []
-urlMaxLength: 255
-urlMustNotContain: []
-nbPhraseLog: 500

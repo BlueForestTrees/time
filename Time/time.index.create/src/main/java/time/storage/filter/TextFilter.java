@@ -50,7 +50,7 @@ public class TextFilter {
 	}
 
 	private String normalizedUrl(Text text) {
-		final String normalized = text.getUrl().toLowerCase().replace("-", "_");
+		final String normalized = text.getMetadata().getUrl().toLowerCase().replace("-", "_");
 		if(LOGGER.isDebugEnabled()){
 			LOGGER.debug("normalized url : " + normalized);
 		}
@@ -58,8 +58,8 @@ public class TextFilter {
 	}
 
 	private boolean isValid(Text text) {
-		final String url = text.getUrl().toLowerCase();
-		final boolean urlTooLong = text.getUrl().length() > urlMaxLength;
+		final String url = text.getMetadata().getUrl().toLowerCase();
+		final boolean urlTooLong = text.getMetadata().getUrl().length() > urlMaxLength;
 		final boolean isUrlMustNotContainExcluded = urlMustNotContain != null && urlMustNotContain.stream().anyMatch(url::contains);
 
 

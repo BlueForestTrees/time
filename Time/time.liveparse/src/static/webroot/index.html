@@ -25,7 +25,8 @@
                     paragraphes : $('.paragraphes'),
                     phrases : $('.phrases'),
                     url : $('.url'),
-                    metadatas : $('.metadatas')
+                    metadatas : $('.metadatas'),
+                    file : $('.file')
                 };
                 Liveparse.upload = new Liveparse.Upload();
                 Liveparse.upload.init();
@@ -37,7 +38,7 @@
             <div>Fichier : <input type="file" class="uploadFile"></input></div>
             <div>Url : <input type="text" class="uploadUrlText"/><input type="button" class="uploadUrlBt" value="Envoyer"/></div>
             <div>Display :
-                <input type="button" value="Book" onClick="Liveparse.upload.showBook()"/>
+                <input type="button" value="Texte entier" onClick="Liveparse.upload.showBook()"/>
                 <input type="button" value="Phrases" onClick="Liveparse.upload.showDatedPhrases()"/>
             </div>
             <div id="throbber">
@@ -51,6 +52,8 @@
             <p>Date: <input type="text" class="date"/></p>
             <p>Paragraphes: <input type="text" class="paragraphes"/></p>
             <p>Phrases: <input type="text" class="phrases"/></p>
+            <input type="hidden" class="file"/>
+            <input type="button" value="Ajouter" onClick="Liveparse.upload.add()"/>
         </div>
         <div class="book"></div>
         <div class="datedPhrases"></div>

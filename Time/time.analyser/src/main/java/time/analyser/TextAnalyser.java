@@ -33,7 +33,7 @@ public class TextAnalyser {
 
 	public Text analyse(final Text text) {
         if(LOGGER.isDebugEnabled()){
-            LOGGER.debug("analyse " + text.getUrl());
+            LOGGER.debug("analyse " + text.getMetadata().getUrl());
         }
 		final String[] paragraphs = splitParagraphPattern.split(text.getTextString());
 		text.setParagraphs(paragraphs);
@@ -59,6 +59,8 @@ public class TextAnalyser {
         if(LOGGER.isDebugEnabled()) {
             LOGGER.debug(text.getParagraphs().length + " paragraphes, " + text.getPhrases().size() + " phrases");
         }
+		text.getMetadata().setParagraphes(text.getParagraphs().length);
+		text.getMetadata().setPhrases(text.getPhrases().size());
 		return text;
 	}
 

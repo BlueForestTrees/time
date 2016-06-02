@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -13,9 +15,7 @@ import io.vertx.ext.web.handler.StaticHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.analyser.TextAnalyser;
-import time.domain.Conf;
-import time.domain.DatedPhrase;
-import time.domain.Text;
+import time.domain.*;
 import time.tika.TextFactory;
 import time.tool.string.Strings;
 
@@ -64,8 +64,19 @@ public class LiveparseVerticle extends AbstractVerticle {
         router.get("/api/liveparse/url/:url").handler(this::fromUrl);
         router.route("/*").handler(StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true).setWebRoot(webRoot));
         router.post("/api/liveparse/file").handler(this::fromFile);
+        router.post("/api/liveparse/add").handler(this::add);
         vertx.createHttpServer().requestHandler(router::accept).listen(port);
         LOGGER.info("started");
+    }
+
+    private void add(RoutingContext ctx) {
+        try {
+            final Metadata metadata = mapper.readValue(ctx.getBodyAsString(), Metadata.class);
+            mapper.writeValue(metadataFile, metadata);
+            //TO BE CONTINUED
+        } catch (IOException e) {
+            LOGGER.error(e);
+        }
     }
 
     private void fromFile(final RoutingContext ctx) {
@@ -104,8 +115,7 @@ public class LiveparseVerticle extends AbstractVerticle {
     private String urlToText(final String url) throws IOException {
         final Text text = textFactory.buildFromUrl(Strings.beginWith(url, "http://", "https://"));
         final Text analysedText = textAnalyser.analyse(text);
-        final Map<String, Object> analysedTextDTO = toDTO(analysedText);
-        return mapper.writeValueAsString(analysedTextDTO);
+        return mapper.writeValueAsString(toDTO(analysedText));
     }
 
     private String fileToText(final FileUpload file) throws JsonProcessingException, FileNotFoundException {
@@ -114,29 +124,16 @@ public class LiveparseVerticle extends AbstractVerticle {
         final Text text = textFactory.build(filename);
         LOGGER.info("textAnalyser.analyse(text)");
         final Text analysedText = textAnalyser.analyse(text);
-        LOGGER.info("toDTO(analysedText)");
-        final Map<String, Object> analysedTextDTO = toDTO(analysedText);
-        LOGGER.info("mapper.writeValueAsString(analysedTextDTO)");
-        return mapper.writeValueAsString(analysedTextDTO);
+        LOGGER.info("mapper.writeValueAsString(toDto(analysedTextDTO))");
+        return mapper.writeValueAsString(toDTO(analysedText));
     }
 
-    private Map<String, Object> toDTO(final Text analysedText) {
-        final HashMap<String, Object> dto = new HashMap<>();
-        final String text = analysedText.getHightlightTextString();
-        final HashMap<String, Object> metadatas = new HashMap<>();
-        final List<DatedPhrase> datedPhrases = analysedText.getPhrases();
-        dto.put("text", text);
-        dto.put("metadatas", metadatas);
-        dto.put("datedPhrases", datedPhrases);
-        metadatas.put("titre", analysedText.getTitle());
-        metadatas.put("auteur", analysedText.getCreator());
-        metadatas.put("date", analysedText.getCreated());
-        metadatas.put("paragraphes", analysedText.getParagraphs().length);
-        metadatas.put("phrases", analysedText.getPhrases().size());
-        metadatas.put("url", analysedText.getUrl());
-
-
-        return dto;
+    private TextDto toDTO(final Text analysedText) {
+        final TextDto textDto = new TextDto();
+        textDto.setText(analysedText.getHightlightTextString());
+        textDto.setDatedPhrases(analysedText.getPhrases());
+        textDto.setMetadata(analysedText.getMetadata());
+        return textDto;
     }
 
 }

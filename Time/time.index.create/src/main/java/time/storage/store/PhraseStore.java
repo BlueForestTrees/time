@@ -98,7 +98,7 @@ public class PhraseStore {
     }
 
     private void handleNulls(Text text, DatedPhrase phrase) {
-        if(text.getUrl() == null){
+        if(text.getMetadata().getUrl() == null){
             throw new RuntimeException("PhraseStore.storePhrase : text.getUrl() == null");
         }
         if(phrase.getText() == null){
@@ -108,14 +108,14 @@ public class PhraseStore {
 
     private Document createDoc(Text text, DatedPhrase phrase) {
         final Document doc = new Document();
-        if(text.getTitle() != null){
-            doc.add(new TextField(Fields.TITLE, text.getTitle(), Store.YES));
+        if(text.getMetadata().getTitre() != null){
+            doc.add(new TextField(Fields.TITLE, text.getMetadata().getTitre(), Store.YES));
         }
-        if(text.getCreator() != null){
-            doc.add(new TextField(Fields.AUTHOR, text.getCreator(), Store.YES));
+        if(text.getMetadata().getAuteur() != null){
+            doc.add(new TextField(Fields.AUTHOR, text.getMetadata().getAuteur(), Store.YES));
         }
         doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
-        doc.add(new TextField(Fields.URL, text.getUrl(), Store.YES));
+        doc.add(new TextField(Fields.URL, text.getMetadata().getUrl(), Store.YES));
         doc.add(new SortableLongField(Fields.DATE, phrase.getDate(), Store.YES));
         for (int i = 0; i < Scale.scales.length; i++) {
             doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.scales[i], Store.NO));

@@ -28,19 +28,21 @@ public class TextFactory {
     }
 
     public Text build(final String filename) throws FileNotFoundException {
-        return build(new FileInputStream(filename));
+        final Text text = build(new FileInputStream(filename));
+        text.getMetadata().setFile(filename);
+        return text;
     }
 
     public Text buildFromUrl(final String url) throws IOException {
         final Text text = build(UrlTo.inputStream(url));
-        text.setUrl(url);
+        text.getMetadata().setUrl(url);
         return text;
     }
 
     public Text build(final String url, final String title, final String textString){
         final Text text = new Text();
-        text.setUrl(url);
-        text.setTitle(title);
+        text.getMetadata().setUrl(url);
+        text.getMetadata().setTitre(title);
         text.setText(textString);
         textTransformer.transform(text);
         return text;
@@ -48,25 +50,24 @@ public class TextFactory {
 
     public Text build(final InputStream input){
         final ContentHandler textHandler = new BodyContentHandler(Integer.MAX_VALUE);
-        final Metadata metadata = new Metadata();
+        final Metadata tikaMetadata = new Metadata();
         try {
             final AutoDetectParser parser = new AutoDetectParser();
-            parser.parse(input, textHandler, metadata);
+            parser.parse(input, textHandler, tikaMetadata);
             input.close();
         } catch (IOException | SAXException | TikaException e) {
             throw new RuntimeException("Parsing fichier", e);
         }
 
         final Text text = new Text();
+        final time.domain.Metadata metadata = text.getMetadata();
 
-        text.setIdentifier(metadata.get(TikaCoreProperties.IDENTIFIER));
-        text.setTitle(metadata.get(TikaCoreProperties.TITLE));
-        text.setCreator(metadata.get(TikaCoreProperties.CREATOR));
-        text.setCreated(metadata.get(TikaCoreProperties.CREATED));
-        text.setLanguage(metadata.get(TikaCoreProperties.LANGUAGE));
-        text.setType(metadata.get(TikaCoreProperties.TYPE));
-        text.setComments(metadata.get(TikaCoreProperties.COMMENTS));
-        text.setUrl(text.getTitle());
+        metadata.setIdentifier(tikaMetadata.get(TikaCoreProperties.IDENTIFIER));
+        metadata.setTitre(tikaMetadata.get(TikaCoreProperties.TITLE));
+        metadata.setAuteur(tikaMetadata.get(TikaCoreProperties.CREATOR));
+        metadata.setDate(tikaMetadata.get(TikaCoreProperties.CREATED));
+        metadata.setComments(tikaMetadata.get(TikaCoreProperties.COMMENTS));
+        metadata.setUrl(metadata.getTitre());
         text.setText(textHandler.toString());
 
         textTransformer.transform(text);

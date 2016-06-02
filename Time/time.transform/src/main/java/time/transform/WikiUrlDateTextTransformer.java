@@ -37,7 +37,7 @@ public class WikiUrlDateTextTransformer implements ITextTransformer {
     
     @Override
     public void transform(final Text text) {
-        final ITextTransformer transformer = getAvailableTransformer(text.getUrl());
+        final ITextTransformer transformer = getAvailableTransformer(text.getMetadata().getUrl());
         if(transformer != null){
             transformer.transform(text);
         }

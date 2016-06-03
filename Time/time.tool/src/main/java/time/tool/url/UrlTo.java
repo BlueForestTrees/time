@@ -9,7 +9,7 @@ import java.net.URL;
 import org.apache.commons.io.IOUtils;
 
 public class UrlTo {
-	public static InputStream inputStream(final String url) throws MalformedURLException, IOException{
-		return new ByteArrayInputStream(IOUtils.toByteArray(new URL(url)));
+	public static byte[] byteArray(final String url) throws IOException {
+		return IOUtils.toByteArray(new URL(url));
 	}
 }

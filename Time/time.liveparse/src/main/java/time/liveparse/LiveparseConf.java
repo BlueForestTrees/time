@@ -14,11 +14,11 @@ import time.transform.ITextTransformer;
 import javax.inject.Singleton;
 import java.io.IOException;
 
-public class LiveparseModule extends AbstractModule {
+public class LiveparseConf extends AbstractModule {
 
     private Conf conf;
 
-    public LiveparseModule(String[] args) throws IOException, ArgumentParserException {
+    public LiveparseConf(String[] args) throws IOException, ArgumentParserException {
         conf = new ConfManager().get(args, Conf.class, "${TIME_HOME}/conf/liveparse.yml");
     }
 

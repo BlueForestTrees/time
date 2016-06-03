@@ -1,6 +1,6 @@
 package time.domain;
 
-public class AppendDone {
+public class IndexCreation {
     private String sourceIndexDir;
     private String destIndexDir;
     private long phraseCount;
@@ -36,7 +36,7 @@ public class AppendDone {
 
     @Override
     public String toString() {
-        return "AppendDone{" +
+        return "IndexCreation{" +
                 "sourceIndexDir='" + sourceIndexDir + '\'' +
                 ", phraseCount=" + phraseCount +
                 ", overwriteOccurs=" + overwriteOccurs +

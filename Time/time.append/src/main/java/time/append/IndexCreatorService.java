@@ -4,26 +4,23 @@ import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.analyser.TextAnalyser;
-import time.conf.Resolver;
-import time.domain.Append;
-import time.domain.AppendDone;
+import time.domain.Meta;
+import time.domain.IndexCreation;
 import time.domain.Conf;
 import time.domain.Text;
 import time.storage.store.PhraseStore;
 import time.tika.TextFactory;
-import time.tool.string.Strings;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import static time.tool.string.Strings.*;
 
-public class AppendRun {
+public class IndexCreatorService {
 
-    private static final Logger LOGGER = LogManager.getLogger(AppendRun.class);
+    private static final Logger LOGGER = LogManager.getLogger(IndexCreatorService.class);
 
     private final TextFactory textFactory;
     private final String appendBaseIndexDir;
@@ -31,27 +28,19 @@ public class AppendRun {
     private TextAnalyser textAnalyser;
 
     @Inject
-	public AppendRun(final Conf conf, final TextFactory textFactory, final TextAnalyser textAnalyser) {
+	public IndexCreatorService(final Conf conf, final TextFactory textFactory, final TextAnalyser textAnalyser) {
         this.textFactory = textFactory;
 		this.textAnalyser = textAnalyser;
         this.appendBaseIndexDir = conf.getAppendBaseIndexDir();
         this.appendToDir = conf.getAppendToDir();
 	}
 
-	public AppendDone run(final Append append) throws IOException {
+	public IndexCreation run(final Meta meta) throws IOException, InvocationTargetException, IllegalAccessException {
 
-		LOGGER.info("append {}", append);
+		LOGGER.info("meta {}", meta);
 
         //ANALYSE
-        FileInputStream input;
-        try {
-            input = new FileInputStream(Resolver.get(append.getSource()));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException("Lecture fichier", e);
-        }
-        final Text text = textFactory.build(input);
-        text.getMetadata().setUrl(append.getUrl());
-        text.getMetadata().setTitre(append.getTitle());
+        final Text text = textFactory.buildFromMetaPath(meta.getMetaPath());
         textAnalyser.analyse(text);
 
         //STORE
@@ -64,11 +53,11 @@ public class AppendRun {
         final long phraseCount = store.stop();
 
         //RESPONSE
-        final AppendDone appendDone = new AppendDone();
-        appendDone.setSourceIndexDir(indexDir);
-        appendDone.setPhraseCount(phraseCount);
-        appendDone.setOverwriteOccurs(overwrite);
-        appendDone.setDestIndexDir(Strings.firstValued(this.appendToDir, append.getAppendToDir()));
-        return appendDone;
+        final IndexCreation indexCreation = new IndexCreation();
+        indexCreation.setSourceIndexDir(indexDir);
+        indexCreation.setPhraseCount(phraseCount);
+        indexCreation.setOverwriteOccurs(overwrite);
+        indexCreation.setDestIndexDir(this.appendToDir);
+        return indexCreation;
     }
 }

@@ -10,7 +10,7 @@ import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
 import time.conf.Resolver;
-import time.domain.AppendDone;
+import time.domain.IndexCreation;
 import time.domain.Merge;
 
 import java.io.File;
@@ -22,24 +22,24 @@ public class IndexService {
 
     private static final Logger LOG = LogManager.getLogger(IndexService.class);
 
-    public AppendDone append(final AppendDone appendDone) throws IOException {
-        final File sourceFile = new File(Resolver.get(appendDone.getSourceIndexDir()));
+    public IndexCreation append(final IndexCreation indexCreation) throws IOException {
+        final File sourceFile = new File(Resolver.get(indexCreation.getSourceIndexDir()));
         final Directory sourceDirectory = directoryFromFile(sourceFile);
-        final File destFile = new File(Resolver.get(appendDone.getDestIndexDir()));
+        final File destFile = new File(Resolver.get(indexCreation.getDestIndexDir()));
         final Directory destDirectory = directoryFromFile(destFile);
         final IndexWriterConfig indexWriterConfig = indexWriterConfig();
 
         LOG.info("FROM {}", sourceFile);
         LOG.info("TO {}", destFile);
         final IndexWriter destIndexWriter = new IndexWriter(destDirectory, indexWriterConfig);
-        LOG.info("APPEND. . .");
+        LOG.info("META_CREATED. . .");
         destIndexWriter.addIndexes(sourceDirectory);
         LOG.info("indexWriter.forceMerge(1) . . .");
         destIndexWriter.forceMerge(1);
         LOG.info("indexWriter.close() . . .");
         destIndexWriter.close();
 
-        return appendDone;
+        return indexCreation;
     }
 
 	public void merge(final Merge merge) throws IOException{

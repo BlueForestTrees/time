@@ -26,7 +26,7 @@
                     phrases : $('.phrases'),
                     url : $('.url'),
                     metadatas : $('.metadatas'),
-                    file : $('.file')
+                    filename : $('.filename')
                 };
                 Liveparse.upload = new Liveparse.Upload();
                 Liveparse.upload.init();
@@ -52,7 +52,7 @@
             <p>Date: <input type="text" class="date"/></p>
             <p>Paragraphes: <input type="text" class="paragraphes"/></p>
             <p>Phrases: <input type="text" class="phrases"/></p>
-            <input type="hidden" class="file"/>
+            <input type="hidden" class="filename"/>
             <input type="button" value="Ajouter" onClick="Liveparse.upload.add()"/>
         </div>
         <div class="book"></div>

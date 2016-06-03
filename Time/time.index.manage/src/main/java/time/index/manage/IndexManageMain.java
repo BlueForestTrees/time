@@ -5,7 +5,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.conf.ConfManager;
 import time.conf.ConfEnum;
-import time.domain.AppendDone;
+import time.domain.IndexCreation;
 import time.domain.Merge;
 import time.messaging.Messager;
 import time.messaging.Queue;
@@ -39,7 +39,7 @@ public class IndexManageMain {
                     messager.signal(Queue.WIKI_WEB_REFRESH);
                 });
 
-        messager.when(Queue.APPEND_DONE, AppendDone.class)
+        messager.when(Queue.INDEX_CREATED, IndexCreation.class)
                 .then((appendDone) -> {
                     indexService.append(appendDone);
                     messager.signal(Queue.WIKI_WEB_REFRESH);

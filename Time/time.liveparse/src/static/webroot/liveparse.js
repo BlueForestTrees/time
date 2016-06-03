@@ -65,7 +65,7 @@
         Liveparse.view.paragraphes.val(metaDico.paragraphes);
         Liveparse.view.phrases.val(metaDico.phrases);
         Liveparse.view.url.val(metaDico.url);
-        Liveparse.view.file.val(metaDico.file);
+        Liveparse.view.filename.val(metaDico.filename);
     };
 
     Upload.prototype.buildPhrasesHtml = function(phrases){
@@ -85,7 +85,7 @@
             paragraphes : Liveparse.view.paragraphes.val(),
             phrases : Liveparse.view.phrases.val(),
             url : Liveparse.view.url.val(),
-            file : Liveparse.view.file.val()
+            filename : Liveparse.view.filename.val()
         };
         $.post("api/liveparse/add", JSON.stringify(data)).done(Liveparse.upload.onAdd).fail(Liveparse.upload.onAddError);
     };

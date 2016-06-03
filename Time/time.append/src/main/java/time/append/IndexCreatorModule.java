@@ -2,7 +2,6 @@ package time.append;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import org.apache.logging.log4j.LogManager;
 import time.conf.ConfEnum;
 import time.conf.ConfManager;
@@ -14,9 +13,9 @@ import time.transform.ITextTransformer;
 import javax.inject.Singleton;
 import java.io.IOException;
 
-public class AppendModule extends AbstractModule {
+public class IndexCreatorModule extends AbstractModule {
 
-	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(AppendModule.class);
+	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(IndexCreatorModule.class);
 
 	private Conf conf;
 

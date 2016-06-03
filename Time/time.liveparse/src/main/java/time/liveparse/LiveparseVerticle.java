@@ -5,8 +5,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import io.vertx.core.AbstractVerticle;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.FileUpload;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
@@ -16,15 +14,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.analyser.TextAnalyser;
 import time.domain.*;
+import time.messaging.Messager;
+import time.messaging.Queue;
 import time.tika.TextFactory;
 import time.tool.string.Strings;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
 public class LiveparseVerticle extends AbstractVerticle {
 
@@ -36,25 +34,30 @@ public class LiveparseVerticle extends AbstractVerticle {
     private final TextAnalyser textAnalyser;
     private final String webRoot;
     private final String uploadDir;
+    private final Messager messager;
 
     @Inject
-    public LiveparseVerticle(Conf conf, TextAnalyser textAnalyser, ObjectMapper mapper, TextFactory textFactory) {
+    public LiveparseVerticle(Conf conf, TextAnalyser textAnalyser, ObjectMapper mapper, TextFactory textFactory) throws IOException, TimeoutException {
         this.port = conf.getPort();
         this.webRoot = conf.getWebRoot();
         this.uploadDir = conf.getUploadDir();
-        if(!new File(this.webRoot).isDirectory()){
-            throw new RuntimeException("incorrect webroot: " + this.webRoot);
-        }
-        if(!new File(this.uploadDir).isDirectory()){
-            throw new RuntimeException("incorrect uploadDir: " + this.uploadDir);
-        }
         this.textAnalyser = textAnalyser;
         this.mapper = mapper;
         this.textFactory = textFactory;
+        this.messager = new Messager();
 
-        LOGGER.info("port {}", port);
+        LOGGER.info("address http://localhost:{}", port);
         LOGGER.info("webRoot {}", webRoot);
         LOGGER.info("uploadDir {}", uploadDir);
+
+        validateConf();
+    }
+
+    private void validateConf() {
+        if(!new File(this.webRoot).isDirectory()){
+            throw new RuntimeException("incorrect webroot: " + this.webRoot);
+        }
+        new File(this.uploadDir).mkdirs();
     }
 
     @Override
@@ -72,8 +75,15 @@ public class LiveparseVerticle extends AbstractVerticle {
     private void add(RoutingContext ctx) {
         try {
             final Metadata metadata = mapper.readValue(ctx.getBodyAsString(), Metadata.class);
-            mapper.writeValue(metadataFile, metadata);
-            //TO BE CONTINUED
+            final String metapath = Strings.withSlash(uploadDir) + metadata.getFilename() + Metadata.EXT;
+            final File metaFile = new File(metapath);
+
+            LOGGER.info("writing file {} into {}", metadata, metapath);
+            mapper.writeValue(metaFile, metadata);
+
+            final Meta meta = new Meta(metapath);
+            LOGGER.info("signaling meta {}", meta);
+            messager.signal(Queue.META_CREATED, meta);
         } catch (IOException e) {
             LOGGER.error(e);
         }
@@ -113,15 +123,17 @@ public class LiveparseVerticle extends AbstractVerticle {
     }
 
     private String urlToText(final String url) throws IOException {
-        final Text text = textFactory.buildFromUrl(Strings.beginWith(url, "http://", "https://"));
+        final Text text = textFactory.buildFromUrl(Strings.beginWith(url, "http://", "https://"), uploadDir);
         final Text analysedText = textAnalyser.analyse(text);
         return mapper.writeValueAsString(toDTO(analysedText));
     }
 
     private String fileToText(final FileUpload file) throws JsonProcessingException, FileNotFoundException {
-        final String filename = file.uploadedFileName();
-        LOGGER.info("textFactory.build({})", filename);
-        final Text text = textFactory.build(filename);
+        final String filepath = file.uploadedFileName();
+        LOGGER.info("textFactory.build({})", filepath);
+        final Text text = textFactory.build(filepath);
+        //only to come back in add() method for building metapath based on filepath
+        text.getMetadata().setFilename(new File(filepath).getName());
         LOGGER.info("textAnalyser.analyse(text)");
         final Text analysedText = textAnalyser.analyse(text);
         LOGGER.info("mapper.writeValueAsString(toDto(analysedTextDTO))");

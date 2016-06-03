@@ -18,7 +18,7 @@ public class FilesMain {
 
         final FilesRun filesRun = Guice.createInjector(new FilesModule(args)).getInstance(FilesRun.class);
 
-        messager.when(Queue.RELOAD)
+        messager.when(Queue.FULL_INDEX_RELOAD)
                 .then(() -> {
                     filesRun.run();
                     try {
@@ -28,7 +28,7 @@ public class FilesMain {
                     }
                 });
 
-        messager.signal(Queue.RELOAD);
+        messager.signal(Queue.FULL_INDEX_RELOAD);
     }
 
 }

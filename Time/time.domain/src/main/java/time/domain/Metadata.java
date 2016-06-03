@@ -1,16 +1,25 @@
 package time.domain;
 
 public class Metadata {
+    public static final String EXT = ".meta";
+
     private String titre;
     private String auteur;
     private String date;
     private Integer paragraphes;
     private Integer phrases;
     private String url;
-    private String file;
     private String identifier;
     private String comments;
+    private String filename;
 
+    public String getFilename() {
+        return filename;
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
 
     public String getIdentifier() {
         return identifier;
@@ -26,14 +35,6 @@ public class Metadata {
 
     public void setComments(String comments) {
         this.comments = comments;
-    }
-
-    public String getFile() {
-        return file;
-    }
-
-    public void setFile(String file) {
-        this.file = file;
     }
 
     public String getUrl() {
@@ -92,6 +93,10 @@ public class Metadata {
                 ", date='" + date + '\'' +
                 ", paragraphes=" + paragraphes +
                 ", phrases=" + phrases +
+                ", url='" + url + '\'' +
+                ", identifier='" + identifier + '\'' +
+                ", comments='" + comments + '\'' +
+                ", filename='" + filename + '\'' +
                 '}';
     }
 }

@@ -340,7 +340,36 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>wagon-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>execute-test-commands</id>
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>sshexec</goal>
+                        </goals>
+                        <configuration>
+                            <serverId>pi</serverId>
+                            <url>scp://maven.atlassian.com/public</url>
+                            <commands>
+                                <command>/usr/share/tomcat/bin/tomcat stop</command>
+                                <command>rm -rf /usr/share/tomcat/webapps/ROOT</command>
+                                <command>unzip -o /usr/share/tomcat/webapps/myapp.zip -d /usr/share/tomcat/webapps/</command>
+                                <command>/usr/share/tomcat/bin/tomcat start</command>
+                            </commands>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+
+
+
+
         <extensions>
             <extension>
                 <groupId>org.apache.maven.wagon</groupId>

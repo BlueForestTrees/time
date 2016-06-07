@@ -26,7 +26,7 @@ public class CrawlWiki extends Crawler {
     private final Chrono fullChrono;
     private long nbLog;
     private long pageCount;
-    private long chronoPageTotal;
+    private long pageCountPrevision;
 
     @Inject
 	public CrawlWiki(final Conf conf, final TextHandler store, final TextFactory textFactory) {
@@ -35,7 +35,7 @@ public class CrawlWiki extends Crawler {
         this.nbPageLog = conf.getNbPageLog();
         this.pageChrono = new Chrono("Writer");
         this.fullChrono = new Chrono("Full");
-        this.chronoPageTotal = conf.getChronoPageTotal();
+        this.pageCountPrevision = conf.getPageCountPrevision();
         this.store = store;
         this.textFactory = textFactory;
         LOGGER.info(this);
@@ -85,7 +85,7 @@ public class CrawlWiki extends Crawler {
             nbLog++;
             pageChrono.tic();
             fullChrono.tic();
-            LOGGER.debug(pageCount + "/" + chronoPageTotal + " texts. Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(nbLog) + ", Last:" + pageChrono + ", Rest:" + fullChrono.getRemaining(pageCount, chronoPageTotal));
+            LOGGER.debug(pageCount + "/" + pageCountPrevision + " texts. Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(nbLog) + ", Last:" + pageChrono + ", Rest:" + fullChrono.getRemaining(pageCount, pageCountPrevision));
             pageChrono.start();
         }
     }
@@ -100,7 +100,7 @@ public class CrawlWiki extends Crawler {
                 ", textFactory=" + textFactory +
                 ", nbLog=" + nbLog +
                 ", pageCount=" + pageCount +
-                ", chronoPageTotal=" + chronoPageTotal +
+                ", pageCountPrevision=" + pageCountPrevision +
                 '}';
     }
 }

@@ -31,9 +31,8 @@ public class Conf {
 	private String txtOutputFile;
 	private String txtOutputDir;
 	private String crawlStorageDir;
-	private Long chronoPageTotal;
+	private Long pageCountPrevision;
 	private Long maxPhrasesToFetch;
-	private List<String> ignoreTextAfterAny;
 	private String sourcePath;
 	private String datasourcePath;
 	private String indexDir;
@@ -42,7 +41,6 @@ public class Conf {
 	private String mergeableIndexesDir;
 	private String mergedIndexDir;
 	private String appendBaseIndexDir;
-	private String maxFileSize;
 	private Long nbPageLog;
     private Long nbPhraseLog;
 	private Long pageSize;
@@ -165,16 +163,12 @@ public class Conf {
 		return crawlStorageDir;
 	}
 
-	public Long getChronoPageTotal() {
-		return chronoPageTotal;
+	public Long getPageCountPrevision() {
+		return pageCountPrevision;
 	}
 
 	public Long getMaxPhrasesToFetch() {
 		return maxPhrasesToFetch;
-	}
-
-	public List<String> getIgnoreTextAfterAny() {
-		return ignoreTextAfterAny;
 	}
 
 	public String getSourcePath() {
@@ -203,10 +197,6 @@ public class Conf {
 
 	public String getAppendBaseIndexDir() {
 		return appendBaseIndexDir;
-	}
-
-	public String getMaxFileSize() {
-		return maxFileSize;
 	}
 
 	public Long getNbPageLog() {

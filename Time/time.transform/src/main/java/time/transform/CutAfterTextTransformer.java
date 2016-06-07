@@ -9,6 +9,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.domain.Conf;
 import time.domain.Text;
+import time.domain.Transformer;
 
 public class CutAfterTextTransformer implements ITextTransformer {
 
@@ -17,7 +18,7 @@ public class CutAfterTextTransformer implements ITextTransformer {
     private List<String> ignoreTextAfterAny;
     
     @Inject
-    public CutAfterTextTransformer(Conf conf) {
+    public CutAfterTextTransformer(Transformer conf) {
 		this.ignoreTextAfterAny = conf.getIgnoreTextAfterAny();
         if(this.ignoreTextAfterAny == null){
             throw new RuntimeException("ignoreTextAfterAny is null");

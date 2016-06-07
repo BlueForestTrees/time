@@ -29,15 +29,15 @@ public class LiveparseVerticle extends AbstractVerticle {
     private static final Logger LOGGER = LogManager.getLogger(LiveparseVerticle.class);
 
     private final int port;
+    private final String webRoot;
+    private final String uploadDir;
     private final ObjectMapper mapper;
     private final TextFactory textFactory;
     private final TextAnalyser textAnalyser;
-    private final String webRoot;
-    private final String uploadDir;
     private final Messager messager;
 
     @Inject
-    public LiveparseVerticle(Conf conf, TextAnalyser textAnalyser, ObjectMapper mapper, TextFactory textFactory) throws IOException, TimeoutException {
+    public LiveparseVerticle(Liveparse conf, TextAnalyser textAnalyser, ObjectMapper mapper, TextFactory textFactory) throws IOException, TimeoutException {
         this.port = conf.getPort();
         this.webRoot = conf.getWebRoot();
         this.uploadDir = conf.getUploadDir();

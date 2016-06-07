@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.inject.Singleton;
 import java.io.IOException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeoutException;
 
 @Singleton

@@ -35,6 +35,14 @@ public class IndexCreatorService {
         this.appendToDir = conf.getAppendToDir();
 	}
 
+    /**
+     * Create Index from meta file
+     * @param meta
+     * @return
+     * @throws IOException
+     * @throws InvocationTargetException
+     * @throws IllegalAccessException
+     */
 	public IndexCreation run(final Meta meta) throws IOException, InvocationTargetException, IllegalAccessException {
 
 		LOGGER.info("meta {}", meta);

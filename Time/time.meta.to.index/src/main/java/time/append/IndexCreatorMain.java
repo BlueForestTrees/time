@@ -10,9 +10,9 @@ import time.messaging.Queue;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class IndexCreator {
+public class IndexCreatorMain {
 
-    private static final Logger LOGGER = LogManager.getLogger(IndexCreator.class);
+    private static final Logger LOGGER = LogManager.getLogger(IndexCreatorMain.class);
 
     public static void main(final String[] args) throws Exception {
 
@@ -21,10 +21,9 @@ public class IndexCreator {
         final IndexCreatorService indexCreatorService = Guice.createInjector(new IndexCreatorModule()).getInstance(IndexCreatorService.class);
 
         messager.when(Queue.META_CREATED, Meta.class)
-                .then(append -> {
-                    final IndexCreation indexCreation;
+                .then(meta -> {
                     try {
-                        indexCreation = indexCreatorService.run(append);
+                        final IndexCreation indexCreation = indexCreatorService.run(meta);
                         messager.signal(Queue.INDEX_CREATED, indexCreation);
                     } catch (InvocationTargetException | IllegalAccessException e) {
                         LOGGER.error(e);

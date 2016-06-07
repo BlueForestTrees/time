@@ -7,6 +7,7 @@ import time.conf.ConfEnum;
 import time.conf.ConfManager;
 import time.domain.Analyser;
 import time.domain.Conf;
+import time.domain.Transformer;
 import time.transform.CompositeTextTransformer;
 import time.transform.ITextTransformer;
 
@@ -32,6 +33,11 @@ public class IndexCreatorModule extends AbstractModule {
 	@Provides @Singleton
 	public Analyser analyser() throws IOException {
 		return new ConfManager().get(ConfEnum.ANALYSER, Analyser.class);
+	}
+
+	@Provides @Singleton
+	public Transformer transformer() throws IOException {
+		return new ConfManager().get(ConfEnum.TRANSFORMER, Transformer.class);
 	}
 
 

@@ -6,8 +6,9 @@ import com.google.inject.name.Named;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.ConfEnum;
 import time.domain.Analyser;
-import time.domain.Conf;
 import time.conf.ConfManager;
+import time.domain.Liveparse;
+import time.domain.Transformer;
 import time.transform.CompositeTextTransformer;
 import time.transform.ITextTransformer;
 
@@ -16,10 +17,10 @@ import java.io.IOException;
 
 public class LiveparseConf extends AbstractModule {
 
-    private Conf conf;
+    private Liveparse liveparse;
 
     public LiveparseConf(String[] args) throws IOException, ArgumentParserException {
-        conf = new ConfManager().get(args, Conf.class, "${TIME_HOME}/conf/liveparse.yml");
+        liveparse = new ConfManager().get(args, ConfEnum.LIVEPARSE, Liveparse.class);
     }
 
     @Override
@@ -28,14 +29,19 @@ public class LiveparseConf extends AbstractModule {
     }
 
     @Provides @Singleton
-    public Conf conf() {
-        return conf;
+    public Liveparse liveparse() {
+        return liveparse;
+    }
+
+    @Provides @Singleton
+    public Transformer transformer() throws IOException {
+        return new ConfManager().get(ConfEnum.TRANSFORMER, Transformer.class);
     }
 
     @Provides @Singleton
     @Named("port")
     public int port() {
-        return conf.getPort();
+        return liveparse.getPort();
     }
 
     @Provides @Singleton

@@ -4,7 +4,7 @@ package time.liveparse;
 import io.vertx.core.Vertx;
 import time.guice.GuiceVerticleFactory;
 
-public class Liveparse {
+public class LiveparseMain {
 
 
     public static void main(String[] args) throws Exception {

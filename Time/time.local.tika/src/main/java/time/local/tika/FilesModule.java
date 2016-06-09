@@ -7,18 +7,24 @@ import time.conf.ConfEnum;
 import time.conf.ConfManager;
 import time.domain.Analyser;
 import time.domain.Conf;
+import time.domain.Transformer;
 import time.transform.CompositeTextTransformer;
 import time.transform.ITextTransformer;
 
 import javax.inject.Singleton;
 import java.io.IOException;
 
-public class FilesModule extends AbstractModule {
+class FilesModule extends AbstractModule {
 
 	private String[] args;
 
-	public FilesModule(final String[] args){
+	FilesModule(final String[] args){
 		this.args = args;
+	}
+
+	@Override
+	protected void configure() {
+		bind(ITextTransformer.class).to(CompositeTextTransformer.class);
 	}
 
 	@Provides @Singleton
@@ -31,8 +37,9 @@ public class FilesModule extends AbstractModule {
 		return new ConfManager().get(ConfEnum.ANALYSER, Analyser.class);
 	}
 
-	@Override
-	protected void configure() {
-		bind(ITextTransformer.class).to(CompositeTextTransformer.class);
+	@Provides @Singleton
+	public Transformer transformer() throws IOException {
+		return new ConfManager().get(ConfEnum.TRANSFORMER, Transformer.class);
 	}
+
 }

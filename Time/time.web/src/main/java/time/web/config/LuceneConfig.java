@@ -8,6 +8,7 @@ import org.apache.lucene.facet.sortedset.DefaultSortedSetDocValuesReaderState;
 import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.MatchAllDocsQuery;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -34,7 +35,9 @@ public class LuceneConfig {
 
     @Bean
     public IndexSearcher indexSearcher() throws IOException {
-        return new IndexSearcher(directoryReader());
+        final IndexSearcher indexSearcher = new IndexSearcher(directoryReader());
+        LOGGER.info("{} docs in index", indexSearcher.count(new MatchAllDocsQuery()));
+        return indexSearcher;
     }
 
     @Bean

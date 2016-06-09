@@ -6,4 +6,5 @@ public class Fields {
 	public static final String TEXT = "text";
 	public static final String AUTHOR = "author";
 	public static final String TITLE = "title";
+	public static final String TYPE = "type";
 }

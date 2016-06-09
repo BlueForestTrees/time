@@ -34,14 +34,14 @@ public class LiveparseConf extends AbstractModule {
     }
 
     @Provides @Singleton
-    public Transformer transformer() throws IOException {
-        return new ConfManager().get(ConfEnum.TRANSFORMER, Transformer.class);
-    }
-
-    @Provides @Singleton
     @Named("port")
     public int port() {
         return liveparse.getPort();
+    }
+
+    @Provides @Singleton
+    public Transformer transformer() throws IOException {
+        return new ConfManager().get(ConfEnum.TRANSFORMER, Transformer.class);
     }
 
     @Provides @Singleton

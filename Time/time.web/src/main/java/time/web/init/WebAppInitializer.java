@@ -5,13 +5,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
-
-import time.messaging.Messager;
-import time.messaging.Queue;
 import time.web.config.WebConfig;
-
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
 
 public class WebAppInitializer extends AbstractDispatcherServletInitializer {
 
@@ -19,16 +13,8 @@ public class WebAppInitializer extends AbstractDispatcherServletInitializer {
 
     @Override
     protected WebApplicationContext createServletApplicationContext() {
-        AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
+        final AnnotationConfigWebApplicationContext webContext = new AnnotationConfigWebApplicationContext();
         webContext.register(WebConfig.class);
-
-        try {
-            new Messager().when(Queue.WIKI_WEB_REFRESH).then(() -> webContext.refresh());
-        } catch (IOException | TimeoutException e) {
-            LOGGER.error(e);
-            throw new RuntimeException(e);
-        }
-
         return webContext;
     }
 
@@ -41,5 +27,6 @@ public class WebAppInitializer extends AbstractDispatcherServletInitializer {
     protected WebApplicationContext createRootApplicationContext() {
         return null;
     }
+
 
 }

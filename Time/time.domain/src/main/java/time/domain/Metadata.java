@@ -2,7 +2,11 @@ package time.domain;
 
 public class Metadata {
     public static final String EXT = ".meta";
+    public enum Type{
+        WIKI, WEB_PAGE, FILE
+    }
 
+    private Type type;
     private String titre;
     private String auteur;
     private String date;
@@ -12,6 +16,14 @@ public class Metadata {
     private String identifier;
     private String comments;
     private String filename;
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
 
     public String getFilename() {
         return filename;

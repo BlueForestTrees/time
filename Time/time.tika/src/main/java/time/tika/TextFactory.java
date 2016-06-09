@@ -20,6 +20,7 @@ import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Optional;
 
 public class TextFactory {
 
@@ -72,10 +73,10 @@ public class TextFactory {
         final time.domain.Metadata metadata = text.getMetadata();
 
         metadata.setIdentifier(tikaMetadata.get(TikaCoreProperties.IDENTIFIER));
-        metadata.setTitre(tikaMetadata.get(TikaCoreProperties.TITLE));
         metadata.setAuteur(tikaMetadata.get(TikaCoreProperties.CREATOR));
         metadata.setDate(tikaMetadata.get(TikaCoreProperties.CREATED));
         metadata.setComments(tikaMetadata.get(TikaCoreProperties.COMMENTS));
+        metadata.setTitre(Optional.ofNullable(tikaMetadata.get(TikaCoreProperties.TITLE)).orElse("Sans-Titre"));
         metadata.setUrl(metadata.getTitre());
         text.setText(textHandler.toString());
 

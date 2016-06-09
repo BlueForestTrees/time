@@ -99,10 +99,13 @@ public class PhraseStore {
 
     private void handleNulls(Text text, DatedPhrase phrase) {
         if(text.getMetadata().getUrl() == null){
-            throw new RuntimeException("PhraseStore.storePhrase : text.getUrl() == null");
+            throw new RuntimeException("un Text n'a pas d'url");
         }
         if(phrase.getText() == null){
-            throw new RuntimeException("PhraseStore.storePhrase : phrase.getText() == null");
+            throw new RuntimeException("un Text n'a pas de texte");
+        }
+        if(text.getMetadata().getType() == null){
+            throw new RuntimeException("un Text n'a pas de type");
         }
     }
 
@@ -114,8 +117,10 @@ public class PhraseStore {
         if(text.getMetadata().getAuteur() != null){
             doc.add(new TextField(Fields.AUTHOR, text.getMetadata().getAuteur(), Store.YES));
         }
-        doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
+        doc.add(new TextField(Fields.TYPE, text.getMetadata().getType().name(), Store.YES));
         doc.add(new TextField(Fields.URL, text.getMetadata().getUrl(), Store.YES));
+
+        doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
         doc.add(new SortableLongField(Fields.DATE, phrase.getDate(), Store.YES));
         for (int i = 0; i < Scale.scales.length; i++) {
             doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.scales[i], Store.NO));

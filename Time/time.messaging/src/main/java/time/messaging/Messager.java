@@ -14,14 +14,16 @@ public class Messager {
 
     private static final Logger LOGGER = LogManager.getLogger(Messager.class);
 
-    Channel channel;
-    Connection connection;
-    final ObjectMapper mapper;
+    private Channel channel;
+    private Connection connection;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public Messager() throws IOException, TimeoutException {
-        mapper = new ObjectMapper();
         on();
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {LOGGER.info("shutdown hook received");off();}));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            LOGGER.info("shutdown hook received");
+            off();
+        }));
     }
 
     public void on() throws IOException, TimeoutException {
@@ -30,13 +32,13 @@ public class Messager {
         channel = connection.createChannel();
     }
 
-    private void off() {
+    public void off() {
         LOGGER.info("off");
         try {
             channel.close();
         } catch (IOException | TimeoutException e) {
             LOGGER.error(e);
-        } catch (AlreadyClosedException e){
+        } catch (AlreadyClosedException e) {
             LOGGER.info("allready closed");
         }
         try {
@@ -51,7 +53,7 @@ public class Messager {
     }
 
     public <T> TypedQueueConsumer<T> when(final Queue queue, final Class<T> type) {
-        return new TypedQueueConsumer(queue, type);
+        return new TypedQueueConsumer<>(queue, type);
     }
 
     public Messager signal(final Queue queue) throws IOException {
@@ -69,13 +71,15 @@ public class Messager {
 
     public class QueueConsumer {
         private final Queue queue;
-        private QueueConsumer(final Queue queue){
+
+        private QueueConsumer(final Queue queue) {
             this.queue = queue;
         }
+
         public Messager then(final Listener receiver) throws IOException {
             LOGGER.info("listen {}", queue);
             channel.queueDeclare(queue.name(), false, false, false, null);
-            channel.basicConsume(queue.name(), true, new DefaultConsumer(channel){
+            channel.basicConsume(queue.name(), true, new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                     LOGGER.info("received message {}", queue);
@@ -89,14 +93,16 @@ public class Messager {
     public class TypedQueueConsumer<T> {
         private final Queue queue;
         private final Class<T> type;
+
         private TypedQueueConsumer(final Queue queue, final Class<T> type) {
             this.queue = queue;
             this.type = type;
         }
+
         public void then(final TypedListener<T> receiver) throws IOException {
             LOGGER.info("listen {}({})", queue, type.getSimpleName());
             channel.queueDeclare(queue.name(), false, false, false, null);
-            channel.basicConsume(queue.name(), true, new DefaultConsumer(channel){
+            channel.basicConsume(queue.name(), true, new DefaultConsumer(channel) {
                 @Override
                 public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
                     LOGGER.info("received {}", queue);

@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.domain.Conf;
+import time.domain.Metadata;
+import time.domain.Text;
 import time.messaging.Messager;
 import time.messaging.Queue;
 import time.storage.store.TextHandler;
@@ -15,7 +17,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class FilesRun {
+class FilesRun {
 
 	private static final Logger LOGGER = LogManager.getLogger(FilesRun.class);
 
@@ -47,7 +49,9 @@ public class FilesRun {
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException("Lecture fichier", e);
 		}
-		store.handleText(textFactory.build(input));
+		final Text text = textFactory.build(input);
+		text.getMetadata().setType(Metadata.Type.FILE);
+		store.handleText(text);
 	}
 
 }

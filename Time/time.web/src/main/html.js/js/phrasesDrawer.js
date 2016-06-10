@@ -26,45 +26,25 @@
     };
 
     phrasesDrawer.prototype.buildHtmlPhrase = function(phrase) {
-        return (this.getPhraseHeader(phrase) + "<p date='" + phrase.date + "' page='" + phrase.pageUrl + "'>" + phrase.text + " " + this.getLink(phrase) + "</p>");
+
+        var source = Time.sources[phrase.type];
+        phrase.pageName = source.getPageName(phrase);
+        phrase.pageNameEscaped = phrase.pageName.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        phrase.tipTextHeader = source.tipTextHeader;
+        phrase.imgUrl = source.imgUrl;
+
+        return ("<div class='phraseHeader'><i>${title}</i></div>" +
+                "<p date='${date}' page='${url}'>${text}" +
+                    "<a title='${tipTextHeader} : ${pageNameEscaped} de ${author}' href='${url}' target='_blank' onClick='Time.drawer.link(${pageName})'>" +
+                        "<img src='${imgUrl}'/>" +
+                    "</a>" +
+                "</p>").replace(/\${[a-zA-Z]*}/g, function(v){return phrase[v.substring(2,v.length-1)];});
     };
 
-    phrasesDrawer.prototype.getPhraseHeader = function(phrase) {
-        var source = Time.sources[phrase.pageUrl];
-        if (source) {
-            return "";
-        } else {
-            return "<div class=\"phraseHeader\"><i>" + this.getPageName(phrase) + "  (" + Time.tooltips.dayToHuman(phrase.date)+")</i></div>";
-        }
+    phrasesDrawer.prototype.inject = function(phrase, template){
+
     };
     
-    phrasesDrawer.prototype.getLink = function(phrase) {
-        var source = Time.sources[phrase.pageUrl];
-        if (source) {
-            return this.getBookLink(source);
-        } else {
-            return this.getWikiLink(phrase);
-        }
-    };
-
-    phrasesDrawer.prototype.getBookLink = function(source) {
-        var title = source.title;
-        var url = source.url;
-        var tiptext = "source livre : " + title;
-        return "<a title=\"" + tiptext + "\" href=\"" + url + "\" onClick=\"Time.drawer.link('" + title + "')\" target=\"_blank\"><img src=\"http://www.ecoagris.org/AjaxControls/KoolTreeView/icons/book.gif\" /></a>";
-    };
-
-    phrasesDrawer.prototype.getWikiLink = function(phrase) {
-        var pageName = this.getPageName(phrase);
-        var tiptext = "source wikipedia : " + pageName;
-        var url = "https://fr.wikipedia.org/wiki" + phrase.pageUrl;
-        return "<a title=\"" + tiptext + "\" href=\"" + url + "\" onClick=\"Time.drawer.link('" + pageName + "')\" target=\"_blank\"><img src=\"http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png\" /></a>";
-    };
-    
-    phrasesDrawer.prototype.getPageName = function(phrase){
-        return decodeURIComponent(phrase.pageUrl).replace(/_/g, " ").substring(1);    
-    };
-
     phrasesDrawer.prototype.link = function(pageName) {
         Time.anal.ga('send', 'event', 'link', pageName, Time.filter.term);
     };

@@ -94,7 +94,8 @@ public class PhraseService {
             phrase.setDate(lucenePhrase.date());
             phrase.setUrl(lucenePhrase.url());
             phrase.setType(Optional.fromNullable(lucenePhrase.type()).or(Metadata.Type.WIKI));
-            phrase.setLabel(lucenePhrase.title() + " - " + lucenePhrase.author());
+            phrase.setTitle(lucenePhrase.title());
+            phrase.setAuthor(lucenePhrase.author());
 
             return phrase;
 

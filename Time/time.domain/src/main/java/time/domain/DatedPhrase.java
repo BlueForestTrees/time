@@ -12,14 +12,23 @@ public class DatedPhrase {
     private long date;
     private String url;
     private Metadata.Type type;
-    private String label;
+    private String title;
+    private String author;
 
-    public String getLabel() {
-        return label;
+    public String getTitle() {
+        return title;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public Metadata.Type getType() {

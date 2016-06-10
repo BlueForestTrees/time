@@ -33,23 +33,33 @@ public class TextFactory {
         mapper = new ObjectMapper();
     }
 
-    public Text build(final String filepath) throws FileNotFoundException {
-        return build(new FileInputStream(new File(filepath)));
-    }
-
-    public Text buildFromUrl(final String url, final String storageDir) throws IOException {
-        final byte[] pageBytes = UrlTo.byteArray(url);
-        final String filename = Strings.forFilename(url);
-        Files.write(Paths.get(storageDir, filename), pageBytes);
-
-        final InputStream pageStream = new ByteArrayInputStream(pageBytes);
-        final Text text = build(pageStream);
-        text.getMetadata().setUrl(url);
-        text.getMetadata().setFilename(filename);
+    public Text fromFile(final File file) throws FileNotFoundException {
+        final Text text = fromInputStream(new FileInputStream(file));
+        text.getMetadata().setType(time.domain.Metadata.Type.FILE);
         return text;
     }
 
-    public Text build(final String url, final String title, final String textString){
+    public Text fromFilepath(final String filepath) throws FileNotFoundException {
+        return fromFile(new File(filepath));
+    }
+
+    public Text fromUrl(final String url, final String storageDir) throws IOException {
+        final byte[] pageBytes = UrlTo.byteArray(url);
+        final String filename = Strings.forFilename(url);
+
+        if(storageDir != null) {
+            Files.write(Paths.get(storageDir, filename), pageBytes);
+        }
+
+        final InputStream pageStream = new ByteArrayInputStream(pageBytes);
+        final Text text = fromInputStream(pageStream);
+        text.getMetadata().setUrl(url);
+        text.getMetadata().setFilename(filename);
+        text.getMetadata().setType(time.domain.Metadata.Type.WEB_PAGE);
+        return text;
+    }
+
+    public Text fromString(final String url, final String title, final String textString){
         final Text text = new Text();
         text.getMetadata().setUrl(url);
         text.getMetadata().setTitre(title);
@@ -58,7 +68,7 @@ public class TextFactory {
         return text;
     }
 
-    public Text build(final InputStream input){
+    public Text fromInputStream(final InputStream input){
         final ContentHandler textHandler = new BodyContentHandler(Integer.MAX_VALUE);
         final Metadata tikaMetadata = new Metadata();
         try {
@@ -84,19 +94,32 @@ public class TextFactory {
         return text;
     }
 
-    public Text buildFromMetaPath(final String metaPath) throws IOException, InvocationTargetException, IllegalAccessException {
-        final time.domain.Metadata metadata = mapper.readValue(new File(metaPath), time.domain.Metadata.class);
+    public Text fromMetaPath(final String metaPath) throws IOException, InvocationTargetException, IllegalAccessException {
+        return fromMetafile(new File(metaPath));
+    }
+
+    public Text fromMetafile(final File metafile) throws IOException, InvocationTargetException, IllegalAccessException {
+        final time.domain.Metadata metadata = mapper.readValue(metafile, time.domain.Metadata.class);
         FileInputStream input;
-        final String filepath = Resolver.get(Strings.without(metaPath,  time.domain.Metadata.EXT));
+        final String filepath = Resolver.get(Strings.without(metafile.getPath(),  time.domain.Metadata.EXT));
         try {
             input = new FileInputStream(filepath);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Erreur lecture de " + filepath, e);
         }
-        final Text text = build(input);
+        final Text text = fromInputStream(input);
 
         BeanUtils.copyProperties(text.getMetadata(), metadata);
 
         return text;
+    }
+
+    public Text fromFileMaybeMeta(File file) throws IllegalAccessException, IOException, InvocationTargetException {
+        final File metafile = Paths.get(file.getAbsolutePath()+ time.domain.Metadata.EXT).toFile();
+        if(metafile.exists()){
+            return fromMetafile(metafile);
+        }else {
+            return fromFile(file);
+        }
     }
 }

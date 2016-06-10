@@ -19,9 +19,7 @@ import time.messaging.Queue;
 import time.tika.TextFactory;
 import time.tool.string.Strings;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.concurrent.TimeoutException;
 
 public class LiveparseVerticle extends AbstractVerticle {
@@ -63,13 +61,20 @@ public class LiveparseVerticle extends AbstractVerticle {
     @Override
     public void start() {
         Router router = Router.router(vertx);
-        router.route().handler(BodyHandler.create().setUploadsDirectory(uploadDir));
+        router.route().handler(BodyHandler.create().setUploadsDirectory(uploadDir))
+                      .failureHandler(this::onFailure);
         router.get("/api/liveparse/url/:url").handler(this::fromUrl);
         router.route("/*").handler(StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true).setWebRoot(webRoot));
         router.post("/api/liveparse/file").handler(this::fromFile);
         router.post("/api/liveparse/add").handler(this::add);
         vertx.createHttpServer().requestHandler(router::accept).listen(port);
         LOGGER.info("started");
+    }
+
+    private void onFailure(RoutingContext routingContext) {
+        final StringWriter out = new StringWriter();
+        routingContext.failure().printStackTrace(new PrintWriter(out));
+        routingContext.response().setStatusCode(500).end(out.toString());
     }
 
     private void add(RoutingContext ctx) {
@@ -84,8 +89,10 @@ public class LiveparseVerticle extends AbstractVerticle {
             final Meta meta = new Meta(metapath);
             LOGGER.info("signaling meta {}", meta);
             messager.signal(Queue.META_CREATED, meta);
+            ctx.response().end();
         } catch (IOException e) {
             LOGGER.error(e);
+            ctx.fail(e);
         }
     }
 
@@ -123,16 +130,16 @@ public class LiveparseVerticle extends AbstractVerticle {
     }
 
     private String urlToText(final String url) throws IOException {
-        final Text text = textFactory.buildFromUrl(Strings.beginWith(url, "http://", "https://"), uploadDir);
+        final Text text = textFactory.fromUrl(Strings.beginWith(url, "http://", "https://"), uploadDir);
         final Text analysedText = textAnalyser.analyse(text);
         return mapper.writeValueAsString(toDTO(analysedText));
     }
 
     private String fileToText(final FileUpload file) throws JsonProcessingException, FileNotFoundException {
         final String filepath = file.uploadedFileName();
-        LOGGER.info("textFactory.build({})", filepath);
-        final Text text = textFactory.build(filepath);
-        //only to come back in add() method for building metapath based on filepath
+        LOGGER.info("textFactory.fromFilepath({})", filepath);
+        final Text text = textFactory.fromFilepath(filepath);
+        //only to come back in doAdd() method for building metapath based on filepath
         text.getMetadata().setFilename(new File(filepath).getName());
         LOGGER.info("textAnalyser.analyse(text)");
         final Text analysedText = textAnalyser.analyse(text);

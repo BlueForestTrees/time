@@ -48,7 +48,7 @@ public class IndexCreatorService {
 		LOGGER.info("meta {}", meta);
 
         //ANALYSE
-        final Text text = textFactory.buildFromMetaPath(meta.getMetaPath());
+        final Text text = textFactory.fromMetaPath(meta.getMetaPath());
         textAnalyser.analyse(text);
 
         //STORE

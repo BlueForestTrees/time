@@ -67,7 +67,7 @@ public class CrawlWiki extends Crawler {
         final String url = page.getWebURL().getURL();
         final String title = htmlData.getTitle();
         final String textString = htmlData.getText();
-        return textFactory.build(url, title, textString);
+        return textFactory.fromString(url, title, textString);
     }
 
     private boolean notExcludedByContent(final Page page) {

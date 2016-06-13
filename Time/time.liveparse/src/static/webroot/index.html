@@ -12,23 +12,6 @@
         <script>
             $(document).ready(function() {
                 console.log("document ready");
-                Liveparse.view = {
-                    book : $('.book'),
-                    datedPhrases : $('.datedPhrases'),
-                    upload : $('.uploadFile'),
-                    uploadUrlText : $('.uploadUrlText'),
-                    uploadUrlBt : $('.uploadUrlBt'),
-                    throbber : $('#throbber'),
-                    titre : $('.titre'),
-                    auteur : $('.auteur'),
-                    date : $('.date'),
-                    paragraphes : $('.paragraphes'),
-                    phrases : $('.phrases'),
-                    url : $('.url'),
-                    metadatas : $('.metadatas'),
-                    filename : $('.filename'),
-                    type : $('.type')
-                };
                 Liveparse.upload = new Liveparse.Upload();
                 Liveparse.upload.init();
             });

@@ -1,4 +1,5 @@
 require("./css/histoires.css");
+//TODO mettre dans boot.js
 Time = {};
 require ("./js/boot.js");
 require ("./js/ga.js");

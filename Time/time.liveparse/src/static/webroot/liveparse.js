@@ -1,21 +1,23 @@
 (function() {
     function Upload() {
-        this.metadata = null;
-    }
-
-    Upload.prototype.init = function () {
         console.log("init");
-        Liveparse.upload.showBook();
+        Liveparse.view = {};
+        $('[class]').each(function() {
+          Liveparse.view[$(this).attr("class")] = $(this);
+        });
+        this.metadata = null;
+
+        this.showBook();
         Liveparse.view.throbber.hide();
         Liveparse.view.metadatas.hide();
-        Liveparse.view.upload.change(this.doFileLiveparse);
-        Liveparse.view.uploadUrlBt.click(this.doUrlLiveparse);
-        Liveparse.view.uploadUrlText.keypress(function (e) {
+        Liveparse.view.uploadFile.change($.proxy(this.doFileLiveparse, this));
+        Liveparse.view.uploadUrlBt.click($.proxy(this.doUrlLiveparse, this));
+        Liveparse.view.uploadUrlText.keypress($.proxy(function (e) {
             if (e.which == 13) {
-                Liveparse.upload.doUrlLiveparse();
+                this.doUrlLiveparse();
             }
-        });
-    };
+        }, this));
+    }
 
     Upload.prototype.clear = function(){
         Liveparse.view.book.empty();
@@ -26,7 +28,7 @@
 
     Upload.prototype.doFileLiveparse = function (event) {
         console.log('uploading. . .');
-        Liveparse.upload.clear();
+        this.clear();
         var files = event.target.files;
         var data = new FormData();
         $.each(files, function (key, value) {
@@ -34,25 +36,28 @@
         });
         $.ajax({
             url: '/api/liveparse/file', type: 'POST', data: data, cache: false, processData: false, contentType: false,
-            success: Liveparse.upload.onLiveparse,
-            error: Liveparse.upload.onError
+            success: $.proxy(this.onLiveparse, this),
+            error: $.proxy(this.onError, this)
         });
     };
 
-    Upload.prototype.doUrlLiveparse = function (event) {
-        console.log('uploading url. . .');
-        Liveparse.upload.clear();
-        var url = "api/liveparse/url/" + encodeURIComponent(Liveparse.view.uploadUrlText.val());
-        $.get(url).done(Liveparse.upload.onLiveparse).fail(Liveparse.upload.onError);
-    };
+    Upload.prototype.doUrlLiveparse = function(event) {
+            console.log('doUrlLiveparse. . .');
+            this.clear();
+            var url = "api/liveparse/url/" + encodeURIComponent(Liveparse.view.uploadUrlText.val());
+            $.get(url)
+             .done($.proxy(this.onLiveparse, this))
+             .fail($.proxy(this.onLiveparseError, this));
+     };
 
-    Upload.prototype.onLiveparse = function (data) {
-        console.log('onLiveparse');
+     Upload.prototype.onLiveparse = function(data){
+        console.log('onLiveparse. . .');
         Liveparse.view.throbber.hide();
-        Liveparse.upload.updateMetadata(data.metadata);
+        this.updateMetadatas(data.metadata);
+        Liveparse.view.metadatas.show();
         Liveparse.view.book.append(data.text);
-        Liveparse.view.datedPhrases.append(Liveparse.upload.buildPhrasesHtml(data.datedPhrases))
-    };
+        Liveparse.view.datedPhrases.append(this.buildPhrasesHtml(data.datedPhrases))
+     };
 
     Upload.prototype.onError = function (data) {
         console.error('onError', data.responseText);
@@ -89,7 +94,9 @@
         this.metadata.phrases = Liveparse.view.phrases.val();
         this.metadata.url = Liveparse.view.url.val();
 
-        $.post("api/liveparse/add", JSON.stringify(this.metadata)).done(Liveparse.upload.onAdd).fail(Liveparse.upload.onError);
+        $.post("api/liveparse/add", JSON.stringify(data))
+                        .done($.proxy(this.onAdd, this))
+                        .fail($.proxy(this.onError));
     };
 
     Upload.prototype.onAdd = function () {

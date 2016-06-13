@@ -1,4 +1,4 @@
-(function () {
+(function() {
     function Upload() {
         this.metadata = null;
     }
@@ -17,11 +17,16 @@
         });
     };
 
-    Upload.prototype.doFileLiveparse = function (event) {
-        console.log('uploading. . .');
+    Upload.prototype.clear = function(){
         Liveparse.view.book.empty();
         Liveparse.view.metadatas.hide();
+        Liveparse.view.datedPhrases.empty();
         Liveparse.view.throbber.show();
+    }
+
+    Upload.prototype.doFileLiveparse = function (event) {
+        console.log('uploading. . .');
+        Liveparse.upload.clear();
         var files = event.target.files;
         var data = new FormData();
         $.each(files, function (key, value) {
@@ -36,10 +41,7 @@
 
     Upload.prototype.doUrlLiveparse = function (event) {
         console.log('uploading url. . .');
-        Liveparse.view.metadatas.hide();
-        Liveparse.view.book.empty();
-        Liveparse.view.datedPhrases.empty();
-        Liveparse.view.throbber.show();
+        Liveparse.upload.clear();
         var url = "api/liveparse/url/" + encodeURIComponent(Liveparse.view.uploadUrlText.val());
         $.get(url).done(Liveparse.upload.onLiveparse).fail(Liveparse.upload.onError);
     };
@@ -93,7 +95,7 @@
     Upload.prototype.onAdd = function () {
         console.log("bravo for doAdd!!");
     };
-    
+
     Upload.prototype.showBook = function () {
         Liveparse.view.datedPhrases.hide();
         Liveparse.view.book.show();

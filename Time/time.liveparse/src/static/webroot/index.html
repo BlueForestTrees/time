@@ -20,10 +20,6 @@
         <div class="header">
             <div>Fichier : <input type="file" class="uploadFile"/></div>
             <div>Url : <input type="text" class="uploadUrlText"/><input type="button" class="uploadUrlBt" value="Envoyer"/></div>
-            <div>Display :
-                <input type="button" class="showBookBt" value="Texte entier"/>
-                <input type="button" class="showPhrasesBt" value="Phrases" />
-            </div>
             <div id="throbber">
                 <img class="throbber" src="throbber.gif" />
             </div>
@@ -36,6 +32,10 @@
             <p>Paragraphes: <input type="text" class="paragraphes"/></p>
             <p>Phrases: <input type="text" class="phrases"/></p>
             <input type="button" value="Ajouter" onClick="Liveparse.upload.doAdd()"/>
+        </div>
+        <div class="displayZone">Montrer :
+            <input type="button" class="showBookBt" value="Texte entier"/>
+            <input type="button" class="showPhrasesBt" value="Phrases" />
         </div>
         <div class="book"></div>
         <div class="datedPhrases"></div>

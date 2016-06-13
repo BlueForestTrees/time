@@ -10,7 +10,7 @@
         this.view.showBookBt.click($.proxy(this.showBook, this));
         this.view.showPhrasesBt.click($.proxy(this.showDatedPhrases, this));
 
-
+        this.clear();
         this.showBook();
         this.view.throbber.hide();
         this.view.metadatas.hide();
@@ -24,6 +24,7 @@
     }
 
     Upload.prototype.clear = function(){
+        this.view.displayZone.hide();
         this.view.book.empty();
         this.view.metadatas.hide();
         this.view.datedPhrases.empty();
@@ -60,7 +61,8 @@
         this.updateMetadata(data.metadata);
         this.view.metadatas.show();
         this.view.book.append(data.text);
-        this.view.datedPhrases.append(this.buildPhrasesHtml(data.datedPhrases))
+        this.view.datedPhrases.append(this.buildPhrasesHtml(data.datedPhrases));
+        this.view.displayZone.show();
      };
 
     Upload.prototype.onError = function (data) {

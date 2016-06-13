@@ -32,7 +32,7 @@ public class IndexService {
         LOG.info("FROM {}", sourceFile);
         LOG.info("TO {}", destFile);
         final IndexWriter destIndexWriter = new IndexWriter(destDirectory, indexWriterConfig);
-        LOG.info("META_CREATED. . .");
+        LOG.info("adding indexes. . .");
         destIndexWriter.addIndexes(sourceDirectory);
         LOG.info("indexWriter.forceMerge(1) . . .");
         destIndexWriter.forceMerge(1);

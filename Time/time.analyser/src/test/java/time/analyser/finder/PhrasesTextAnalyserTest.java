@@ -18,6 +18,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+// L’apparition de nouvelles façons de penser et de communiquer, entre 70 000 et 30 000 ans, constitue la Révolution cognitive.
+// La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
+// Sapiens moderne a acquises voici quelque 70 millénaires lui
 public class PhrasesTextAnalyserTest {
 
 	private final PhrasesAnalyser[] finders;
@@ -40,11 +44,6 @@ public class PhrasesTextAnalyserTest {
 			assertThat(actual).as(finder + " est absent!").isNotNull();
 		});
 	}
-
-	// L’apparition de nouvelles façons de penser et de communiquer, entre 70
-	// 000 et 30 000 ans, constitue la Révolution cognitive.
-	// La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
-	// Sapiens moderne a acquises voici quelque 70 millénaires lui
 
 	@Test
 	public void ilYA15() {

@@ -77,9 +77,6 @@ public class DatedPhraseDetector {
 
     @Override
     public String toString() {
-        return "DatedPhraseDetector{" +
-                "finders=" + finders +
-                ", findersArray=" + Arrays.toString(findersArray) +
-                '}';
+        return "DatedPhraseDetector{}";
     }
 }

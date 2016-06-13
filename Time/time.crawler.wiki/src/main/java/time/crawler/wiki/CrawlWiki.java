@@ -81,11 +81,11 @@ public class CrawlWiki extends Crawler {
     }
 
     private void logPageProgress() {
-        if (LOGGER.isDebugEnabled() && (pageCount % nbPageLog == 0)) {
+        if (LOGGER.isInfoEnabled() && (pageCount % nbPageLog == 0)) {
             nbLog++;
             pageChrono.tic();
             fullChrono.tic();
-            LOGGER.debug(pageCount + "/" + pageCountPrevision + " texts. Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(nbLog) + ", Last:" + pageChrono + ", Rest:" + fullChrono.getRemaining(pageCount, pageCountPrevision));
+            LOGGER.info(pageCount + "/" + pageCountPrevision + " texts. Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(nbLog) + ", Last:" + pageChrono + ", Rest:" + fullChrono.getRemaining(pageCount, pageCountPrevision));
             pageChrono.start();
         }
     }

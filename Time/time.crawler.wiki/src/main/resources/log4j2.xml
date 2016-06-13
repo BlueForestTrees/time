@@ -4,23 +4,21 @@
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
+		<RollingRandomAccessFile name="StdFile"
+								 fileName="/var/log/time/time.crawler.wiki.log" filePattern="/var/log/time/time.crawler.wiki.log">
+			<PatternLayout>
+				<pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+			</PatternLayout>
+			<SizeBasedTriggeringPolicy size="20 MB" />
+		</RollingRandomAccessFile>
 	</Appenders>
 	<Loggers>
 		<Root level="error">
+            <AppenderRef ref="StdFile" />
+            <AppenderRef ref="Console" />
 		</Root>
-		<Logger name="org.apache.http" level="error">
-			<AppenderRef ref="Console" />
-		</Logger>
-		<Logger name="edu.uci.ics.crawler4j" level="info">
-			<AppenderRef ref="Console" />
-		</Logger>
-		<Logger name="time" level="debug">
-			<AppenderRef ref="Console" />
-		</Logger>
-
-		<Logger name="time.crawler" level="debug"/>
-		<Logger name="time.crawler.crawl" level="info"/>
-		<Logger name="time.storage" level="info"/>
-        <Logger name="time.textAnalyser" level="info"/>
+		<Logger name="org.apache.http" level="error"/>
+		<Logger name="edu.uci.ics.crawler4j" level="info"/>
+		<Logger name="time" level="info"/>
 	</Loggers>
 </Configuration>

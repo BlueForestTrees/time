@@ -13,17 +13,16 @@
             $(document).ready(function() {
                 console.log("document ready");
                 Liveparse.upload = new Liveparse.Upload();
-                Liveparse.upload.init();
             });
         </script>
     </head>
     <body>
         <div class="header">
-            <div>Fichier : <input type="file" class="uploadFile"></input></div>
+            <div>Fichier : <input type="file" class="uploadFile"/></div>
             <div>Url : <input type="text" class="uploadUrlText"/><input type="button" class="uploadUrlBt" value="Envoyer"/></div>
             <div>Display :
-                <input type="button" value="Texte entier" onClick="Liveparse.upload.showBook()"/>
-                <input type="button" value="Phrases" onClick="Liveparse.upload.showDatedPhrases()"/>
+                <input type="button" class="showBookBt" value="Texte entier"/>
+                <input type="button" class="showPhrasesBt" value="Phrases" />
             </div>
             <div id="throbber">
                 <img class="throbber" src="throbber.gif" />

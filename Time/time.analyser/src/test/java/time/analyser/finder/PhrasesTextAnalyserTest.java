@@ -19,9 +19,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 // https://fr.wikipedia.org/wiki/Wikimedia_Foundation contient un tableau qui est mal crawlé
-// De la même manière, la grande majorité des vandalismes détectés avaient été corrigés après 15 révisions au plus.
-// Le groupe BCC s'organise aujourd'hui en 16 fédérations sur le territoire italien.
-// Après 18 jours de combats acharnés
 // Hong Kong est divisé depuis les années 1980 en 18 districts.
 // L’apparition de nouvelles façons de penser et de communiquer, entre 70 000 et 30 000 ans, constitue la Révolution cognitive.
 // La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
@@ -578,6 +575,22 @@ public class PhrasesTextAnalyserTest {
 	public void none19() {
 		assertNoDateIn("Portail comptant entre 100 et 999 articlesPage de portail ou de projet thématique");
 	}
+
+    @Test
+    public void none20() {
+        assertNoDateIn("De la même manière, la grande majorité des vandalismes détectés avaient été corrigés après 15 révisions au plus.");
+    }
+
+
+    @Test
+    public void none21() {
+        assertNoDateIn("Le groupe BCC s'organise aujourd'hui en 16 fédérations sur le territoire italien.");
+    }
+
+    @Test
+    public void none22() {
+        assertNoDateIn("Après 18 jours de combats acharnés");
+    }
 
 
 	@Test

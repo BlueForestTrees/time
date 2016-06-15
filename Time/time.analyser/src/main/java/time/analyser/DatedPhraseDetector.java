@@ -26,8 +26,7 @@ public class DatedPhraseDetector {
 	private final static String NUMBERS = "(" + NUMBER_FLAG + "\\d+([,\\.]\\d+)?)";
 	private final static String ET = "( (jusque|à|et) (vers )?(environ )?(l'an )?"+ "(" + NUMBER_FLAG + "(-)?\\d{2,9})" + NEG_REF + "?)?";
 	private static final String ILYAENVIRON = "([Ii]l y a|[Vv]oici|(datent|vie(ux|ille)) d(e)?|au cours des|dès)([ ']environ)?( quelque)?( près de)?";
-	private final static String NOT_IN_DATE_WORDS = "(?<ex>(spectateur|degré|coup|pas|tour|heure|minute|seconde|mois|moto|titre|volt|salarié|arbre|commanderie|étudiant|degré|mètre|mot|ouvrier|mort|partenaire)s?)?";
-	private static final String END = "(;|,|\\.| " + NOT_IN_DATE_WORDS + "|$)";
+	private static final String END = "(;|,|\\.| \\(| souvent| pour| aurait|$)";
 	private static final String END2 = "(;|:|,|\\.|$)";
 	private static final String JCSTART = "([Aà] partir de|[Dd]ate(nt)? de|[Dd]ébut|[Aa]près|[Dd]epuis|[Ee]n|[Dd]ans les années) ";
     private final Map<DateType, PhrasesAnalyser> finders;
@@ -47,7 +46,7 @@ public class DatedPhraseDetector {
 	private void build() {
 		build(DateType.ILYA, "(?<neg>" + ILYAENVIRON + ") (" + NUMBER_FLAG + "\\d{1,3}( ?000)?) (ans|dernières années)", new IlYAParser());
 		build(DateType.MILLIARD, "((?<neg>[Dd]ans)|([Vv]oici|[Ii]l y a)) (plus (de |d'))?(environ )?(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s? d['’]années", new MilliardParser());
-		build(DateType.JC, START + JCSTART + "(l'an )?(" + NUMBER_FLAG + "(-)?\\d{2,9})" + NEG_REF_OPT + END, new ExcludingJCParser());
+		build(DateType.JC, START + JCSTART + "(l'an )?(" + NUMBER_FLAG + "(-)?\\d{2,9})" + NEG_REF_OPT + END, new JCParser());
 		build(DateType.JCET, "[Ee]ntre (" + NUMBER_FLAG + YEAR + ") et " + YEAR + NEG_REF_OPT + END2, new JCParser());
 		build(DateType.JCET2, "[Ee]ntre " + YEAR + " et (" + NUMBER_FLAG + YEAR + ")" + NEG_REF_OPT + END2, new JCParser());
 		build(DateType.NEARJC, START + "([Ee]nviron) (" + NUMBER_FLAG + YEAR + ")(,? )ans" + NEG_REF, new JCParser());

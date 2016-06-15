@@ -19,8 +19,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 // https://fr.wikipedia.org/wiki/Wikimedia_Foundation contient un tableau qui est mal crawlé
-// Hong Kong est divisé depuis les années 1980 en 18 districts.
-// L’apparition de nouvelles façons de penser et de communiquer, entre 70 000 et 30 000 ans, constitue la Révolution cognitive.
 // La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
 // Sapiens moderne a acquises voici quelque 70 millénaires lui
 // Mais le ratio actifs cotisants/retraité est passé de 4 en 1960 à 1,8 en 2010 ; et il serait de 1,2 en 2050.
@@ -296,11 +294,6 @@ public class PhrasesTextAnalyserTest {
 	}
 
 	@Test
-	public void jc26() {
-		assertOnly(DateType.JC, yearIs(1960), "du Paraguay jusque dans les années 1960, offrent un aperçu");
-	}
-
-	@Test
 	public void nearLess12() {
 		assertOnly(DateType.NEARLESS, yearIs(-5300), "Des indices de culture de céréales et de domestication du chien, du cochon, du mouton et de la chèvre dans la région de Tétouan, remontant à environ -5300, constituent la plus ancienne trace connue d'agriculture en Afrique du Nord.");
 	}
@@ -356,9 +349,14 @@ public class PhrasesTextAnalyserTest {
 	}
 
 	@Test
-	public void et() {
-		assertTwo(DateType.JCET, yearIs(1909), DateType.JCET2, yearIs(1910), "Entre 1909 et 1910, ma situation s'était modifiée et je n'avais plus à gagner ma vie comme manœuvre.");
+	public void entre() {
+		assertTwo(DateType.JC_ENTRE, yearIs(1909), DateType.JC_ENTRE_SUITE, yearIs(1910), "Entre 1909 et 1910, ma situation s'était modifiée et je n'avais plus à gagner ma vie comme manœuvre.");
 	}
+
+    @Test
+    public void entre2() {
+        assertTwo(DateType.JC_ENTRE, yearIs(-70000), DateType.JC_ENTRE_SUITE, yearIs(-30000), " de communiquer, entre 70 000 et 30 000 ans, constitue");
+    }
 
 	@Test
 	public void jc23() {
@@ -383,6 +381,16 @@ public class PhrasesTextAnalyserTest {
     @Test
     public void jc31(){
         assertOnly(DateType.JC, yearIs(1725),"Les Quatre Saisons de Vivaldi datent de 1725.");
+    }
+
+    @Test
+    public void jc26() {
+        assertOnly(DateType.JC_PREV, yearIs(1960), "du Paraguay jusque dans les années 1960, offrent un aperçu");
+    }
+
+    @Test
+    public void jc32(){
+        assertOnly(DateType.JC_PREV, yearIs(1980),"Hong Kong est divisé dans les années 1980 en 18 districts.");
     }
 
 	@Test

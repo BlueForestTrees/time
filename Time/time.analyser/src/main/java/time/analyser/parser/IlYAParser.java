@@ -12,6 +12,9 @@ public class IlYAParser implements IParser {
         if(matcher.group("neg") != null){
             annees = -annees;
         }
+        if(matcher.group("mil") != null){
+            annees *= 1000;
+        }
         return Dates.ilyaToDays(annees);
     }
 

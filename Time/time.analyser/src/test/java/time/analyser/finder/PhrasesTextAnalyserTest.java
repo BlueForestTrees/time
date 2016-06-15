@@ -20,9 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 // https://fr.wikipedia.org/wiki/Wikimedia_Foundation contient un tableau qui est mal crawlé
 // La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
-// Sapiens moderne a acquises voici quelque 70 millénaires lui
-// Mais le ratio actifs cotisants/retraité est passé de 4 en 1960 à 1,8 en 2010 ; et il serait de 1,2 en 2050.
-// De 1960 à 1975, le Grand Larousse encyclopédique en 10 volumes et 2 suppléments est publié, avec un logo dessiné par Jean Picart Le Doux.
+// de communiquer, entre 70 000 et 30 000 ans, constitue
 
 public class PhrasesTextAnalyserTest {
 
@@ -116,6 +114,12 @@ public class PhrasesTextAnalyserTest {
 	public void ilYA7() {
 		assertOnly(DateType.ILYA, ilyaYearIs(-40000), "L’Homo denisova disparut peu après, il y a quelque 40 000 ans.");
 	}
+
+    @Test
+	public void ilYAquelque21() {
+		assertOnly(DateType.ILYA, ilyaYearIs(-70000), "Sapiens moderne a acquises voici quelque 70 millénaires lui");
+	}
+
 
 	@Test
 	public void ilYA16() {
@@ -335,28 +339,29 @@ public class PhrasesTextAnalyserTest {
 
 	@Test
 	public void jc30() {
-		assertOnly(DateType.JC, yearIs(1904), "Le sang versé en 1904 aurait épargné son décuple de 1914 à 1918.");
+		assertOnly(DateType.JC, yearIs(1904), "Le sang versé en 1904 aurait épargné.");
 	}
 
 	@Test
 	public void doubleP1() {
-		assertTwo(DateType.DOUBLEPARENTHESIS, yearIs(1539), DateType.DOUBLEPARENTHESIS2, yearIs(1619), "Olivier de Serres (1539-1619) écrit");
+		assertTwoDifferents(DateType.DOUBLEPARENTHESIS, yearIs(1539), DateType.DOUBLEPARENTHESIS2, yearIs(1619), "Olivier de Serres (1539-1619) écrit");
 	}
 
 	@Test
 	public void tiret() {
-		assertTwo(DateType.TIRET, yearIs(1870), DateType.TIRET2, yearIs(1871), "dont une édition populaire de la guerre franco allemande de 1870-1871.");
+		assertTwoDifferents(DateType.TIRET, yearIs(1870), DateType.TIRET2, yearIs(1871), "dont une édition populaire de la guerre franco allemande de 1870-1871.");
 	}
 
 	@Test
 	public void entre() {
-		assertTwo(DateType.JC_ENTRE, yearIs(1909), DateType.JC_ENTRE_SUITE, yearIs(1910), "Entre 1909 et 1910, ma situation s'était modifiée et je n'avais plus à gagner ma vie comme manœuvre.");
+		assertTwoDifferents(DateType.JC_ENTRE, yearIs(1909), DateType.JC_ENTRE_SUITE, yearIs(1910), "Entre 1909 et 1910, ma situation s'était modifiée et je n'avais plus à gagner ma vie comme manœuvre.");
 	}
 
     @Test
-    public void entre2() {
-        assertTwo(DateType.JC_ENTRE, yearIs(-70000), DateType.JC_ENTRE_SUITE, yearIs(-30000), " de communiquer, entre 70 000 et 30 000 ans, constitue");
-    }
+	public void entre2() {
+		assertTwoDifferents(DateType.JC_ENTRE, yearIs(1960), DateType.JC_ENTRE_SUITE, yearIs(1975), "De 1960 à 1975, le Grand Larousse encyclopédique en 10 volumes et 2 suppléments est publié, avec un logo dessiné par Jean Picart Le Doux.");
+	}
+
 
 	@Test
 	public void jc23() {
@@ -391,6 +396,11 @@ public class PhrasesTextAnalyserTest {
     @Test
     public void jc32(){
         assertOnly(DateType.JC_PREV, yearIs(1980),"Hong Kong est divisé dans les années 1980 en 18 districts.");
+    }
+
+    @Test
+    public void jc33(){
+        assertTwo(DateType.JC, yearIs(1960),yearIs(2010), "Mais le ratio actifs cotisants/retraité est passé de 4 en 1960 à 1,8 en 2010 ; szef");
     }
 
 	@Test
@@ -642,7 +652,7 @@ public class PhrasesTextAnalyserTest {
 		assertNoDateIn(phrase, filteredFinders);
 	}
 
-    private final void assertTwo(final DateType type1, Condition<? super DatedPhrase> sameDate1, final DateType type2, Condition<? super DatedPhrase> sameDate2, String phrase) {
+    private final void assertTwoDifferents(final DateType type1, Condition<? super DatedPhrase> sameDate1, final DateType type2, Condition<? super DatedPhrase> sameDate2, String phrase) {
         final PhrasesAnalyser finder1 = datedPhraseDetector.get(type1);
         final List<DatedPhrase> actualPhrases = finder1.findPhrases(phrase);
 		final PhrasesAnalyser finder2 = datedPhraseDetector.get(type2);

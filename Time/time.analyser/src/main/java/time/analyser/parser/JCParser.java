@@ -8,7 +8,7 @@ public class JCParser implements IParser {
 
     @Override
     public Long from(Matcher matcher) {
-        final String group = matcher.group("g");
+        final String group = matcher.group("g").replace(" ", "");
         if(group == null){
             return null;
         }

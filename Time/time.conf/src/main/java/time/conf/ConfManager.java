@@ -49,11 +49,10 @@ public class ConfManager {
         final String resolvedYmlPath = Resolver.get(ymlPath);
         final String rawConfig = new String(ByteStreams.toByteArray(new FileInputStream(new File(resolvedYmlPath))), StandardCharsets.UTF_8);
         final String substituedConfig = Resolver.get(rawConfig);
-        final ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
         LOGGER.debug("{} content\n{}", resolvedYmlPath, substituedConfig);
 
-        return mapper.readValue(substituedConfig, beanClass);
+        return objectMapper.readValue(substituedConfig, beanClass);
     }
 
     public void update(final ConfEnum confKey, final ConfModifier changer) throws IOException {

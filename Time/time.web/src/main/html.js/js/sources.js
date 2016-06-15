@@ -14,7 +14,7 @@
                     return decodeURIComponent(phrase.pageUrl).split(/[\/]+/).pop().replace(/_/g, " ").substring(1);
                 }
             },
-            'WEBPAGE' : {
+            'WEB_PAGE' : {
                 'tipTextHeader' : 'Lien vers la page web',
                 'imgUrl' : 'img/browser-world-globe-planet-icone-8648-16.png',
                 'getPageName' : function(phrase){

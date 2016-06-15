@@ -47,7 +47,7 @@ public class IndexManageMain {
     }
 
     private void updateWikiWebConf(final Merge merge) {
-        LOGGER.info("set wikiWeb.indexDir: {}", merge.getMergedIndexDir());
+        LOGGER.info("set {}.indexDir: {}",ConfEnum.TIMEWEB.getPath(), merge.getMergedIndexDir());
         try {
             new ConfManager().update(ConfEnum.TIMEWEB, conf -> conf.setIndexDir(merge.getMergedIndexDir()));
         } catch (IOException e) {

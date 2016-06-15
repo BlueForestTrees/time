@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.domain.Conf;
 import time.crawler.crawl.Crawler;
+import time.domain.Metadata;
 import time.domain.Text;
 import time.storage.store.TextHandler;
 import time.tika.TextFactory;
@@ -67,7 +68,7 @@ public class CrawlWiki extends Crawler {
         final String url = page.getWebURL().getURL();
         final String title = htmlData.getTitle();
         final String textString = htmlData.getText();
-        return textFactory.fromString(url, title, textString);
+        return textFactory.fromString(url, title, textString, Metadata.Type.WIKI);
     }
 
     private boolean notExcludedByContent(final Page page) {

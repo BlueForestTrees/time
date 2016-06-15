@@ -59,10 +59,11 @@ public class TextFactory {
         return text;
     }
 
-    public Text fromString(final String url, final String title, final String textString){
+    public Text fromString(final String url, final String title, final String textString, time.domain.Metadata.Type type){
         final Text text = new Text();
         text.getMetadata().setUrl(url);
         text.getMetadata().setTitre(title);
+        text.getMetadata().setType(type);
         text.setText(textString);
         textTransformer.transform(text);
         return text;

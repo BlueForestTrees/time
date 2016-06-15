@@ -12,7 +12,9 @@ public class BlueRedSwitcher {
     private static final Logger LOGGER = LogManager.getLogger(BlueRedSwitcher.class);
 
     public Merge prepareMerge() throws IOException {
-        final Merge merge = new ConfManager().get(ConfEnum.INDEX_MANAGE, Merge.class);
+        final Merge merge = new Merge();
+        merge.setMergeableIndexesDir("${TIME_HOME}/indexes/mergeables");
+
         final String currentWikiCrawlindexDir = new ConfManager().get(ConfEnum.TIMEWEB).getIndexDir();
 
         LOGGER.info("wiki.web is {}", currentWikiCrawlindexDir);

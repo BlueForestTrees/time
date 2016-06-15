@@ -26,9 +26,6 @@ public class TextFilter {
 
     public boolean keep(final Text text){
 		boolean nokeep = !isNew(text) || !isValid(text);
-		if(LOGGER.isDebugEnabled()){
-			LOGGER.debug("keep " + !nokeep);
-		}
 		if(nokeep){
             return false;
         }else{
@@ -43,17 +40,11 @@ public class TextFilter {
 
 	private boolean isNew(Text text) {
 		boolean isNew = !urlsLowerCase.contains(normalizedUrl(text));
-		if(LOGGER.isDebugEnabled()){
-			LOGGER.debug("is new: " + isNew);
-		}
 		return isNew;
 	}
 
 	private String normalizedUrl(Text text) {
 		final String normalized = text.getMetadata().getUrl().toLowerCase().replace("-", "_");
-		if(LOGGER.isDebugEnabled()){
-			LOGGER.debug("normalized url : " + normalized);
-		}
 		return normalized;
 	}
 
@@ -62,24 +53,19 @@ public class TextFilter {
 		final boolean urlTooLong = text.getMetadata().getUrl().length() > urlMaxLength;
 		final boolean isUrlMustNotContainExcluded = urlMustNotContain != null && urlMustNotContain.stream().anyMatch(url::contains);
 
-
 		boolean isValid = !urlTooLong && !isUrlMustNotContainExcluded;
 
 		if(LOGGER.isDebugEnabled()){
-			LOGGER.debug("urlTooLong " + urlTooLong);
-			LOGGER.debug("isUrlMustNotContainExcluded" + isUrlMustNotContainExcluded);
-			LOGGER.debug("isValid " + isValid);
+			LOGGER.debug("url {}, urlTooLong {}, isUrlMustNotContainExcluded {}, isValid {}", url, urlTooLong, isUrlMustNotContainExcluded, isValid);
 		}
 		return isValid;
 	}
 
-	@Override
-	public String toString() {
-		return "TextFilter{" +
-				"urlsLowerCase=" + urlsLowerCase +
-				", urlMaxLength=" + urlMaxLength +
-				'}';
-	}
-
-
+    @Override
+    public String toString() {
+        return "TextFilter{" +
+                "urlMaxLength=" + urlMaxLength +
+                ", urlMustNotContain=" + urlMustNotContain +
+                '}';
+    }
 }

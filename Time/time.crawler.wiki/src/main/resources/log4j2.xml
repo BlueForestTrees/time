@@ -20,5 +20,6 @@
 		<Logger name="org.apache.http" level="error"/>
 		<Logger name="edu.uci.ics.crawler4j" level="info"/>
 		<Logger name="time" level="info"/>
+		<Logger name="time.storage.filter" level="debug"/>
 	</Loggers>
 </Configuration>

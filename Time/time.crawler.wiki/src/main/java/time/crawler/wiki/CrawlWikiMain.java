@@ -18,15 +18,17 @@ public class CrawlWikiMain {
         final CrawlWiki crawlWiki = Guice.createInjector(new CrawlWikiModule(args)).getInstance(CrawlWiki.class);
 
         final Messager messager = new Messager();
-        messager.when(Queue.WIKI_CRAWL).then(() -> {
+//        messager.when(Queue.WIKI_CRAWL).then(() -> {
                     crawlWiki.crawl();
                     try {
-                        messager.signal(Queue.WIKI_CRAWLED);
                         messager.signal(Queue.MERGE);
+                        //messager.off();
                     } catch (IOException e) {
                         LOGGER.error(e);
                     }
-                });
+//                });
+
+//        messager.signal(Queue.WIKI_CRAWL);
     }
 
     public static void main(final String[] args) throws IOException, ArgumentParserException, TimeoutException {

@@ -20,8 +20,8 @@ public class DatedPhraseDetector {
 	private final static String YEAR = "\\d{2,4}";
     private final static String YEAR_FOUR = "\\d{4}";
     private final static String YEAR_BIG = "\\d{1,4}( ?\\d{3})?";
-
-	private final static String NEG_REF = "(?<neg> (avant|av.) (J.-?C.|notre ère|le présent))";
+    private final static String NEG_FLAG = "?<neg>";
+	private final static String NEG_REF = "("+NEG_FLAG+" (avant|av.) (J.-?C.|notre ère|le présent))";
 	private static final String NEG_REF_OPT = NEG_REF + "?";
 	private final static String TEXT_NUMBERS_ = "(?<gt>(" + TEXT_NUMBERS + "))";
 	private static final String NUMBER_FLAG = "?<g>";
@@ -49,8 +49,8 @@ public class DatedPhraseDetector {
     }
 
 	private void build() {
-		build(DateType.ILYA, "(?<neg>" + IL_Y_A_ENVIRON + ") (" + NUMBER_FLAG + YEAR_BIG + ") ((?<mil>millénaires)|ans|dernières années)", new IlYAParser());
-		build(DateType.MILLIARD, "((?<neg>[Dd]ans)|([Vv]oici|[Ii]l y a)) (plus (de |d'))?(environ )?(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s? d['’]années", new MilliardParser());
+        build(DateType.ILYA, "(" + NEG_FLAG + IL_Y_A_ENVIRON + ") (" + NUMBER_FLAG + YEAR_BIG + ") ((?<mil>millénaires)|ans|dernières années)", new IlYAParser());
+		build(DateType.MILLIARD, "((" + NEG_FLAG + "[Dd]ans)|([Vv]oici|[Ii]l y a)) (plus (de |d'))?(environ )?(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s? d['’]années", new MilliardParser());
 		build(DateType.JC_PREV, START + JC_PREV_START + "(" + NUMBER_FLAG + "(-)?\\d{2,9})" + NEG_REF_OPT, new JCParser());
 		build(DateType.JC, START + JC_START + "(l'an )?(" + NUMBER_FLAG + "(-)?\\d{2,9})" + NEG_REF_OPT + END, new JCParser());
 		build(DateType.JC_ENTRE, ENTRE_START + " (" + NUMBER_FLAG + YEAR + ") " + ENTRE + " " + YEAR + NEG_REF_OPT + END2, new JCParser());
@@ -58,7 +58,7 @@ public class DatedPhraseDetector {
 		build(DateType.NEARJC, START + "([Ee]nviron) (" + NUMBER_FLAG + YEAR + ")(,? )ans" + NEG_REF, new JCParser());
 		build(DateType.NEARJC2, START + "([Vv]ers l'an) (" + NUMBER_FLAG + "(-)?" + YEAR + ")(,?)" + NEG_REF_OPT, new JCParser());
 		build(DateType.NEARJC3, START + "[Vv]ers (" + NUMBER_FLAG + YEAR + ")" + NEG_REF, new JCParser());
-		build(DateType.NEARLESS, START + "(remontant à [Ee]nviron) (?<neg>-)(" + NUMBER_FLAG + YEAR + ")", new JCParser());
+		build(DateType.NEARLESS, START + "(remontant à [Ee]nviron) (" + NEG_FLAG + "-)(" + NUMBER_FLAG + YEAR + ")", new JCParser());
 		build(DateType.ROMAN, " (" + NUMBER_FLAG + "[ixvIXV]+)e siècle" + NEG_REF_OPT, new RomanParser());
 		build(DateType.ANNEE2DOT, "^(([Vv]ers|[Ee]nviron|[Ee]n) )?(" + NUMBER_FLAG + "([ -])?\\d{4}) ?:", new AnneeParser());
 		build(DateType.PRECISE, "(" + NUMBER_FLAG + JOUR + MOIS + ANNEE + ")" + NEG_REF_OPT, new PreciseParser());

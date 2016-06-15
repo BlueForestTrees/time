@@ -2,13 +2,8 @@ package time.domain;
 
 public class IndexCreation {
     private String sourceIndexDir;
-    private String destIndexDir;
     private long phraseCount;
     private boolean overwriteOccurs;
-
-    public void setDestIndexDir(String destIndexDir) { this.destIndexDir = destIndexDir;}
-
-    public String getDestIndexDir() { return destIndexDir; }
 
     public String getSourceIndexDir() {
         return sourceIndexDir;
@@ -40,7 +35,6 @@ public class IndexCreation {
                 "sourceIndexDir='" + sourceIndexDir + '\'' +
                 ", phraseCount=" + phraseCount +
                 ", overwriteOccurs=" + overwriteOccurs +
-                ", destIndexDir='" + destIndexDir + '\'' +
                 '}';
     }
 }

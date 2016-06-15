@@ -66,7 +66,7 @@ public class CrawlWiki extends Crawler {
     private Text buildText(final Page page) {
         final HtmlParseData htmlData = (HtmlParseData) page.getParseData();
         final String url = page.getWebURL().getURL();
-        final String title = htmlData.getTitle();
+        final String title = htmlData.getTitle().substring(0, htmlData.getTitle().length()-(" — Wikipédia".length()));
         final String textString = htmlData.getText();
         return textFactory.fromString(url, title, textString, Metadata.Type.WIKI);
     }

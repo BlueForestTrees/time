@@ -40,8 +40,8 @@ public class IndexManageMain {
                 });
 
         messager.when(Queue.INDEX_CREATED, IndexCreation.class)
-                .then((appendDone) -> {
-                    indexService.append(appendDone);
+                .then((indexCreation) -> {
+                    indexService.append(indexCreation);
                     messager.signal(Queue.WIKI_WEB_REFRESH);
                 });
     }

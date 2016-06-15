@@ -18,10 +18,17 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
+// https://fr.wikipedia.org/wiki/Wikimedia_Foundation contient un tableau qui est mal crawlé
+// De la même manière, la grande majorité des vandalismes détectés avaient été corrigés après 15 révisions au plus.
+// Le groupe BCC s'organise aujourd'hui en 16 fédérations sur le territoire italien.
+// Après 18 jours de combats acharnés
+// Hong Kong est divisé depuis les années 1980 en 18 districts.
 // L’apparition de nouvelles façons de penser et de communiquer, entre 70 000 et 30 000 ans, constitue la Révolution cognitive.
 // La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
 // Sapiens moderne a acquises voici quelque 70 millénaires lui
+// Mais le ratio actifs cotisants/retraité est passé de 4 en 1960 à 1,8 en 2010 ; et il serait de 1,2 en 2050.
+// De 1960 à 1975, le Grand Larousse encyclopédique en 10 volumes et 2 suppléments est publié, avec un logo dessiné par Jean Picart Le Doux.
+
 public class PhrasesTextAnalyserTest {
 
 	private final PhrasesAnalyser[] finders;

@@ -24,7 +24,6 @@ public class IndexCreatorService {
 
     private final TextFactory textFactory;
     private final String appendBaseIndexDir;
-    private final String appendToDir;
     private TextAnalyser textAnalyser;
 
     @Inject
@@ -32,7 +31,6 @@ public class IndexCreatorService {
         this.textFactory = textFactory;
 		this.textAnalyser = textAnalyser;
         this.appendBaseIndexDir = conf.getAppendBaseIndexDir();
-        this.appendToDir = conf.getAppendToDir();
 	}
 
     /**
@@ -65,7 +63,6 @@ public class IndexCreatorService {
         indexCreation.setSourceIndexDir(indexDir);
         indexCreation.setPhraseCount(phraseCount);
         indexCreation.setOverwriteOccurs(overwrite);
-        indexCreation.setDestIndexDir(this.appendToDir);
         return indexCreation;
     }
 }

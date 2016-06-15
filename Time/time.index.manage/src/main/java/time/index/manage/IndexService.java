@@ -9,6 +9,8 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
+import time.conf.ConfEnum;
+import time.conf.ConfManager;
 import time.conf.Resolver;
 import time.domain.IndexCreation;
 import time.domain.Merge;
@@ -25,7 +27,7 @@ public class IndexService {
     public IndexCreation append(final IndexCreation indexCreation) throws IOException {
         final File sourceFile = new File(Resolver.get(indexCreation.getSourceIndexDir()));
         final Directory sourceDirectory = directoryFromFile(sourceFile);
-        final File destFile = new File(Resolver.get(indexCreation.getDestIndexDir()));
+        final File destFile = new File(Resolver.get(new ConfManager().get(ConfEnum.TIMEWEB).getIndexDir()));
         final Directory destDirectory = directoryFromFile(destFile);
         final IndexWriterConfig indexWriterConfig = indexWriterConfig();
 

@@ -23,9 +23,8 @@
 			<artifactId>guice</artifactId>
 		</dependency>
         <dependency>
-			<groupId>edu.uci.ics</groupId>
-			<artifactId>crawler4j</artifactId>
-			<version>5-SNAPSHOT</version>
+			<groupId>slim</groupId>
+			<artifactId>crawler</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>slim</groupId>

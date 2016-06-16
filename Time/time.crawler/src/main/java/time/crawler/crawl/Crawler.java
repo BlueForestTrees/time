@@ -108,12 +108,12 @@ public abstract class Crawler implements ICrawler {
     public String toString() {
         return "Crawler{" +
                 "baseUrl='" + baseUrl + '\'' +
+                ", seedUrl='" + seedUrl + '\'' +
                 ", nbCrawlers=" + nbCrawlers +
                 ", delay=" + delay +
                 ", crawlStorageDir='" + crawlStorageDir + '\'' +
                 ", resumable=" + resumable +
                 ", maxPages=" + maxPages +
-                ", seedUrl='" + seedUrl + '\'' +
                 ", urlFilterPattern=" + urlFilterPattern +
                 ", includePattern=" + includePattern +
                 ", urlMustNotContain=" + urlMustNotContain +

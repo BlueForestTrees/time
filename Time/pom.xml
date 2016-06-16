@@ -7,7 +7,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>time.conf</module>
-        <module>time.crawler</module>
         <module>time.index.create</module>
         <module>time.domain</module>
         <module>time.tika</module>
@@ -20,6 +19,7 @@
         <module>time.messaging</module>
         <module>time.messaging.console</module>
         <module>time.local.tika</module>
+        <module>time.crawler</module>
         <module>time.crawler.wiki</module>
         <module>time.meta.to.index</module>
     </modules>
@@ -34,7 +34,6 @@
         <commons-logging.version>1.2</commons-logging.version>
         <commons-beanutils.version>1.9.2</commons-beanutils.version>
         <compiler.version>3.3</compiler.version>
-        <crawler4j.version>4.1</crawler4j.version>
         <fileupload.version>1.2</fileupload.version>
         <guice.version>4.0</guice.version>
         <jackson.version>2.7.3</jackson.version>
@@ -111,6 +110,16 @@
             <dependency>
                 <groupId>slim</groupId>
                 <artifactId>time.tool</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>slim</groupId>
+                <artifactId>time.crawler</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>slim</groupId>
+                <artifactId>crawler</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
@@ -199,12 +208,6 @@
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
                 <version>${jackson.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>edu.uci.ics</groupId>
-                <artifactId>crawler4j</artifactId>
-                <version>${crawler4j.version}</version>
-                <type>jar</type>
             </dependency>
             <dependency>
                 <groupId>junit</groupId>

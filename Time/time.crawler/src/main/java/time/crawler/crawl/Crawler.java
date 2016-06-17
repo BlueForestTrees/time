@@ -1,6 +1,7 @@
 package time.crawler.crawl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import com.google.inject.Inject;
@@ -24,9 +25,8 @@ public abstract class Crawler implements ICrawler {
 	protected final int delay;
 	protected final String crawlStorageDir;
 	protected final boolean resumable;
-	protected final int maxPages;
+	protected final Integer maxPages;
 	protected final String seedUrl;
-
 	protected Pattern urlFilterPattern;
     protected Pattern includePattern;
     protected List<String> urlMustNotContain;
@@ -83,7 +83,7 @@ public abstract class Crawler implements ICrawler {
 		crawlConfig.setPolitenessDelay(delay);
 		crawlConfig.setCrawlStorageFolder(crawlStorageDir);
 		crawlConfig.setResumableCrawling(resumable);
-		crawlConfig.setMaxPagesToFetch(maxPages);
+		crawlConfig.setMaxPagesToFetch(Optional.ofNullable(maxPages).orElse(-1));
 		return crawlConfig;
 	}
 

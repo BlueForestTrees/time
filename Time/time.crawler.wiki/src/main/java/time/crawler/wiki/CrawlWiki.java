@@ -14,6 +14,7 @@ import time.tika.TextFactory;
 import time.tool.chrono.Chrono;
 
 import java.util.List;
+import java.util.Optional;
 
 public class CrawlWiki extends Crawler {
 	
@@ -36,7 +37,7 @@ public class CrawlWiki extends Crawler {
         this.nbPageLog = conf.getNbPageLog();
         this.pageChrono = new Chrono("Writer");
         this.fullChrono = new Chrono("Full");
-        this.pageCountPrevision = conf.getPageCountPrevision();
+        this.pageCountPrevision = Optional.ofNullable(this.maxPages).orElse(conf.getPageCountPrevision());
         this.store = store;
         this.textFactory = textFactory;
         LOGGER.info(this);

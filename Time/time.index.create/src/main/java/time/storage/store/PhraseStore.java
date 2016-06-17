@@ -70,7 +70,6 @@ public class PhraseStore {
 
 	public long store(final Text text) {
         text.getPhrases().forEach(phrase -> this.storePhrase(text, phrase));
-        phraseCount += text.getPhrases().size();
         return phraseCount;
 	}
 

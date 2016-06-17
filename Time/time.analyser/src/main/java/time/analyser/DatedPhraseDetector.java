@@ -17,8 +17,8 @@ public class DatedPhraseDetector {
 	private final static String JOUR = "((?<d>\\d{1,2})(er)? )?";
 	private final static String MOIS = "(?<m>(J|j)an(\\.|v\\.|vier)|(F|f)(é|e)v(\\.|rier)|(M|m)ar(\\.|s)|(A|a)vr(\\.|il)|(M|m)ai|(J|j)uin|(J|j)uil(\\.|let)|(A|a)o(u|û)(\\.|t)|(S|s)ep(\\.|t\\.|tembre)|(O|o)ct(\\.|obre)|(N|n)ov(\\.|embre)|(D|d)(é|e)c(\\.|embre))";
 	private final static String ANNEE = " (?<y>\\d{3,4})";
-	private final static String YEAR = "\\d{2,4}";
-    private final static String YEAR_FOUR = "\\d{4}";
+	private final static String YEAR = "[1-9][0-9]{1,3}";
+    private final static String YEAR_FOUR = "[1-9][0-9]{3}";
     private final static String YEAR_BIG = "\\d{1,4}( ?\\d{3})?";
     private final static String NEG_FLAG = "?<neg>";
 	private final static String NEG_REF = "("+NEG_FLAG+" (avant|av.) (J.-?C.|notre ère|le présent))";
@@ -29,7 +29,7 @@ public class DatedPhraseDetector {
 	private final static String ET = "( (jusque|à|et) (vers )?(environ )?(l'an )?"+ "(" + NUMBER_FLAG + "(-)?\\d{2,9})" + NEG_REF + "?)?";
 	private static final String IL_Y_A_ENVIRON = "([Ii]l y a|[Vv]oici|(datent|vie(ux|ille)) d(e)?|au cours des|dès)([ ']environ)?( quelque)?( près de)?";
 	private static final String END = "( ?;| ?, ?| ?\\.| ?\\(| souvent| pour| aurait| à|$)";
-	private static final String END2 = "(;|:|,|\\.|$)";
+	private static final String END2 = "(;|:|, |\\.|$)";
 	private static final String JC_START = "([Aà] partir de|[Dd]ate(nt)? de|[Dd]ébut|[Aa]près|[Dd]epuis|[Ee]n) ";
 	private static final String JC_PREV_START = "[Aa]nnées ";
     private static final String ENTRE_START = "([Ee]ntre|[Dd]e)";
@@ -53,8 +53,8 @@ public class DatedPhraseDetector {
 		build(DateType.MILLIARD, "((" + NEG_FLAG + "[Dd]ans)|([Vv]oici|[Ii]l y a)) (plus (de |d'))?(environ )?(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s? d['’]années", new MilliardParser());
 		build(DateType.JC_PREV, START + JC_PREV_START + "(" + NUMBER_FLAG + "(-)?\\d{2,9})" + NEG_REF_OPT, new JCParser());
 		build(DateType.JC, START + JC_START + "(l'an )?(" + NUMBER_FLAG + "(-)?\\d{2,9})" + NEG_REF_OPT + END, new JCParser());
-		build(DateType.JC_ENTRE, ENTRE_START + " (" + NUMBER_FLAG + YEAR + ") " + ENTRE + " " + YEAR + NEG_REF_OPT + END2, new JCParser());
-		build(DateType.JC_ENTRE_SUITE, ENTRE_START + " " + YEAR + " " + ENTRE + " (" + NUMBER_FLAG + YEAR + ")" + NEG_REF_OPT + END2, new JCParser());
+		build(DateType.JC_ENTRE, ENTRE_START + " (" + NUMBER_FLAG + YEAR_FOUR + ") " + ENTRE + " " + YEAR_FOUR + NEG_REF_OPT + END2, new JCParser());
+		build(DateType.JC_ENTRE_SUITE, ENTRE_START + " " + YEAR_FOUR + " " + ENTRE + " (" + NUMBER_FLAG + YEAR_FOUR + ")" + NEG_REF_OPT + END2, new JCParser());
 		build(DateType.NEARJC, START + "([Ee]nviron) (" + NUMBER_FLAG + YEAR + ")(,? )ans" + NEG_REF, new JCParser());
 		build(DateType.NEARJC2, START + "([Vv]ers l'an) (" + NUMBER_FLAG + "(-)?" + YEAR + ")(,?)" + NEG_REF_OPT, new JCParser());
 		build(DateType.NEARJC3, START + "[Vv]ers (" + NUMBER_FLAG + YEAR + ")" + NEG_REF, new JCParser());
@@ -62,8 +62,8 @@ public class DatedPhraseDetector {
 		build(DateType.ROMAN, " (" + NUMBER_FLAG + "[ixvIXV]+)e siècle" + NEG_REF_OPT, new RomanParser());
 		build(DateType.ANNEE2DOT, "^(([Vv]ers|[Ee]nviron|[Ee]n) )?(" + NUMBER_FLAG + "([ -])?\\d{4}) ?:", new AnneeParser());
 		build(DateType.PRECISE, "(" + NUMBER_FLAG + JOUR + MOIS + ANNEE + ")" + NEG_REF_OPT, new PreciseParser());
-		//build(DateType.DOUBLEPARENTHESIS, "\\( ?(" + NUMBER_FLAG + YEAR + ") ?- ?(" + YEAR + " ?) ?\\)", new AnneeParser());
-        //build(DateType.DOUBLEPARENTHESIS2, "\\( ?(" + YEAR + ") ?- ?(" + NUMBER_FLAG + YEAR + " ?) ?\\)", new AnneeParser());
+		build(DateType.DOUBLEPARENTHESIS, "\\( ?(" + NUMBER_FLAG + YEAR + ") ?- ?(" + YEAR + " ?) ?\\)", new AnneeParser());
+        build(DateType.DOUBLEPARENTHESIS2, "\\( ?(" + YEAR + ") ?- ?(" + NUMBER_FLAG + YEAR + " ?) ?\\)", new AnneeParser());
 		build(DateType.TIRET, "(" + NUMBER_FLAG + YEAR_FOUR + ")-(" + YEAR_FOUR + " ?)( |\\.|,|;)", new AnneeParser());
 		build(DateType.TIRET2, "(" + YEAR_FOUR + ")-(" + NUMBER_FLAG + YEAR_FOUR + " ?)( |\\.|,|;)", new AnneeParser());
 	}

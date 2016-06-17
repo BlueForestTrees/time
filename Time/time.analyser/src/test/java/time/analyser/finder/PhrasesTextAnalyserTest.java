@@ -343,14 +343,19 @@ public class PhrasesTextAnalyserTest {
 		assertOnly(DateType.JC, yearIs(1904), "Le sang versé en 1904 aurait épargné.");
 	}
 
-	@Test @Ignore
+	@Test
 	public void doubleP1() {
-		//assertTwoDifferents(DateType.DOUBLEPARENTHESIS, yearIs(1539), DateType.DOUBLEPARENTHESIS2, yearIs(1619), "Olivier de Serres (1539-1619) écrit");
+		assertTwoDifferents(DateType.DOUBLEPARENTHESIS, yearIs(1539), DateType.DOUBLEPARENTHESIS2, yearIs(1619), "Olivier de Serres (1539-1619) écrit");
 	}
 
 	@Test
 	public void tiret() {
 		assertTwoDifferents(DateType.TIRET, yearIs(1870), DateType.TIRET2, yearIs(1871), "dont une édition populaire de la guerre franco allemande de 1870-1871.");
+	}
+
+	@Test
+	public void tiret2() {
+		assertNoDateIn("dont une édition populaire de la guerre franco allemande de 0870-1871.");
 	}
 
 	@Test
@@ -477,6 +482,11 @@ public class PhrasesTextAnalyserTest {
 	@Test
 	public void testMillion9() {
 		assertOnly(DateType.MILLIARD, milliardYearIs(4.5d), "Par exemple, pour savoir comment était l’Univers au moment de la naissance du Soleil, il y a 4,5 milliards d’années, il suffit d’observer des astres qui sont à 5 milliards d’années-lumière de nous.");
+	}
+
+	@Test
+	public void roman1000() {
+		assertOnly(DateType.ROMAN, yearIs(-2000), "Daté du XXIe siècle av. J.-C., a été retrouvé dans les environs un ostracon sur lequel");
 	}
 
 	@Test
@@ -610,6 +620,16 @@ public class PhrasesTextAnalyserTest {
     public void none22() {
         assertNoDateIn("Après 18 jours de combats acharnés");
     }
+
+	@Test
+	public void none23() {
+		assertNoDateIn("Sa fréquence d'horloge est ralentie de 25 à 12,5 MHz");
+	}
+
+	@Test @Ignore
+	public void none24() {
+		assertNoDateIn("à un nouveau-né tous les un à six ans, après 10 à 17 mois de gestation");
+	}
 
 
 	@Test

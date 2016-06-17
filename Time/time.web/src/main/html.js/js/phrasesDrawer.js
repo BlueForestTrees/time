@@ -35,8 +35,8 @@
 
         var source = Time.sources[phrase.type];
         phrase.pageName = source.getPageName(phrase);
-        phrase.pageNameEscaped = phrase.pageName.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        phrase.tipTextHeader = source.tipTextHeader;
+        phrase.pageNameEscaped = this.htmlEncode(phrase.pageName);
+        phrase.tipTextHeader = this.htmlEncode(source.tipTextHeader);
         phrase.imgUrl = source.imgUrl;
 
         return ((titleChanged(phrase) ? "<div class='phraseHeader'><i>${title}</i></div>" : "") +
@@ -47,10 +47,10 @@
                     "</p>").replace(/\${[a-zA-Z]*}/g, function(v){return phrase[v.substring(2,v.length-1)];});
     };
 
-    phrasesDrawer.prototype.inject = function(phrase, template){
-
+    phrasesDrawer.prototype.htmlEncode = function(value){
+        return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;")
     };
-    
+
     phrasesDrawer.prototype.link = function(pageName) {
         Time.anal.ga('send', 'event', 'link', pageName, Time.filter.term);
     };

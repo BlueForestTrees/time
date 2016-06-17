@@ -17,7 +17,7 @@ html, body {
 
 p {
 	margin-top: 0px;
-	margin-bottom: 0px;
+	margin-bottom: 5px;
 }
 
 .home {
@@ -39,7 +39,7 @@ p {
 .phraseHeader{
 	text-align: left;
 	font-size: small;
-	margin-top: 20px;
+	margin-top: 15px;
 }
 
 .logo {

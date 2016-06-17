@@ -8,10 +8,10 @@
                 }
             },
             'WIKI' : {
-                'tipTextHeader' : 'Lien vers l\'article wikipédia',
+                'tipTextHeader' : 'Lien vers l\'article',
                 'imgUrl' : 'http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png',
                 'getPageName' : function(phrase){
-                    return decodeURIComponent(phrase.pageUrl).split(/[\/]+/).pop().replace(/_/g, " ").substring(1);
+                    return decodeURIComponent(phrase.url).split(/[\/]+/).pop().replace(/_/g, " ");
                 }
             },
             'WEB_PAGE' : {

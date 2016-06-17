@@ -58,6 +58,7 @@ public class CrawlWiki extends Crawler {
     public void visit(final Page page) {
         if (notExcludedByContent(page)) {
             final Text text = buildText(page);
+            text.getMetadata().setAuteur("Wikipédia");
             store.handleText(text);
             pageCount++;
             logPageProgress();

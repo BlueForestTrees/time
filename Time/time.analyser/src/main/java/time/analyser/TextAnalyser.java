@@ -26,7 +26,7 @@ public class TextAnalyser {
 	public TextAnalyser(final time.domain.Analyser analyser, final PhraseFilter phraseFilter, final DatedPhraseDetector finders) {
 		this.phraseFilter = phraseFilter;
 		this.splitParagraphPattern = Pattern.compile(Optional.ofNullable(analyser.getSplitParagraphPattern()).orElse("[\r\n\t]+"));
-		this.splitPhrasePattern = Pattern.compile(Optional.ofNullable(analyser.getSplitPhrasePattern()).orElse("(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))(\\.|\\?|!)) +"));
+		this.splitPhrasePattern = Pattern.compile(Optional.ofNullable(analyser.getSplitPhrasePattern()).orElse("(?<=(?<!( (av|mr|dr|jc|JC|J\\.-C)))(\\.|\\?|!|•)) +"));
 		this.finders = finders;
         LOGGER.info(this);
 	}

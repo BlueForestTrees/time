@@ -12,9 +12,7 @@ public class AnneeParser
     @Override
     public Long from(final Matcher matcher)
     {
-        final int annee = Integer.parseInt(matcher.group("g").trim());
-
-        return Dates.toDays(LocalDate.of(annee, Month.JANUARY, 1));
+        return Dates.toDays(LocalDate.of(Integer.parseInt( matcher.group("g").trim()), Month.JANUARY, 1));
     }
 
 }

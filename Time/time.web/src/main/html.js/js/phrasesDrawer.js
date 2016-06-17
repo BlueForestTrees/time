@@ -1,7 +1,7 @@
 (function(){
     
     function phrasesDrawer(){
-        
+
     }
     
     phrasesDrawer.prototype.setPhrases = function(phrases, term) {
@@ -10,9 +10,9 @@
             return;
         }
 
-        var prevOne = Time.view.phrases.children().last();
+        var lastPhrase = Time.view.phrases.children().last();
         var phraseOne = phrases.phraseList[0];
-        if (!prevOne || phraseOne.text !== prevOne.text) {
+        if (!lastPhrase || phraseOne.text !== lastPhrase.text) {
             Time.view.phrases.append(this.buildHtmlPhrase(phraseOne));
         }
 
@@ -25,6 +25,12 @@
         }
     };
 
+    function titleChanged(phrase) {
+        var newTitle = phrase.title !== this.lastTitle;
+        this.lastTitle = phrase.title;
+        return newTitle;
+    }
+
     phrasesDrawer.prototype.buildHtmlPhrase = function(phrase) {
 
         var source = Time.sources[phrase.type];
@@ -33,12 +39,12 @@
         phrase.tipTextHeader = source.tipTextHeader;
         phrase.imgUrl = source.imgUrl;
 
-        return ("<div class='phraseHeader'><i>${title}</i></div>" +
-                "<p date='${date}' page='${url}'>${text}" +
-                    "<a title='${tipTextHeader} : ${pageNameEscaped} de ${author}' href='${url}' target='_blank' onClick='Time.drawer.link(${pageName})'>" +
-                        "<img src='${imgUrl}'/>" +
-                    "</a>" +
-                "</p>").replace(/\${[a-zA-Z]*}/g, function(v){return phrase[v.substring(2,v.length-1)];});
+        return ((titleChanged(phrase) ? "<div class='phraseHeader'><i>${title}</i></div>" : "") +
+                    "<p date='${date}' page='${url}'>${text}" +
+                        "<a title='${tipTextHeader} : ${pageNameEscaped} de ${author}' href='${url}' target='_blank' onClick='Time.drawer.link(${pageName})'>" +
+                            "<img src='${imgUrl}'/>" +
+                        "</a>" +
+                    "</p>").replace(/\${[a-zA-Z]*}/g, function(v){return phrase[v.substring(2,v.length-1)];});
     };
 
     phrasesDrawer.prototype.inject = function(phrase, template){

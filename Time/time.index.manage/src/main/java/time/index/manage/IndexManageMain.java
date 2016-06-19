@@ -33,10 +33,14 @@ public class IndexManageMain {
 
         messager.when(Queue.MERGE)
                 .then(()->{
-                    final Merge merge = indexChooser.prepareMerge();
-                    indexService.merge(merge);
-                    updateWikiWebConf(merge);
-                    messager.signal(Queue.WIKI_WEB_REFRESH);
+                    try {
+                        final Merge merge = indexChooser.prepareMerge();
+                        indexService.merge(merge);
+                        updateWikiWebConf(merge);
+                        messager.signal(Queue.WIKI_WEB_REFRESH);
+                    }catch(Exception e){
+                        LOGGER.error(e);
+                    }
                 });
 
         messager.when(Queue.INDEX_CREATED, IndexCreation.class)

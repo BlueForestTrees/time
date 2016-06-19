@@ -25,6 +25,7 @@ import time.domain.DatedPhrase;
 import time.domain.Scale;
 import time.domain.SortableLongField;
 import time.domain.Text;
+import time.tool.chrono.Chrono;
 import time.tool.file.Dirs;
 import time.tool.reference.Fields;
 

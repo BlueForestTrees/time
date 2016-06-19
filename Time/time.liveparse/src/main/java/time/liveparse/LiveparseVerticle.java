@@ -61,13 +61,17 @@ public class LiveparseVerticle extends AbstractVerticle {
     @Override
     public void start() {
         Router router = Router.router(vertx);
+
         router.route().handler(BodyHandler.create().setUploadsDirectory(uploadDir))
                       .failureHandler(this::onFailure);
+
         router.get("/api/liveparse/url/:url").handler(this::fromUrl);
         router.route("/*").handler(StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true).setWebRoot(webRoot));
         router.post("/api/liveparse/file").handler(this::fromFile);
         router.post("/api/liveparse/add").handler(this::add);
-        vertx.createHttpServer().requestHandler(router::accept).listen(port);
+
+        vertx.createHttpServer().requestHandler(router::accept);
+
         LOGGER.info("started");
     }
 

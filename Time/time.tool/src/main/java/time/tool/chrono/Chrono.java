@@ -26,7 +26,7 @@ public class Chrono {
         start = DateTime.now();
     }
 
-    public void tic() {
+    public void measure() {
         stop = DateTime.now();
     }
 
@@ -93,7 +93,7 @@ public class Chrono {
 
     public String getRemaining(long done, long total) {
         float progressRatio = (float) total / (float) done;
-        tic();
+        measure();
         Duration progressDuration = getDuration();
         Duration totalDuration = new Duration((long) (progressDuration.getMillis() * progressRatio));
         return toStringFromDuration(totalDuration.minus(progressDuration));

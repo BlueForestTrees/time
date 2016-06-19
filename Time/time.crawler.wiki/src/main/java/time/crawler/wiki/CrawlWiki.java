@@ -24,20 +24,27 @@ public class CrawlWiki extends Crawler {
     private final TextHandler store;
     private final long nbPageLog;
     private final TextFactory textFactory;
-    private final Chrono pageChrono;
-    private final Chrono fullChrono;
+    private final Chrono lastChrono;
+    private final Chrono elapsedChrono;
     private long nbLog;
     private long pageCount;
     private long pageCountPrevision;
+    private long phraseCount;
 
     @Inject
 	public CrawlWiki(final Conf conf, final TextHandler store, final TextFactory textFactory) {
 		super(conf);
         this.contentExclusion = conf.getContentExclusion();
         this.nbPageLog = conf.getNbPageLog();
+<<<<<<< Updated upstream
         this.pageChrono = new Chrono("Writer");
         this.fullChrono = new Chrono("Full");
         this.pageCountPrevision = Optional.ofNullable(this.maxPages).orElse(conf.getPageCountPrevision());
+=======
+        this.lastChrono = new Chrono("Writer");
+        this.elapsedChrono = new Chrono("Full");
+        this.pageCountPrevision = conf.getPageCountPrevision();
+>>>>>>> Stashed changes
         this.store = store;
         this.textFactory = textFactory;
         LOGGER.info(this);
@@ -46,9 +53,10 @@ public class CrawlWiki extends Crawler {
     @Override
     public void crawl() {
         this.pageCount = 0;
+        this.phraseCount = 0;
         this.nbLog = 0;
-        this.pageChrono.start();
-        this.fullChrono.start();
+        this.lastChrono.start();
+        this.elapsedChrono.start();
         store.start();
         super.crawl();
         store.stop();
@@ -58,8 +66,12 @@ public class CrawlWiki extends Crawler {
     public void visit(final Page page) {
         if (notExcludedByContent(page)) {
             final Text text = buildText(page);
+<<<<<<< Updated upstream
             text.getMetadata().setAuteur("Wikipédia");
             store.handleText(text);
+=======
+            phraseCount += store.handleText(text);
+>>>>>>> Stashed changes
             pageCount++;
             logPageProgress();
         }
@@ -86,10 +98,15 @@ public class CrawlWiki extends Crawler {
     private void logPageProgress() {
         if (LOGGER.isInfoEnabled() && (pageCount % nbPageLog == 0)) {
             nbLog++;
-            pageChrono.tic();
-            fullChrono.tic();
-            LOGGER.info(pageCount + "/" + pageCountPrevision + " texts. Total:" + fullChrono + ", Moy:" + fullChrono.toStringDividedBy(nbLog) + ", Last:" + pageChrono + ", Rest:" + fullChrono.getRemaining(pageCount, pageCountPrevision));
-            pageChrono.start();
+            lastChrono.measure();
+            elapsedChrono.measure();
+            final String moy = elapsedChrono.toStringDividedBy(nbLog);
+            final String remaining = elapsedChrono.getRemaining(pageCount, pageCountPrevision);
+
+            LOGGER.info("{}/{} Texts, {} Phrases, Total:{}, Moy:{}, Last:{}, Rest:{}",
+                    pageCount, pageCountPrevision, phraseCount, elapsedChrono, moy, lastChrono, remaining);
+
+            lastChrono.start();
         }
     }
 

@@ -11,19 +11,19 @@ import java.util.regex.Pattern;
 
 public class PhrasesAnalyser {
 
-	private final Pattern pattern;
+	private final Pattern dateMatchPattern;
 	private final IParser parser;
 	private final DateType name;
 
-	public PhrasesAnalyser(Pattern pattern, IParser parser, DateType name) {
-		this.pattern = pattern;
+	public PhrasesAnalyser(final Pattern dateMatchPattern, final IParser parser, final DateType name) {
+		this.dateMatchPattern = dateMatchPattern;
 		this.parser = parser;
 		this.name = name;
 	}
 
 	public List<DatedPhrase> findPhrases(final String phrase) {
 		final List<DatedPhrase> result = new ArrayList<>();
-		final Matcher matcher = pattern.matcher(phrase);
+		final Matcher matcher = dateMatchPattern.matcher(phrase);
 		while (matcher.find()) {
 			final String dateExtract = matcher.group();
 			final Long date = parser.from(matcher);
@@ -39,7 +39,7 @@ public class PhrasesAnalyser {
 
 	@Override
 	public String toString() {
-		return name.name() + " \""+pattern.pattern()+"\"";
+		return name.name() + " \""+ dateMatchPattern.pattern()+"\"";
 	}
 
 }

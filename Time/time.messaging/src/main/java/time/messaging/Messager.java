@@ -18,8 +18,13 @@ public class Messager {
     private Connection connection;
     private final ObjectMapper mapper = new ObjectMapper();
 
-    public Messager() throws IOException, TimeoutException {
-        on();
+    public Messager(){
+        try {
+            on();
+        } catch (IOException | TimeoutException e) {
+            LOGGER.error(e);
+            throw new RuntimeException("Messager boot exception", e);
+        }
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             LOGGER.info("shutdown hook received");
             off();

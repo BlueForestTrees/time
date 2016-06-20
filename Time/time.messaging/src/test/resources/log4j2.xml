@@ -8,10 +8,8 @@
 	<Loggers>
 		<Root level="error">
 		</Root>
-		<Logger name="time" level="info">
+		<Logger name="time" level="debug">
 			<AppenderRef ref="Console" />
-		</Logger>
-		<Logger name="time.crawler" level="debug">
 		</Logger>
 	</Loggers>
 </Configuration>

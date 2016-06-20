@@ -320,7 +320,7 @@ public class PhrasesTextAnalyserTest {
 
 	@Test
 	public void jc19() {
-		assertOnly(DateType.JC, yearIs(1990), "Or, après 1990, on a eu la surprise de constater le contraire.");
+		assertOnly(DateType.APRES, yearIs(1990), "Or, après 1990, on a eu la surprise de constater le contraire.");
 	}
 
 	@Test
@@ -402,11 +402,6 @@ public class PhrasesTextAnalyserTest {
     @Test
     public void jc32(){
         assertOnly(DateType.JC_PREV, yearIs(1980),"Hong Kong est divisé dans les années 1980 en 18 districts.");
-    }
-
-    @Test
-    public void jc33(){
-        assertTwo(DateType.JC, yearIs(1960),yearIs(2010), "Mais le ratio actifs cotisants/retraité est passé de 4 en 1960 à 1,8 en 2010 ; szef");
     }
 
 	@Test
@@ -629,6 +624,11 @@ public class PhrasesTextAnalyserTest {
 	@Test @Ignore
 	public void none24() {
 		assertNoDateIn("à un nouveau-né tous les un à six ans, après 10 à 17 mois de gestation");
+	}
+
+	@Test
+	public void none25() {
+		assertNoDateIn("a plus fréquentée, la ligne 50, relie Aix et Marseille en 30 à 65 minutes suivant");
 	}
 
 

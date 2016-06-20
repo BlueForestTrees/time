@@ -3,8 +3,8 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ENV = process.env.npm_lifecycle_event;
 var isProd = ENV === 'build';
-var srcDir = __dirname + "/src/main/html.js";
-var destDir = __dirname + '/target/webapp';
+var srcDir = __dirname + "/src";
+var destDir = __dirname + '/target';
 
 module.exports = {
 	debug: !isProd,

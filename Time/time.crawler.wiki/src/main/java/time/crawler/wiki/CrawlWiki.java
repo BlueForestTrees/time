@@ -36,15 +36,9 @@ public class CrawlWiki extends Crawler {
 		super(conf);
         this.contentExclusion = conf.getContentExclusion();
         this.nbPageLog = conf.getNbPageLog();
-<<<<<<< Updated upstream
-        this.pageChrono = new Chrono("Writer");
-        this.fullChrono = new Chrono("Full");
-        this.pageCountPrevision = Optional.ofNullable(this.maxPages).orElse(conf.getPageCountPrevision());
-=======
         this.lastChrono = new Chrono("Writer");
         this.elapsedChrono = new Chrono("Full");
-        this.pageCountPrevision = conf.getPageCountPrevision();
->>>>>>> Stashed changes
+        this.pageCountPrevision = Optional.ofNullable(this.maxPages).orElse(conf.getPageCountPrevision());
         this.store = store;
         this.textFactory = textFactory;
         LOGGER.info(this);
@@ -66,12 +60,8 @@ public class CrawlWiki extends Crawler {
     public void visit(final Page page) {
         if (notExcludedByContent(page)) {
             final Text text = buildText(page);
-<<<<<<< Updated upstream
             text.getMetadata().setAuteur("Wikipédia");
-            store.handleText(text);
-=======
             phraseCount += store.handleText(text);
->>>>>>> Stashed changes
             pageCount++;
             logPageProgress();
         }

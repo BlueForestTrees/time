@@ -114,7 +114,7 @@ public class LiveparseVerticle extends AbstractVerticle {
             } catch (Exception e) {
                 ctx.fail(e);
             }
-        }, res -> ctx.response()
+        },  res -> ctx.response()
                 .putHeader("Content-Type", "application/json")
                 .setChunked(true)
                 .write((String) res.result())
@@ -122,18 +122,24 @@ public class LiveparseVerticle extends AbstractVerticle {
     }
 
     private void fromUrl(final RoutingContext ctx) {
-        try {
-            final String url = ctx.request().getParam("url");
-            LOGGER.info("fromUrl " + url);
-            final String text = urlToText(url);
-            ctx.response()
-                    .putHeader("Content-Type", "application/json")
-                    .setChunked(true)
-                    .write(text)
-                    .end();
-        } catch (Exception e) {
-            ctx.fail(e);
-        }
+        vertx.executeBlocking(future -> {
+            try {
+                final String url = ctx.request().getParam("url");
+                LOGGER.info("fromUrl " + url);
+                final String text = urlToText(url);
+                ctx.response()
+                        .putHeader("Content-Type", "application/json")
+                        .setChunked(true)
+                        .write(text)
+                        .end();
+            } catch (Exception e) {
+                ctx.fail(e);
+            }
+        }, res -> ctx.response()
+                .putHeader("Content-Type", "application/json")
+                .setChunked(true)
+                .write((String) res.result())
+                .end());
     }
 
     private String urlToText(final String url) throws IOException {

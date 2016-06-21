@@ -52,7 +52,7 @@ public class LiveparseVerticle extends AbstractVerticle {
     }
 
     private void validateConf() {
-        if(!new File(this.webRoot).isDirectory()){
+        if (this.webRoot != null && !new File(this.webRoot).isDirectory()) {
             throw new RuntimeException("incorrect webroot: " + this.webRoot);
         }
         new File(this.uploadDir).mkdirs();
@@ -67,8 +67,12 @@ public class LiveparseVerticle extends AbstractVerticle {
         router.get("/api/liveparse/url/:url").handler(this::fromUrl);
         router.post("/api/liveparse/file").handler(this::fromFile);
         router.post("/api/liveparse/add").handler(this::add);
-        router.route("/*").handler(StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true).setWebRoot(webRoot));
-
+        final StaticHandler handler = StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true);
+        if (webRoot != null) {
+            LOGGER.info("external webroot is used.");
+            handler.setWebRoot(webRoot);
+        }
+        router.route("/*").handler(handler);
         vertx.createHttpServer().requestHandler(router::accept).listen(port);
 
         LOGGER.info("started");
@@ -105,19 +109,19 @@ public class LiveparseVerticle extends AbstractVerticle {
                 final FileUpload file = ctx.fileUploads().iterator().next();
                 LOGGER.info("fromFile {}", file.fileName());
                 final String text = fileToText(file);
-                LOGGER.info("fromFile {} done" , file.fileName());
+                LOGGER.info("fromFile {} done", file.fileName());
                 future.complete(text);
             } catch (Exception e) {
                 ctx.fail(e);
             }
         }, res -> ctx.response()
-                    .putHeader("Content-Type", "application/json")
-                    .setChunked(true)
-                    .write((String)res.result())
-                    .end());
+                .putHeader("Content-Type", "application/json")
+                .setChunked(true)
+                .write((String) res.result())
+                .end());
     }
 
-    private void fromUrl(final RoutingContext ctx){
+    private void fromUrl(final RoutingContext ctx) {
         try {
             final String url = ctx.request().getParam("url");
             LOGGER.info("fromUrl " + url);

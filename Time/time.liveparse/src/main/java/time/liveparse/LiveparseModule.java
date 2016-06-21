@@ -7,6 +7,7 @@ import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import time.conf.ConfEnum;
 import time.domain.Analyser;
 import time.conf.ConfManager;
+import time.domain.Conf;
 import time.domain.Liveparse;
 import time.domain.Transformer;
 import time.transform.CompositeTextTransformer;
@@ -15,11 +16,11 @@ import time.transform.ITextTransformer;
 import javax.inject.Singleton;
 import java.io.IOException;
 
-public class LiveparseConf extends AbstractModule {
+public class LiveparseModule extends AbstractModule {
 
     private Liveparse liveparse;
 
-    public LiveparseConf(String[] args) throws IOException, ArgumentParserException {
+    public LiveparseModule(String[] args) throws IOException, ArgumentParserException {
         liveparse = new ConfManager().get(args, ConfEnum.LIVEPARSE, Liveparse.class);
     }
 

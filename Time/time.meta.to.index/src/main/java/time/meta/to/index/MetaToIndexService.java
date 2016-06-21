@@ -1,4 +1,4 @@
-package time.append;
+package time.meta.to.index;
 
 import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
@@ -18,19 +18,19 @@ import java.nio.file.Paths;
 
 import static time.tool.string.Strings.*;
 
-public class IndexCreatorService {
+public class MetaToIndexService {
 
-    private static final Logger LOGGER = LogManager.getLogger(IndexCreatorService.class);
+    private static final Logger LOGGER = LogManager.getLogger(MetaToIndexService.class);
 
     private final TextFactory textFactory;
-    private final String appendBaseIndexDir;
+    private final String indexDir;
     private TextAnalyser textAnalyser;
 
     @Inject
-	public IndexCreatorService(final Conf conf, final TextFactory textFactory, final TextAnalyser textAnalyser) {
+	public MetaToIndexService(final Conf conf, final TextFactory textFactory, final TextAnalyser textAnalyser) {
         this.textFactory = textFactory;
 		this.textAnalyser = textAnalyser;
-        this.appendBaseIndexDir = conf.getAppendBaseIndexDir();
+        this.indexDir = conf.getIndexDir();
 	}
 
     /**
@@ -50,7 +50,7 @@ public class IndexCreatorService {
         textAnalyser.analyse(text);
 
         //STORE
-        final String indexDir = withSlash(appendBaseIndexDir) + forFilename(text.getMetadata().getTitre());
+        final String indexDir = withSlash(this.indexDir) + forFilename(text.getMetadata().getTitre());
         final boolean overwrite = Files.isDirectory(Paths.get(indexDir));
         PhraseStore store = new PhraseStore(indexDir);
 

@@ -4,12 +4,19 @@
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
+		<RollingRandomAccessFile name="StdFile"
+								 fileName="/var/log/time/crawler.wiki.log" filePattern="/var/log/time/crawler.wiki.log">
+			<PatternLayout>
+				<pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+			</PatternLayout>
+			<SizeBasedTriggeringPolicy size="2 MB" />
+		</RollingRandomAccessFile>
 	</Appenders>
 	<Loggers>
 		<Root level="error">
-		</Root>
-		<Logger name="time" level="info">
 			<AppenderRef ref="Console" />
-		</Logger>
+			<AppenderRef ref="StdFile" />
+		</Root>
+		<Logger name="time" level="info"/>
 	</Loggers>
 </Configuration>

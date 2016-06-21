@@ -40,7 +40,6 @@ public class Conf {
 	private String finalIndexDir;
 	private String mergeableIndexesDir;
 	private String mergedIndexDir;
-	private String appendBaseIndexDir;
 	private Long nbPageLog;
     private Long nbPhraseLog;
 	private Long pageSize;
@@ -193,10 +192,6 @@ public class Conf {
 
 	public String getMergedIndexDir() {
 		return mergedIndexDir;
-	}
-
-	public String getAppendBaseIndexDir() {
-		return appendBaseIndexDir;
 	}
 
 	public Long getNbPageLog() {

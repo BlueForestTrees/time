@@ -1,4 +1,4 @@
-package time.append;
+package time.meta.to.index;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -14,9 +14,9 @@ import time.transform.ITextTransformer;
 import javax.inject.Singleton;
 import java.io.IOException;
 
-public class IndexCreatorModule extends AbstractModule {
+public class MetaToIndexModule extends AbstractModule {
 
-	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(IndexCreatorModule.class);
+	private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(MetaToIndexModule.class);
 
 	private Conf conf;
 
@@ -27,7 +27,7 @@ public class IndexCreatorModule extends AbstractModule {
 
 	@Provides @Singleton
 	public Conf conf() throws IOException {
-		return new ConfManager().get(ConfEnum.APPEND);
+		return new ConfManager().get(ConfEnum.META_TO_INDEX);
 	}
 
 	@Provides @Singleton

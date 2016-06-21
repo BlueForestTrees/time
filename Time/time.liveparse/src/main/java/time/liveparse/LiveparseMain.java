@@ -9,7 +9,7 @@ public class LiveparseMain {
 
     public static void main(String[] args) throws Exception {
         final Vertx vertx = Vertx.vertx();
-        vertx.registerVerticleFactory(new GuiceVerticleFactory(new LiveparseConf(args)));
+        vertx.registerVerticleFactory(new GuiceVerticleFactory(new LiveparseModule(args)));
         vertx.deployVerticle("guice:" + LiveparseVerticle.class.getName());
     }
 

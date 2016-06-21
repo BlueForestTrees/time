@@ -1,4 +1,4 @@
-package time.append;
+package time.meta.to.index;
 
 import com.google.inject.Guice;
 import org.apache.logging.log4j.LogManager;
@@ -10,20 +10,20 @@ import time.messaging.Queue;
 
 import java.lang.reflect.InvocationTargetException;
 
-public class IndexCreatorMain {
+public class MetaToIndexMain {
 
-    private static final Logger LOGGER = LogManager.getLogger(IndexCreatorMain.class);
+    private static final Logger LOGGER = LogManager.getLogger(MetaToIndexMain.class);
 
     public static void main(final String[] args) throws Exception {
 
         final Messager messager = new Messager();
 
-        final IndexCreatorService indexCreatorService = Guice.createInjector(new IndexCreatorModule()).getInstance(IndexCreatorService.class);
+        final MetaToIndexService metaToIndexService = Guice.createInjector(new MetaToIndexModule()).getInstance(MetaToIndexService.class);
 
         messager.when(Queue.META_CREATED, Meta.class)
                 .then(meta -> {
                     try {
-                        final IndexCreation indexCreation = indexCreatorService.run(meta);
+                        final IndexCreation indexCreation = metaToIndexService.run(meta);
                         messager.signal(Queue.INDEX_CREATED, indexCreation);
                     } catch (InvocationTargetException | IllegalAccessException e) {
                         LOGGER.error(e);

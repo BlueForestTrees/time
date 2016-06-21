@@ -1,15 +1,15 @@
 package time.conf;
 
 public enum ConfEnum {
-    INDEX_MANAGE("${TIME_HOME}/conf/index.manage.yml"),
-    WIKICRAWL("${TIME_HOME}/conf/wiki.crawl.yml"),
-    TIMEWEB("${TIME_HOME}/conf/wiki.web.yml"),
-    LINKS("${TIME_HOME}/conf/queueLinks.yml"),
-    LOCAL_TIKA("${TIME_HOME}/conf/local.tika.yml"),
-    META_TO_INDEX("${TIME_HOME}/conf/meta.to.index.yml"),
-    ANALYSER("${TIME_HOME}/conf/analyser.yml"),
-    TRANSFORMER("${TIME_HOME}/conf/transformer.yml"),
-    LIVEPARSE("${TIME_HOME}/conf/liveparse.yml");
+    INDEX_MANAGE("${TIME_CONF_HOME}/index.manage.yml"),
+    WIKICRAWL("${TIME_CONF_HOME}/wiki.crawl.yml"),
+    TIMEWEB("${TIME_CONF_HOME}/wiki.web.yml"),
+    LINKS("${TIME_CONF_HOME}/queueLinks.yml"),
+    LOCAL_TIKA("${TIME_CONF_HOME}/local.tika.yml"),
+    APPEND("${TIME_CONF_HOME}/meta.to.index.yml"),
+    ANALYSER("${TIME_CONF_HOME}/analyser.yml"),
+    TRANSFORMER("${TIME_CONF_HOME}/transformer.yml"),
+    LIVEPARSE("${TIME_CONF_HOME}/liveparse.yml");
 
     ConfEnum(final String path){
         this.path = path;

@@ -13,15 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import time.web.bean.BucketGroup;
 import time.web.bean.Phrases;
 import time.web.service.BucketService;
-import time.web.service.IndexService;
 import time.web.service.PhraseService;
 import time.web.service.SynonymesService;
 
 @RestController
 public class TimeController {
-
-    @Autowired
-    private IndexService indexService;
 
     @Autowired
     private BucketService bucketService;
@@ -31,11 +27,6 @@ public class TimeController {
 
     @Autowired
     private SynonymesService synonymesService;
-
-    @RequestMapping(value = "/api/reindex", method = RequestMethod.GET)
-    public String rebuildIndex() {
-        return indexService.reIndex();
-    }
 
     @RequestMapping(value = "/api/buckets", method = RequestMethod.GET)
     public BucketGroup getBuckets(@RequestParam(value = "scale", required = true) String scale, @RequestParam(value = "term", required = false) String term) throws IOException {

@@ -6,7 +6,7 @@ public enum ConfEnum {
     TIMEWEB("${TIME_CONF_HOME}/wiki.web.yml"),
     LINKS("${TIME_CONF_HOME}/queueLinks.yml"),
     LOCAL_TIKA("${TIME_CONF_HOME}/local.tika.yml"),
-    APPEND("${TIME_CONF_HOME}/meta.to.index.yml"),
+    META_TO_INDEX("${TIME_CONF_HOME}/meta.to.index.yml"),
     ANALYSER("${TIME_CONF_HOME}/analyser.yml"),
     TRANSFORMER("${TIME_CONF_HOME}/transformer.yml"),
     LIVEPARSE("${TIME_CONF_HOME}/liveparse.yml");

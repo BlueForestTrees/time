@@ -6,13 +6,13 @@
         <link rel="stylesheet" type="text/css" href="liveparse.css">
         <script src="jquery-2.2.0.min.js"></script>
         <script>
-            Liveparse = {};
+            Time = {};
         </script>
         <script src="liveparse.js"></script>
         <script>
             $(document).ready(function() {
                 console.log("document ready");
-                Liveparse.upload = new Liveparse.Upload();
+                Time.liveparse = new Time.Liveparse();
             });
         </script>
     </head>
@@ -31,7 +31,7 @@
             <p>Date: <input type="text" class="date"/></p>
             <p>Paragraphes: <input type="text" class="paragraphes"/></p>
             <p>Phrases: <input type="text" class="phrases"/></p>
-            <input type="button" value="Ajouter" onClick="Liveparse.upload.doAdd()"/>
+            <input type="button" class="addBt" value="Ajouter"/>
         </div>
         <div class="displayZone">Montrer :
             <input type="button" class="showBookBt" value="Texte entier"/>

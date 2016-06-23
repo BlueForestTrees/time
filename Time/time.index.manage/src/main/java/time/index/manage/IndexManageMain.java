@@ -7,6 +7,7 @@ import time.conf.ConfManager;
 import time.conf.ConfEnum;
 import time.domain.IndexCreation;
 import time.domain.Merge;
+import time.messaging.Listener;
 import time.messaging.Messager;
 import time.messaging.Queue;
 
@@ -17,50 +18,12 @@ public class IndexManageMain {
 
     private static final Logger LOGGER = LogManager.getLogger(IndexManageMain.class);
 
-    private final IndexService indexService;
-    private final BlueRedSwitcher indexChooser;
-    private final Messager messager;
-
     public static void main(final String[] args) throws IOException, TimeoutException, ArgumentParserException {
-        new IndexManageMain();
-    }
-
-    public IndexManageMain() throws IOException, TimeoutException, ArgumentParserException {
-        LOGGER.info("IndexManageMain()");
-        indexService = new IndexService();
-        indexChooser = new BlueRedSwitcher();
-        messager = new Messager();
-
-        messager.when(Queue.MERGE)
-                .then(()->{
-                    try {
-                        final Merge merge = indexChooser.prepareMerge();
-                        indexService.merge(merge);
-                        updateWikiWebConf(merge);
-                        messager.signal(Queue.WIKI_WEB_REFRESH);
-                    }catch(Exception e){
-                        LOGGER.error(e);
-                    }
-                });
-
-        messager.when(Queue.INDEX_CREATED, IndexCreation.class)
-                .then((indexCreation) -> {
-                    indexService.append(indexCreation);
-                    messager.signal(Queue.WIKI_WEB_REFRESH);
-                });
-    }
-
-    private void updateWikiWebConf(final Merge merge) {
-        LOGGER.info("set {}.indexDir: {}",ConfEnum.TIMEWEB.getPath(), merge.getMergedIndexDir());
         try {
-            new ConfManager().update(ConfEnum.TIMEWEB, conf -> conf.setIndexDir(merge.getMergedIndexDir()));
-        } catch (IOException e) {
+            new IndexManageService();
+        }catch(Exception e){
             LOGGER.error(e);
         }
     }
 
-    @Override
-    public String toString() {
-        return "IndexManageMain";
-    }
 }

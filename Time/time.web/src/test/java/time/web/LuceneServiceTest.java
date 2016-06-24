@@ -16,18 +16,13 @@ import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.FSDirectory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.util.StringUtils;
 
-import time.web.config.ComponentConfig;
 import time.web.service.BucketService;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(classes={ComponentConfig.class})
+//@ContextConfiguration(classes={ServiceConfig.class})
 public class LuceneServiceTest {
     
     @Autowired

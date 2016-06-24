@@ -1,26 +1,20 @@
 package time.web.config;
 
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.web.WebApplicationInitializer;
+import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import time.messaging.Messager;
-import time.messaging.Queue;
 
-import java.io.IOException;
-import java.util.concurrent.TimeoutException;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRegistration;
 
-@Configuration
 @EnableWebMvc
 @ComponentScan({ "time.web.controller" })
-@Import(ComponentConfig.class)
-public class WebConfig extends WebMvcConfigurerAdapter {
-
-    @Override
-    public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
-        configurer.enable();
-    }
+@Import(ServiceConfig.class)
+public class WebConfig {
 
 }

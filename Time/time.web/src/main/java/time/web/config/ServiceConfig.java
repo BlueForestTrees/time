@@ -12,8 +12,8 @@ import java.io.IOException;
 
 @Configuration
 @ComponentScan({ "time.web.service" })
-@Import({LuceneConfig.class, ParserConfig.class})
-public class ComponentConfig {
+@Import({LuceneConfig.class})
+public class ServiceConfig {
 
     @Bean
     public TimeWebConf conf() throws IOException {

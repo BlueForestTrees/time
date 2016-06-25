@@ -6,6 +6,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 public class TimeWebConf {
 
     private String indexDir;
+    private int port;
+
+    public int getPort() {
+        return port;
+    }
 
     public String getIndexDir() {
         return indexDir;

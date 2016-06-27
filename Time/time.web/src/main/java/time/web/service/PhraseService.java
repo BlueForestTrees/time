@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import com.google.common.base.Optional;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.search.FieldDoc;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -31,7 +30,6 @@ import time.tool.reference.Fields;
 import time.web.bean.Last;
 import time.web.bean.LucenePhrase;
 import time.web.bean.Phrases;
-import time.web.exception.LuceneRuntimeException;
 
 @Service
 public class PhraseService {
@@ -101,7 +99,7 @@ public class PhraseService {
 
 
         } catch (IOException | InvalidTokenOffsetsException e) {
-            throw new LuceneRuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 

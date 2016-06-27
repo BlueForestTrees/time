@@ -4,9 +4,17 @@
 		<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
+		<RollingRandomAccessFile name="StdFile"
+								 fileName="/var/log/time/time.web.log" filePattern="/var/log/time/time.web.log">
+			<PatternLayout>
+				<pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+			</PatternLayout>
+			<SizeBasedTriggeringPolicy size="2 MB" />
+		</RollingRandomAccessFile>
 	</Appenders>
 	<Loggers>
 		<Root level="INFO">
+			<AppenderRef ref="StdFile"/>
 			<AppenderRef ref="Console"/>
 		</Root>
 		<Logger name="time" level="INFO"/>

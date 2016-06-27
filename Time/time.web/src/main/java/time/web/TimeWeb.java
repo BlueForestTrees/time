@@ -25,6 +25,7 @@ public class TimeWeb {
             new TimeWeb().start();
         } catch (Exception e) {
             LOGGER.error(e);
+            System.exit(-1);
         }
     }
 

@@ -79,7 +79,7 @@ public class DatedPhraseDetector {
 	}
 
 	public List<DatedPhrase> detect(final String phrase) {
-		return Arrays.stream(findersArray).map(f -> f.findPhrases(phrase)).flatMap(l -> l.stream()).collect(Collectors.toCollection(ArrayList::new));
+		return Arrays.stream(findersArray).map(f -> f.findDatesInPhrases(phrase)).flatMap(l -> l.stream()).collect(Collectors.toCollection(ArrayList::new));
 	}
 
     @Override

@@ -13,16 +13,16 @@
         this.canvas = this.context.canvas;
         this.amplitude = 10;
         this.loading = false;
-        this.installEvents();
+        installEvents(this);
     }
 
-    bar.prototype.installEvents = function() {
+    var installEvents = function(bar) {
         var data = {
             previousX : null,
             deltaX : null,
             move : false
         };
-        $(this.canvas).on('mousedown.Viewport', data, $.proxy(this.mouseDownOnBar, this));
+        $(bar.canvas).on('mousedown.Viewport', data, $.proxy(bar.mouseDownOnBar, bar));
     };
 
     /**

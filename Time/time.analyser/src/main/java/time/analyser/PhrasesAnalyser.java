@@ -21,7 +21,7 @@ public class PhrasesAnalyser {
 		this.name = name;
 	}
 
-	public List<DatedPhrase> findPhrases(final String phrase) {
+	public List<DatedPhrase> findDatesInPhrases(final String phrase) {
 		final List<DatedPhrase> result = new ArrayList<>();
 		final Matcher matcher = dateMatchPattern.matcher(phrase);
 		while (matcher.find()) {

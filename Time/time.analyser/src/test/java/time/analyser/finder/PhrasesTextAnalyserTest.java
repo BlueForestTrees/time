@@ -649,12 +649,12 @@ public class PhrasesTextAnalyserTest {
 	}
 
 	private final void assertNoDateIn(String phrase, PhrasesAnalyser finder) {
-		assertThat(finder.findPhrases(phrase)).as("Ne devrait pas trouver de phrase: " + finder + " dans \"" + phrase + "\"").isEmpty();
+		assertThat(finder.findDatesInPhrases(phrase)).as("Ne devrait pas trouver de phrase: " + finder + " dans \"" + phrase + "\"").isEmpty();
 	}
 
 	private final void assertOnly(final DateType dateTypeName, Condition<? super DatedPhrase> condition, String phrase) {
         final PhrasesAnalyser finder = datedPhraseDetector.get(dateTypeName);
-		assertThat(finder.findPhrases(phrase)).as("Devrait trouver des phrases: " + finder + " dans \"" + phrase + "\"").haveExactly(1, condition);
+		assertThat(finder.findDatesInPhrases(phrase)).as("Devrait trouver des phrases: " + finder + " dans \"" + phrase + "\"").haveExactly(1, condition);
 
 		final PhrasesAnalyser[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new PhrasesAnalyser[size]);
 		assertNoDateIn(phrase, filteredFinders);
@@ -662,7 +662,7 @@ public class PhrasesTextAnalyserTest {
 
 	private final void assertTwo(final DateType dateTypeName, Condition<? super DatedPhrase> condition1, Condition<? super DatedPhrase> condition2, String phrase) {
         final PhrasesAnalyser finder = datedPhraseDetector.get(dateTypeName);
-        final List<DatedPhrase> actualPhrases = finder.findPhrases(phrase);
+        final List<DatedPhrase> actualPhrases = finder.findDatesInPhrases(phrase);
 
 		assertThat(actualPhrases).as("doit trouver deux dates").hasSize(2);
 
@@ -675,9 +675,9 @@ public class PhrasesTextAnalyserTest {
 
     private final void assertTwoDifferents(final DateType type1, Condition<? super DatedPhrase> sameDate1, final DateType type2, Condition<? super DatedPhrase> sameDate2, String phrase) {
         final PhrasesAnalyser finder1 = datedPhraseDetector.get(type1);
-        final List<DatedPhrase> actualPhrases = finder1.findPhrases(phrase);
+        final List<DatedPhrase> actualPhrases = finder1.findDatesInPhrases(phrase);
 		final PhrasesAnalyser finder2 = datedPhraseDetector.get(type2);
-        final List<DatedPhrase> actualPhrases2 = finder2.findPhrases(phrase);
+        final List<DatedPhrase> actualPhrases2 = finder2.findDatesInPhrases(phrase);
 
 		assertThat(actualPhrases).as(finder1 + "Devrait trouver une date dans \"" + phrase +"\"").hasSize(1);
 		assertThat(actualPhrases.get(0)).as("première date").has(sameDate1);

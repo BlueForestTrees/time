@@ -13,17 +13,15 @@
         this.canvas = this.context.canvas;
         this.amplitude = 10;
         this.loading = false;
-        installEvents(this);
-    }
 
-    var installEvents = function(bar) {
+        //INSTALL EVENTS
         var data = {
             previousX : null,
             deltaX : null,
             move : false
         };
-        $(bar.canvas).on('mousedown.Viewport', data, $.proxy(bar.mouseDownOnBar, bar));
-    };
+        $(this.canvas).on('mousedown.Viewport', data, $.proxy(this.mouseDownOnBar, this));
+    }
 
     /**
      * Cherche si un bucket est présent au plus près possible de l'endroit spécifié

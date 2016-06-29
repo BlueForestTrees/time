@@ -75,11 +75,10 @@
         if(!Time.tooltips.currentBar){
             return;
         }
-        var width = window.innerWidth;
-        var tooltipsXs = [];
         
-        tooltipsXs[0] = Time.tooltips.currentBar.searchRightOf(0.1 * width, 2000);
-        tooltipsXs[2] = Time.tooltips.currentBar.searchLeftOf(0.9 * width, 2000);
+        var tooltipsXs = [];
+        tooltipsXs[0] = Time.tooltips.currentBar.aLeftBucket();
+        tooltipsXs[2] = Time.tooltips.currentBar.aRightBucket();
         tooltipsXs[1] = 0.5 * (tooltipsXs[0]+tooltipsXs[2]);
         
         if(mouseX){

@@ -4,35 +4,28 @@
     }
 
     barDrawer.prototype.install = function() {
-        this.hideAllBars();
-        this.updateSizeAllBars();
-        $(window).on('resize', this.updateSizeAllBars);
+        this._hideAllBars();
+        this._updateSizeAllBars();
+        $(window).on('resize', this._updateSizeAllBars);
+        delete barDrawer.prototype.install;
     };
 
-    barDrawer.prototype.updateSizeAllBars = function() {
-        Time.bars.forEach(Time.barDrawer.updateSizeBar);
-    };
+    barDrawer.prototype.drawBar = function(bar, explicitBuckets) {
+        var buckets = explicitBuckets ? explicitBuckets : bar.buckets;
+        bar.context.fillStyle = 'rgb('+this.fillLevel+','+this.fillLevel+','+this.fillLevel+')';
+        bar.context.fillRect(0, 0, bar.canvas.width, bar.canvas.height);
 
-    barDrawer.prototype.updateSizeBar = function(bar) {
-        bar.canvas.width = window.innerWidth - 2;
-        bar.viewport.setGlobal(bar.canvas.width * 0.7);
-        Time.barDrawer.drawBar(bar);
-        Time.tooltips.updateTooltips();
+        buckets.forEach(function(bucket){
+            bar.context.fillStyle = bucket.color;
+            bar.context.fillRect(bar.viewport.locationOf(bucket), 0, 1, bar.canvas.height);
+        });
     };
 
     barDrawer.prototype.focusOn = function(bar) {
-        this.reduceOtherThan(bar);
-        this.unreduceBar(bar);
+        this._reduceOtherThan(bar);
+        this._unreduceBar(bar);
     };
 
-    barDrawer.prototype.hideAllBars = function() {
-        var scale = 0;
-        while (scale < Time.bars.length) {
-            this.hideBar(Time.bars[scale]);
-            scale++;
-        }
-    };
-    
     barDrawer.prototype.hideBarsAfter = function(bar) {
         var scale = bar.scale + 1;
         while (scale < Time.bars.length) {
@@ -45,38 +38,59 @@
         $(bar.canvas).hide();
     };
 
-    barDrawer.prototype.reduceOtherThan = function(bar) {
+
+
+    barDrawer.prototype._updateSizeAllBars = function() {
+        Time.bars.forEach(Time.barDrawer._updateSizeBar);
+    };
+    
+    barDrawer.prototype._updateSizeBar = function(bar) {
+        bar.canvas.width = window.innerWidth - 2;
+        bar.viewport.setGlobal(bar.canvas.width * 0.7);
+        Time.barDrawer.drawBar(bar);
+        Time.tooltips.updateTooltips();
+    };
+
+    barDrawer.prototype._hideAllBars = function() {
+        var scale = 0;
+        while (scale < Time.bars.length) {
+            this.hideBar(Time.bars[scale]);
+            scale++;
+        }
+    };
+    
+    barDrawer.prototype._reduceOtherThan = function(bar) {
         var previousBar = Time.scale.previous(bar);
         while (previousBar !== null) {
-            this.reduceBar(previousBar);
+            this._reduceBar(previousBar);
             previousBar = Time.scale.previous(previousBar);
         }
         var nextBar = Time.scale.next(bar);
         while (nextBar !== null) {
-            this.reduceBar(nextBar);
+            this._reduceBar(nextBar);
             nextBar = Time.scale.next(nextBar);
         }
     };
     
-    barDrawer.prototype.reduceBar = function(bar){
+    barDrawer.prototype._reduceBar = function(bar){
         if(!bar.reduced){
-            bar.reduced = true;            
-            
+            bar.reduced = true;
+
             $(bar.canvas).attr({
                 height : bar.reducedHeight
             });
-            
+
             $(bar.canvas).css({
                 opacity : bar.reducedOpacity
             });
-            
+
             this.drawBar(bar);
             bar.focusOnEnter();
         }
     };
 
-    barDrawer.prototype.unreduceBar = function(bar) {
-        bar.reduced = false;   
+    barDrawer.prototype._unreduceBar = function(bar) {
+        bar.reduced = false;
         $(bar.canvas).attr({
             height : bar.height
         });
@@ -85,18 +99,6 @@
         });
         $(bar.canvas).show();
         this.drawBar(bar);
-    };
-    
-    barDrawer.prototype.drawBar = function(bar, explicitBuckets) {
-        var buckets = explicitBuckets ? explicitBuckets : bar.buckets;
-        bar.context.fillStyle = 'rgb('+this.fillLevel+','+this.fillLevel+','+this.fillLevel+')';
-        bar.context.fillRect(0, 0, bar.canvas.width, bar.canvas.height);
-        var nbBuckets = buckets.length;
-        for (var i = 0; i < nbBuckets; i++) {
-            var bucket = buckets[i];
-            bar.context.fillStyle = bucket.color;
-            bar.context.fillRect(bar.locationOf(bucket), 0, 1, bar.canvas.height);
-        }
     };
 
     Time.BarDrawer = barDrawer;

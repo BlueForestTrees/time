@@ -51,7 +51,6 @@
         }
         if(bar){
             this.currentBar = bar;
-            this.currentBar.viewport.setListener(this.updateTooltips);
 
             $(bar.canvas).on('mousemove.Tooltip', bar, this.mouseMoveOnBar);
             $(bar.canvas).on('mouseout.Tooltip', bar, this.mouseOutOnBar);
@@ -65,7 +64,6 @@
     };
 
     tooltips.prototype.undecorate = function(bar) {
-        bar.viewport.setListener(null);
         $(bar.canvas).off('mousemove.Tooltip');
         $(bar.canvas).off('mouseout.Tooltip');
         this.hideTooltips();

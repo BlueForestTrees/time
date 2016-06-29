@@ -57,6 +57,7 @@ p {
 	position: relative;
 	display: inline-block;
 	color: #aaa;
+	margin-left: 150px;
 }
 
 .search input {

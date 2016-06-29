@@ -175,7 +175,8 @@
     };
 
     bar.prototype._mouseDownOnBar = function (event) {
-        event.data.previousX = event.clientX;
+        event.data.downX = event.data.previousX = event.clientX;
+        //TODO install bar selection
         Time.view.window.on('mousemove.Viewport', event.data, $.proxy(this._onBarDrag, this));
         Time.view.window.on('mouseup.Viewport', event.data, $.proxy(this._onBarUp, this));
     };
@@ -183,8 +184,7 @@
     bar.prototype._onBarDrag = function (event) {
         var increment = event.clientX - event.data.previousX;
         if (increment !== 0) {
-            this.viewport.move(increment);
-            Time.barDrawer.drawBar(this);
+            //TODO manage bar selection
             event.data.previousX = event.clientX;
             event.data.move = true;
         }
@@ -192,10 +192,16 @@
 
     bar.prototype._onBarUp = function (event) {
         if (!event.data.move) {
-            this._onClick(event);
+            //plus rien ici?
+            //this._onClick(event);
+        }else{
+            var bucketStart = this.viewport.toBucketX(event.data.downX);
+            var bucketEnd = this.viewport.toBucketX(event.clientX);
+            //TODO refactorer scale pour avoir un truc clean
+            //TODO penser au passage à une barre.
+            console.log("select from " + bucketStart + " to " + bucketEnd);
         }
         event.data.move = false;
-
         Time.view.window.off('mousemove.Viewport');
         Time.view.window.off('mouseup.Viewport');
     };

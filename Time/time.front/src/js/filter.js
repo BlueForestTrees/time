@@ -4,9 +4,6 @@
     }
 
     filter.prototype.install = function(view) {
-        view.termInput.on("click", function() {
-            view.termInput.select();
-        });
         view.termInput.on("keyup",$.proxy(this.termInputKeyPress, this));
         view.homeTermInput.on("keyup",$.proxy(this.homeTermInputKeyPress, this));
     };

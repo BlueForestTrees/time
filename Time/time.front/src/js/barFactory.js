@@ -34,7 +34,6 @@
         }
         
         bucketsDTO.buckets.sort(this._triBuckets);
-        console.log(bucketsDTO.buckets);
         return bucketsDTO.buckets;
     };
     

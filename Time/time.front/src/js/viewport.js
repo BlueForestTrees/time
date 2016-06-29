@@ -2,9 +2,9 @@
     // constructeur
     function viewport(_scale) {
         this._local = 0;
+        this._zoom = 1;
         this._scale = _scale;
         this._listener = null;
-        this._zoom = 1;
     }
 
     viewport.prototype.move = function(increment) {
@@ -41,8 +41,8 @@
     };
 
     viewport.prototype.normalize = function (x1, x2, y1, y2){
-        // a = ?
-        // b = ?
+        this._zoom = (y2 - y1) / (x2 - x1);
+        this._local = y1 - this._zoom*x1;
     };
 
     Time.Viewport = viewport;

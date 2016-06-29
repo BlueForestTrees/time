@@ -29,28 +29,28 @@
         for (var i = 0; i < bucketsDTO.buckets.length; i++) {
             var bucket = bucketsDTO.buckets[i];
             bucket.x = bucket.bucket;
-            bucket.color = this.getColor(bucket.count);
+            bucket.color = this._getColor(bucket.count);
             bucket.scale = bucketsDTO.scale;
         }
         
-        bucketsDTO.buckets.sort(this.triBuckets);
-        
+        bucketsDTO.buckets.sort(this._triBuckets);
+        console.log(bucketsDTO.buckets);
         return bucketsDTO.buckets;
     };
     
-    barFactory.prototype.triBuckets = function(a,b){
-        return b.x - a.x;
-    }
+    barFactory.prototype._triBuckets = function(a,b){
+        return a.x - b.x;
+    };
     
-    barFactory.prototype.getColor = function(count) {
-        var r = this.getRed(count);
-        var g = this.getGreen(count);
+    barFactory.prototype._getColor = function(count) {
+        var r = this._getRed(count);
+        var g = this._getGreen(count);
         return 'rgb(' + r + ',' + g + ',0)';
     };
-    barFactory.prototype.getGreen = function(count) {
+    barFactory.prototype._getGreen = function(count) {
         return parseInt(Math.max(this.minColor, this.maxColor - count / this.max * (this.maxColor - this.minColor) * 2));
     };
-    barFactory.prototype.getRed = function(count) {
+    barFactory.prototype._getRed = function(count) {
         return parseInt(this.maxColor - Math.max(0, count - this.middle) / this.max * (this.maxColor - this.minColor) * 2);
     };
 

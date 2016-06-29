@@ -11,13 +11,14 @@
     };
 
     barDrawer.prototype.drawBar = function(bar, explicitBuckets) {
+        bar.normalize();
         var buckets = explicitBuckets ? explicitBuckets : bar.buckets;
         bar.context.fillStyle = 'rgb('+this.fillLevel+','+this.fillLevel+','+this.fillLevel+')';
         bar.context.fillRect(0, 0, bar.canvas.width, bar.canvas.height);
 
         buckets.forEach(function(bucket){
             bar.context.fillStyle = bucket.color;
-            bar.context.fillRect(bar.viewport.locationOf(bucket), 0, 1, bar.canvas.height);
+            bar.context.fillRect(bar.viewport.toCanvasX(bucket.x), 0, 1, bar.canvas.height);
         });
     };
 
@@ -45,8 +46,6 @@
     };
     
     barDrawer.prototype._updateSizeBar = function(bar) {
-        bar.canvas.width = window.innerWidth - 2;
-        bar.viewport.setGlobal(bar.canvas.width * 0.7);
         Time.barDrawer.drawBar(bar);
         Time.tooltips.updateTooltips();
     };

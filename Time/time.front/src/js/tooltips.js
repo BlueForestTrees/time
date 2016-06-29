@@ -112,7 +112,7 @@
     tooltips.prototype.toolTipAt = function(tooltip, tooltipX, animate) {
         var humanDate = Time.tooltips.bucketToHuman({
             scale : Time.tooltips.currentBar.scale,
-            bucket : Time.tooltips.currentBar.barXToViewportX(tooltipX)
+            bucket : Time.tooltips.currentBar.viewport.toBucketX(tooltipX)
         });
         var toolTipTop = $(Time.tooltips.currentBar.canvas).position().top + Time.tooltips.currentBar.height + 7;
         // 22 => position à l'arrache pour que la flèche du tooltip coincide avec la souris.

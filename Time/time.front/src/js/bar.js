@@ -27,11 +27,11 @@
     }
 
     bar.prototype.aLeftBucket = function(){
-        return this._searchRightOf(0.05 * window.innerWidth, 2000);
+        return this._searchRightOf(0.05 * this.canvas.width, 2000);
     };
 
     bar.prototype.aRightBucket = function(){
-        return this._searchLeftOf(0.9 * window.innerWidth, 2000);
+        return this._searchLeftOf(0.95 * this.canvas.width, 2000);
     };
 
     bar.prototype.firstBucket = function(){
@@ -49,14 +49,20 @@
         Time.tooltips.decorate(null);
     };
 
-    bar.prototype.barXToViewportX = function (barX) {
-        return barX - this.viewport.delta();
-    };
-
     bar.prototype.focusOnEnter = function () {
         $(this.canvas).on('mouseenter.focusAtEnter', $.proxy(this._onEnter, this));
     };
 
+    bar.prototype.normalize = function(){
+        if(this.buckets.length > 0) {
+            this.canvas.width = window.innerWidth;
+            var firstBucketX = this.firstBucket().x;
+            var lastBucketX = this.lastBucket().x;
+            var firstCanvasX = 0.1 * this.canvas.width;
+            var lastCanvasX = 0.9 * this.canvas.width;
+            this.viewport.normalize(firstBucketX, lastBucketX, firstCanvasX, lastCanvasX);
+        }
+    };
 
 
     
@@ -141,11 +147,11 @@
      * @param bucketX La position sur la barre du bucket à chercher.
      * @returns {*} Le premier bucket tel que {bucket.x === bucketX} ou null
      */
-    bar.prototype._getBucketAt = function (viewPortBucketX) {
-        if (viewPortBucketX !== undefined && viewPortBucketX !== null) {
+    bar.prototype._getBucketAt = function (bucketX) {
+        if (bucketX !== undefined && bucketX !== null) {
             for (var i = 0; i < this.buckets.length; i++) {
                 var bucket = this.buckets[i];
-                if (bucket.x === viewPortBucketX) {
+                if (bucket.x === bucketX) {
                     return bucket;
                 }
             }
@@ -215,13 +221,10 @@
      */
     bar.prototype._searchBucketAt = function (mouseX) {
         var bucket = null;
-
         var searchResult = this._searchNear(mouseX);
         if (searchResult !== null) {
-            var offset = searchResult.offset;
-            var barBucketX = offset + mouseX;
-            var viewPortBucketX = this.barXToViewportX(barBucketX);
-            bucket = this._getBucketAt(viewPortBucketX);
+            var bucketX = this.viewport.toBucketX(mouseX + searchResult.offset);
+            bucket = this._getBucketAt(bucketX);
         }
 
         return bucket !== null ? {bucket: bucket, count: searchResult.count} : null;

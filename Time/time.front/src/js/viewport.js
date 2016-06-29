@@ -1,38 +1,42 @@
 (function() {
     // constructeur
-    function viewport(scale) {
-        this.global = 0;
-        this.local = 0;
-        this.scale = scale;
-        this.listener = null;
-        this.zoom = 1;
+    function viewport(_scale) {
+        this._local = 0;
+        this._scale = _scale;
+        this._listener = null;
+        this._zoom = 1;
     }
 
     viewport.prototype.move = function(increment) {
-        this.local += increment;
-        if(this.listener !== null){
-            this.listener();
+        this._local += increment;
+        if(this._listener !== null){
+            this._listener();
         }
     };
 
-    viewport.prototype.setListener = function(listener){
-        this.listener = listener;
+    viewport.prototype.setListener = function(_listener){
+        this._listener = _listener;
     };
 
     viewport.prototype.delta = function() {
-        return Math.round(this.global + this.local);
+        return Math.round(this._local);
     };
 
     viewport.prototype.lookAt = function(bucket) {
-        this.local = -Time.scale.firstSubBucket(this.scale - 1, bucket);
-    };
-    
-    viewport.prototype.setGlobal = function(global){
-        this.global = 0;
+        this._local = -Time.scale.firstSubBucket(this._scale - 1, bucket);
     };
 
-    viewport.prototype.locationOf = function (bucket) {
-        return this.delta() + bucket.x * this.zoom;
+    viewport.prototype.toCanvasX = function (bucketX) {
+        return bucketX * this._zoom + this.delta();
+    };
+
+    viewport.prototype.toBucketX = function (mouseX) {
+        return (mouseX - this.delta()) / this._zoom;
+    };
+
+    viewport.prototype.normalize = function (firstBucketX, lastBucketX, firstCanvasX, lastCanvasX){
+        this._local = firstCanvasX - firstBucketX;
+        console.log(this._local);
     };
 
     Time.Viewport = viewport;

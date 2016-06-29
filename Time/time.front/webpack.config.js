@@ -33,6 +33,5 @@ module.exports = {
 };
 
 if(isProd){
-    console.log("isProd so uglify");
     module.exports.plugins.push(new webpack.optimize.UglifyJsPlugin());
 }

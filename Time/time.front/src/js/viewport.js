@@ -27,16 +27,22 @@
     };
 
     viewport.prototype.toCanvasX = function (bucketX) {
-        return bucketX * this._zoom + this.delta();
+        // a = zoom
+        // b = delta
+        // y = canvasX
+        // x = bucketX
+        // y = ax + b
+        return this._zoom * bucketX + this.delta();
     };
 
-    viewport.prototype.toBucketX = function (mouseX) {
-        return (mouseX - this.delta()) / this._zoom;
+    viewport.prototype.toBucketX = function (canvasX) {
+        // x = ( y - b ) / a
+        return (canvasX - this.delta()) / this._zoom;
     };
 
-    viewport.prototype.normalize = function (firstBucketX, lastBucketX, firstCanvasX, lastCanvasX){
-        this._local = firstCanvasX - firstBucketX;
-        console.log(this._local);
+    viewport.prototype.normalize = function (x1, x2, y1, y2){
+        // a = ?
+        // b = ?
     };
 
     Time.Viewport = viewport;

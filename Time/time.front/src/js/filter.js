@@ -83,5 +83,10 @@
         }
     };
 
+    filter.prototype.onPeriodFilter = function (leftFilter, rightFilter) {
+        //TODO
+        console.log("select from ", leftFilter, " to ", rightFilter);
+    };
+
     Time.Filter = filter;
 })();

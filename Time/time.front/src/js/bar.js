@@ -217,8 +217,7 @@
             var rightBucket = this._getBucketAt(this.viewport.toBucketX(rightMouseX));
             var leftFilter = Time.scale.bucketToFilter(leftBucket);
             var rightFilter = Time.scale.bucketToFilter(rightBucket);
-
-            console.log("select from ", leftFilter, " to ", rightFilter);
+            Time.filter.onPeriodFilter(leftFilter, rightFilter);
         }
         event.data.move = false;
         Time.view.window.off('mousemove.Viewport');

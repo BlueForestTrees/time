@@ -28,7 +28,7 @@
     };
 
     Scale.prototype.bucketToFilter = function(bucket){
-        return bucket.scale;
+        return "TODO scale.js l.31";
     };
 
     Scale.prototype.bucketToHuman = function(bucket) {

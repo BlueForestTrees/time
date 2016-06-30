@@ -7,6 +7,11 @@ public class TimeWebConf {
 
     private String indexDir;
     private int port;
+    private int searchPhrasePageSize;
+
+    public int getSearchPhrasePageSize() {
+        return searchPhrasePageSize;
+    }
 
     public int getPort() {
         return port;

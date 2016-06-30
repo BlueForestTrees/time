@@ -3,7 +3,7 @@
         Time.scale = new Time.Scale();
         Time.view.throbber.hide();
         Time.barFactory = new Time.BarFactory();
-        Time.bars = this.buildBars();
+        Time.bar = new Time.Bar();
         Time.barLoading = new Time.BarLoading();
         Time.barDrawer = new Time.BarDrawer();
         Time.phrases = new Time.Phrases();
@@ -19,15 +19,6 @@
         Time.historic.popState();
         window.onpopstate = Time.historic.popState;
     }
-
-    histoires.prototype.buildBars = function() {
-        var bars = [], i = 0;
-        while(i < Time.scale.scaleCount) {
-            bars.push(new Time.Bar(i));
-            i++;
-        }
-        return bars;
-    };
 
     Time.Histoires = histoires;
 

@@ -10,10 +10,6 @@
         return Math.round(this._local);
     };
 
-    viewport.prototype.lookAt = function(bucket) {
-        this._local = -Time.scale.firstSubBucket(this._scale - 1, bucket);
-    };
-
     viewport.prototype.toCanvasX = function (bucketX) {
         // y = ax + b
         return this._zoom * bucketX + this.delta();
@@ -21,7 +17,7 @@
 
     viewport.prototype.toBucketX = function (canvasX) {
         // x = ( y - b ) / a
-        return (canvasX - this.delta()) / this._zoom;
+        return Math.round((canvasX - this.delta()) / this._zoom);
     };
 
     viewport.prototype.normalize = function (x1, x2, y1, y2){

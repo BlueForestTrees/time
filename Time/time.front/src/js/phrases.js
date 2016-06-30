@@ -1,15 +1,15 @@
 (function() {
-    function phrases() {
+    function Phrases() {
         this.lastSearch = null;
         this.isSearching = false;
     }
 
-    phrases.prototype.install = function() {
+    Phrases.prototype.install = function() {
         Time.view.phrases.on('dblclick.Textes', this.onPhrasesDblClick);
         Time.view.window.on('scroll', $.proxy(this.scroll, this));
     };
 
-    phrases.prototype.onPhrasesDblClick = function(event) {
+    Phrases.prototype.onPhrasesDblClick = function(event) {
         event.stopImmediatePropagation();
         if (window.getSelection()) {
             var term = window.getSelection().toString().trim();
@@ -17,21 +17,21 @@
         }
     };
 
-    phrases.prototype.loadPhrases = function(scale, bucket) {
+    Phrases.prototype.loadPhrases = function(scale, bucket) {
         Time.view.throbber.show();
         Time.data.getPhrases(Time.filter.term, scale, bucket, bucket, null, $.proxy(this.onFirstPhrases, this, scale, bucket));
     };
 
-    phrases.prototype.onFirstPhrases = function(a, b, phrases) {
+    Phrases.prototype.onFirstPhrases = function(a, b, phrases) {
         if (phrases.total > 0) {
 			var day = phrases.phraseList[0].date;
-            var humanDate = Time.tooltips.dayToHuman(day);
+            var humanDate = Time.scale.dayToHuman(day);
             Time.phrasesdrawer.addTextIntro(humanDate, phrases.total);
         }
         this.onPhrases(null, null, phrases);
     };
 
-    phrases.prototype.onPhrases = function(scale, xBucket, phrases) {
+    Phrases.prototype.onPhrases = function(scale, xBucket, phrases) {
         Time.view.throbber.hide();
         Time.phrasesdrawer.setPhrases(phrases, Time.filter.term);
         this.isSearching = false;
@@ -50,7 +50,7 @@
         }
     };
 
-    phrases.prototype.scroll = function() {
+    Phrases.prototype.scroll = function() {
         this.maybeMorePhrases();
         if (Time.view.window.scrollTop() < 20) {
             Time.tooltips.showTooltips();
@@ -59,7 +59,7 @@
         }
     };
 
-    phrases.prototype.maybeMorePhrases = function() {
+    Phrases.prototype.maybeMorePhrases = function() {
         if (!this.isSearching && this.lastSearch && this.isBottomVisible()) {
             this.isSearching = true;
             Time.view.throbber.show();
@@ -67,16 +67,16 @@
         }
     };
 
-    phrases.prototype.isBottomVisible = function() {
+    Phrases.prototype.isBottomVisible = function() {
         var docViewBottom = Time.view.window.scrollTop() + Time.view.window.height();
         var elemBottom = Time.view.bottom.offset().top + Time.view.bottom.height();
         return (elemBottom - 500) <= docViewBottom;
     };
 
-    phrases.prototype.clearText = function() {
+    Phrases.prototype.clearText = function() {
         Time.view.phrases.empty();
         $(window).scrollTop(0);
     };
 
-    Time.Phrases = phrases;
+    Time.Phrases = Phrases;
 })();

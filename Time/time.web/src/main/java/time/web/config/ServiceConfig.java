@@ -1,5 +1,6 @@
 package time.web.config;
 
+import com.google.common.base.Optional;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,11 @@ public class ServiceConfig {
     @Bean
     public TimeWebConf conf() throws IOException {
         return new ConfManager().get(ConfEnum.TIMEWEB, TimeWebConf.class);
+    }
+
+    @Bean
+    public int searchPhrasePageSize() throws IOException {
+        return Optional.fromNullable(conf().getSearchPhrasePageSize()).or(20);
     }
 
 }

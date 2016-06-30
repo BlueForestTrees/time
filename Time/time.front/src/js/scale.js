@@ -1,13 +1,9 @@
 (function() {
 
-    function scale() {
+    function Scale() {
         this.seventiesInDays = 719528;
-        this.daysToMillis = 24 * 60 * 60 * 1000;
-        this.max = 10000 * 364, 25;
-
-        this.scaleCount = 4;
+        this.max = 10000 * 364.25;
         this.scales = [ 10000000000, 10000, 500, 10 ];
-
         this.echelles = {
             milliard : 1000000000,
             million : 1000000,
@@ -16,36 +12,55 @@
         };
     }
 
-    scale.prototype.previous = function(bar) {
-        if (bar.scale > 0) {
-            return Time.bars[bar.scale - 1];
-        } else {
-            return null;
+    /**
+     * The default Scale is the farest
+     * @returns {number}
+     */
+    Scale.prototype.defaultScale = function(){
+        return 0;
+    };
+
+    Scale.prototype.dayToHuman = function(day){
+        var bucket = {
+            years : this._daysToYears(day)
+        };
+        return this.bucketToHuman(bucket);
+    };
+
+    Scale.prototype.bucketToFilter = function(bucket){
+        return bucket.scale;
+    };
+
+    Scale.prototype.bucketToHuman = function(bucket) {
+        var years = this._bucketToYears(bucket);
+        var start = this._getStart(years);
+        switch (this._getEchelle(years)) {
+            case this.echelles.milliard:
+                var nbard = this._round(years / this.echelles.milliard, 1);
+                return start + nbard + " milliard" + (nbard > 1 ? "s" : "") + " d'années";
+            case this.echelles.million:
+                var nbon = this._round(years / this.echelles.million, 1);
+                return start + nbon + " million" + (nbon > 1 ? "s" : "") + " d'années";
+            case this.echelles.millier:
+            case this.echelles.un:
+                var roundYears = Math.round(years);
+                if (roundYears === 0)
+                    return "De nos jours";
+                else
+                    return "en " + roundYears;
+            default:
+                return 'WWWOOOOOWWW';
         }
     };
-    
-    scale.prototype.next = function(bar) {
-        if (bar.scale < Time.bars.length-1) {
-            return Time.bars[bar.scale + 1];
-        } else {
-            return null;
-        }
-    };
 
-    scale.prototype.isFirstScale = function(scale) {
-        return scale === 0;
-    };
-
-    scale.prototype.isLastScale = function(scale) {
-        return scale === this.scaleCount - 1;
-    };
-
-    scale.prototype.dec = function(value) {
-        var decimals = Math.abs(value) < 10 ? 10 : 1;
+    Scale.prototype._round = function(value, dec) {
+        //dec      = 0,  1,   2,    3
+        //decimals = 1, 10, 100, 1000
+        var decimals = Math.pow(10,dec);
         return Math.abs(Math.round(value * decimals) / decimals);
     };
 
-    scale.prototype.getEchelle = function(years) {
+    Scale.prototype._getEchelle = function(years) {
         years = Math.abs(Math.round(years));
         if (Math.round(years / this.echelles.milliard) > 0) {
             return this.echelles.milliard;
@@ -58,13 +73,14 @@
         }
     };
 
-    scale.prototype.bucketToYears = function(bucket) {
+    Scale.prototype._bucketToYears = function(bucket) {
         if(bucket.years){
             return bucket.years;
         }
-        return this.daysToYears(this.scales[bucket.scale] * bucket.bucket);
+        return this._daysToYears(this.scales[bucket.scale] * bucket.bucket);
     };
-    scale.prototype.daysToYears = function(days) {
+
+    Scale.prototype._daysToYears = function(days) {
         if (Math.abs(days) > this.max) {
             return days / 364.25;
         } else {
@@ -74,14 +90,10 @@
         }
     };
 
-    scale.prototype.firstSubBucket = function(scaleIndex, bucket) {
-        if (scaleIndex > 0) {
-            return bucket * this.scales[scaleIndex] / this.scales[scaleIndex + 1];
-        } else {
-            return 0;
-        }
+    Scale.prototype._getStart = function(years) {
+        return years > 0 ? 'Dans ' : 'Il y a ';
     };
 
-    Time.Scale = scale;
+    Time.Scale = Scale;
 
 })();

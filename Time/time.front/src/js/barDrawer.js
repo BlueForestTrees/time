@@ -4,9 +4,9 @@
     }
 
     barDrawer.prototype.install = function() {
-        this._hideAllBars();
-        this._updateSizeAllBars();
-        $(window).on('resize', this._updateSizeAllBars);
+        this._hideBar();
+        this._updateSizeBar();
+        $(window).on('resize', this._updateSizeBar);
         delete barDrawer.prototype.install;
     };
 
@@ -23,54 +23,18 @@
     };
 
     barDrawer.prototype.focusOn = function(bar) {
-        this._reduceOtherThan(bar);
         this._unreduceBar(bar);
     };
 
-    barDrawer.prototype.hideBarsAfter = function(bar) {
-        var scale = bar.scale + 1;
-        while (scale < Time.bars.length) {
-            this.hideBar(Time.bars[scale]);
-            scale++;
-        }
+    barDrawer.prototype._hideBar = function(){
+        $(Time.bar.canvas).hide();
     };
 
-    barDrawer.prototype.hideBar = function(bar){
-        $(bar.canvas).hide();
-    };
-
-
-
-    barDrawer.prototype._updateSizeAllBars = function() {
-        Time.bars.forEach(Time.barDrawer._updateSizeBar);
-    };
-    
-    barDrawer.prototype._updateSizeBar = function(bar) {
-        Time.barDrawer.drawBar(bar);
+    barDrawer.prototype._updateSizeBar = function() {
+        Time.barDrawer.drawBar(Time.bar);
         Time.tooltips.updateTooltips();
     };
 
-    barDrawer.prototype._hideAllBars = function() {
-        var scale = 0;
-        while (scale < Time.bars.length) {
-            this.hideBar(Time.bars[scale]);
-            scale++;
-        }
-    };
-    
-    barDrawer.prototype._reduceOtherThan = function(bar) {
-        var previousBar = Time.scale.previous(bar);
-        while (previousBar !== null) {
-            this._reduceBar(previousBar);
-            previousBar = Time.scale.previous(previousBar);
-        }
-        var nextBar = Time.scale.next(bar);
-        while (nextBar !== null) {
-            this._reduceBar(nextBar);
-            nextBar = Time.scale.next(nextBar);
-        }
-    };
-    
     barDrawer.prototype._reduceBar = function(bar){
         if(!bar.reduced){
             bar.reduced = true;

@@ -34,7 +34,8 @@ import time.web.bean.Phrases;
 @Service
 public class PhraseService {
 
-    private int pageSize = 20;
+    @Autowired
+    private int searchPhrasePageSize;
 
     @Autowired
     private IndexSearcher indexSearcher;
@@ -57,7 +58,7 @@ public class PhraseService {
         final Query query = queryHelper.getQuery(request, field, from, to);
         final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
         highlighter.setTextFragmenter(new NullFragmenter());
-        final TopFieldDocs searchResult = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, pageSize, sortDateAsc, true, true);
+        final TopFieldDocs searchResult = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, searchPhrasePageSize, sortDateAsc, true, true);
 
         final Phrases phrases = new Phrases();
         if (searchResult.totalHits > 0) {

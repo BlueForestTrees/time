@@ -1,12 +1,10 @@
 (function () {
-    function bar(scale) {
+    function Bar() {
         this.height = 35;
         this.reducedHeight = 15;
         this.reducedOpacity = 0.25;
         this.reduced = false;
-        this.scale = scale;
-        this.isFirstBar = Time.scale.isFirstScale(this.scale);
-        this.isLastBar = Time.scale.isLastScale(this.scale);
+        this.scale = Time.scale.defaultScale();
         this.viewport = new Time.Viewport(this.scale);
         this.buckets = [];
         this.context = Time.barFactory.buildCanvas(this.height, this.scale);
@@ -26,42 +24,66 @@
         this.installEvents();
     }
 
-    bar.prototype.aLeftBucket = function(){
-        return this._searchRightOf(0.05 * this.canvas.width, 2000);
+    Bar.prototype.monoBucket = function(){
+        return this.buckets !== null && this.buckets.length === 1;
     };
 
-    bar.prototype.aRightBucket = function(){
-        return this._searchLeftOf(0.95 * this.canvas.width, 2000);
+    Bar.prototype.middle = function(){
+        return this.canvas.width * 0.5;
     };
 
-    bar.prototype.firstBucket = function(){
+    Bar.prototype.aLeftBucket = function(){
+        return this._searchRightOf(0.05 * this.canvas.width);
+    };
+
+    Bar.prototype.aRightBucket = function(){
+        return this._searchLeftOf(0.95 * this.canvas.width);
+    };
+
+    Bar.prototype.firstBucket = function(){
         return this.buckets[0];
     };
-    bar.prototype.lastBucket = function(){
+    Bar.prototype.lastBucket = function(){
         return this.buckets[this.buckets.length-1];
     };
 
-    bar.prototype.loadBuckets = function (term, parentBucket) {
+    Bar.prototype.loadBuckets = function (term) {
         Time.barLoading.startLoading(this);
         Time.barDrawer.focusOn(this);
         Time.data.getBuckets(term, this.scale, $.proxy(this._onBuckets, this));
-        this.viewport.lookAt(parentBucket);
         Time.tooltips.decorate(null);
     };
 
-    bar.prototype.focusOnEnter = function () {
+    Bar.prototype.focusOnEnter = function () {
         $(this.canvas).on('mouseenter.focusAtEnter', $.proxy(this._onEnter, this));
     };
 
-    bar.prototype.normalize = function(){
-        if(this.buckets.length > 0) {
+    Bar.prototype.normalize = function(){
+        var firstBucketX;
+        var lastBucketX;
+        var firstCanvasX;
+        var lastCanvasX;
+        if(this.buckets.length === 0) {
+            //rien à normaliser
+            firstBucketX = -1;
+            lastBucketX = 1;
+            firstCanvasX = 0.1 * this.canvas.width;
+            lastCanvasX = 0.9 * this.canvas.width;
+        }else if(this.buckets.length === 1) {
+            //un seul bucket, il faut le mettre au centre.
             this.canvas.width = window.innerWidth;
-            var firstBucketX = this.firstBucket().x;
-            var lastBucketX = this.lastBucket().x;
-            var firstCanvasX = 0.1 * this.canvas.width;
-            var lastCanvasX = 0.9 * this.canvas.width;
-            this.viewport.normalize(firstBucketX, lastBucketX, firstCanvasX, lastCanvasX);
+            firstBucketX = this.firstBucket().x - 1;
+            lastBucketX = this.firstBucket().x + 1;
+            firstCanvasX = 0.1 * this.canvas.width;
+            lastCanvasX = 0.9 * this.canvas.width;
+        }else if(this.buckets.length > 1){
+            this.canvas.width = window.innerWidth;
+            firstBucketX = this.firstBucket().x;
+            lastBucketX = this.lastBucket().x;
+            firstCanvasX = 0.1 * this.canvas.width;
+            lastCanvasX = 0.9 * this.canvas.width;
         }
+        this.viewport.normalize(firstBucketX, lastBucketX, firstCanvasX, lastCanvasX);
     };
 
 
@@ -69,10 +91,11 @@
     /**
      * Cherche dans le canvas de la barre à droite de la position.
      * @param mouseX Où chercher dans la barre
-     * @param amplitude la taille de la recherche
-     * @returns {*} Un bucket le plus proche possible à droite ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
+     * @param amplitude la taille de la recherche, ou null pour chercher sur toute la longueur
+     * @returns {*} Un mouseX le plus proche possible à droite ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
      */
-    bar.prototype._searchRightOf = function (mouseX, amplitude) {
+    Bar.prototype._searchRightOf = function (mouseX, amplitude) {
+        amplitude = amplitude || this.canvas.width - mouseX;
         var searchZone = this.context.getImageData(mouseX, 10, amplitude, 1).data;
         var found = undefined;
         for (var i = 0, j = 0; i < searchZone.length; i += 4) {
@@ -88,13 +111,12 @@
     /**
      * Cherche dans le canvas de la barre à gauche de la position (exclu).
      * @param mouseX Où chercher dans la barre
-     * @param amplitude la taille de la recherche
-     * @returns {*} Un bucket le plus proche possible à droite ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
+     * @param amplitude la taille de la recherche, ou null pour chercher sur toute la longueur
+     * @returns {*} Un mouseX le plus proche possible à droite ou undefined (pour ne pas être additionné à d'autres valeurs) si rien trouvé.
      */
-    bar.prototype._searchLeftOf = function (mouseX, amplitude) {
-
+    Bar.prototype._searchLeftOf = function (mouseX, amplitude) {
+        amplitude = amplitude || mouseX;
         var searchZone = this.context.getImageData(mouseX - amplitude, 10, amplitude, 1).data;
-        var fillLevel = Time.barDrawer.fillLevel;
         var found = undefined;
         //parcours de la searchZone en sens droite -> gauche
         for (var i = (amplitude - 1) * 4, j = 0; i >= 0; i -= 4) {
@@ -110,13 +132,12 @@
     /**
      * Cherche dans le canvas de la barre.
      * @param mouseX Où chercher dans la barre
-     * @returns {*} Un objet avec le nombre de bucket trouvé et le bucket le plus proche possible ou null si rien trouvé.
+     * @returns {*} Un objet avec le nombre de bucket trouvé et l'offset vers le bucket le plus proche possible, ou null si rien trouvé.
      */
-    bar.prototype._searchNear = function (mouseX) {
+    Bar.prototype._searchNear = function (mouseX) {
         var searchZone = this.context.getImageData(mouseX - this.amplitude, 10, 2 * this.amplitude, 1).data;
         var middle = this.amplitude;
         var found = null;
-        var fillLevel = Time.barDrawer.fillLevel;
         var foundCount = 0;
         for (var i = 0, j = 0; i < searchZone.length; i += 4) {
             var bucket = this._bucketAt(searchZone, i);
@@ -138,7 +159,7 @@
      * @returns {boolean} vrai si la position ne contient pas la couleur de fond de la barre.
      * @private
      */
-    bar.prototype._bucketAt = function (searchZone, i) {
+    Bar.prototype._bucketAt = function (searchZone, i) {
         var fillLevel = Time.barDrawer.fillLevel;
         return searchZone[i] !== fillLevel || searchZone[i + 1] !== fillLevel || searchZone[i + 2] !== fillLevel;
     };
@@ -147,7 +168,7 @@
      * @param bucketX La position sur la barre du bucket à chercher.
      * @returns {*} Le premier bucket tel que {bucket.x === bucketX} ou null
      */
-    bar.prototype._getBucketAt = function (bucketX) {
+    Bar.prototype._getBucketAt = function (bucketX) {
         if (bucketX !== undefined && bucketX !== null) {
             for (var i = 0; i < this.buckets.length; i++) {
                 var bucket = this.buckets[i];
@@ -159,60 +180,58 @@
         return null;
     };
 
-    bar.prototype._onBuckets = function (bucketsDTO) {
-        Time.barLoading.stopLoading();
+    Bar.prototype._onBuckets = function (bucketsDTO) {
         this.buckets = Time.barFactory.buildBuckets(bucketsDTO);
-        if (this.buckets.length === 0) {
-            Time.barDrawer.hideBar(this);
-            Time.tooltips.hideTooltips();
-        } else if (this.buckets.length === 1) {
-            Time.barDrawer.hideBar(this);
-            this._openSubBar(this.buckets[0]);
-        } else {
-            Time.barDrawer.drawBar(this);
-            Time.tooltips.decorate(this);
-        }
+        Time.barLoading.stopLoading();
+        Time.barDrawer.drawBar(this);
+        Time.tooltips.decorate(this);
     };
 
-    bar.prototype._mouseDownOnBar = function (event) {
+    Bar.prototype._mouseDownOnBar = function (event) {
         event.data.downX = event.data.previousX = event.clientX;
-        //TODO install bar selection
+        //TODO install Bar selection
         Time.view.window.on('mousemove.Viewport', event.data, $.proxy(this._onBarDrag, this));
         Time.view.window.on('mouseup.Viewport', event.data, $.proxy(this._onBarUp, this));
     };
 
-    bar.prototype._onBarDrag = function (event) {
+    Bar.prototype._onBarDrag = function (event) {
         var increment = event.clientX - event.data.previousX;
         if (increment !== 0) {
-            //TODO manage bar selection
+            //TODO manage Bar selection
             event.data.previousX = event.clientX;
             event.data.move = true;
         }
     };
 
-    bar.prototype._onBarUp = function (event) {
+    Bar.prototype._onBarUp = function (event) {
         if (!event.data.move) {
             //plus rien ici?
             //this._onClick(event);
         }else{
-            var bucketStart = this.viewport.toBucketX(event.data.downX);
-            var bucketEnd = this.viewport.toBucketX(event.clientX);
-            //TODO refactorer scale pour avoir un truc clean
-            //TODO penser au passage à une barre.
-            console.log("select from " + bucketStart + " to " + bucketEnd);
+            var minMouseX = Math.min(event.data.downX, event.clientX);
+            var maxMouseX = Math.max(event.data.downX, event.clientX);
+            var amplitude = maxMouseX - minMouseX;
+            var leftMouseX = this._searchRightOf(minMouseX, amplitude);
+            var rightMouseX = this._searchLeftOf(maxMouseX, amplitude);
+            var leftBucket = this._getBucketAt(this.viewport.toBucketX(leftMouseX));
+            var rightBucket = this._getBucketAt(this.viewport.toBucketX(rightMouseX));
+            var leftFilter = Time.scale.bucketToFilter(leftBucket);
+            var rightFilter = Time.scale.bucketToFilter(rightBucket);
+
+            console.log("select from ", leftFilter, " to ", rightFilter);
         }
         event.data.move = false;
         Time.view.window.off('mousemove.Viewport');
         Time.view.window.off('mouseup.Viewport');
     };
 
-    bar.prototype._onClick = function (event) {
+    Bar.prototype._onClick = function (event) {
         var searchResult = this._searchBucketAt(event.clientX);
         if (searchResult) {
             var bucket = searchResult.bucket;
             Time.phrases.clearText();
             var bucketAlone = searchResult.count === 1 && bucket.count < 20;
-            if (this.isLastBar || bucketAlone) {
+            if (bucketAlone) {
                 this._beginStory(bucket);
             } else {
                 this._openSubBar(bucket);
@@ -225,7 +244,7 @@
      * @param mouseX coordonnée écran (event.clientX, window.mouseX)
      * @returns {*} Un objet contenant le nombre de buckets trouvés pendant la recheerche, et le bucket trouvé au plus près, ou null
      */
-    bar.prototype._searchBucketAt = function (mouseX) {
+    Bar.prototype._searchBucketAt = function (mouseX) {
         var bucket = null;
         var searchResult = this._searchNear(mouseX);
         if (searchResult !== null) {
@@ -236,21 +255,17 @@
         return bucket !== null ? {bucket: bucket, count: searchResult.count} : null;
     };
 
-    bar.prototype._openSubBar = function (bucket) {
-        Time.bars[this.scale + 1].loadBuckets(Time.filter.term, bucket.bucket);
-    };
-
-    bar.prototype._beginStory = function (bucket) {
+    Bar.prototype._beginStory = function (bucket) {
         Time.phrases.clearText();
         Time.phrases.loadPhrases(this.scale, bucket.x);
         Time.historic.pushState(Time.filter.term);
     };
 
-    bar.prototype._onEnter = function () {
+    Bar.prototype._onEnter = function () {
         Time.barDrawer.focusOn(this);
         Time.tooltips.decorate(this);
         $(this.canvas).off('mouseenter.focusAtEnter');
     };
 
-    Time.Bar = bar;
+    Time.Bar = Bar;
 })();

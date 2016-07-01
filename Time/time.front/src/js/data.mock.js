@@ -3,11 +3,11 @@
 	var responseTimeBucket = 300;
 	var responseTimePhrases = 100;
 
-    function data() {
+    function Data() {
 
     }
 
-    data.prototype.getBuckets = function(term, scale, callback) {
+    Data.prototype.getBuckets = function(term, scale, callback) {
        if(scale === 0){
 		    setTimeout(function(){
 		        callback({"scale":"0","buckets":[{"bucket":0,"count":1120}]});
@@ -27,7 +27,7 @@
 		}
     };
 
-    data.prototype.getPhrases = function(term, field, from, to, lastKey, callback) {
+    Data.prototype.getPhrases = function(term, field, from, to, lastKey, callback) {
         if(!lastKey){
 			setTimeout(function(){
 				callback({"phraseList":[{"text":"Les premières découvertes paléontologiques situaient les premiers foyers de domestication du <B>chat</B> en Égypte,<strong> vers 2000 av. J.-C.</strong>, mais la découverte en 2004 par une équipe du CNRS dirigée par Jean Guilaine des restes d’un <B>chat</B> aux côtés de ceux d’un humain dans une sépulture à Chypre repousse le début de cette relation (processus biocénotique de commensalisme) entre 7 500 à 7 000 ans av. J.-C.","date":-730485,"pageUrl":"/Histoire_du_chat"},{"text":"Timothée II, dit Timothée Élure (c'est-à-dire en grec Αἴλουρος, « le <B>Chat</B> »), fut patriarche d'Alexandrie des monophysites de mars 457 à janvier 460 et de 475 à jusqu'à sa mort le<strong> 31 juillet 477</strong>","date":174433,"pageUrl":"/Timoth%C3%A9e_II_d%27Alexandrie"},{"text":"Les chats arrivent au Japon au VIe siècle en même temps que la doctrine bouddhiste, mais sa réelle introduction date du<strong> 19 septembre 999</strong>, date de l'anniversaire de l'empereur Ichijo, qui reçut un <B>chat</B> pour ses treize ans.","date":365139,"pageUrl":"/Histoire_du_chat"},{"text":"Les chats arrivent au Japon au VIe siècle en même temps que la doctrine bouddhiste, mais sa réelle introduction date du<strong> 19 septembre 999</strong>, date de l'anniversaire de l'empereur Ichijo, qui reçut un <B>chat</B> pour ses treize ans.","date":365139,"pageUrl":"/Chat-vampire_de_Nabeshima"},{"text":"C'est<strong> en 1175 </strong>que le mot <B>chat</B> apparait pour la première fois dans la langue française.","date":429160,"pageUrl":"/Histoire_du_chat"},{"text":"<strong>En 1233, </strong>la bulle Vox in rama (en) du pape Grégoire IX, créateur de l'Inquisition médiévale, considère que le <B>chat</B>, comme le crapaud, est une incarnation du Diable  et déclare que toute personne abritant un <B>chat</B> noir risque le bucher.","date":450345,"pageUrl":"/Chat_d%27argent"},{"text":"\"Comment attraper un poisson-<B>chat</B> avec une calebasse\" (瓢鮎図, Hyōnen zu,<strong> environ 1415, </strong>Taizō-in (退蔵院), Myôshin-ji (妙心寺), Kyôto), par le moine-peintre Josetsu (如拙), marque un tournant dans la peinture du Muromachi, caractérisé par une reconnaissance de l'importance du paysage.","date":516818,"pageUrl":"/Art_japonais"}],"lastKey":"f2924810-f2d0-4f49-9905-89f68737f4a5","total":1120});
@@ -44,10 +44,10 @@
 		},responseTimePhrases);
     }};
 
-    data.prototype.getSynonyms = function(term, callback) {
+    Data.prototype.getSynonyms = function(term, callback) {
         callback(["minet","mimi","minon"]);
     };
 
-    Time.Data = data;
+    Time.Data = Data;
 
 })();

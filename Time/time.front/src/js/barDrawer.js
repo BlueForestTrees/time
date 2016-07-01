@@ -1,16 +1,16 @@
 (function() {
-    function barDrawer() {
+    function BarDrawer() {
         this.fillLevel = 251;
     }
 
-    barDrawer.prototype.install = function() {
+    BarDrawer.prototype.install = function() {
         this._hideBar();
         this._updateSizeBar();
         $(window).on('resize', this._updateSizeBar);
-        delete barDrawer.prototype.install;
+        delete BarDrawer.prototype.install;
     };
 
-    barDrawer.prototype.drawBar = function(bar, explicitBuckets) {
+    BarDrawer.prototype.drawBar = function(bar, explicitBuckets) {
         bar.normalize();
         var buckets = explicitBuckets ? explicitBuckets : bar.buckets;
         bar.context.fillStyle = 'rgb('+this.fillLevel+','+this.fillLevel+','+this.fillLevel+')';
@@ -22,20 +22,20 @@
         });
     };
 
-    barDrawer.prototype.focusOn = function(bar) {
+    BarDrawer.prototype.focusOn = function(bar) {
         this._unreduceBar(bar);
     };
 
-    barDrawer.prototype._hideBar = function(){
+    BarDrawer.prototype._hideBar = function(){
         $(Time.bar.canvas).hide();
     };
 
-    barDrawer.prototype._updateSizeBar = function() {
+    BarDrawer.prototype._updateSizeBar = function() {
         Time.barDrawer.drawBar(Time.bar);
         Time.tooltips.updateTooltips();
     };
 
-    barDrawer.prototype._reduceBar = function(bar){
+    BarDrawer.prototype._reduceBar = function(bar){
         if(!bar.reduced){
             bar.reduced = true;
 
@@ -52,7 +52,7 @@
         }
     };
 
-    barDrawer.prototype._unreduceBar = function(bar) {
+    BarDrawer.prototype._unreduceBar = function(bar) {
         bar.reduced = false;
         $(bar.canvas).attr({
             height : bar.height
@@ -64,5 +64,5 @@
         this.drawBar(bar);
     };
 
-    Time.BarDrawer = barDrawer;
+    Time.BarDrawer = BarDrawer;
 })();

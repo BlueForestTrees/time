@@ -1,5 +1,5 @@
 (function() {
-    function histoires() {
+    function Histoires() {
         Time.scale = new Time.Scale();
         Time.view.throbber.hide();
         Time.barFactory = new Time.BarFactory();
@@ -20,6 +20,6 @@
         window.onpopstate = Time.historic.popState;
     }
 
-    Time.Histoires = histoires;
+    Time.Histoires = Histoires;
 
 })();

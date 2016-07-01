@@ -1,21 +1,21 @@
 (function() {
-    function barLoading() {
+    function BarLoading() {
         this.loading = false;
         this.loadingSpeed = 45;
     }
 
-    barLoading.prototype.startLoading = function (bar) {
+    BarLoading.prototype.startLoading = function (bar) {
         this.loading = true;
         this._loadingPhase(bar, this._getLoadingArray());
         Time.view.timeline.css({cursor: 'progress'});
     };
 
-    barLoading.prototype.stopLoading = function () {
+    BarLoading.prototype.stopLoading = function () {
         Time.view.timeline.css({cursor: 'pointer'});
         this.loading = false;
     };
 
-    barLoading.prototype._getLoadingArray = function(){
+    BarLoading.prototype._getLoadingArray = function(){
         return [
             {color:"#000000"},{color:"#888888"},
             {color:"#999999"},{color:"#999999"},
@@ -28,7 +28,7 @@
         ];
     };
 
-    barLoading.prototype._loadingPhase = function(bar, loadingArray){
+    BarLoading.prototype._loadingPhase = function(bar, loadingArray){
         if(this.loading) {
             Time.barDrawer.drawBar(bar, this._getBucketArray(bar, loadingArray));
             this._animateArray(loadingArray);
@@ -39,11 +39,11 @@
         }
     };
 
-    barLoading.prototype._animateArray = function(loadingArray){
+    BarLoading.prototype._animateArray = function(loadingArray){
         loadingArray.unshift(loadingArray.pop());
     };
 
-    barLoading.prototype._getBucketArray = function(bar, loadingArray){
+    BarLoading.prototype._getBucketArray = function(bar, loadingArray){
         var throbberWidth = bar.canvas.width;
         var nbBuckets = loadingArray.length;
         var gap = throbberWidth / nbBuckets;
@@ -59,9 +59,9 @@
         },this);
     };
 
-    barLoading.prototype._transformColor = function(color){
+    BarLoading.prototype._transformColor = function(color){
         return color;
     };
     
-    Time.BarLoading = barLoading;
+    Time.BarLoading = BarLoading;
 })();

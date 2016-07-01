@@ -1,10 +1,10 @@
 (function() {
 
-    function data() {
+    function Data() {
 
     }
 
-    data.prototype.getBuckets = function(term, scale, callback) {
+    Data.prototype.getBuckets = function(term, scale, callback) {
         var params = {
             scale : scale,
             term : term
@@ -13,7 +13,7 @@
         $.get("api/buckets", params).done(callback);
     };
 
-    data.prototype.getPhrases = function(request, field, from, to, lastKey, callback) {
+    Data.prototype.getPhrases = function(request, field, from, to, lastKey, callback) {
         var params = {
             field : field,
             from : from,
@@ -25,7 +25,7 @@
         $.get("api/phrases", params).done(callback);
     };
 
-    data.prototype.getSynonyms = function(term, callback) {
+    Data.prototype.getSynonyms = function(term, callback) {
         var params = {
             term : term
         };
@@ -33,6 +33,6 @@
         $.get("api/synonyms", params).done(callback);
     };
 
-    Time.Data = data;
+    Time.Data = Data;
 
 })();

@@ -1,10 +1,10 @@
 (function(){
     
-    function phrasesDrawer(){
+    function PhrasesDrawer(){
 
     }
     
-    phrasesDrawer.prototype.setPhrases = function(phrases, term) {
+    PhrasesDrawer.prototype.setPhrases = function(phrases, term) {
         if (phrases.total === 0) {
             this.addNoPhrases(term, phrases);
             return;
@@ -31,7 +31,7 @@
         return newTitle;
     }
 
-    phrasesDrawer.prototype.buildHtmlPhrase = function(phrase) {
+    PhrasesDrawer.prototype.buildHtmlPhrase = function(phrase) {
 
         var source = Time.sources[phrase.type];
         phrase.pageName = source.getPageName(phrase);
@@ -47,20 +47,20 @@
                     "</p>").replace(/\${[a-zA-Z]*}/g, function(v){return phrase[v.substring(2,v.length-1)];});
     };
 
-    phrasesDrawer.prototype.htmlEncode = function(value){
+    PhrasesDrawer.prototype.htmlEncode = function(value){
         return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;")
     };
 
-    phrasesDrawer.prototype.link = function(pageName) {
+    PhrasesDrawer.prototype.link = function(pageName) {
         Time.anal.ga('send', 'event', 'link', pageName, Time.filter.term);
     };
 
-    phrasesDrawer.prototype.addTextIntro = function(moment, nbPhrases) {
+    PhrasesDrawer.prototype.addTextIntro = function(moment, nbPhrases) {
         Time.view.phrases.append("<div class=\"textIntro\"><h1>Il était une fois " + this.firstToLowerCase(moment) + " . . .</h1>");
         Time.view.phrases.append("<i>" + nbPhrases ? (nbPhrases + " phrase") + (nbPhrases > 1 ? "s" : "") : "" + "</i>" + "</div>");
     };
 
-    phrasesDrawer.prototype.addNoPhrases = function(term, phrases) {
+    PhrasesDrawer.prototype.addNoPhrases = function(term, phrases) {
         if(phrases.alternatives == null || phrases.alternatives.length ===0){
             Time.view.phrases.append("<br><br><h2 style=\"text-align:center\">Aucun résultat pour <i>" + term + "</i></h2>");
         }else{
@@ -75,13 +75,13 @@
         }
     };
     
-    phrasesDrawer.prototype.addTheEnd = function() {
+    PhrasesDrawer.prototype.addTheEnd = function() {
         Time.view.phrases.append("<h1 style=\"text-align:center\">The END</h1>");
     };
     
-    phrasesDrawer.prototype.firstToLowerCase = function( str ) {
+    PhrasesDrawer.prototype.firstToLowerCase = function( str ) {
         return str.substr(0, 1).toLowerCase() + str.substr(1);
     }
 
-    Time.PhrasesDrawer = phrasesDrawer;
+    Time.PhrasesDrawer = PhrasesDrawer;
 })();

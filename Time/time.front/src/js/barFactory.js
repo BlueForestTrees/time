@@ -1,5 +1,5 @@
 (function() {
-    function barFactory() {
+    function BarFactory() {
         this.min = 0;
         this.max = 1000;
         this.middle = this.min + (this.max - this.min) / 2;
@@ -8,7 +8,7 @@
         this.middleColor = this.minColor + (this.maxColor - this.minColor) / 2;
     }
 
-    barFactory.prototype.buildCanvas = function(height, scale) {		
+    BarFactory.prototype.buildCanvas = function(height, scale) {		
         var canvasAttributes = {
             id : 'bar#' + scale,
             width : '100%',
@@ -25,7 +25,7 @@
         return document.getElementById(canvasAttributes.id).getContext("2d");
     };
 
-    barFactory.prototype.buildBuckets = function(bucketsDTO) {
+    BarFactory.prototype.buildBuckets = function(bucketsDTO) {
         for (var i = 0; i < bucketsDTO.buckets.length; i++) {
             var bucket = bucketsDTO.buckets[i];
             bucket.x = bucket.bucket;
@@ -37,21 +37,21 @@
         return bucketsDTO.buckets;
     };
     
-    barFactory.prototype._triBuckets = function(a,b){
+    BarFactory.prototype._triBuckets = function(a,b){
         return a.x - b.x;
     };
     
-    barFactory.prototype._getColor = function(count) {
+    BarFactory.prototype._getColor = function(count) {
         var r = this._getRed(count);
         var g = this._getGreen(count);
         return 'rgb(' + r + ',' + g + ',0)';
     };
-    barFactory.prototype._getGreen = function(count) {
+    BarFactory.prototype._getGreen = function(count) {
         return parseInt(Math.max(this.minColor, this.maxColor - count / this.max * (this.maxColor - this.minColor) * 2));
     };
-    barFactory.prototype._getRed = function(count) {
+    BarFactory.prototype._getRed = function(count) {
         return parseInt(this.maxColor - Math.max(0, count - this.middle) / this.max * (this.maxColor - this.minColor) * 2);
     };
 
-    Time.BarFactory = barFactory;
+    Time.BarFactory = BarFactory;
 })();

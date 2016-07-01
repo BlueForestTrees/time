@@ -1,16 +1,27 @@
 package time.web.bean;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.joda.time.format.DateTimeFormat;
 import org.springframework.util.StringUtils;
 
 import time.tool.date.Dates;
 
 public class TermPeriodFilter {
+
+	private static final Logger LOGGER = LogManager.getLogger(TermPeriodFilter.class);
+
 	private static final int DEFAULT_PERCENT_MARGIN = 10;
 	private static final String PERIOD_HEADER = "@";
 	private static final String PARTS_SEP = " ";
@@ -85,26 +96,33 @@ public class TermPeriodFilter {
 	 * @1Mmax
 	 * @1950
 	 * @2000+-10%
+	 * @10/02/1984
 	 * @param part
 	 * @return
      */
 	protected static Period parsePeriod(final String part) {
 		final Period period = new Period();
+
+		//matche all except dates
 		final String value = "(?<value>-?[0-9]+?)(?<decimalValue>[,.]?[0-9]*?)";
 		final String suffix = "(?<suffix>[Mmk])?";
 		final String percent = "(\\+-(?<percent>[0-9]+?)%)?";
 		final String minOrMax = "(?<min>min)?(?<max>max)?";
 		final Pattern periodPattern = Pattern.compile("@" + value + suffix + percent + minOrMax);
 		final Matcher matcher = periodPattern.matcher(part);
-		
-		if(!matcher.matches()){
-			return period;
+		boolean periodFound = matcher.matches();
+		if(periodFound){
+			parsePercentMargin(matcher, period);
+			parseValue(matcher, period);
+			parseMinMaxMode(matcher, period);
+		}else{
+			//matche dates?
+			try {
+				period.setDate(Dates.toDays(DateTimeFormatter.ofPattern("@d/M/yyyy").parse(part, LocalDate::from)));
+			}catch(Exception e) {
+				LOGGER.error("error in DateFilter: " + part);
+			}
 		}
-
-		parsePercentMargin(matcher, period);
-		parseValue(matcher, period);
-		parseMinMaxMode(matcher, period);
-		
 		return period;
 	}
 

@@ -1,33 +1,33 @@
 (function() {
-    function filter() {
+    function Filter() {
         this.term = null;
     }
 
-    filter.prototype.install = function(view) {
+    Filter.prototype.install = function(view) {
         view.termInput.on("keyup",$.proxy(this.termInputKeyPress, this));
         view.homeTermInput.on("keyup",$.proxy(this.homeTermInputKeyPress, this));
     };
 
 //HOME
-    filter.prototype.homeTermInputKeyPress = function(e) {
+    Filter.prototype.homeTermInputKeyPress = function(e) {
         if (e.which === 13) {
             this.homeTermInputKeyEnterPress();
         }
     };
 
-    filter.prototype.homeTermInputKeyEnterPress = function() {
+    Filter.prototype.homeTermInputKeyEnterPress = function() {
         var term = Time.view.homeTermInput.val();
         this.onFilterFromHome(term, false);
     };
 
-    filter.prototype.onFilterFromHome = function(term, ignoreHistory){
+    Filter.prototype.onFilterFromHome = function(term, ignoreHistory){
         Time.view.homeTermInput.off("keyup");
         Time.view.home.remove();
         Time.view.content.show();
-        delete filter.prototype.homeTermInputKeyEnterPress;
-        delete filter.prototype.homeTermInputKeyPress;
-        delete filter.prototype.onFilterFromHome;
-        filter.prototype.onFilterFromHome = this.onFilter;
+        delete Filter.prototype.homeTermInputKeyEnterPress;
+        delete Filter.prototype.homeTermInputKeyPress;
+        delete Filter.prototype.onFilterFromHome;
+        Filter.prototype.onFilterFromHome = this.onFilter;
         delete Time.view.homeTermInput;
         delete Time.view.home;
 
@@ -35,7 +35,7 @@
     };
 //!HOME
 
-    filter.prototype.termInputKeyPress = function(e) {
+    Filter.prototype.termInputKeyPress = function(e) {
         if (e.which === 13) {
             this.termInputKeyEnterPress();
         } else {
@@ -44,7 +44,7 @@
     };
 
 
-    filter.prototype.checkGetSynonymsTrigger = function() {
+    Filter.prototype.checkGetSynonymsTrigger = function() {
         var saisie = Time.view.termInput.val();
         var term = saisie.trim();
         var isTwoSpace = saisie.endsWith('  ');
@@ -55,7 +55,7 @@
         }
     };
 
-    filter.prototype.onSynonyms = function(synonyms) {
+    Filter.prototype.onSynonyms = function(synonyms) {
         var saisie = Time.view.termInput.val().trim();
         var newSaisie = saisie + ' ' + synonyms.join(' ');
         Time.view.termInput.val(newSaisie);
@@ -63,12 +63,12 @@
         Time.view.termInput[0].selectionEnd = newSaisie.length;
     };
 
-    filter.prototype.termInputKeyEnterPress = function() {
+    Filter.prototype.termInputKeyEnterPress = function() {
         var term = Time.view.termInput.val();
         this.onFilter(term);
     };
 
-    filter.prototype.onFilter = function(term, ignoreHistory) {
+    Filter.prototype.onFilter = function(term, ignoreHistory) {
         this.term = term;
         Time.anal.ga('send', 'event', 'search', term);
         Time.view.termInput.val(term);
@@ -83,10 +83,19 @@
         }
     };
 
-    filter.prototype.onPeriodFilter = function (leftFilter, rightFilter) {
-        //TODO
-        console.log("select from ", leftFilter, " to ", rightFilter);
+    Filter.prototype.onPeriodFilter = function (leftFilter, rightFilter) {
+        this.onFilter(applyFilters(Time.view.termInput.val(), leftFilter, rightFilter));
     };
 
-    Time.Filter = filter;
+    function applyFilters(term, leftFilter, rightFilter){
+        var partArray = term.split(" ").filter(removeUndesired);
+        partArray.push(leftFilter, rightFilter);
+        return partArray.join(" ");
+    }
+
+    function removeUndesired(part){
+        return (part || "").length > 0 && part.charAt(0) !== "@";
+    }
+
+    Time.Filter = Filter;
 })();

@@ -217,7 +217,8 @@
             var rightBucket = this._getBucketAt(this.viewport.toBucketX(rightMouseX));
             var leftFilter = Time.scale.bucketToFilter(leftBucket);
             var rightFilter = Time.scale.bucketToFilter(rightBucket);
-            Time.filter.onPeriodFilter(leftFilter, rightFilter);
+            //TODO rebrancher
+            Time.filter.onPeriodFilter("@1000", "@2000");
         }
         event.data.move = false;
         Time.view.window.off('mousemove.Viewport');

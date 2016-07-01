@@ -89,7 +89,10 @@
 
     function applyFilters(term, leftFilter, rightFilter){
         var partArray = term.split(" ").filter(removeUndesired);
-        partArray.push(leftFilter, rightFilter);
+        partArray.push(leftFilter);
+        if(leftFilter !== rightFilter){
+            partArray.push(rightFilter);
+        }
         return partArray.join(" ");
     }
 

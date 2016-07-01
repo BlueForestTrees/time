@@ -127,8 +127,16 @@
     };
 
     Scale.prototype._formatDateFilter = function(date){
-        return (date.getMonth() + 1) + "/" +  date.getDate() + "/" +  date.getFullYear();
+        return leadingZero(date.getMonth() + 1) + "/" +  leadingZero(date.getDate()) + "/" +  date.getFullYear();
     };
+
+    function leadingZero(value){
+        if(value < 10){
+            return "0"+value;
+        }else{
+            return ""+value;
+        }
+    }
 
     Scale.prototype._insideCalendarLimit = function(year){
         return year > -400 && year < 3000;

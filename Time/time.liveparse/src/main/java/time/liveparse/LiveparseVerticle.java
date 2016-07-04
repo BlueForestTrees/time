@@ -64,9 +64,9 @@ public class LiveparseVerticle extends AbstractVerticle {
 
         router.route().handler(BodyHandler.create().setUploadsDirectory(uploadDir)).failureHandler(this::onFailure);
 
-        router.get("/api/App/url/:url").handler(this::fromUrl);
-        router.post("/api/App/file").handler(this::fromFile);
-        router.post("/api/App/add").handler(this::add);
+        router.post("/api/url").handler(this::fromUrl);
+        router.post("/api/file").handler(this::fromFile);
+        router.post("/api/add").handler(this::add);
         final StaticHandler handler = StaticHandler.create().setCachingEnabled(false).setAllowRootFileSystemAccess(true);
         if (webRoot != null) {
             LOGGER.info("external webroot is used.");
@@ -124,7 +124,8 @@ public class LiveparseVerticle extends AbstractVerticle {
     private void fromUrl(final RoutingContext ctx) {
         vertx.executeBlocking(future -> {
             try {
-                final String url = ctx.request().getParam("url");
+                final String url = java.net.URLDecoder.decode(ctx.getBodyAsString(), "UTF-8");
+
                 LOGGER.info("fromUrl " + url);
                 final String text = urlToText(url);
                 ctx.response()

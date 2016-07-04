@@ -41,7 +41,7 @@
             data.append(key, value);
         });
         $.ajax({
-            url: '/api/App/file', type: 'POST', data: data, cache: false, processData: false, contentType: false,
+            url: '/api/file', type: 'POST', data: data, cache: false, processData: false, contentType: false,
             success: $.proxy(this.onLiveparse, this),
             error: $.proxy(this.onError, this)
         });
@@ -50,10 +50,12 @@
     Liveparse.prototype.doUrlLiveparse = function(event) {
             console.log('doUrlLiveparse. . .');
             this.clear();
-            var url = "api/App/url/" + encodeURIComponent(this.view.uploadUrlText.val());
-            $.get(url)
-             .done($.proxy(this.onLiveparse, this))
-             .fail($.proxy(this.onLiveparseError, this));
+            var data = encodeURIComponent(this.view.uploadUrlText.val());
+            $.ajax({
+                url: '/api/url', type: 'POST', data: data,
+                success: $.proxy(this.onLiveparse, this),
+                error: $.proxy(this.onLiveparseError, this)
+            });
      };
 
      Liveparse.prototype.onLiveparse = function(data){
@@ -102,7 +104,7 @@
         this.metadata.phrases = this.view.phrases.val();
         this.metadata.url = this.view.url.val();
 
-        $.post("api/App/add", JSON.stringify(this.metadata))
+        $.post("api/add", JSON.stringify(this.metadata))
                         .done($.proxy(this.onAdd, this))
                         .fail($.proxy(this.onError));
     };

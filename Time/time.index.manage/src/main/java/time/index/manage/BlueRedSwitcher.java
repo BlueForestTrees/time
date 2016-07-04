@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 import time.conf.ConfManager;
 import time.conf.ConfEnum;
 import time.domain.Merge;
+import time.domain.TimeWebConf;
 
 import java.io.IOException;
 
@@ -15,7 +16,7 @@ public class BlueRedSwitcher {
         final Merge merge = new Merge();
         merge.setMergeableIndexesDir("${TIME_HOME}/indexes/mergeables");
 
-        final String currentWikiCrawlindexDir = new ConfManager().get(ConfEnum.TIMEWEB).getIndexDir();
+        final String currentWikiCrawlindexDir = new ConfManager().get(ConfEnum.TIMEWEB, TimeWebConf.class).getIndexDir();
 
         LOGGER.info("wiki.web is {}", currentWikiCrawlindexDir);
 

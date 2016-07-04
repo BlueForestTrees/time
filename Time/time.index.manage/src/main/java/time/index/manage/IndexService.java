@@ -14,6 +14,7 @@ import time.conf.ConfManager;
 import time.conf.Resolver;
 import time.domain.IndexCreation;
 import time.domain.Merge;
+import time.domain.TimeWebConf;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class IndexService {
     public IndexCreation append(final IndexCreation indexCreation) throws IOException {
         final File sourceFile = new File(Resolver.get(indexCreation.getSourceIndexDir()));
         final Directory sourceDirectory = directoryFromFile(sourceFile);
-        final File destFile = new File(Resolver.get(new ConfManager().get(ConfEnum.TIMEWEB).getIndexDir()));
+        final File destFile = new File(Resolver.get(new ConfManager().get(ConfEnum.TIMEWEB, TimeWebConf.class).getIndexDir()));
         final Directory destDirectory = directoryFromFile(destFile);
         final IndexWriterConfig indexWriterConfig = indexWriterConfig();
 
@@ -53,7 +54,7 @@ public class IndexService {
 		final File biggerIndex = Arrays.stream(allIndexes).max((f1,f2) -> Long.compare(FileUtils.sizeOfDirectory(f1), FileUtils.sizeOfDirectory(f2))).get();
 		final Directory destDirectory = directoryFromFile(destPath);
     	final File[] mergeableIndexesFile = Arrays.stream(allIndexes).filter(f -> f != biggerIndex).toArray(File[]::new);
-    	final Directory[] mergeableIndexes = Arrays.stream(mergeableIndexesFile).map(f -> directoryFromFile(f)).toArray(Directory[]::new);
+    	final Directory[] mergeableIndexes = Arrays.stream(mergeableIndexesFile).map(this::directoryFromFile).toArray(Directory[]::new);
     	final IndexWriterConfig indexWriterConfig = indexWriterConfig();
     	
     	

@@ -49,7 +49,7 @@ public class ConfManager {
 
 
         final String resolvedYmlPath = Resolver.get(ymlPath);
-        LOGGER.info("get conf at {}",resolvedYmlPath);
+        LOGGER.info("get conf at {} as {}",resolvedYmlPath, beanClass);
         final String rawConfig = new String(ByteStreams.toByteArray(new FileInputStream(new File(resolvedYmlPath))), StandardCharsets.UTF_8);
         final String substituedConfig = Resolver.get(rawConfig);
 

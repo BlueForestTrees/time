@@ -87,6 +87,13 @@
         this.onFilter(applyFilters(Time.view.termInput.val(), leftFilter, rightFilter));
     };
 
+    /**
+     * Remplace les filters existants dans term par ceux spécifiés.
+     * @param term
+     * @param leftFilter ajouté à term
+     * @param rightFilter ajouté si différent de left
+     * @returns {string}
+     */
     function applyFilters(term, leftFilter, rightFilter){
         var partArray = term.split(" ").filter(removeUndesired);
         partArray.push(leftFilter);

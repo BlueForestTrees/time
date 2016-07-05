@@ -29,6 +29,7 @@
         for (var i = 0; i < bucketsDTO.buckets.length; i++) {
             var bucket = bucketsDTO.buckets[i];
             bucket.x = bucket.bucket;
+            delete bucket.bucket;
             bucket.color = this._getColor(bucket.count);
             bucket.scale = bucketsDTO.scale;
         }

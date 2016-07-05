@@ -210,11 +210,13 @@
         }else{
             var minMouseX = Math.min(event.data.downX, event.clientX);
             var maxMouseX = Math.max(event.data.downX, event.clientX);
-            var amplitude = maxMouseX - minMouseX;
-            var leftMouseX = this._searchRightOf(minMouseX, amplitude);
-            var rightMouseX = this._searchLeftOf(maxMouseX, amplitude);
-            var leftBucket = this._getBucketAt(this.viewport.toBucketX(leftMouseX));
-            var rightBucket = this._getBucketAt(this.viewport.toBucketX(rightMouseX));
+            //var amplitude = maxMouseX - minMouseX;
+           // var leftMouseX = this._searchRightOf(minMouseX, amplitude);
+           // var rightMouseX = this._searchLeftOf(maxMouseX, amplitude);
+            //var leftBucket = this._getBucketAt(this.viewport.toBucketX(leftMouseX));
+            //var rightBucket = this._getBucketAt(this.viewport.toBucketX(rightMouseX));
+            var leftBucket = {scale:this.scale,x:this.viewport.toBucketX(minMouseX)};
+            var rightBucket = {scale:this.scale,x:this.viewport.toBucketX(maxMouseX)};
             var leftFilter = Time.scale.bucketToFilter(leftBucket);
             var rightFilter = Time.scale.bucketToFilter(rightBucket);
             Time.filter.onPeriodFilter(leftFilter, rightFilter);

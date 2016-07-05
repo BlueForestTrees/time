@@ -107,7 +107,7 @@
         if(bucket.years){
             return bucket.years;
         }
-        return this.scales[bucket.scale] * bucket.bucket;
+        return this.scales[bucket.scale] * bucket.x;
     };
 
     Scale.prototype._daysToYears = function(days) {

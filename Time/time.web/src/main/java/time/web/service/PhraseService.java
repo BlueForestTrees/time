@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import com.google.common.base.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.FieldDoc;
 import org.apache.lucene.search.IndexSearcher;
@@ -34,8 +36,16 @@ import time.web.bean.Phrases;
 @Service
 public class PhraseService {
 
+    private static final Logger LOGGER = LogManager.getLogger(PhraseService.class);
+
     @Autowired
-    private int searchPhrasePageSize;
+    private Sort dateSort;
+
+    @Autowired
+    private Sort randomSort;
+
+    @Autowired
+    private Integer searchPhrasePageSize;
 
     @Autowired
     private IndexSearcher indexSearcher;
@@ -107,32 +117,38 @@ public class PhraseService {
 
 
     public String findFirstSlack(final String term){
-        return htmlToSlackFormat(findFirst(term));
+        return toSlackMessageFormat(findOne(term, dateSort));
     }
 
-	private String findFirst(final String term) {
-		String result = "";
-		final Query query = queryHelper.getQueryForFirstPhrase(term);
-		final Sort sort = new Sort(new SortField(Fields.DATE, SortField.Type.LONG));
-		
-		try {
-			final TopFieldDocs searchResult = indexSearcher.search(query, 1, sort);
-			if (searchResult.totalHits > 0) {
-				final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
-		        highlighter.setTextFragmenter(new NullFragmenter());
-				result = buildPhrase(searchResult.scoreDocs[0], highlighter).getText();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-	}
 
-	private String htmlToSlackFormat(final String textWithHtml) {
-		final String slackFormattedMessage = textWithHtml.replace("<strong> ", " <strong>").replace(" </strong>", "</strong> ").replace("<b> ", " <b>").replace(" </b>", "</b> ").replace("<B> ", " <B>").replace(" </B>", "</B> ").replace("<B>", "*").replace("</B>", "*").replace("<b>", "*").replace("</b>", "*").replace("<strong>", "*").replace("</strong>", "*");
-	
-		return "{\"response_type\": \"in_channel\",\"text\":\""+slackFormattedMessage+"\"}";
-	}
+    public String findRandomSlack(String term) {
+        return toSlackMessageFormat(findOne(term, randomSort));
+    }
+
+    private String findOne(final String term, final Sort sort){
+        return findSome(term, sort, 1);
+    }
+
+    private String findSome(final String term, final Sort sort, final int limit) {
+        String result = "";
+        final Query query = queryHelper.getQueryForFirstPhrase(term);
+        try {
+            final TopFieldDocs searchResult = indexSearcher.search(query, limit, sort);
+            if (searchResult.totalHits > 0) {
+                final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
+                highlighter.setTextFragmenter(new NullFragmenter());
+                result = buildPhrase(searchResult.scoreDocs[0], highlighter).getText();
+            }
+        } catch (IOException e) {
+            LOGGER.error(e);
+        }
+        return result;
+    }
+
+    private String toSlackMessageFormat(final String textWithHtml) {
+        final String slackFormattedMessage = textWithHtml.replace("<strong> ", " <strong>").replace(" </strong>", "</strong> ").replace("<b> ", " <b>").replace(" </b>", "</b> ").replace("<B> ", " <B>").replace(" </B>", "</B> ").replace("<B>", "*").replace("</B>", "*").replace("<b>", "*").replace("</b>", "*").replace("<strong>", "*").replace("</strong>", "*");
+
+        return "{\"response_type\": \"in_channel\",\"text\":\""+slackFormattedMessage+"\"}";
+    }
 
 }

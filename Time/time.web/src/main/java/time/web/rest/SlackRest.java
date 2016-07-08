@@ -26,8 +26,23 @@ public class SlackRest {
      * @throws IOException
      */
     @RequestMapping(value = "/api/first", method = RequestMethod.POST)
-    public String slackFirst(@RequestParam final String text) throws IOException {
+    public String slackFirstPost(@RequestParam final String text) throws IOException {
         return phraseService.findFirstSlack(text);
+    }
+
+    @RequestMapping(value = "/api/first", method = RequestMethod.GET)
+    public String slackFirstGet(@RequestParam final String text) throws IOException {
+        return phraseService.findFirstSlack(text);
+    }
+
+    @RequestMapping(value = "/api/random", method = RequestMethod.POST)
+    public String slackRandomPost(@RequestParam final String text) throws IOException {
+        return phraseService.findRandomSlack(text);
+    }
+
+    @RequestMapping(value = "/api/random", method = RequestMethod.GET)
+    public String slackRandomGet(@RequestParam final String text) throws IOException {
+        return phraseService.findRandomSlack(text);
     }
 
 }

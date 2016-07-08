@@ -21,9 +21,4 @@ public class ServiceConfig {
         return new ConfManager().get(ConfEnum.TIMEWEB, TimeWebConf.class);
     }
 
-    @Bean
-    public int searchPhrasePageSize() throws IOException {
-        return Optional.fromNullable(conf().getSearchPhrasePageSize()).or(20);
-    }
-
 }

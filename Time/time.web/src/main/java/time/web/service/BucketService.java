@@ -34,7 +34,7 @@ public class BucketService {
 	private QueryService queryService;
 
 	public BucketGroup getBuckets(final String term) throws IOException {
-		final String scale = "2";
+		final String scale = "2";//mettre un scale fin? le déduire d'un count, d'un min/max?
 		final FacetsCollector facetsCollector = new FacetsCollector();
 		final Query query = queryService.getQuery(term);
 		FacetsCollector.search(indexSearcher, query, 10, facetsCollector);

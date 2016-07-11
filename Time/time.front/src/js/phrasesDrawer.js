@@ -38,6 +38,7 @@
         phrase.pageNameEscaped = this.htmlEncode(phrase.pageName);
         phrase.tipTextHeader = this.htmlEncode(source.tipTextHeader);
         phrase.imgUrl = source.imgUrl;
+        phrase.author = source.getAuthor(phrase);
 
         return ((titleChanged(phrase) ? "<div class='phraseHeader'><i>${title}</i></div>" : "") +
                     "<p date='${date}' page='${url}'>${text}" +

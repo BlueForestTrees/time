@@ -125,19 +125,19 @@ public class PhraseService {
         return toSlackMessageFormat(findOne(term, randomSort));
     }
 
-    private String findOne(final String term, final Sort sort){
+    private DatedPhrase findOne(final String term, final Sort sort){
         return findSome(term, sort, 1);
     }
 
-    private String findSome(final String term, final Sort sort, final int limit) {
-        String result = "";
+    private DatedPhrase findSome(final String term, final Sort sort, final int limit) {
+        DatedPhrase result = null;
         final Query query = queryHelper.getQueryForFirstPhrase(term);
         try {
             final TopFieldDocs searchResult = indexSearcher.search(query, limit, sort);
             if (searchResult.totalHits > 0) {
                 final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
                 highlighter.setTextFragmenter(new NullFragmenter());
-                result = buildPhrase(searchResult.scoreDocs[0], highlighter).getText();
+                result = buildPhrase(searchResult.scoreDocs[0], highlighter);
             }
         } catch (IOException e) {
             LOGGER.error(e);
@@ -145,8 +145,12 @@ public class PhraseService {
         return result;
     }
 
-    private String toSlackMessageFormat(final String textWithHtml) {
-        final String slackFormattedMessage = textWithHtml.replace("<strong> ", " <strong>").replace(" </strong>", "</strong> ").replace("<b> ", " <b>").replace(" </b>", "</b> ").replace("<B> ", " <B>").replace(" </B>", "</B> ").replace("<B>", "*").replace("</B>", "*").replace("<b>", "*").replace("</b>", "*").replace("<strong>", "*").replace("</strong>", "*");
+    private String toSlackMessageFormat(final DatedPhrase phrase) {
+        final String text = phrase.getText();
+        final String author = phrase.getType() == Metadata.Type.WIKI ? "Wikipédia" : phrase.getAuthor();
+        String slackFormattedMessage = text.replace("<strong> ", " <strong>").replace(" </strong>", "</strong> ").replace("<b> ", " <b>").replace(" </b>", "</b> ").replace("<B> ", " <B>").replace(" </B>", "</B> ").replace("<B>", "*").replace("</B>", "*").replace("<b>", "*").replace("</b>", "*").replace("<strong>", "*").replace("</strong>", "*");
+
+        slackFormattedMessage += "  ("+author+")";
 
         return "{\"response_type\": \"in_channel\",\"text\":\""+slackFormattedMessage+"\"}";
     }

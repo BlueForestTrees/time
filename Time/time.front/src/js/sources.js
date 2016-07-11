@@ -5,6 +5,9 @@
                 'imgUrl' : 'http://www.ecoagris.org/AjaxControls/KoolTreeView/icons/book.gif',
                 'getPageName' : function(phrase){
                     return phrase.title;
+                },
+                'getAuthor' : function(phrase){
+                    return phrase.author
                 }
             },
             'WIKI' : {
@@ -12,6 +15,9 @@
                 'imgUrl' : 'http://upload.wikimedia.org/wikipedia/commons/6/64/Icon_External_Link.png',
                 'getPageName' : function(phrase){
                     return decodeURIComponent(phrase.url).split(/[\/]+/).pop().replace(/_/g, " ");
+                },
+                'getAuthor' : function(phrase){
+                    return 'Wikipédia'
                 }
             },
             'WEB_PAGE' : {
@@ -19,6 +25,9 @@
                 'imgUrl' : 'img/browser-world-globe-planet-icone-8648-16.png',
                 'getPageName' : function(phrase){
                     return phrase.title;
+                },
+                'getAuthor' : function(phrase){
+                    return phrase.author
                 }
             }
     };

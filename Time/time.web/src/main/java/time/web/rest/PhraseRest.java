@@ -23,9 +23,8 @@ public class PhraseRest {
     @RequestMapping(value = "/api/phrases", method = RequestMethod.GET)
     public Phrases find(
             @RequestParam(value = "request", required = false) String request,
-            @RequestParam(value = "field", required = false) String field,
             @RequestParam(value = "lastKey", required = false) String lastKey) throws IOException {
-        return phraseService.find(request, field, lastKey);
+        return phraseService.find(request, lastKey);
     }
 
 }

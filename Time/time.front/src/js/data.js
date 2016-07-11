@@ -18,7 +18,7 @@
             request : request,
             lastKey : lastKey
         };
-        Time.anal.ga('send', 'event', 'phrases', request, field);
+        Time.anal.ga('send', 'event', 'phrases', request);
         $.get("api/phrases", params).done(callback);
     };
 

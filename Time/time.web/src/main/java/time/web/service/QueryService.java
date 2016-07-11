@@ -24,28 +24,20 @@ public class QueryService {
     /**
      * Construit une requête lucene depuis les paramètres 'Histoire/Time'
      * @param request
-     * @param field
      * @return
      */
-    public Query getQuery(final String request, final String field) {
+    public Query getQuery(final String request) {
     	final TermPeriodFilter termPeriodFilter = TermPeriodFilter.build(request);
-    	
         final boolean hasTermFilter = termPeriodFilter.hasTerm();
-        final boolean hasBucketFilter = !StringUtils.isEmpty(field) && (from != null || to != null);
         final boolean hasPeriodFilter = termPeriodFilter.hasPeriod();
         final Query termQuery = hasTermFilter ? getTermQuery(request.toLowerCase()) : null;
-        final Query bucketQuery = hasBucketFilter ? NumericRangeQuery.newLongRange(field, from, to, true, true) : null;
         final Query periodQuery = hasPeriodFilter ? NumericRangeQuery.newLongRange(Fields.DATE, termPeriodFilter.getFrom(), termPeriodFilter.getTo(), true, true) : null;
 
         if(hasPeriodFilter && hasTermFilter){
         	return new BooleanQuery.Builder().add(termQuery, Occur.MUST).add(periodQuery, Occur.MUST).build();
         }else if(hasPeriodFilter){
         	return periodQuery;
-        }else if (hasBucketFilter && hasTermFilter) {
-            return new BooleanQuery.Builder().add(termQuery, Occur.MUST).add(bucketQuery, Occur.MUST).build();
-        }else if(hasBucketFilter && !hasTermFilter){
-            return bucketQuery;
-        }else if(!hasBucketFilter && hasTermFilter){
+        }else if(hasTermFilter){
             return termQuery;
         }else{
             return new MatchAllDocsQuery();

@@ -22,10 +22,7 @@
     };
 
     Scale.prototype.dayToHuman = function(day){
-        var bucket = {
-            years : this._daysToYears(day)
-        };
-        return this.bucketToHuman(bucket);
+        return this.bucketToHuman({day:day});
     };
 
     Scale.prototype.bucketToFilter = function(bucket){
@@ -104,8 +101,8 @@
     };
 
     Scale.prototype._bucketToDays = function(bucket){
-        if(bucket.years){
-            return bucket.years;
+        if(bucket.day){
+            return bucket.day;
         }
         return this.scales[bucket.scale] * bucket.x;
     };

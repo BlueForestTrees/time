@@ -63,9 +63,9 @@ public class PhraseService {
 
     private Sort sortDateAsc = new Sort(new SortField("date", SortField.Type.LONG));
 
-    public Phrases find(final String request, final String field, String lastKey) throws IOException {
+    public Phrases find(final String request, String lastKey) throws IOException {
         final Last last = lastKey != null ? (Last) cache.remove(lastKey) : null;
-        final Query query = queryHelper.getQuery(request, field);
+        final Query query = queryHelper.getQuery(request);
         final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
         highlighter.setTextFragmenter(new NullFragmenter());
         final TopFieldDocs searchResult = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, searchPhrasePageSize, sortDateAsc, true, true);

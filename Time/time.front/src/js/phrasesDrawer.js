@@ -56,8 +56,8 @@
         Time.anal.ga('send', 'event', 'link', pageName, Time.filter.term);
     };
 
-    PhrasesDrawer.prototype.addTextIntro = function(moment, nbPhrases) {
-        Time.view.phrases.append("<div class=\"textIntro\"><h1>Il était une fois " + this.firstToLowerCase(moment) + " . . .</h1>");
+    PhrasesDrawer.prototype.addTextIntro = function(humanDate, nbPhrases) {
+        Time.view.phrases.append("<div class=\"textIntro\"><h1>Il était une fois " + this.firstToLowerCase(humanDate) + " . . .</h1>");
         Time.view.phrases.append("<i>" + nbPhrases ? (nbPhrases + " phrase") + (nbPhrases > 1 ? "s" : "") : "" + "</i>" + "</div>");
     };
 

@@ -4,12 +4,11 @@
 
     }
 
-    Data.prototype.getBuckets = function(term, scale, callback) {
+    Data.prototype.getBuckets = function(term, callback) {
         var params = {
-            scale : scale,
             term : term
         };
-        Time.anal.ga('send', 'event', 'buckets', term, scale);
+        Time.anal.ga('send', 'event', 'buckets', term);
         $.get("api/buckets", params).done(callback);
     };
 

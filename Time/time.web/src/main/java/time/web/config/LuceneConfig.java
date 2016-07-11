@@ -60,8 +60,13 @@ public class LuceneConfig {
     }
 
     @Bean
-    protected Sort dateSort() {
+    protected Sort dateAscSort() {
         return new Sort(new SortField(Fields.DATE, SortField.Type.LONG));
+    }
+
+    @Bean
+    protected Sort dateDescSort() {
+        return new Sort(new SortField(Fields.DATE, SortField.Type.LONG, true));
     }
 
     @Bean

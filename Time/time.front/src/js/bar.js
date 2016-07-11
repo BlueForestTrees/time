@@ -50,7 +50,7 @@
     Bar.prototype.loadBuckets = function (term) {
         Time.barLoading.startLoading(this);
         Time.barDrawer.focusOn(this);
-        Time.data.getBuckets(term, this.scale, $.proxy(this._onBuckets, this));
+        Time.data.getBuckets(term, $.proxy(this._onBuckets, this));
         Time.tooltips.decorate(null);
     };
 
@@ -181,6 +181,7 @@
     };
 
     Bar.prototype._onBuckets = function (bucketsDTO) {
+        this.scale = bucketsDTO.scale;
         this.buckets = Time.barFactory.buildBuckets(bucketsDTO);
         Time.barLoading.stopLoading();
         Time.barDrawer.drawBar(this);

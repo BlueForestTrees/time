@@ -33,7 +33,8 @@ public class BucketService {
 	@Autowired
 	private QueryService queryService;
 
-	public BucketGroup getBuckets(final String scale, final String term) throws IOException {
+	public BucketGroup getBuckets(final String term) throws IOException {
+		final String scale = "2";
 		final FacetsCollector facetsCollector = new FacetsCollector();
 		final Query query = queryService.getQuery(term);
 		FacetsCollector.search(indexSearcher, query, 10, facetsCollector);

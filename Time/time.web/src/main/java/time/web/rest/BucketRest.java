@@ -16,9 +16,14 @@ public class BucketRest {
     @Autowired
     private BucketService bucketService;
 
+    /**
+     * @param term recherche time
+     * @return Renvoie les buckets d'une recherche et d'une échelle donnée.
+     * @throws IOException
+     */
     @RequestMapping(value = "/api/buckets", method = RequestMethod.GET)
-    public BucketGroup getBuckets(@RequestParam(value = "scale", required = true) String scale, @RequestParam(value = "term", required = false) String term) throws IOException {
-        return bucketService.getBuckets(scale, term);
+    public BucketGroup getBuckets(@RequestParam(value = "term", required = false) String term) throws IOException {
+        return bucketService.getBuckets(term);
     }
 
 }

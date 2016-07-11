@@ -39,7 +39,10 @@ public class PhraseService {
     private static final Logger LOGGER = LogManager.getLogger(PhraseService.class);
 
     @Autowired
-    private Sort dateSort;
+    private Sort dateAscSort;
+
+    @Autowired
+    private Sort dateDescSort;
 
     @Autowired
     private Sort randomSort;
@@ -117,7 +120,11 @@ public class PhraseService {
 
 
     public String findFirstSlack(final String term){
-        return toSlackMessageFormat(findOne(term, dateSort));
+        return toSlackMessageFormat(findOne(term, dateAscSort));
+    }
+
+    public String findLastSlack(final String term){
+        return toSlackMessageFormat(findOne(term, dateDescSort));
     }
 
 

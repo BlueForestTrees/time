@@ -19,12 +19,6 @@ public class SlackRest {
     /*
      * Token slack gzPz99SDGcbEhzIfTkVKuCRf
      */
-    /**
-     * Slack endpoint
-     * @param text
-     * @return
-     * @throws IOException
-     */
     @RequestMapping(value = "/api/first", method = RequestMethod.POST)
     public String slackFirstPost(@RequestParam final String text) throws IOException {
         return phraseService.findFirstSlack(text);
@@ -33,6 +27,16 @@ public class SlackRest {
     @RequestMapping(value = "/api/first", method = RequestMethod.GET)
     public String slackFirstGet(@RequestParam final String text) throws IOException {
         return phraseService.findFirstSlack(text);
+    }
+
+    @RequestMapping(value = "/api/last", method = RequestMethod.POST)
+    public String slackLastPost(@RequestParam final String text) throws IOException {
+        return phraseService.findLastSlack(text);
+    }
+
+    @RequestMapping(value = "/api/last", method = RequestMethod.GET)
+    public String slackLastGet(@RequestParam final String text) throws IOException {
+        return phraseService.findLastSlack(text);
     }
 
     @RequestMapping(value = "/api/random", method = RequestMethod.POST)

@@ -24,10 +24,8 @@ public class PhraseRest {
     public Phrases find(
             @RequestParam(value = "request", required = false) String request,
             @RequestParam(value = "field", required = false) String field,
-            @RequestParam(value = "from", required = false) Long from,
-            @RequestParam(value = "to", required = false) Long to,
             @RequestParam(value = "lastKey", required = false) String lastKey) throws IOException {
-        return phraseService.find(request, field, from, to, lastKey);
+        return phraseService.find(request, field, lastKey);
     }
 
 }

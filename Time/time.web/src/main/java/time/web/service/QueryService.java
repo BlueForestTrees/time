@@ -25,11 +25,9 @@ public class QueryService {
      * Construit une requête lucene depuis les paramètres 'Histoire/Time'
      * @param request
      * @param field
-     * @param from
-     * @param to
      * @return
      */
-    public Query getQuery(final String request, final String field, final Long from, final Long to) {
+    public Query getQuery(final String request, final String field) {
     	final TermPeriodFilter termPeriodFilter = TermPeriodFilter.build(request);
     	
         final boolean hasTermFilter = termPeriodFilter.hasTerm();

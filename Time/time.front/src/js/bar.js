@@ -256,9 +256,9 @@
         return bucket !== null ? {bucket: bucket, count: searchResult.count} : null;
     };
 
-    Bar.prototype._beginStory = function (bucket) {
+    Bar.prototype._beginStory = function () {
         Time.phrases.clearText();
-        Time.phrases.loadPhrases(this.scale, bucket.x);
+        Time.phrases.loadPhrases();
         Time.historic.pushState(Time.filter.term);
     };
 

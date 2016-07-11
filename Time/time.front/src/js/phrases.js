@@ -17,28 +17,27 @@
         }
     };
 
-    Phrases.prototype.loadPhrases = function(scale, bucket) {
+    Phrases.prototype.loadPhrases = function() {
         Time.view.throbber.show();
-        Time.data.getPhrases(Time.filter.term, scale, bucket, bucket, null, $.proxy(this.onFirstPhrases, this, scale, bucket));
+        var lastKey = null;
+        Time.data.getPhrases(Time.filter.term, lastKey, $.proxy(this.onFirstPhrases, this));
     };
 
-    Phrases.prototype.onFirstPhrases = function(a, b, phrases) {
+    Phrases.prototype.onFirstPhrases = function(phrases) {
         if (phrases.total > 0) {
 			var day = phrases.phraseList[0].date;
             var humanDate = Time.scale.dayToHuman(day);
             Time.phrasesdrawer.addTextIntro(humanDate, phrases.total);
         }
-        this.onPhrases(null, null, phrases);
+        this.onPhrases(phrases);
     };
 
-    Phrases.prototype.onPhrases = function(scale, xBucket, phrases) {
+    Phrases.prototype.onPhrases = function(phrases) {
         Time.view.throbber.hide();
         Time.phrasesdrawer.setPhrases(phrases, Time.filter.term);
         this.isSearching = false;
         if (phrases.lastKey) {
             this.lastSearch = {
-                scale : scale,
-                bucket : xBucket,
                 lastKey : phrases.lastKey
             };
             this.maybeMorePhrases();
@@ -63,7 +62,7 @@
         if (!this.isSearching && this.lastSearch && this.isBottomVisible()) {
             this.isSearching = true;
             Time.view.throbber.show();
-            Time.data.getPhrases(Time.filter.term, this.lastSearch.scale, this.lastSearch.bucket, this.lastSearch.bucket, this.lastSearch.lastKey, $.proxy(this.onPhrases, this, this.lastSearch.scale, this.lastSearch.bucket));
+            Time.data.getPhrases(Time.filter.term, this.lastSearch.lastKey, $.proxy(this.onPhrases, this));
         }
     };
 

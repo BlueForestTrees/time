@@ -35,7 +35,7 @@ public class BucketService {
 
 	public BucketGroup getBuckets(final String scale, final String term) throws IOException {
 		final FacetsCollector facetsCollector = new FacetsCollector();
-		final Query query = queryService.getQuery(term, null, null, null);
+		final Query query = queryService.getQuery(term, null);
 		final TopDocs search = FacetsCollector.search(indexSearcher, query, 10, facetsCollector);
 		final Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
 

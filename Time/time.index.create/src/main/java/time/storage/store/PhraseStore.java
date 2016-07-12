@@ -122,10 +122,10 @@ public class PhraseStore {
 
         doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
         doc.add(new SortableLongField(Fields.DATE, phrase.getDate(), Store.YES));
+        //crée le jeu de champs buckets en fonction de Scale.
         for (int i = 0; i < Scale.scales.length; i++) {
             doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.scales[i], Store.NO));
-            doc.add(new SortedSetDocValuesFacetField(String.valueOf(i),
-                    String.valueOf(phrase.getDate() / Scale.scales[i])));
+            doc.add(new SortedSetDocValuesFacetField(String.valueOf(i), String.valueOf(phrase.getDate() / Scale.scales[i])));
         }
         return doc;
     }

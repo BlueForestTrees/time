@@ -11,6 +11,8 @@
         this.canvas = this.context.canvas;
         this.amplitude = 10;
         this.loading = false;
+        this.bucketLeftRatio = 0.1;
+        this.bucketRightRatio = 0.9;
 
         this.installEvents = function () {
             var data = {
@@ -33,11 +35,11 @@
     };
 
     Bar.prototype.aLeftBucket = function(){
-        return this._searchRightOf(0.05 * this.canvas.width);
+        return this._searchRightOf(this._niceLeft());
     };
 
     Bar.prototype.aRightBucket = function(){
-        return this._searchLeftOf(0.95 * this.canvas.width);
+        return this._searchLeftOf(this._niceRight());
     };
 
     Bar.prototype.firstBucket = function(){
@@ -74,20 +76,25 @@
             this.canvas.width = window.innerWidth;
             firstBucketX = this.firstBucket().x - 1;
             lastBucketX = this.firstBucket().x + 1;
-            firstCanvasX = 0.1 * this.canvas.width;
-            lastCanvasX = 0.9 * this.canvas.width;
+            firstCanvasX = this._niceLeft();
+            lastCanvasX = this._niceRight();
         }else if(this.buckets.length > 1){
             this.canvas.width = window.innerWidth;
             firstBucketX = this.firstBucket().x;
             lastBucketX = this.lastBucket().x;
-            firstCanvasX = 0.1 * this.canvas.width;
-            lastCanvasX = 0.9 * this.canvas.width;
+            firstCanvasX = this._niceLeft();
+            lastCanvasX = this._niceRight();
         }
         this.viewport.normalize(firstBucketX, lastBucketX, firstCanvasX, lastCanvasX);
     };
 
 
-    
+    Bar.prototype._niceLeft = function (){
+        return this.bucketLeftRatio * this.canvas.width;
+    };
+    Bar.prototype._niceRight = function (){
+        return this.bucketRightRatio * this.canvas.width;
+    };
     /**
      * Cherche dans le canvas de la barre à droite de la position.
      * @param mouseX Où chercher dans la barre

@@ -9,7 +9,6 @@
         this.buckets = [];
         this.context = Time.barFactory.buildCanvas(this.height, this.scale);
         this.canvas = this.context.canvas;
-        this.amplitude = 10;
         this.loading = false;
         this.bucketLeftRatio = 0.1;
         this.bucketRightRatio = 0.9;
@@ -137,29 +136,6 @@
     };
 
     /**
-     * Cherche dans le canvas de la barre.
-     * @param mouseX Où chercher dans la barre
-     * @returns {*} Un objet avec le nombre de bucket trouvé et l'offset vers le bucket le plus proche possible, ou null si rien trouvé.
-     */
-    Bar.prototype._searchNear = function (mouseX) {
-        var searchZone = this.context.getImageData(mouseX - this.amplitude, 10, 2 * this.amplitude, 1).data;
-        var middle = this.amplitude;
-        var found = null;
-        var foundCount = 0;
-        for (var i = 0, j = 0; i < searchZone.length; i += 4) {
-            var bucket = this._bucketAt(searchZone, i);
-            if (bucket) {
-                foundCount++;
-                if (!found || Math.abs(j - middle) < Math.abs(found - middle)) {
-                    found = j;
-                }
-            }
-            j++;
-        }
-        return found ? {count: foundCount, offset: found - middle} : null;
-    };
-
-    /**
      * Indique si la position contient un bucket ou pas.
      * @param searchZone un tébleau résulant de getImageData
      * @param i la position où regarder
@@ -210,10 +186,7 @@
     };
 
     Bar.prototype._onBarUp = function (event) {
-        if (!event.data.move) {
-            //plus rien ici?
-            //this._onClick(event);
-        }else{
+        if (event.data.move) {
             var minMouseX = Math.min(event.data.downX, event.clientX);
             var maxMouseX = Math.max(event.data.downX, event.clientX);
             var amplitude = maxMouseX - minMouseX;
@@ -221,8 +194,6 @@
             var rightMouseX = this._searchLeftOf(maxMouseX, amplitude);
             var leftBucket = this._getBucketAt(this.viewport.toBucketX(leftMouseX));
             var rightBucket = this._getBucketAt(this.viewport.toBucketX(rightMouseX));
-            // var leftBucket = {scale:this.scale,x:this.viewport.toBucketX(minMouseX)};
-            // var rightBucket = {scale:this.scale,x:this.viewport.toBucketX(maxMouseX)};
             var leftFilter = Time.scale.bucketToFilter(leftBucket);
             var rightFilter = Time.scale.bucketToRightFilter(rightBucket);
             Time.filter.onPeriodFilter(leftFilter, rightFilter);
@@ -230,42 +201,6 @@
         event.data.move = false;
         Time.view.window.off('mousemove.Viewport');
         Time.view.window.off('mouseup.Viewport');
-    };
-
-    Bar.prototype._onClick = function (event) {
-        var searchResult = this._searchBucketAt(event.clientX);
-        if (searchResult) {
-            var bucket = searchResult.bucket;
-            Time.phrases.clearText();
-            var bucketAlone = searchResult.count === 1 && bucket.count < 20;
-            if (bucketAlone) {
-                this._beginStory(bucket);
-            } else {
-                this._openSubBar(bucket);
-            }
-        }
-    };
-
-    /**
-     * Cherche si un bucket est présent au plus près possible de l'endroit spécifié
-     * @param mouseX coordonnée écran (event.clientX, window.mouseX)
-     * @returns {*} Un objet contenant le nombre de buckets trouvés pendant la recheerche, et le bucket trouvé au plus près, ou null
-     */
-    Bar.prototype._searchBucketAt = function (mouseX) {
-        var bucket = null;
-        var searchResult = this._searchNear(mouseX);
-        if (searchResult !== null) {
-            var bucketX = this.viewport.toBucketX(mouseX + searchResult.offset);
-            bucket = this._getBucketAt(bucketX);
-        }
-
-        return bucket !== null ? {bucket: bucket, count: searchResult.count} : null;
-    };
-
-    Bar.prototype._beginStory = function () {
-        Time.phrases.clearText();
-        Time.phrases.loadPhrases();
-        Time.historic.pushState(Time.filter.term);
     };
 
     Bar.prototype._onEnter = function () {

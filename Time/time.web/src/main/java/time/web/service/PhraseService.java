@@ -122,11 +122,19 @@ public class PhraseService {
 
 
     public String findFirstSlack(final String term){
-        return toSlackMessageFormat(findOne(term, dateAscSort));
+        return toSlackMessageFormat(findFirst(term));
     }
 
     public String findLastSlack(final String term){
-        return toSlackMessageFormat(findOne(term, dateDescSort));
+        return toSlackMessageFormat(findLast(term));
+    }
+
+    public DatedPhrase findFirst(String term) {
+        return findOne(term, dateAscSort);
+    }
+
+    public DatedPhrase findLast(String term) {
+        return findOne(term, dateDescSort);
     }
 
 
@@ -140,7 +148,7 @@ public class PhraseService {
 
     private DatedPhrase findSome(final String term, final Sort sort, final int limit) {
         DatedPhrase result = null;
-        final Query query = queryHelper.getQueryForFirstPhrase(term);
+        final Query query = queryHelper.getFirstPhraseQuery(TermPeriodFilter.parse(term));
         try {
             final TopFieldDocs searchResult = indexSearcher.search(query, limit, sort);
             if (searchResult.totalHits > 0) {

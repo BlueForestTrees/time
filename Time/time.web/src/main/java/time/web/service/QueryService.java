@@ -45,6 +45,38 @@ public class QueryService {
         }
     }
 
+    public Query getFirstPhraseQuery(final TermPeriodFilter termPeriodFilter) {
+        final Query termQuery = getQuery(termPeriodFilter);
+        final Query rangeQuery = NumericRangeQuery.newLongRange("date", Long.MIN_VALUE, null, true, true);
+        return new BooleanQuery.Builder().add(rangeQuery, Occur.FILTER).add(termQuery, Occur.FILTER).build();
+    }
+
+    public Query getLastPhraseQuery(final TermPeriodFilter termPeriodFilter) {
+        final Query termQuery = getQuery(termPeriodFilter);
+        final Query rangeQuery = NumericRangeQuery.newLongRange("date", Long.MAX_VALUE, null, true, true);
+        return new BooleanQuery.Builder().add(rangeQuery, Occur.FILTER).add(termQuery, Occur.FILTER).build();
+    }
+
+    /**
+     * Construit une requête de recherche de terme plus approprié.
+     * @param term Le terme à améliorer
+     * @return Une query fournissant des documents contenant des termes plus appropriés.
+     */
+    public Query getFuzzyTermQuery(final String term) {
+        final boolean isPhrase = term.startsWith("\"") && term.endsWith("\"");
+        final boolean hasOrs = term.contains(" ");
+        final boolean hasAnds = term.contains("+");
+        final boolean isSimpleWord = !isPhrase && !hasOrs && !hasAnds;
+
+        if(isSimpleWord){
+            return new FuzzyQuery(new Term("text", term));
+        }else if(isPhrase){
+            return getFuzzyTermQuery(term);
+        }else{
+            return null;
+        }
+    }
+
     /**
      * "civilisation moderne" => extrait de phrase
      * chien chat => chien OU chat
@@ -101,34 +133,8 @@ public class QueryService {
 		}
 	}
 
-    /**
-     * Construit une requête de recherche de terme plus approprié.
-     * @param term Le terme à améliorer
-     * @return Une query fournissant des documents contenant des termes plus appropriés.
-     */
-    public Query getFuzzyTermQuery(final String term) {
-        final boolean isPhrase = term.startsWith("\"") && term.endsWith("\"");
-        final boolean hasOrs = term.contains(" ");
-        final boolean hasAnds = term.contains("+");
-        final boolean isSimpleWord = !isPhrase && !hasOrs && !hasAnds;
-        
-        if(isSimpleWord){
-            return new FuzzyQuery(new Term("text", term));
-        }else if(isPhrase){
-            return getFuzzyTermQuery(term);
-        }else{
-            return null;
-        }
-    }
-
     private String[] words(final String term) {
         return term.replaceAll("\"", "").split(" ");
     }
-
-	public Query getQueryForFirstPhrase(String term) {
-		final Query rangeQuery = NumericRangeQuery.newLongRange("date", Long.MIN_VALUE, null, true, true);
-		final Query termQuery = getTermQuery(term.toLowerCase());
-		return new BooleanQuery.Builder().add(rangeQuery, Occur.FILTER).add(termQuery, Occur.FILTER).build();
-	}
 }
 

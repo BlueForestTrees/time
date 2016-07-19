@@ -34,6 +34,9 @@ public class BucketService {
     @Autowired
     private QueryService queryService;
 
+    @Autowired
+    private PhraseService phraseService;
+
     /**
      * Give the bucketGroup matching a query
      *
@@ -43,11 +46,10 @@ public class BucketService {
      */
     public BucketGroup getBuckets(final String term) throws IOException {
         final FacetsCollector facetsCollector = new FacetsCollector();
-        final TermPeriodFilter termPeriodFilter = TermPeriodFilter.parse(term);
-        final Query query = queryService.getQuery(termPeriodFilter);
+        final Query query = queryService.getQuery(TermPeriodFilter.parse(term));
         FacetsCollector.search(indexSearcher, query, 10, facetsCollector);
         final Facets facetsCounter = new SortedSetDocValuesFacetCounts(readerState, facetsCollector);
-        final String scale = determineScale(termPeriodFilter);
+        final String scale = determineScale(query);
         final FacetResult facets = facetsCounter.getTopChildren(10000, scale);
         return toBucketGroup(facets, scale);
     }
@@ -55,15 +57,13 @@ public class BucketService {
     /**
      * Détermine le scale à utiliser pour une requête.
      *
-     * @param termPeriodFilter contient éventuellement un from + to
+     * @param query contient éventuellement un from + to
      * @return le scale à utiliser.
      */
-    protected String determineScale(TermPeriodFilter termPeriodFilter) {
-        if (termPeriodFilter.hasFromTo()) {
-            final long totalDays = Math.abs(termPeriodFilter.getTo() - termPeriodFilter.getFrom());
-            return Scale.get(totalDays);
-        }
-        return "0";
+    protected String determineScale(Query query) {
+       final long firstDay = phraseService.findFirst("toto").getDate();
+       final long lastDay = phraseService.findFirst("toto").getDate();
+       return Scale.get(lastDay - firstDay);
     }
 
 

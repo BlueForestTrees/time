@@ -1,5 +1,7 @@
 package time.messaging.console;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import time.messaging.Messager;
 import time.messaging.Queue;
 
@@ -10,6 +12,8 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 
 public class MessageConsole {
+
+    private static final Logger LOGGER = LogManager.getLogger(MessageConsole.class);
 
     private Messager messager;
     private boolean finished = false;

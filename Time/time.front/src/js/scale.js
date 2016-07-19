@@ -25,52 +25,69 @@
         return this.bucketToHuman({day:day});
     };
 
+    Scale.prototype.bucketToRightFilter = function(bucket){
+        bucket.x++;
+        return this.bucketToFilter(bucket);
+    };
+
     Scale.prototype.bucketToFilter = function(bucket){
         var years = this._bucketToYears(bucket);
         var days = this._bucketToDays(bucket);
+        var filter = "";
+        var echelle = this._getEchelle(years);
 
-        switch (this._getEchelle(years)) {
+        switch (echelle) {
             case this.echelles.milliard:
-                var nbard = this._round(years / this.echelles.milliard, 1);
-                return "@" + nbard + "M";
+                filter = "@" + this._round(years / this.echelles.milliard, 1) + "M";
+                break;
             case this.echelles.million:
-                var nbon = this._round(years / this.echelles.million, 1);
-                return "@" + nbon + "m";
+                filter = "@" + this._round(years / this.echelles.million, 1) + "m";
+                break;
             case this.echelles.millier:
             case this.echelles.un:
                 if(!this._insideCalendarLimit(years)){
-                    return "@" + years;
+                    filter = "@" + Math.min(years);
                 }else{
-                    return "@" + this._formatDateFilter(this._daysToDate(days));
+                    filter = "@" + this._formatDateFilter(this._daysToDate(days));
                 }
+                break;
             default:
-                return 'never ever reached, yeah';
         }
+        return filter;
     };
 
     Scale.prototype.bucketToHuman = function(bucket) {
         var years = this._bucketToYears(bucket);
         var start = this._getStart(years);
+        var human = "";
         switch (this._getEchelle(years)) {
             case this.echelles.milliard:
-                var nbard = this._round(years / this.echelles.milliard, 1);
-                return start + nbard + " milliard" + (nbard > 1 ? "s" : "") + " d'années";
+                var nbard = this._positiveRound(years / this.echelles.milliard, 1);
+                human = start + nbard + " milliard" + (nbard > 1 ? "s" : "") + " d'années";
+                break;
             case this.echelles.million:
-                var nbon = this._round(years / this.echelles.million, 1);
-                return start + nbon + " million" + (nbon > 1 ? "s" : "") + " d'années";
+                var nbon = this._positiveRound(years / this.echelles.million, 1);
+                human = start + nbon + " million" + (nbon > 1 ? "s" : "") + " d'années";
+                break;
             case this.echelles.millier:
             case this.echelles.un:
-                if(bucket.scale === 0){
-                    return "De nos jours";
+                if(bucket.scale === "0"){
+                    human = "De nos jours";
                 }else {
-                    return "en " + Math.round(years);
+                    human = "en " + Math.round(years);
                 }
+                break;
             default:
-                return 'never ever reached, yeah';
         }
+        return human;
     };
 
     Scale.prototype._round = function(value, dec) {
+        var negative = value > 0 ? 1 : -1;
+        return this._positiveRound(value, dec)*negative
+    };
+
+    Scale.prototype._positiveRound = function(value, dec) {
         //dec      = 0,  1,   2,    3
         //decimals = 1, 10, 100, 1000
         var decimals = Math.pow(10,dec);
@@ -124,7 +141,7 @@
     };
 
     Scale.prototype._formatDateFilter = function(date){
-        return leadingZero(date.getMonth() + 1) + "/" +  leadingZero(date.getDate()) + "/" +  date.getFullYear();
+        return leadingZero(date.getDate() + 1) + "/" +  leadingZero(date.getMonth()) + "/" +  date.getFullYear();
     };
 
     function leadingZero(value){

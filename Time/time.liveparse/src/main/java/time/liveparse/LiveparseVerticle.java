@@ -95,7 +95,7 @@ public class LiveparseVerticle extends AbstractVerticle {
 
             final Meta meta = new Meta(metapath);
             LOGGER.info("signaling meta {}", meta);
-            messager.signal(Queue.META_CREATED, meta);
+            messager.send(Queue.META_CREATED, meta);
             ctx.response().end();
         } catch (IOException e) {
             LOGGER.error(e);

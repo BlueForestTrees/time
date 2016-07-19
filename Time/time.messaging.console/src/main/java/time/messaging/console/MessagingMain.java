@@ -15,8 +15,6 @@ import java.util.concurrent.TimeoutException;
 
 public class MessagingMain extends AbstractModule {
 
-    private static final Logger LOGGER = LogManager.getLogger(MessagingMain.class);
-
     public static void main(String[] args) throws IOException, TimeoutException {
         final Injector injector = Guice.createInjector(new MessagingMain());
         injector.getInstance(MessageLinker.class).on();

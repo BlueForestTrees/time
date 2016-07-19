@@ -13,24 +13,25 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.WildcardQuery;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import time.tool.reference.Fields;
 import time.web.bean.TermPeriodFilter;
 
+/**
+ * Génère les requêtes lucene depuis une requête histoires
+ */
 @Component
 public class QueryService {
 	
     /**
-     * Construit une requête lucene depuis les paramètres 'Histoire/Time'
-     * @param request
+     * Construit une requête lucene depuis une requête histoires
+     * @param termPeriodFilter
      * @return
      */
-    public Query getQuery(final String request) {
-    	final TermPeriodFilter termPeriodFilter = TermPeriodFilter.build(request);
-        final boolean hasTermFilter = termPeriodFilter.hasTerm();
+    public Query getQuery(final TermPeriodFilter termPeriodFilter) {
+        final boolean hasTermFilter = termPeriodFilter.hasWords();
         final boolean hasPeriodFilter = termPeriodFilter.hasPeriod();
-        final Query termQuery = hasTermFilter ? getTermQuery(request.toLowerCase()) : null;
+        final Query termQuery = hasTermFilter ? getTermQuery(termPeriodFilter.getWords().toLowerCase()) : null;
         final Query periodQuery = hasPeriodFilter ? NumericRangeQuery.newLongRange(Fields.DATE, termPeriodFilter.getFrom(), termPeriodFilter.getTo(), true, true) : null;
 
         if(hasPeriodFilter && hasTermFilter){

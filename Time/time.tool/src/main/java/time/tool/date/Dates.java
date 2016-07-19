@@ -17,10 +17,10 @@ public class Dates {
     	return localDate.toEpochDay() + seventiesInDays;
     }
     public static long milliardsToDays(double milliards){
-    	return -(long) (milliards * 364250000000d);
+    	return (long) (milliards * 364250000000d);
     }
     public static long millionsToDays(double millions){
-    	return -(long) (millions * 364250000d);
+    	return (long) (millions * 364250000d);
     }
 	public static long yearsToDays(final double doubleValue) {
 		//on traite des années

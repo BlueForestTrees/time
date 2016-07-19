@@ -13,6 +13,7 @@ import time.conf.ConfEnum;
 import time.conf.ConfManager;
 import time.conf.Resolver;
 import time.domain.IndexCreation;
+import time.domain.IndexRebuild;
 import time.domain.Merge;
 import time.domain.TimeWebConf;
 
@@ -21,9 +22,18 @@ import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
+/**
+ * Opérations sur les indexs
+ */
 public class IndexService {
 
     private static final Logger LOG = LogManager.getLogger(IndexService.class);
+
+    public void rebuildScale(final IndexRebuild indexRebuild){
+        final String path = indexRebuild.getIndexPath();
+        LOG.info("REBUILD {}", path);
+        //TODO continue
+    }
 
     public IndexCreation append(final IndexCreation indexCreation) throws IOException {
         final File sourceFile = new File(Resolver.get(indexCreation.getSourceIndexDir()));

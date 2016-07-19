@@ -14,21 +14,13 @@ public class CrawlWikiMain {
 
     private static final Logger LOGGER = LogManager.getLogger(CrawlWikiMain.class);
 
-    public CrawlWikiMain(final String[] args) throws IOException, ArgumentParserException, TimeoutException {
-        final CrawlWiki crawlWiki = Guice.createInjector(new CrawlWikiModule(args)).getInstance(CrawlWiki.class);
-
-        final Messager messager = new Messager();
-//        messager.when(Queue.WIKI_CRAWL).then(() -> {
-                    crawlWiki.crawl();
-                    try {
-                        messager.signal(Queue.MERGE);
-                        //messager.off();
-                    } catch (IOException e) {
-                        LOGGER.error(e);
-                    }
-//                });
-
-//        messager.signal(Queue.WIKI_CRAWL);
+    private CrawlWikiMain(final String[] args) throws IOException, ArgumentParserException, TimeoutException {
+        try {
+            Guice.createInjector(new CrawlWikiModule(args)).getInstance(CrawlWiki.class).crawl();
+            new Messager().signal(Queue.MERGE);
+        } catch (Exception e) {
+            LOGGER.error(e);
+        }
     }
 
     public static void main(final String[] args) throws IOException, ArgumentParserException, TimeoutException {

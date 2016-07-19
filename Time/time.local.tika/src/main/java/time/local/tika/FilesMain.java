@@ -18,15 +18,14 @@ public class FilesMain {
 
         final FilesRun filesRun = Guice.createInjector(new FilesModule(args)).getInstance(FilesRun.class);
 
-        messager.when(Queue.FULL_INDEX_RELOAD)
-                .then(() -> {
-                    filesRun.run();
-                    try {
-                        messager.signal(Queue.MERGE);
-                    } catch (IOException e) {
-                        LOGGER.error(e);
-                    }
-                });
+        messager.when(Queue.FULL_INDEX_RELOAD, () -> {
+            filesRun.run();
+            try {
+                messager.signal(Queue.MERGE);
+            } catch (IOException e) {
+                LOGGER.error(e);
+            }
+        });
 
         messager.signal(Queue.FULL_INDEX_RELOAD);
     }

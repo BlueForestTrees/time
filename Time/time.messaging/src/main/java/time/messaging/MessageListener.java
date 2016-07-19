@@ -3,6 +3,6 @@ package time.messaging;
 import java.io.IOException;
 
 @FunctionalInterface
-public interface TypedListener<T> {
+public interface MessageListener<T> {
     void signal(T message) throws IOException;
 }

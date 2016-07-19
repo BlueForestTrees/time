@@ -19,15 +19,14 @@ public class MetaToIndexMain {
         try {
             final Messager messager = new Messager();
             final MetaToIndexService metaToIndexService = Guice.createInjector(new MetaToIndexModule()).getInstance(MetaToIndexService.class);
-            messager.when(Queue.META_CREATED, Meta.class)
-                    .then(meta -> {
-                        try {
-                            final IndexCreation indexCreation = metaToIndexService.run(meta);
-                            messager.signal(Queue.INDEX_CREATED, indexCreation);
-                        } catch (InvocationTargetException | IllegalAccessException e) {
-                            LOGGER.error(e);
-                        }
-                    });
+            messager.when(Queue.META_CREATED, Meta.class, meta -> {
+                try {
+                    final IndexCreation indexCreation = metaToIndexService.run(meta);
+                    messager.send(Queue.INDEX_CREATED, indexCreation);
+                } catch (InvocationTargetException | IllegalAccessException e) {
+                    LOGGER.error(e);
+                }
+            });
         } catch (Exception e) {
             LOGGER.error(e);
         }

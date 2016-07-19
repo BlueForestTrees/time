@@ -197,7 +197,6 @@
 
     Bar.prototype._mouseDownOnBar = function (event) {
         event.data.downX = event.data.previousX = event.clientX;
-        //TODO install Bar selection
         Time.view.window.on('mousemove.Viewport', event.data, $.proxy(this._onBarDrag, this));
         Time.view.window.on('mouseup.Viewport', event.data, $.proxy(this._onBarUp, this));
     };
@@ -205,7 +204,6 @@
     Bar.prototype._onBarDrag = function (event) {
         var increment = event.clientX - event.data.previousX;
         if (increment !== 0) {
-            //TODO manage Bar selection
             event.data.previousX = event.clientX;
             event.data.move = true;
         }
@@ -218,15 +216,15 @@
         }else{
             var minMouseX = Math.min(event.data.downX, event.clientX);
             var maxMouseX = Math.max(event.data.downX, event.clientX);
-            //var amplitude = maxMouseX - minMouseX;
-           // var leftMouseX = this._searchRightOf(minMouseX, amplitude);
-           // var rightMouseX = this._searchLeftOf(maxMouseX, amplitude);
-            //var leftBucket = this._getBucketAt(this.viewport.toBucketX(leftMouseX));
-            //var rightBucket = this._getBucketAt(this.viewport.toBucketX(rightMouseX));
-            var leftBucket = {scale:this.scale,x:this.viewport.toBucketX(minMouseX)};
-            var rightBucket = {scale:this.scale,x:this.viewport.toBucketX(maxMouseX)};
+            var amplitude = maxMouseX - minMouseX;
+            var leftMouseX = this._searchRightOf(minMouseX, amplitude);
+            var rightMouseX = this._searchLeftOf(maxMouseX, amplitude);
+            var leftBucket = this._getBucketAt(this.viewport.toBucketX(leftMouseX));
+            var rightBucket = this._getBucketAt(this.viewport.toBucketX(rightMouseX));
+            // var leftBucket = {scale:this.scale,x:this.viewport.toBucketX(minMouseX)};
+            // var rightBucket = {scale:this.scale,x:this.viewport.toBucketX(maxMouseX)};
             var leftFilter = Time.scale.bucketToFilter(leftBucket);
-            var rightFilter = Time.scale.bucketToFilter(rightBucket);
+            var rightFilter = Time.scale.bucketToRightFilter(rightBucket);
             Time.filter.onPeriodFilter(leftFilter, rightFilter);
         }
         event.data.move = false;

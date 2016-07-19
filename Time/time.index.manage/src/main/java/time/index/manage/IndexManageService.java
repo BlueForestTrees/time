@@ -26,10 +26,8 @@ public class IndexManageService {
         indexService = new IndexService();
         indexChooser = new BlueRedSwitcher();
         messager = new Messager();
-        messager.when(Queue.MERGE)
-                .then(this::onMergeSignal);
-        messager.when(Queue.INDEX_CREATED, IndexCreation.class)
-                .then(this::onIndexCreatedSignal);
+        messager.when(Queue.MERGE, this::onMergeSignal);
+        messager.when(Queue.INDEX_CREATED, IndexCreation.class, this::onIndexCreatedSignal);
     }
 
     private void onIndexCreatedSignal(IndexCreation indexCreation) {

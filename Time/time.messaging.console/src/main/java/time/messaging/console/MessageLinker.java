@@ -29,7 +29,7 @@ public class MessageLinker {
 
     private void linkFromWithTo(final QueueLinks.QueueLink link) {
         try {
-            messager.when(link.getFrom()).then(() -> messager.signal(link.getTo()));
+            messager.when(link.getFrom(),() -> messager.signal(link.getTo()));
         } catch (IOException e) {
             LOGGER.error(e);
         }

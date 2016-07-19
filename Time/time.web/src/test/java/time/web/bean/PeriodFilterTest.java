@@ -7,18 +7,18 @@ import org.junit.Test;
 public class PeriodFilterTest {
 	@Test
 	public void build(){
-		TermPeriodFilter periodFilter = TermPeriodFilter.build("doudou @200+-10% @100 toto");
+		TermPeriodFilter periodFilter = TermPeriodFilter.parse("doudou @200+-10% @100 toto");
 		assertThat(periodFilter.getFrom()).isEqualTo(36525L);
 		assertThat(periodFilter.getTo()).isEqualTo(80353L);
-		assertThat(periodFilter.getWords()).containsExactly("doudou","toto");
+		assertThat(periodFilter.getWords()).isEqualTo("doudou toto");
 	}
 	
 	@Test
 	public void build1(){
-		TermPeriodFilter periodFilter = TermPeriodFilter.build("doudou toto");
+		TermPeriodFilter periodFilter = TermPeriodFilter.parse("doudou toto");
 		assertThat(periodFilter.getFrom()).isNull();
 		assertThat(periodFilter.getTo()).isNull();
-		assertThat(periodFilter.getWords()).containsExactly("doudou","toto");
+		assertThat(periodFilter.getWords()).isEqualTo("doudou toto");
 	}
 	
 	@Test
@@ -29,16 +29,17 @@ public class PeriodFilterTest {
 		assertFromTo("@-10min", -3652L, Long.MAX_VALUE);
 		assertFromTo("@-1", -365L, -1L);
 		assertFromTo("@1", 366L, 730L);
-		assertFromTo("@1M", -400675000000L, -327825000000L);
-		assertFromTo("@1m", -400675000L, -327825000L);
-		assertFromTo("@130m", -52087750000L, -42617250000L);
-		assertFromTo("@130M", -52087750000000L, -42617250000000L);
-		assertFromTo("@1.5m", -601012500L, -491737500L);
-		assertFromTo("@1.5M", -601012500000L, -491737500000L);
-		assertFromTo("@1,5m", -601012500L, -491737500L);
-		assertFromTo("@1,5M", -601012500000L, -491737500000L);
-		assertFromTo("@1,5m+-20%", -655650000L, -437100000L);
-		assertFromTo("@1,5M+-20%", -655650000000L, -437100000000L);
+		assertFromTo("@1M", 327825000000L, 400675000000L);
+		assertFromTo("@1m", 327825000L, 400675000L);
+		assertFromTo("@130m", 42617250000L, 52087750000L);
+		assertFromTo("@130M", 42617250000000L, 52087750000000L);
+
+		assertFromTo("@1.5m", 491737500L, 601012500L);
+		assertFromTo("@1.5M", 491737500000L, 601012500000L);
+		assertFromTo("@1,5m", 491737500L, 601012500L);
+		assertFromTo("@1,5M", 491737500000L, 601012500000L);
+		assertFromTo("@1,5m+-20%", 437100000L, 655650000L);
+		assertFromTo("@1,5M+-20%", 437100000000L, 655650000000L);
 	}
 	
 	private void assertFromTo(final String request, long from, long to) {

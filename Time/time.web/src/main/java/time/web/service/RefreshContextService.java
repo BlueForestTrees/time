@@ -35,7 +35,7 @@ public class RefreshContextService {
         if(messager != null) {
             final AnnotationConfigWebApplicationContext webContext = (AnnotationConfigWebApplicationContext) contextStartedEvent.getApplicationContext();
             try {
-                messager.when(Queue.WIKI_WEB_REFRESH).then(() -> webContext.refresh());
+                messager.when(Queue.WIKI_WEB_REFRESH, webContext::refresh);
             } catch (IOException e) {
                 LOGGER.error(e);
             }

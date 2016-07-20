@@ -12,6 +12,7 @@ import com.google.common.base.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.search.FieldDoc;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -102,7 +103,8 @@ public class PhraseService {
     private DatedPhrase buildPhrase(final ScoreDoc scoreDoc, final Highlighter highlighter) {
         try {
             final DatedPhrase phrase = new DatedPhrase();
-            final LucenePhrase lucenePhrase = LucenePhrase.with(indexSearcher.doc(scoreDoc.doc));
+            final Document doc = indexSearcher.doc(scoreDoc.doc);
+            final LucenePhrase lucenePhrase = LucenePhrase.with(doc);
 
             phrase.setText(Optional.fromNullable(highlighter.getBestFragment(analyzer, Fields.TEXT, lucenePhrase.text())).or(lucenePhrase.text()));
             phrase.setDate(lucenePhrase.date());
@@ -122,44 +124,61 @@ public class PhraseService {
 
 
     public String findFirstSlack(final String term){
-        return toSlackMessageFormat(findFirst(term));
+        return toSlackMessageFormat(findFirstPhrase(term));
     }
 
     public String findLastSlack(final String term){
-        return toSlackMessageFormat(findLast(term));
+        return toSlackMessageFormat(findLastPhrase(term));
     }
-
-    public DatedPhrase findFirst(String term) {
-        return findOne(term, dateAscSort);
-    }
-
-    public DatedPhrase findLast(String term) {
-        return findOne(term, dateDescSort);
-    }
-
 
     public String findRandomSlack(String term) {
-        return toSlackMessageFormat(findOne(term, randomSort));
+        return toSlackMessageFormat(findOneDatedPhrase(term, randomSort));
     }
 
-    private DatedPhrase findOne(final String term, final Sort sort){
-        return findSome(term, sort, 1);
+    DatedPhrase findFirstPhrase(String term) {
+        return findOneDatedPhrase(term, dateAscSort);
     }
 
-    private DatedPhrase findSome(final String term, final Sort sort, final int limit) {
+    DatedPhrase findLastPhrase(String term) {
+        return findOneDatedPhrase(term, dateDescSort);
+    }
+
+    public LucenePhrase findFirstLucenePhrase(final Query query) {
+        return findOneLucenePhrase(query, dateAscSort);
+    }
+
+    public LucenePhrase findLastLucenePhrase(final Query query) {
+        return findOneLucenePhrase(query, dateDescSort);
+    }
+
+    private DatedPhrase findOneDatedPhrase(final String term, final Sort sort) {
         DatedPhrase result = null;
-        final Query query = queryHelper.getFirstPhraseQuery(TermPeriodFilter.parse(term));
+        final Query query = queryHelper.getQuery(TermPeriodFilter.parse(term));
         try {
-            final TopFieldDocs searchResult = indexSearcher.search(query, limit, sort);
+            final TopFieldDocs searchResult = indexSearcher.search(query, 1, sort);
             if (searchResult.totalHits > 0) {
+                final ScoreDoc scoreDoc = searchResult.scoreDocs[0];
                 final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
                 highlighter.setTextFragmenter(new NullFragmenter());
-                result = buildPhrase(searchResult.scoreDocs[0], highlighter);
+                result = buildPhrase(scoreDoc, highlighter);
             }
         } catch (IOException e) {
             LOGGER.error(e);
         }
         return result;
+    }
+
+    private LucenePhrase findOneLucenePhrase(final Query query, final Sort sort) {
+        try {
+            final TopFieldDocs searchResult = indexSearcher.search(query, 1, sort);
+            if (searchResult.totalHits > 0) {
+                int docID = searchResult.scoreDocs[0].doc;
+                return LucenePhrase.with(indexSearcher.doc(docID));
+            }
+        } catch (IOException e) {
+            LOGGER.error(e);
+        }
+        return null;
     }
 
     private String toSlackMessageFormat(final DatedPhrase phrase) {

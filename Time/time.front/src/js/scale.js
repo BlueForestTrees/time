@@ -141,7 +141,7 @@
     };
 
     Scale.prototype._formatDateFilter = function(date){
-        return leadingZero(date.getDate() + 1) + "/" +  leadingZero(date.getMonth()) + "/" +  date.getFullYear();
+        return leadingZero(date.getDate()) + "/" +  leadingZero(date.getMonth()+1) + "/" +  date.getFullYear();
     };
 
     function leadingZero(value){

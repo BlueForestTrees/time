@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.lucene.facet.FacetResult;
 import org.apache.lucene.facet.Facets;
 import org.apache.lucene.facet.FacetsCollector;
@@ -24,6 +26,8 @@ import time.web.bean.TermPeriodFilter;
 
 @Service
 public class BucketService {
+
+    private static final Logger LOGGER = LogManager.getLogger(BucketService.class);
 
     @Autowired
     private IndexSearcher indexSearcher;
@@ -61,9 +65,14 @@ public class BucketService {
      * @return le scale à utiliser.
      */
     protected String determineScale(Query query) {
-       final long firstDay = phraseService.findFirst("toto").getDate();
-       final long lastDay = phraseService.findFirst("toto").getDate();
-       return Scale.get(lastDay - firstDay);
+        try {
+            final long firstDay = phraseService.findFirstLucenePhrase(query).date();
+            final long lastDay = phraseService.findLastLucenePhrase(query).date();
+            return Scale.get(lastDay - firstDay);
+        }catch(Exception e){
+            LOGGER.error(e);
+        }
+        return "0";
     }
 
 

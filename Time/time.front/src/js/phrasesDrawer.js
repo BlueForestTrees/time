@@ -68,7 +68,7 @@
             var tryWith = "<br><br><h2 style=\"text-align:center\">0 résultats pour <i>" + term + "</i> :(<br><br>Essayez avec ces mots: ";
 
             phrases.alternatives.forEach(function(alternative){
-                tryWith += "<i><a href='/"+alternative+"'>" + alternative + "</a></i>, ";
+                tryWith += "<i><a href='/#"+alternative+"'>" + alternative + "</a></i>, ";
             });
             tryWith = tryWith.slice(0, -2);
             tryWith += "</h2>";

@@ -45,18 +45,6 @@ public class QueryService {
         }
     }
 
-    public Query getFirstPhraseQuery(final TermPeriodFilter termPeriodFilter) {
-        final Query termQuery = getQuery(termPeriodFilter);
-        final Query rangeQuery = NumericRangeQuery.newLongRange("date", Long.MIN_VALUE, null, true, true);
-        return new BooleanQuery.Builder().add(rangeQuery, Occur.FILTER).add(termQuery, Occur.FILTER).build();
-    }
-
-    public Query getLastPhraseQuery(final TermPeriodFilter termPeriodFilter) {
-        final Query termQuery = getQuery(termPeriodFilter);
-        final Query rangeQuery = NumericRangeQuery.newLongRange("date", Long.MAX_VALUE, null, true, true);
-        return new BooleanQuery.Builder().add(rangeQuery, Occur.FILTER).add(termQuery, Occur.FILTER).build();
-    }
-
     /**
      * Construit une requête de recherche de terme plus approprié.
      * @param term Le terme à améliorer

@@ -346,11 +346,6 @@ public class PhrasesTextAnalyserTest {
 	}
 
 	@Test
-	public void doubleP1() {
-		assertTwoDifferents(DateType.DOUBLEPARENTHESIS, yearIs(1539), DateType.DOUBLEPARENTHESIS2, yearIs(1619), "Olivier de Serres (1539-1619) écrit");
-	}
-
-	@Test
 	public void tiret() {
 		assertTwoDifferents(DateType.TIRET, yearIs(1870), DateType.TIRET2, yearIs(1871), "dont une édition populaire de la guerre franco allemande de 1870-1871.");
 	}

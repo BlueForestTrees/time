@@ -31,8 +31,8 @@
     };
 
     Scale.prototype.bucketToFilter = function(bucket){
-        var years = this._bucketToYears(bucket);
-        var days = this._bucketToDays(bucket);
+        var years = this.bucketToYears(bucket);
+        var days = this.bucketToDays(bucket);
         var filter = "";
         var echelle = this._getEchelle(years);
 
@@ -57,7 +57,7 @@
     };
 
     Scale.prototype.bucketToHuman = function(bucket) {
-        var years = this._bucketToYears(bucket);
+        var years = this.bucketToYears(bucket);
         var start = this._getStart(years);
         var human = "";
         switch (this._getEchelle(years)) {
@@ -113,12 +113,12 @@
         }
     };
 
-    Scale.prototype._bucketToYears = function(bucket) {
-        return this._daysToYears(this._bucketToDays(bucket));
+    Scale.prototype.bucketToYears = function(bucket) {
+        return this._daysToYears(this.bucketToDays(bucket));
     };
 
-    Scale.prototype._bucketToDays = function(bucket){
-        if(bucket.day){
+    Scale.prototype.bucketToDays = function(bucket){
+        if(bucket.day || bucket.day === 0){
             return bucket.day;
         }
         return this.scales[bucket.scale] * bucket.x;
@@ -133,7 +133,8 @@
     };
 
     Scale.prototype._daysToDate = function(days){
-        return new Date((days - this.seventiesInDays) * 24 * 60 * 60 * 1000);
+        var msForEpoch = (days - this.seventiesInDays) * 24 * 60 * 60 * 1000;
+        return new Date(msForEpoch);
     };
 
     Scale.prototype._getStart = function(years) {

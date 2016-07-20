@@ -27,7 +27,6 @@
         if (phrases.total > 0) {
 			var day = phrases.phraseList[0].date;
             var humanDate = Time.scale.dayToHuman(day);
-
             Time.phrasesdrawer.addTextIntro(humanDate, phrases.total);
         }
         this.onPhrases(phrases);

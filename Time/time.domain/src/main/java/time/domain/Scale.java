@@ -17,7 +17,7 @@ public class Scale {
             final double daysPerPixels = totalDays / BAR_LENGTH;
             final double daysPerBucket = SCALES[i];
             final double ratio = daysPerPixels / daysPerBucket;
-            if (ratio < 1) {
+            if (ratio < 100) {
                 return String.valueOf(i);
             }
         }

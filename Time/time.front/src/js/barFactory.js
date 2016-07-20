@@ -32,6 +32,9 @@
             delete bucket.bucket;
             bucket.color = this._getColor(bucket.count);
             bucket.scale = bucketsDTO.scale;
+            bucket.day = Time.scale.bucketToDays(bucket);
+            bucket.year = Time.scale.bucketToYears(bucket);
+            bucket.human = Time.scale.bucketToHuman(bucket);
         }
         
         bucketsDTO.buckets.sort(this._triBuckets);
@@ -45,13 +48,17 @@
     BarFactory.prototype._getColor = function(count) {
         var r = this._getRed(count);
         var g = this._getGreen(count);
-        return 'rgb(' + r + ',' + g + ',0)';
+        var b = this._getBlue(count);
+        return 'rgb(' + r + ',' + g + ',' + b + ')';
+    };
+    BarFactory.prototype._getRed = function(count) {
+        return parseInt(this.maxColor - Math.max(0, count - this.middle) / this.max * (this.maxColor - this.minColor) * 2);
     };
     BarFactory.prototype._getGreen = function(count) {
         return parseInt(Math.max(this.minColor, this.maxColor - count / this.max * (this.maxColor - this.minColor) * 2));
     };
-    BarFactory.prototype._getRed = function(count) {
-        return parseInt(this.maxColor - Math.max(0, count - this.middle) / this.max * (this.maxColor - this.minColor) * 2);
+    BarFactory.prototype._getBlue = function() {
+        return 0;
     };
 
     Time.BarFactory = BarFactory;

@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import time.domain.Scale;
 import time.web.bean.Bucket;
 import time.web.bean.BucketGroup;
+import time.web.bean.LucenePhrase;
 import time.web.bean.TermPeriodFilter;
 
 @Service
@@ -66,8 +67,10 @@ public class BucketService {
      */
     protected String determineScale(Query query) {
         try {
-            final long firstDay = phraseService.findFirstLucenePhrase(query).date();
-            final long lastDay = phraseService.findLastLucenePhrase(query).date();
+            LucenePhrase firstLucenePhrase = phraseService.findFirstLucenePhrase(query);
+            final long firstDay = firstLucenePhrase.date();
+            LucenePhrase lastLucenePhrase = phraseService.findLastLucenePhrase(query);
+            final long lastDay = lastLucenePhrase.date();
             return Scale.get(lastDay - firstDay);
         }catch(Exception e){
             LOGGER.error(e);

@@ -190,10 +190,19 @@
             var minMouseX = Math.min(event.data.downX, event.clientX);
             var maxMouseX = Math.max(event.data.downX, event.clientX);
             var amplitude = maxMouseX - minMouseX;
-            var leftMouseX = this._searchRightOf(minMouseX, amplitude);
-            var rightMouseX = this._searchLeftOf(maxMouseX, amplitude);
-            var leftBucket = this._getBucketAt(this.viewport.toBucketX(leftMouseX));
-            var rightBucket = this._getBucketAt(this.viewport.toBucketX(rightMouseX));
+            var leftCanvasX  = this._searchRightOf(minMouseX, amplitude);
+            var rightCanvasX = this._searchLeftOf(maxMouseX, amplitude);
+            var leftBucketX  = this.viewport.toBucketX(leftCanvasX);
+            var rightBucketX = this.viewport.toBucketX(rightCanvasX);
+            var leftBucket  = this._getBucketAt(leftBucketX);
+            var rightBucket = this._getBucketAt(rightBucketX);
+
+            console.log("buckets", this.buckets);
+            console.log("scale, zoom", this.scale, this.viewport._zoom);
+            console.log("   mouse, canvas, bucketX, bucket");
+            console.log("LEFT", minMouseX, leftCanvasX, leftBucketX, leftBucket);
+            console.log("RIGHT", maxMouseX, rightCanvasX, rightBucketX, rightBucket);
+
             var leftFilter = Time.scale.bucketToFilter(leftBucket);
             var rightFilter = Time.scale.bucketToRightFilter(rightBucket);
             Time.filter.onPeriodFilter(leftFilter, rightFilter);

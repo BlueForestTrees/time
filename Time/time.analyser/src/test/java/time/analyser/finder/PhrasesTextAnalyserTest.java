@@ -46,6 +46,8 @@ public class PhrasesTextAnalyserTest {
 		});
 	}
 
+
+
 	@Test
 	public void ilYA15() {
 		assertOnly(DateType.ILYA, yearIs(-2000), "Le chow-chow est une race de chien qui s'est déployée en Chine il y a environ 4000 ans.");

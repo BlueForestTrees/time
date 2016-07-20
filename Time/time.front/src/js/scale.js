@@ -154,7 +154,7 @@
     }
 
     Scale.prototype._insideCalendarLimit = function(year){
-        return year > -400 && year < 3000;
+        return year > 1800 && year < 2050;
     };
 
     Time.Scale = Scale;

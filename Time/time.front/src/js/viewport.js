@@ -16,7 +16,11 @@
 
     Viewport.prototype.toBucketX = function (canvasX) {
         // x = ( y - b ) / a
-        return Math.round((canvasX - this.delta()) / this._zoom);
+        return Math.round(this.toBucketFloatX(canvasX));
+    };
+
+    Viewport.prototype.toBucketFloatX = function (canvasX){
+        return (canvasX - this.delta()) / this._zoom;
     };
 
     Viewport.prototype.normalize = function (x1, x2, y1, y2){

@@ -345,10 +345,10 @@ public class PhrasesTextAnalyserTest {
 		assertOnly(DateType.JC, yearIs(1904), "Le sang versé en 1904 aurait épargné.");
 	}
 
-	@Test
-	public void tiret() {
-		assertTwoDifferents(DateType.TIRET, yearIs(1870), DateType.TIRET2, yearIs(1871), "dont une édition populaire de la guerre franco allemande de 1870-1871.");
-	}
+//	@Test
+//	public void tiret() {
+//		assertTwoDifferents(DateType.TIRET, yearIs(1870), DateType.TIRET2, yearIs(1871), "dont une édition populaire de la guerre franco allemande de 1870-1871.");
+//	}
 
 	@Test
 	public void tiret2() {

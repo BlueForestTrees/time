@@ -66,8 +66,8 @@ public class DatedPhraseDetector {
 		build(DateType.PRECISE, "(" + NUMBER_FLAG + JOUR + MOIS + ANNEE + ")" + NEG_REF_OPT, new PreciseParser());
 		//build(DateType.DOUBLEPARENTHESIS, "\\( ?(" + NUMBER_FLAG + YEAR + ") ?- ?(" + YEAR + " ?) ?\\)", new AnneeParser());
         //build(DateType.DOUBLEPARENTHESIS2, "\\( ?(" + YEAR + ") ?- ?(" + NUMBER_FLAG + YEAR + " ?) ?\\)", new AnneeParser());
-		build(DateType.TIRET, "(" + NUMBER_FLAG + YEAR_FOUR + ")-(" + YEAR_FOUR + " ?)( |\\.|,|;)", new AnneeParser());
-		build(DateType.TIRET2, "(" + YEAR_FOUR + ")-(" + NUMBER_FLAG + YEAR_FOUR + " ?)( |\\.|,|;)", new AnneeParser());
+		//build(DateType.TIRET, "(" + NUMBER_FLAG + YEAR_FOUR + ")-(" + YEAR_FOUR + " ?)( |\\.|,|;)", new AnneeParser());
+		//build(DateType.TIRET2, "(" + YEAR_FOUR + ")-(" + NUMBER_FLAG + YEAR_FOUR + " ?)( |\\.|,|;)", new AnneeParser());
 	}
 
 	public PhrasesAnalyser get(final DateType dateType) {

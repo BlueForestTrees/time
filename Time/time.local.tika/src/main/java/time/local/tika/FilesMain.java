@@ -18,7 +18,7 @@ public class FilesMain {
 
         final FilesRun filesRun = Guice.createInjector(new FilesModule(args)).getInstance(FilesRun.class);
 
-        messager.when(Queue.FULL_INDEX_RELOAD, () -> {
+        messager.when(Queue.LOCAL_TIKA, () -> {
             filesRun.run();
             try {
                 messager.signal(Queue.MERGE);
@@ -27,7 +27,7 @@ public class FilesMain {
             }
         });
 
-        messager.signal(Queue.FULL_INDEX_RELOAD);
+        messager.signal(Queue.LOCAL_TIKA);
     }
 
 }

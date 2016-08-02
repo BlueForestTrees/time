@@ -7,6 +7,7 @@ import time.conf.ConfEnum;
 import time.conf.ConfManager;
 import time.domain.IndexCreation;
 import time.domain.Merge;
+import time.domain.TimeWebConf;
 import time.messaging.Messager;
 import time.messaging.Queue;
 
@@ -26,8 +27,8 @@ public class IndexManageService {
         indexService = new IndexService();
         indexChooser = new BlueRedSwitcher();
         messager = new Messager();
-        messager.when(Queue.MERGE, this::onMergeSignal);
-        messager.when(Queue.INDEX_CREATED, IndexCreation.class, this::onIndexCreatedSignal);
+        messager.when(Queue.MERGE, this::onMergeSignal)
+                .when(Queue.INDEX_CREATED, IndexCreation.class, this::onIndexCreatedSignal);
     }
 
     private void onIndexCreatedSignal(IndexCreation indexCreation) {
@@ -37,7 +38,7 @@ public class IndexManageService {
             }else {
                 doAppend(indexCreation);
             }
-            messager.signal(Queue.WIKI_WEB_REFRESH);
+            messager.signal(Queue.TIME_WEB_REFRESH);
         }catch(Exception e){
             LOGGER.error(e);
         }
@@ -46,7 +47,7 @@ public class IndexManageService {
     private void onMergeSignal() {
         try {
             doMerge();
-            messager.signal(Queue.WIKI_WEB_REFRESH);
+            messager.signal(Queue.TIME_WEB_REFRESH);
         } catch (Exception e) {
             LOGGER.error(e);
         }
@@ -67,7 +68,9 @@ public class IndexManageService {
     private void updateWikiWebConf(final Merge merge) {
         LOGGER.info("set {}.indexDir: {}", ConfEnum.TIMEWEB.getPath(), merge.getMergedIndexDir());
         try {
-            new ConfManager().update(ConfEnum.TIMEWEB, conf -> conf.setIndexDir(merge.getMergedIndexDir()));
+            final TimeWebConf conf = new ConfManager().get(ConfEnum.TIMEWEB, TimeWebConf.class);
+            conf.setIndexDir(merge.getMergedIndexDir());
+            new ConfManager().set(ConfEnum.TIMEWEB, conf);
         } catch (IOException e) {
             LOGGER.error(e);
         }

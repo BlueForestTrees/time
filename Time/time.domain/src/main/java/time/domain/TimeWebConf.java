@@ -20,4 +20,25 @@ public class TimeWebConf {
     public String getIndexDir() {
         return indexDir;
     }
+
+    public void setIndexDir(String indexDir) {
+        this.indexDir = indexDir;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public void setSearchPhrasePageSize(int searchPhrasePageSize) {
+        this.searchPhrasePageSize = searchPhrasePageSize;
+    }
+
+    @Override
+    public String toString() {
+        return "TimeWebConf{" +
+                "indexDir='" + indexDir + '\'' +
+                ", port=" + port +
+                ", searchPhrasePageSize=" + searchPhrasePageSize +
+                '}';
+    }
 }

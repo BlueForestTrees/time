@@ -11,8 +11,6 @@ import time.messaging.Messager;
 import time.messaging.Queue;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.concurrent.TimeoutException;
 
 @Service
 public class RefreshContextService {
@@ -35,7 +33,7 @@ public class RefreshContextService {
         if(messager != null) {
             final AnnotationConfigWebApplicationContext webContext = (AnnotationConfigWebApplicationContext) contextStartedEvent.getApplicationContext();
             try {
-                messager.when(Queue.WIKI_WEB_REFRESH, webContext::refresh);
+                messager.when(Queue.TIME_WEB_REFRESH, webContext::refresh);
             } catch (IOException e) {
                 LOGGER.error(e);
             }

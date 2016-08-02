@@ -58,9 +58,8 @@ public class ConfManager {
         return objectMapper.readValue(substituedConfig, beanClass);
     }
 
-    public void update(final ConfEnum confKey, final ConfModifier changer) throws IOException {
-        final Conf conf = get(confKey);
-        changer.change(conf);
+    public void set(final ConfEnum confKey, final Object conf) throws IOException {
+        LOGGER.info("set conf at {} with {}",confKey, conf);
         objectMapper.writeValue(new File(Resolver.get(confKey.getPath())), conf);
     }
 

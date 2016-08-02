@@ -87,6 +87,10 @@ public class Messager {
         return this;
     }
 
+    public void purge(Queue queue) throws IOException {
+        channel.queuePurge(queue.name());
+    }
+
     /**
      * Dress up a messaging receiver onto a rabbit consumer
      */

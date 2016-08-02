@@ -29,7 +29,6 @@ public class CrawlWiki extends Crawler {
     private long nbLog;
     private long pageCount;
     private long pageCountPrevision;
-    private long phraseCount;
 
     @Inject
 	public CrawlWiki(final Conf conf, final TextHandler store, final TextFactory textFactory) {
@@ -47,7 +46,6 @@ public class CrawlWiki extends Crawler {
     @Override
     public void crawl() {
         this.pageCount = 0;
-        this.phraseCount = 0;
         this.nbLog = 0;
         this.lastChrono.start();
         this.elapsedChrono.start();
@@ -61,7 +59,7 @@ public class CrawlWiki extends Crawler {
         if (notExcludedByContent(page)) {
             final Text text = buildText(page);
             text.getMetadata().setAuteur("Wikipédia");
-            phraseCount += store.handleText(text);
+            store.handleText(text);
             pageCount++;
             logPageProgress();
         }
@@ -93,8 +91,8 @@ public class CrawlWiki extends Crawler {
             final String moy = elapsedChrono.toStringDividedBy(nbLog);
             final String remaining = elapsedChrono.getRemaining(pageCount, pageCountPrevision);
 
-            LOGGER.info("{}/{} Texts, {} Phrases, Total:{}, Moy:{}, Last:{}, Rest:{}",
-                    pageCount, pageCountPrevision, phraseCount, elapsedChrono, moy, lastChrono, remaining);
+            LOGGER.info("{}/{} Texts, Total:{}, Moy:{}, Last:{}, Rest:{}",
+                    pageCount, pageCountPrevision, elapsedChrono, moy, lastChrono, remaining);
 
             lastChrono.start();
         }

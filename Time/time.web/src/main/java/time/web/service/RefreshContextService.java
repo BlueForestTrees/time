@@ -33,6 +33,7 @@ public class RefreshContextService {
         if(messager != null) {
             final AnnotationConfigWebApplicationContext webContext = (AnnotationConfigWebApplicationContext) contextStartedEvent.getApplicationContext();
             try {
+                messager.purge(Queue.TIME_WEB_REFRESH);
                 messager.when(Queue.TIME_WEB_REFRESH, webContext::refresh);
             } catch (IOException e) {
                 LOGGER.error(e);

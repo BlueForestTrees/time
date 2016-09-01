@@ -20,11 +20,7 @@
         </plugins>
     </build>
     <dependencies>
-        <dependency>
-            <groupId>slim</groupId>
-            <artifactId>time.tool</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
+
     </dependencies>
 
 

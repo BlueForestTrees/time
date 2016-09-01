@@ -1,3 +1,7 @@
+package litterature.anagramme;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
@@ -11,16 +15,17 @@ public class Anagramme {
 
     private String prefix;
     private String suffix;
+    private Dictionnaire dico;
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException {
+    public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException, IOException, URISyntaxException {
 
         final String prefix = "";
-        final String mix = "SLIMANE";
+        final String mix = "julien";
         final String suffix = "";
 
         ForkJoinPool.commonPool().submit(() -> {
             System.out.println("mixing " + mix);
-            final Anagramme anagramme = Anagramme.with(prefix, mix, suffix);
+            final Anagramme anagramme = Anagramme.with(prefix, mix, suffix, new Dictionnaire("liste_francais.txt"));
             while(true){
                 anagramme.move().keepIfNew().printIfNew();
             }
@@ -28,12 +33,13 @@ public class Anagramme {
 
     }
 
-    public static Anagramme with(String prefix, String base, final String suffix) {
+    public static Anagramme with(String prefix, String base, final String suffix, final Dictionnaire dictionnaire) {
         final Anagramme anagramme = new Anagramme();
         anagramme.prefix = prefix;
         anagramme.base = base.split("");
         anagramme.suffix = suffix;
         anagramme.initialBase = base;
+        anagramme.dico = dictionnaire;
         return anagramme;
     }
 
@@ -56,7 +62,12 @@ public class Anagramme {
     }
 
     private Anagramme keepIfNew() {
-        lastWasInserted = history.add(get());
+        final String e = get();
+        if(dico.exist(e)) {
+            lastWasInserted = history.add(e);
+        }else{
+            lastWasInserted = false;
+        }
         return this;
     }
 

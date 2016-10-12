@@ -113,6 +113,16 @@ h1, h2, h3{
     background: url(/img/logo-petit.png) no-repeat;
 }
 
+.throbber {
+	background-size:32px 32px;
+	height:32px;
+	width:32px;
+	position: absolute;
+	top: 10px;
+	left: 240px;
+	background: url(/img/throbber.gif) no-repeat;
+}
+
 .content {
 	display : none;
 }

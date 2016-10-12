@@ -8,7 +8,7 @@ $(document).ready(function() {
         phrases : $('.phrases'),
         window : $(window),
         activeBarTips : [ $("#activeBarTip1"), $("#activeBarTip2"), $("#activeBarTip3") ],
-        throbber : $("#throbber"),
+        throbber : $(".throbber"),
         home : $(".home"),
         content : $(".content")
     };

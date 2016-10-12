@@ -73,7 +73,7 @@
         Time.anal.ga('send', 'event', 'search', term);
         Time.view.termInput.val(term);
         Time.phrases.clearText();
-        Time.bar.loadBuckets(this.term);
+        //Time.bar.loadBuckets(this.term);
         // pour arrêter l'infinite scroll d'une recherche précédente
         Time.phrases.lastSearch = null;
         Time.phrases.loadPhrases();

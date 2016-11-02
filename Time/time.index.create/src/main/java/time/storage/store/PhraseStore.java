@@ -1,32 +1,26 @@
 package time.storage.store;
 
-import java.io.IOException;
-import java.nio.file.FileSystems;
-
+import com.google.inject.Inject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.fr.FrenchAnalyzer;
+import org.apache.lucene.document.*;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.document.LongField;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.facet.FacetsConfig;
-import org.apache.lucene.facet.sortedset.SortedSetDocValuesFacetField;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.FSDirectory;
-
-import com.google.inject.Inject;
-
 import time.domain.Conf;
 import time.domain.DatedPhrase;
-import time.domain.Scale;
-import time.domain.SortableLongField;
 import time.domain.Text;
 import time.tool.file.Dirs;
 import time.tool.reference.Fields;
+
+import java.io.IOException;
+import java.nio.file.FileSystems;
 
 public class PhraseStore {
 
@@ -36,6 +30,7 @@ public class PhraseStore {
     private String finalIndexDir;
 	private IndexWriter iwriter;
 	private FacetsConfig config;
+    private Analyzer analyser;
     private long phraseCount;
     private long nbPhraseLog;
 
@@ -47,6 +42,7 @@ public class PhraseStore {
 		if (indexDir == null) {
 			throw new RuntimeException("indexDir is null");
 		}
+		analyser = new FrenchAnalyzer();
         LOGGER.info(this);
 	}
 
@@ -59,7 +55,7 @@ public class PhraseStore {
 	public void start() throws IOException {
         LOGGER.info("PhraseStore.start({})", indexDir);
 		final Directory directory = FSDirectory.open(FileSystems.getDefault().getPath(indexDir));
-		final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new StandardAnalyzer());
+		final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(analyser);
 		indexWriterConfig.setOpenMode(OpenMode.CREATE);
 		indexWriterConfig.setRAMBufferSizeMB(256.0);
 
@@ -120,12 +116,10 @@ public class PhraseStore {
         doc.add(new TextField(Fields.URL, text.getMetadata().getUrl(), Store.YES));
 
         doc.add(new TextField(Fields.TEXT, phrase.getText(), Store.YES));
-        doc.add(new SortableLongField(Fields.DATE, phrase.getDate(), Store.YES));
-        //crée le jeu de champs buckets en fonction de Scale.
-        for (int i = 0; i < Scale.SCALES.length; i++) {
-            doc.add(new LongField(String.valueOf(i), phrase.getDate() / Scale.SCALES[i], Store.NO));
-            doc.add(new SortedSetDocValuesFacetField(String.valueOf(i), String.valueOf(phrase.getDate() / Scale.SCALES[i])));
-        }
+        doc.add(new LongPoint(Fields.DATE, phrase.getDate()));
+        doc.add(new NumericDocValuesField(Fields.DATE, phrase.getDate()));
+        doc.add(new StoredField(Fields.DATE, phrase.getDate()));
+
         return doc;
     }
 

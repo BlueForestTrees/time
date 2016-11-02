@@ -1,27 +1,26 @@
 package time.web.service;
 
-import java.util.Arrays;
-
+import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.queryparser.classic.ParseException;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.FuzzyQuery;
-import org.apache.lucene.search.MatchAllDocsQuery;
-import org.apache.lucene.search.NumericRangeQuery;
-import org.apache.lucene.search.PhraseQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.WildcardQuery;
+import org.apache.lucene.search.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import time.tool.reference.Fields;
 import time.web.bean.TermPeriodFilter;
+
+import java.util.Arrays;
 
 /**
  * Génère les requêtes lucene depuis une requête histoires
  */
 @Component
 public class QueryService {
+
+    @Autowired
+    QueryParser textQueryParser;
 	
     /**
      * Construit une requête lucene depuis une requête histoires
@@ -32,7 +31,7 @@ public class QueryService {
         final boolean hasTermFilter = termPeriodFilter.hasWords();
         final boolean hasPeriodFilter = termPeriodFilter.hasPeriod();
         final Query termQuery = hasTermFilter ? getTermQuery(termPeriodFilter.getWords().toLowerCase()) : null;
-        final Query periodQuery = hasPeriodFilter ? NumericRangeQuery.newLongRange(Fields.DATE, termPeriodFilter.getFrom(), termPeriodFilter.getTo(), true, true) : null;
+        final Query periodQuery = hasPeriodFilter ? LongPoint.newRangeQuery(Fields.DATE, termPeriodFilter.getFrom(), termPeriodFilter.getTo()) : null;
 
         if(hasPeriodFilter && hasTermFilter){
         	return new BooleanQuery.Builder().add(termQuery, Occur.MUST).add(periodQuery, Occur.MUST).build();
@@ -117,8 +116,12 @@ public class QueryService {
 		if(hasWildCards){
 			return new WildcardQuery(new Term("text", word));
 		}else{
-			return new TermQuery(new Term("text", word));
-		}
+            try {
+                return textQueryParser.parse(word);
+            } catch (ParseException e) {
+                return null;
+            }
+        }
 	}
 
     private String[] words(final String term) {

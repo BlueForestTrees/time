@@ -3,7 +3,7 @@ package time.index.manage;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
@@ -107,7 +107,7 @@ public class IndexService {
     }
     
     protected IndexWriterConfig indexWriterConfig(){
-        final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new StandardAnalyzer());
+        final IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new FrenchAnalyzer());
         indexWriterConfig.setOpenMode(OpenMode.CREATE_OR_APPEND);
         indexWriterConfig.setRAMBufferSizeMB(256.0);
         return indexWriterConfig;

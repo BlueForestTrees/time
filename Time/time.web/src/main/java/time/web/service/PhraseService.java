@@ -1,13 +1,5 @@
 package time.web.service;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
 import com.google.common.base.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +12,6 @@ import org.apache.lucene.search.highlight.NullFragmenter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import time.domain.DatedPhrase;
 import time.domain.Metadata;
 import time.tool.reference.Fields;
@@ -28,6 +19,14 @@ import time.web.bean.Last;
 import time.web.bean.LucenePhrase;
 import time.web.bean.Phrases;
 import time.web.bean.TermPeriodFilter;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @Service
 public class PhraseService {
@@ -91,7 +90,7 @@ public class PhraseService {
             final String[] alternatives = tryWithService.findBetterTerm(request);
             phrases.setAlternatives(alternatives);
         }
-        LOGGER.info("{} docs in index", indexSearcher.count(new MatchAllDocsQuery()));
+
         return phrases;
     }
 

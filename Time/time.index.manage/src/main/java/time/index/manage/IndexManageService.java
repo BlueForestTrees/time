@@ -22,11 +22,24 @@ public class IndexManageService {
     private final BlueRedSwitcher indexChooser;
     private final Messager messager;
 
-    public IndexManageService() throws IOException, TimeoutException, ArgumentParserException {
+    public IndexManageService(String[] args) throws IOException, TimeoutException, ArgumentParserException {
         LOGGER.info("IndexManageMain()");
         indexService = new IndexService();
         indexChooser = new BlueRedSwitcher();
-        messager = new Messager();
+
+        if(args.length > 0){
+            final Queue command = Queue.valueOf(args[0]);
+            if(command == Queue.MERGE){
+                onMergeSignal();
+            }
+            messager = null;
+        }else {
+            messager = new Messager();
+            installMessager();
+        }
+    }
+
+    private void installMessager() throws IOException {
         messager.when(Queue.MERGE, this::onMergeSignal)
                 .when(Queue.INDEX_CREATED, IndexCreation.class, this::onIndexCreatedSignal);
     }

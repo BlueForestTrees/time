@@ -1,33 +1,20 @@
 package time.web;
 
-import java.io.IOException;
-import java.nio.file.FileSystems;
-
 import org.apache.lucene.document.Document;
+import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MatchAllDocsQuery;
-import org.apache.lucene.search.NumericRangeQuery;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import time.web.service.BucketService;
+import java.io.IOException;
+import java.nio.file.FileSystems;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
 //@ContextConfiguration(classes={ServiceConfig.class})
 public class LuceneServiceTest {
-    
-    @Autowired
-    BucketService bucketService;
-
     
     //@Test
     public void testLuceneDoc() throws IOException{
@@ -86,7 +73,7 @@ public class LuceneServiceTest {
         }
         
         TermQuery textQuery = noTerm ? null : new TermQuery(new Term("text", term));
-        Query bucketQuery = noBucket ? null : NumericRangeQuery.newLongRange(bucketName, bucketValue, bucketValue, true, true);
+        Query bucketQuery = noBucket ? null : LongPoint.newRangeQuery(bucketName, bucketValue, bucketValue);
         
         
         BooleanQuery.Builder builder = new BooleanQuery.Builder();

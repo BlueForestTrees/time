@@ -13,7 +13,7 @@ public class IndexManageMain {
 
     public static void main(final String[] args) throws IOException, TimeoutException, ArgumentParserException {
         try {
-            new IndexManageService();
+            new IndexManageService(args);
         }catch(Exception e){
             LOGGER.error(e);
         }

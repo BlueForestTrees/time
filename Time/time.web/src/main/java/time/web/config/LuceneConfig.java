@@ -4,10 +4,9 @@ import com.google.common.base.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.facet.sortedset.DefaultSortedSetDocValuesReaderState;
-import org.apache.lucene.facet.sortedset.SortedSetDocValuesReaderState;
+import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +30,12 @@ public class LuceneConfig {
 
     @Bean
     public Analyzer analyzer() {
-        return new StandardAnalyzer();
+        return new FrenchAnalyzer();
+    }
+
+    @Bean
+    public QueryParser textQueryParser(){
+        return new QueryParser("text",analyzer());
     }
 
     @Bean
@@ -39,11 +43,6 @@ public class LuceneConfig {
         final IndexSearcher indexSearcher = new IndexSearcher(directoryReader());
         LOGGER.info("{} docs in index", indexSearcher.count(new MatchAllDocsQuery()));
         return indexSearcher;
-    }
-
-    @Bean
-    public SortedSetDocValuesReaderState readerState() throws IOException {
-        return new DefaultSortedSetDocValuesReaderState(directoryReader());
     }
 
     @Bean

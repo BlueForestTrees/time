@@ -125,7 +125,7 @@ public class PhraseStore {
 
     private void addDoc(Document doc) {
         try {
-            iwriter.addDocument(config.build(doc));
+            iwriter.addDocument(doc);
             phraseCount++;
         } catch (IOException e) {
             throw new RuntimeException("IndexWriter.addDocument error", e);

@@ -41,7 +41,7 @@
         phrase.author = source.getAuthor(phrase);
 
         return ((titleChanged(phrase) ? "<div class='phraseHeader'><i>${title}</i></div>" : "") +
-                    "<p date='${date}' page='${url}'>${text}" +
+                    "<p date='${date}' page='${url}'>[...] ${text} [...]" +
                         "<a title='${tipTextHeader} : ${pageNameEscaped} de ${author}' href='${url}' target='_blank' onClick='Time.drawer.link(${pageName})'>" +
                             "<img src='${imgUrl}'/>" +
                         "</a>" +

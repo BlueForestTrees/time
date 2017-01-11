@@ -57,7 +57,7 @@
     };
 
     PhrasesDrawer.prototype.addTextIntro = function(humanDate, nbPhrases) {
-        Time.view.phrases.append("<div class=\"textIntro\"><h1>Il était une fois " + this.firstToLowerCase(humanDate) + " . . .</h1>");
+        Time.view.phrases.append("<div class=\"textIntro\"><h2>Il était une fois " + this.firstToLowerCase(humanDate) + " . . .</h2>");
         Time.view.phrases.append("<i>" + nbPhrases ? (nbPhrases + " phrase") + (nbPhrases > 1 ? "s" : "") : "" + "</i>" + "</div>");
     };
 
@@ -77,7 +77,7 @@
     };
     
     PhrasesDrawer.prototype.addTheEnd = function() {
-        Time.view.phrases.append("<h1 style=\"text-align:center\">The END</h1>");
+        Time.view.phrases.append("<h1 style=\"text-align:center\">_________________________________</h1>");
     };
     
     PhrasesDrawer.prototype.firstToLowerCase = function( str ) {

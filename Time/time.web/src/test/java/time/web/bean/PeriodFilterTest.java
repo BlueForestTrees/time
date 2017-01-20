@@ -7,7 +7,7 @@ import org.junit.Test;
 public class PeriodFilterTest {
 	@Test
 	public void build(){
-		TermPeriodFilter periodFilter = TermPeriodFilter.parse("doudou @200+-10% @100 toto");
+		TermPeriodFilter periodFilter = TermPeriodFilter.fromString("doudou @200+-10% @100 toto");
 		assertThat(periodFilter.getFrom()).isEqualTo(36525L);
 		assertThat(periodFilter.getTo()).isEqualTo(80353L);
 		assertThat(periodFilter.getWords()).isEqualTo("doudou toto");
@@ -15,7 +15,7 @@ public class PeriodFilterTest {
 	
 	@Test
 	public void build1(){
-		TermPeriodFilter periodFilter = TermPeriodFilter.parse("doudou toto");
+		TermPeriodFilter periodFilter = TermPeriodFilter.fromString("doudou toto");
 		assertThat(periodFilter.getFrom()).isNull();
 		assertThat(periodFilter.getTo()).isNull();
 		assertThat(periodFilter.getWords()).isEqualTo("doudou toto");

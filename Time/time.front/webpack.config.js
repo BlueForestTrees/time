@@ -25,9 +25,9 @@ module.exports = {
 		new HtmlWebpackPlugin({template : srcDir + '/index.html',inject : 'body',hash : 'true'})
 	],
     devServer: {
-        port: 8082,
+        port: 7072,
         proxy: {
-            '/api/*': { target: 'http://localhost:8080' }
+            '/api/*': { target: 'http://localhost:7070' }
         },
     }
 };

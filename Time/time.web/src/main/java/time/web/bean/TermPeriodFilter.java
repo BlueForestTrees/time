@@ -1,10 +1,5 @@
 package time.web.bean;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.util.StringUtils;
-import time.tool.date.Dates;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -12,6 +7,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static org.springframework.util.StringUtils.isEmpty;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import time.tool.date.Dates;
 
 /**
  * Convertit une requête histoire en mot+from+to
@@ -21,11 +23,21 @@ public class TermPeriodFilter {
     private static final Logger LOGGER = LogManager.getLogger(TermPeriodFilter.class);
 
     private static final int DEFAULT_PERCENT_MARGIN = 10;
-    private static final String PERIOD_HEADER = "@";
+    private static final String SPECIAL_HEADER = "@";
     private static final String PARTS_SEP = " ";
+    public static final String ET = "et";
     private String words;
     private Long from;
     private Long to;
+    private boolean linkMode;
+
+    public boolean isLinkMode() {
+        return linkMode;
+    }
+
+    private void setLinkMode(final boolean linkMode) {
+        this.linkMode = linkMode;
+    }
 
     private TermPeriodFilter() {
 
@@ -63,30 +75,55 @@ public class TermPeriodFilter {
         return from != null && to != null;
     }
 
-    public static TermPeriodFilter parse(final String request) {
+    public static TermPeriodFilter fromString(final String request) {
         final TermPeriodFilter termPeriodFilter = new TermPeriodFilter();
-        if (!StringUtils.isEmpty(request)) {
+        if (!isEmpty(request)) {
 
             final String terms = transformRequest(request);
 
-            final String words = Arrays.stream(terms.split(PARTS_SEP))
-                    .filter(part -> !part.startsWith(PERIOD_HEADER))
-                    .collect(Collectors.joining(" "));
-            termPeriodFilter.setWords(words);
-
-            final List<Period> periods = Arrays.stream(terms.split(PARTS_SEP))
-                    .filter(part -> part.startsWith(PERIOD_HEADER))
-                    .map(part -> parsePeriod(part))
-                    .sorted(Period.byDate).collect(Collectors.toList());
-            if (!periods.isEmpty()) {
-                final Period firstPeriod = periods.get(0);
-                final Period lastPeriod = periods.get(periods.size() - 1);
-
-                termPeriodFilter.setFrom(firstPeriod.getFrom());
-                termPeriodFilter.setTo(lastPeriod.getTo());
-            }
+            defineWords(termPeriodFilter, terms);
+            definePeriods(termPeriodFilter, terms);
+            defineLinkMode(termPeriodFilter, terms);
         }
         return termPeriodFilter;
+    }
+
+    private static void defineLinkMode(final TermPeriodFilter termPeriodFilter, final String terms) {
+        //Les termes contient '@et'
+        final boolean containsSpecialET = !Arrays.stream(terms.split(PARTS_SEP))
+                                            .filter(part -> part.toLowerCase().startsWith(SPECIAL_HEADER +ET))
+                                            .collect(Collectors.toList()).isEmpty();
+
+        final boolean hasTwoWords = wordsStream(terms.toLowerCase()).collect(Collectors.toList()).size() == 2;
+
+        termPeriodFilter.setLinkMode(containsSpecialET && hasTwoWords);
+    }
+
+    private static void definePeriods(final TermPeriodFilter termPeriodFilter, final String terms) {
+        final List<Period> periods = Arrays.stream(terms.split(PARTS_SEP))
+                .filter(part -> part.startsWith(SPECIAL_HEADER))
+                .filter(part -> !part.toLowerCase().startsWith(SPECIAL_HEADER + ET))
+                .map(TermPeriodFilter::parsePeriod)
+                .sorted(Period.byDate)
+                .collect(Collectors.toList());
+        if (!periods.isEmpty()) {
+            final Period firstPeriod = periods.get(0);
+            final Period lastPeriod = periods.get(periods.size() - 1);
+
+            termPeriodFilter.setFrom(firstPeriod.getFrom());
+            termPeriodFilter.setTo(lastPeriod.getTo());
+        }
+    }
+
+    private static void defineWords(final TermPeriodFilter termPeriodFilter, final String terms) {
+        final String words = wordsStream(terms)
+                .collect(Collectors.joining(" "));
+        termPeriodFilter.setWords(words);
+    }
+
+    private static Stream<String> wordsStream(final String terms) {
+        return Arrays.stream(terms.split(PARTS_SEP))
+                .filter(part -> !part.startsWith(SPECIAL_HEADER));
     }
 
     private static String transformRequest(String request) {

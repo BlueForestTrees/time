@@ -1,25 +1,7 @@
 package time.web.service;
 
-import com.google.common.base.Optional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.search.*;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
-import org.apache.lucene.search.highlight.NullFragmenter;
-import org.apache.lucene.search.highlight.QueryScorer;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import time.domain.DatedPhrase;
-import time.domain.Metadata;
-import time.tool.reference.Fields;
-import time.web.bean.Last;
-import time.web.bean.LucenePhrase;
-import time.web.bean.Phrases;
-import time.web.bean.TermPeriodFilter;
-
+import static java.util.Optional.ofNullable;
+import static java.util.UUID.randomUUID;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +9,33 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.search.FieldDoc;
+import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.Sort;
+import org.apache.lucene.search.SortField;
+import org.apache.lucene.search.SortField.Type;
+import org.apache.lucene.search.TopFieldDocs;
+import org.apache.lucene.search.highlight.Highlighter;
+import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
+import org.apache.lucene.search.highlight.NullFragmenter;
+import org.apache.lucene.search.highlight.QueryScorer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import time.domain.DatedPhrase;
+import time.domain.Metadata;
+import time.tool.reference.Fields;
+import time.web.bean.Last;
+import time.web.bean.LucenePhrase;
+import time.web.bean.Phrases;
+import time.web.bean.TermPeriodFilter;
 
 @Service
 public class PhraseService {
@@ -59,11 +68,21 @@ public class PhraseService {
 
     private Map<String, Object> cache = new ConcurrentHashMap<>();
 
-    private Sort sortDateAsc = new Sort(new SortField("date", SortField.Type.LONG));
+    private Sort sortDateAsc = new Sort(new SortField("date", Type.LONG));
 
     public Phrases find(final String request, String lastKey) throws IOException {
         final Last last = lastKey != null ? (Last) cache.remove(lastKey) : null;
-        final TermPeriodFilter termPeriodFilter = TermPeriodFilter.parse(request);
+        final TermPeriodFilter termPeriodFilter = TermPeriodFilter.fromString(request);
+        LOGGER.info("words: {} linkMode : {}",termPeriodFilter.getWords(), termPeriodFilter.isLinkMode());
+        //TODO gérer le linkMode, refactorer la recherche
+        /*si linkMode à false => cas normal
+        si linkMode à true:
+        -requete firstDate sur chacun des deux mots 'left' et 'right'
+        -prendre le max des deux (ex. max is left)
+        -requete 5 phrases right < dateMaxLeft
+        -UNION
+        -requete normale >= dateMaxLeft
+        */
         final Query query = queryHelper.getQuery(termPeriodFilter);
         final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
         highlighter.setTextFragmenter(new NullFragmenter());
@@ -81,7 +100,7 @@ public class PhraseService {
             final int newLastIndex = lastIndex == null ? nbPhrasesFound - 1 : lastIndex + nbPhrasesFound;
             if (newLastIndex < searchResult.totalHits - 1) {
                 final FieldDoc lastScoreDoc = (FieldDoc) searchResult.scoreDocs[nbPhrasesFound - 1];
-                final String newLastKey = UUID.randomUUID().toString();
+                final String newLastKey = randomUUID().toString();
                 cache.put(newLastKey, new Last(lastScoreDoc, newLastIndex));
                 phrases.setLastKey(newLastKey);
             }
@@ -100,22 +119,19 @@ public class PhraseService {
             final Document doc = indexSearcher.doc(scoreDoc.doc);
             final LucenePhrase lucenePhrase = LucenePhrase.with(doc);
 
-            phrase.setText(Optional.fromNullable(highlighter.getBestFragment(analyzer, Fields.TEXT, lucenePhrase.text())).or(lucenePhrase.text()));
+            phrase.setText(ofNullable(highlighter.getBestFragment(analyzer, Fields.TEXT, lucenePhrase.text())).orElse(lucenePhrase.text()));
             phrase.setDate(lucenePhrase.date());
             phrase.setUrl(lucenePhrase.url());
-            phrase.setType(Optional.fromNullable(lucenePhrase.type()).or(Metadata.Type.WIKI));
+            phrase.setType(ofNullable(lucenePhrase.type()).orElse(Metadata.Type.WIKI));
             phrase.setTitle(lucenePhrase.title());
             phrase.setAuthor(lucenePhrase.author());
 
             return phrase;
 
-
         } catch (IOException | InvalidTokenOffsetsException e) {
             throw new RuntimeException(e);
         }
     }
-
-
 
     public String findFirstSlack(final String term){
         return toSlackMessageFormat(findFirstPhrase(term));
@@ -147,7 +163,7 @@ public class PhraseService {
 
     private DatedPhrase findOneDatedPhrase(final String term, final Sort sort) {
         DatedPhrase result = null;
-        final Query query = queryHelper.getQuery(TermPeriodFilter.parse(term));
+        final Query query = queryHelper.getQuery(TermPeriodFilter.fromString(term));
         try {
             final TopFieldDocs searchResult = indexSearcher.search(query, 1, sort);
             if (searchResult.totalHits > 0) {

@@ -51,7 +51,7 @@ public class ScaleTest {
 
 
     private void assertScale(String term, String expectedScale) {
-        final TermPeriodFilter termPeriodFilter = TermPeriodFilter.parse(term);
+        final TermPeriodFilter termPeriodFilter = TermPeriodFilter.fromString(term);
         final long from = termPeriodFilter.getFrom();
         final long to = termPeriodFilter.getTo();
         final long totalDays = to - from;

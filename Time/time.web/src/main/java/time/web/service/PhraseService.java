@@ -1,41 +1,24 @@
 package time.web.service;
 
-import static java.util.Optional.ofNullable;
-import static java.util.UUID.randomUUID;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.stream.Collectors;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.search.FieldDoc;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
-import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.Sort;
-import org.apache.lucene.search.SortField;
-import org.apache.lucene.search.SortField.Type;
-import org.apache.lucene.search.TopFieldDocs;
+import org.apache.lucene.search.*;
 import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.InvalidTokenOffsetsException;
 import org.apache.lucene.search.highlight.NullFragmenter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import time.domain.DatedPhrase;
-import time.domain.Metadata;
-import time.tool.reference.Fields;
 import time.web.bean.Last;
-import time.web.bean.LucenePhrase;
 import time.web.bean.Phrases;
 import time.web.bean.TermPeriodFilter;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.UUID.randomUUID;
 
 @Service
 public class PhraseService {
@@ -54,6 +37,8 @@ public class PhraseService {
     @Autowired
     private Integer searchPhrasePageSize;
 
+    private int linkModePageSize = 5;
+
     @Autowired
     private IndexSearcher indexSearcher;
 
@@ -61,107 +46,127 @@ public class PhraseService {
     private QueryService queryHelper;
 
     @Autowired
-    private Analyzer analyzer;
-    
-    @Autowired
     private FindBetterService tryWithService;
 
-    private Map<String, Object> cache = new ConcurrentHashMap<>();
+    @Autowired
+    private TransformerService transformerService;
 
-    private Sort sortDateAsc = new Sort(new SortField("date", Type.LONG));
+    @Autowired
+    private CacheService cache;
 
     public Phrases find(final String request, String lastKey) throws IOException {
-        final Last last = lastKey != null ? (Last) cache.remove(lastKey) : null;
         final TermPeriodFilter termPeriodFilter = TermPeriodFilter.fromString(request);
-        LOGGER.info("words: {} linkMode : {}",termPeriodFilter.getWords(), termPeriodFilter.isLinkMode());
-        //TODO gérer le linkMode, refactorer la recherche
-        /*si linkMode à false => cas normal
-        si linkMode à true:
-        -requete firstDate sur chacun des deux mots 'left' et 'right'
-        -prendre le max des deux (ex. max is left)
-        -requete 5 phrases right < dateMaxLeft
-        -UNION
-        -requete normale >= dateMaxLeft
-        */
-        final Query query = queryHelper.getQuery(termPeriodFilter);
-        final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
-        highlighter.setTextFragmenter(new NullFragmenter());
-        final TopFieldDocs searchResult = indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, searchPhrasePageSize, sortDateAsc, true, true);
-
-        final Phrases phrases = new Phrases();
-        if (searchResult.totalHits > 0) {
-            // LES PHRASES
-            final Integer lastIndex = last == null ? null : last.getLastIndex();
-            phrases.setTotal(searchResult.totalHits);
-            final List<DatedPhrase> phraseList = Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> buildPhrase(scoreDoc, highlighter)).collect(Collectors.toList());
-            phrases.setPhraseList(phraseList);
-            // LE LAST
-            final int nbPhrasesFound = searchResult.scoreDocs.length;
-            final int newLastIndex = lastIndex == null ? nbPhrasesFound - 1 : lastIndex + nbPhrasesFound;
-            if (newLastIndex < searchResult.totalHits - 1) {
-                final FieldDoc lastScoreDoc = (FieldDoc) searchResult.scoreDocs[nbPhrasesFound - 1];
-                final String newLastKey = randomUUID().toString();
-                cache.put(newLastKey, new Last(lastScoreDoc, newLastIndex));
-                phrases.setLastKey(newLastKey);
-            }
+        if (termPeriodFilter.isLinkMode()) {
+            return linkModeSearch(termPeriodFilter);
         } else {
-            phrases.setTotal(0);
-            final String[] alternatives = tryWithService.findBetterTerm(request);
-            phrases.setAlternatives(alternatives);
+            return normalSearch(request, lastKey, termPeriodFilter);
         }
+    }
 
+    private Phrases linkModeSearch(final TermPeriodFilter termPeriodFilter) throws IOException{
+        // requete firstDate sur chacun des deux mots 'left' et 'right'
+        final String leftWord = termPeriodFilter.getWords().split(" ")[0];
+        final String rightWord = termPeriodFilter.getWords().split(" ")[1];
+        final Long leftDate = findFirstDate(leftWord);
+        final Long rightDate = findFirstDate(rightWord);
+        if (leftDate == null || rightDate == null) {
+            return null;
+        }
+        // prendre le max des deux (ex. max is left)
+        boolean maxIsLeft = leftDate > rightDate;
+        final TermPeriodFilter copy = termPeriodFilter.copy();
+        // requete 5 phrases right < dateMaxLeft
+        if (maxIsLeft) {
+            copy.setTo(leftDate);
+            copy.setWords(rightWord);
+        } else {
+            copy.setTo(rightDate);
+            copy.setWords(leftWord);
+        }
+        final Query introQuery = queryHelper.getQuery(copy);
+        final TopFieldDocs introDocs = doSearch(introQuery, linkModePageSize);
+        final List<DatedPhrase> introDatedPhrases = getDatedPhrases(introQuery, introDocs);
+
+        //requete normale >= dateMaxLeft
+        //TODO devrait être inclusif
+        termPeriodFilter.setFrom(leftDate);
+        final Query leftRightMixQuery = queryHelper.getQuery(copy);
+        //TODO gérer le last, si on a un last il ne faut pas faire de linkMode...
+        final TopFieldDocs leftRightMixDocs = doSearch(leftRightMixQuery, last);
+        final List<DatedPhrase> leftRightMixDatedPhrases = getDatedPhrases(leftRightMixQuery, leftRightMixDocs);
+
+
+
+        return null;
+    }
+
+    private Phrases normalSearch(String request, String lastKey, TermPeriodFilter termPeriodFilter) throws IOException {
+        final Query query = queryHelper.getQuery(termPeriodFilter);
+        final Last last = cache.pop(lastKey);
+        final TopFieldDocs searchResult = doSearch(query, last);
+
+        if (searchResult.totalHits > 0) {
+            return phrases(query, last, searchResult);
+        } else {
+            return emptyPhrases(request);
+        }
+    }
+
+    private TopFieldDocs doSearch(final Query query, final int pageSize) throws IOException {
+        return indexSearcher.searchAfter(null, query, pageSize, dateAscSort, true, true);
+    }
+
+    private TopFieldDocs doSearch(final Query query, final Last last) throws IOException {
+        return indexSearcher.searchAfter(last == null ? null : last.getDoc(), query, searchPhrasePageSize, dateAscSort, true, true);
+    }
+
+    private Phrases emptyPhrases(String request) throws IOException {
+        final Phrases phrases = new Phrases();
+        phrases.setTotal(0);
+        final String[] alternatives = tryWithService.findBetterTerm(request);
+        phrases.setAlternatives(alternatives);
         return phrases;
     }
 
-    private DatedPhrase buildPhrase(final ScoreDoc scoreDoc, final Highlighter highlighter) {
-        try {
-            final DatedPhrase phrase = new DatedPhrase();
-            final Document doc = indexSearcher.doc(scoreDoc.doc);
-            final LucenePhrase lucenePhrase = LucenePhrase.with(doc);
+    private Phrases phrases(Query query, Last last, TopFieldDocs searchResult) {
+        // LES PHRASES
+        final Phrases phrases = new Phrases();
+        final List<DatedPhrase> phraseList = getDatedPhrases(query, searchResult);
 
-            phrase.setText(ofNullable(highlighter.getBestFragment(analyzer, Fields.TEXT, lucenePhrase.text())).orElse(lucenePhrase.text()));
-            phrase.setDate(lucenePhrase.date());
-            phrase.setUrl(lucenePhrase.url());
-            phrase.setType(ofNullable(lucenePhrase.type()).orElse(Metadata.Type.WIKI));
-            phrase.setTitle(lucenePhrase.title());
-            phrase.setAuthor(lucenePhrase.author());
+        phrases.setTotal(searchResult.totalHits);
+        phrases.setPhraseList(phraseList);
 
-            return phrase;
-
-        } catch (IOException | InvalidTokenOffsetsException e) {
-            throw new RuntimeException(e);
+        // LE LAST
+        final int nbPhrasesFound = searchResult.scoreDocs.length;
+        final Integer lastIndex = last == null ? null : last.getLastIndex();
+        final int newLastIndex = lastIndex == null ? nbPhrasesFound - 1 : lastIndex + nbPhrasesFound;
+        if (newLastIndex < searchResult.totalHits - 1) {
+            final FieldDoc lastScoreDoc = (FieldDoc) searchResult.scoreDocs[nbPhrasesFound - 1];
+            final String newLastKey = randomUUID().toString();
+            cache.save(newLastKey, lastScoreDoc, newLastIndex);
+            phrases.setLastKey(newLastKey);
         }
+        return phrases;
     }
 
-    public String findFirstSlack(final String term){
-        return toSlackMessageFormat(findFirstPhrase(term));
+    private List<DatedPhrase> getDatedPhrases(final Query query, final TopFieldDocs searchResult) {
+        final Highlighter highlighter = queryHelper.getHighlighter(query);
+        return Arrays.stream(searchResult.scoreDocs).map(scoreDoc -> transformerService.buildPhrase(scoreDoc, highlighter)).collect(Collectors.toList());
     }
 
-    public String findLastSlack(final String term){
-        return toSlackMessageFormat(findLastPhrase(term));
+    public DatedPhrase findFirst(final String term) {
+        return findOne(term, dateAscSort);
     }
 
-    public String findRandomSlack(String term) {
-        return toSlackMessageFormat(findOneDatedPhrase(term, randomSort));
+    public DatedPhrase findLast(final String term) {
+        return findOne(term, dateDescSort);
     }
 
-    DatedPhrase findFirstPhrase(String term) {
-        return findOneDatedPhrase(term, dateAscSort);
+    public DatedPhrase findRandom(final String term) {
+        return findOne(term, randomSort);
     }
 
-    DatedPhrase findLastPhrase(String term) {
-        return findOneDatedPhrase(term, dateDescSort);
-    }
-
-    public LucenePhrase findFirstLucenePhrase(final Query query) {
-        return findOneLucenePhrase(query, dateAscSort);
-    }
-
-    public LucenePhrase findLastLucenePhrase(final Query query) {
-        return findOneLucenePhrase(query, dateDescSort);
-    }
-
-    private DatedPhrase findOneDatedPhrase(final String term, final Sort sort) {
+    private DatedPhrase findOne(final String term, final Sort sort) {
         DatedPhrase result = null;
         final Query query = queryHelper.getQuery(TermPeriodFilter.fromString(term));
         try {
@@ -170,7 +175,7 @@ public class PhraseService {
                 final ScoreDoc scoreDoc = searchResult.scoreDocs[0];
                 final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
                 highlighter.setTextFragmenter(new NullFragmenter());
-                result = buildPhrase(scoreDoc, highlighter);
+                result = transformerService.buildPhrase(scoreDoc, highlighter);
             }
         } catch (IOException e) {
             LOGGER.error(e);
@@ -178,27 +183,22 @@ public class PhraseService {
         return result;
     }
 
-    private LucenePhrase findOneLucenePhrase(final Query query, final Sort sort) {
+    private Long findFirstDate(final String term) {
+        return findOneDate(term, dateAscSort);
+    }
+
+    private Long findOneDate(final String term, final Sort sort) {
+        Long date = null;
+        final Query query = queryHelper.getQuery(TermPeriodFilter.fromString(term));
         try {
             final TopFieldDocs searchResult = indexSearcher.search(query, 1, sort);
             if (searchResult.totalHits > 0) {
-                int docID = searchResult.scoreDocs[0].doc;
-                return LucenePhrase.with(indexSearcher.doc(docID));
+                date = transformerService.getDate(searchResult.scoreDocs[0]);
             }
         } catch (IOException e) {
             LOGGER.error(e);
         }
-        return null;
-    }
-
-    private String toSlackMessageFormat(final DatedPhrase phrase) {
-        final String text = phrase.getText();
-        final String author = phrase.getType() == Metadata.Type.WIKI ? "Wikipédia" : phrase.getAuthor();
-        String slackFormattedMessage = text.replace("<strong> ", " <strong>").replace(" </strong>", "</strong> ").replace("<b> ", " <b>").replace(" </b>", "</b> ").replace("<B> ", " <B>").replace(" </B>", "</B> ").replace("<B>", "*").replace("</B>", "*").replace("<b>", "*").replace("</b>", "*").replace("<strong>", "*").replace("</strong>", "*");
-
-        slackFormattedMessage += "  ("+author+")";
-
-        return "{\"response_type\": \"in_channel\",\"text\":\""+slackFormattedMessage+"\"}";
+        return date;
     }
 
 }

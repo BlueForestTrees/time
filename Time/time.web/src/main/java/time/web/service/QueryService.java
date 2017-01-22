@@ -6,6 +6,9 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.*;
+import org.apache.lucene.search.highlight.Highlighter;
+import org.apache.lucene.search.highlight.NullFragmenter;
+import org.apache.lucene.search.highlight.QueryScorer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import time.tool.reference.Fields;
@@ -74,7 +77,7 @@ public class QueryService {
     protected Query getTermQuery(final String term) {
         final boolean isPhrase = term.startsWith("\"") && term.endsWith("\"");
         final boolean hasOrs = term.contains(" ");
-        
+
         if(isPhrase){
             final String[] words = words(term);
             if(words.length == 1){
@@ -126,6 +129,12 @@ public class QueryService {
 
     private String[] words(final String term) {
         return term.replaceAll("\"", "").split(" ");
+    }
+
+    public Highlighter getHighlighter(final Query query) {
+        final Highlighter highlighter = new Highlighter(new QueryScorer(query, "text"));
+        highlighter.setTextFragmenter(new NullFragmenter());
+        return highlighter;
     }
 }
 

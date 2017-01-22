@@ -116,9 +116,8 @@ public class TermPeriodFilter {
     }
 
     private static void defineWords(final TermPeriodFilter termPeriodFilter, final String terms) {
-        final String words = wordsStream(terms)
-                .collect(Collectors.joining(" "));
-        termPeriodFilter.setWords(words);
+        termPeriodFilter.setWords(wordsStream(terms)
+                .collect(Collectors.joining(" ")));
     }
 
     private static Stream<String> wordsStream(final String terms) {
@@ -215,5 +214,14 @@ public class TermPeriodFilter {
 
     public boolean hasFrom() {
         return from != null;
+    }
+
+    public TermPeriodFilter copy() {
+        final TermPeriodFilter clone = new TermPeriodFilter();
+        clone.setFrom(getFrom());
+        clone.setTo(getTo());
+        clone.setWords(getWords());
+        clone.setLinkMode(isLinkMode());
+        return clone;
     }
 }

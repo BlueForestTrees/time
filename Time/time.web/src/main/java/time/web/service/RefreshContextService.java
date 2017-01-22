@@ -32,11 +32,15 @@ public class RefreshContextService {
         LOGGER.info("onContextRefreshed");
         if(messager != null) {
             final AnnotationConfigWebApplicationContext webContext = (AnnotationConfigWebApplicationContext) contextStartedEvent.getApplicationContext();
+            //try {
+            //    messager.purge(Queue.TIME_WEB_REFRESH);
+            //} catch (IOException e) {
+            //    LOGGER.error("purge error", e);
+            //}
             try {
-                messager.purge(Queue.TIME_WEB_REFRESH);
                 messager.when(Queue.TIME_WEB_REFRESH, webContext::refresh);
             } catch (IOException e) {
-                LOGGER.error(e);
+                LOGGER.error("when error", e);
             }
         }
     }

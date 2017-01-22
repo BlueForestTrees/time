@@ -19,7 +19,7 @@ public class Anagramme {
     public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException, IOException, URISyntaxException {
 
         final String prefix = "";
-        final String mix = "thibaulthanoult";
+        final String mix = "SLIMANE IDA";
         final String suffix = "";
 
         ForkJoinPool.commonPool().submit(() -> {

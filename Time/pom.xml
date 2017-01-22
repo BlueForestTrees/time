@@ -46,7 +46,7 @@
         <junit.version>4.11</junit.version>
         <log4j.version>2.5</log4j.version>
         <log4j-web.version>2.3</log4j-web.version>
-        <lucene.version>6.2.1</lucene.version>
+        <lucene.version>6.3.0</lucene.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.assembly.version>2.6</maven.assembly.version>

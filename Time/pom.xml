@@ -58,6 +58,7 @@
         <spring.version>4.2.6.RELEASE</spring.version>
         <spring-security.version>4.1.0.RELEASE</spring-security.version>
         <tika.version>1.12</tika.version>
+        <lombok.version>1.16.12</lombok.version>
     </properties>
 
     <dependencies>
@@ -199,6 +200,11 @@
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
                 <version>${fileupload.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.servlet</groupId>

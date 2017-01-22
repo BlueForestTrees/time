@@ -14,6 +14,7 @@ import time.web.bean.Phrases;
 import time.web.bean.TermPeriodFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,7 +57,8 @@ public class PhraseService {
 
     public Phrases find(final String request, String lastKey) throws IOException {
         final TermPeriodFilter termPeriodFilter = TermPeriodFilter.fromString(request);
-        if (termPeriodFilter.isLinkMode()) {
+        // && lastKey == null car on fait une recherche en linkMode que pour le premier appel, les suivants sont une requête normale.
+        if (termPeriodFilter.isLinkMode() && lastKey == null) {
             return linkModeSearch(termPeriodFilter);
         } else {
             return normalSearch(request, lastKey, termPeriodFilter);
@@ -64,11 +66,13 @@ public class PhraseService {
     }
 
     private Phrases linkModeSearch(final TermPeriodFilter termPeriodFilter) throws IOException{
+        LOGGER.info("linkModeSearch {}", termPeriodFilter);
         // requete firstDate sur chacun des deux mots 'left' et 'right'
         final String leftWord = termPeriodFilter.getWords().split(" ")[0];
         final String rightWord = termPeriodFilter.getWords().split(" ")[1];
         final Long leftDate = findFirstDate(leftWord);
         final Long rightDate = findFirstDate(rightWord);
+        LOGGER.info("leftWord/date {}/{} rightWord/date {}/{}", leftWord, leftDate, rightWord, rightDate);
         if (leftDate == null || rightDate == null) {
             return null;
         }
@@ -77,9 +81,11 @@ public class PhraseService {
         final TermPeriodFilter copy = termPeriodFilter.copy();
         // requete 5 phrases right < dateMaxLeft
         if (maxIsLeft) {
+            LOGGER.info("max is Left");
             copy.setTo(leftDate);
             copy.setWords(rightWord);
         } else {
+            LOGGER.info("max is Right");
             copy.setTo(rightDate);
             copy.setWords(leftWord);
         }
@@ -87,17 +93,27 @@ public class PhraseService {
         final TopFieldDocs introDocs = doSearch(introQuery, linkModePageSize);
         final List<DatedPhrase> introDatedPhrases = getDatedPhrases(introQuery, introDocs);
 
+        LOGGER.info("nb phrase d'intro: {}", introDatedPhrases.size());
+
         //requete normale >= dateMaxLeft
         //TODO devrait être inclusif
         termPeriodFilter.setFrom(leftDate);
         final Query leftRightMixQuery = queryHelper.getQuery(copy);
-        //TODO gérer le last, si on a un last il ne faut pas faire de linkMode...
-        final TopFieldDocs leftRightMixDocs = doSearch(leftRightMixQuery, last);
+        final TopFieldDocs leftRightMixDocs = doSearch(leftRightMixQuery, null);
         final List<DatedPhrase> leftRightMixDatedPhrases = getDatedPhrases(leftRightMixQuery, leftRightMixDocs);
 
 
+        final List<DatedPhrase> datedPhrases = new ArrayList<>(leftRightMixDatedPhrases);
+        datedPhrases.addAll(introDatedPhrases);
+        // LES PHRASES
+        final Phrases phrases = new Phrases();
+        phrases.setTotal(introDocs.totalHits + leftRightMixDocs.totalHits);
+        phrases.setPhraseList(datedPhrases);
+        // LE LAST
+        final String lastKey = buildLast(null, leftRightMixDocs);
+        phrases.setLastKey(lastKey);
 
-        return null;
+        return phrases;
     }
 
     private Phrases normalSearch(String request, String lastKey, TermPeriodFilter termPeriodFilter) throws IOException {
@@ -129,14 +145,17 @@ public class PhraseService {
     }
 
     private Phrases phrases(Query query, Last last, TopFieldDocs searchResult) {
-        // LES PHRASES
         final Phrases phrases = new Phrases();
         final List<DatedPhrase> phraseList = getDatedPhrases(query, searchResult);
 
         phrases.setTotal(searchResult.totalHits);
         phrases.setPhraseList(phraseList);
+        phrases.setLastKey(buildLast(last, searchResult));
 
-        // LE LAST
+        return phrases;
+    }
+
+    private String buildLast(final Last last, final TopFieldDocs searchResult){
         final int nbPhrasesFound = searchResult.scoreDocs.length;
         final Integer lastIndex = last == null ? null : last.getLastIndex();
         final int newLastIndex = lastIndex == null ? nbPhrasesFound - 1 : lastIndex + nbPhrasesFound;
@@ -144,9 +163,10 @@ public class PhraseService {
             final FieldDoc lastScoreDoc = (FieldDoc) searchResult.scoreDocs[nbPhrasesFound - 1];
             final String newLastKey = randomUUID().toString();
             cache.save(newLastKey, lastScoreDoc, newLastIndex);
-            phrases.setLastKey(newLastKey);
+            return newLastKey;
+        }else{
+            return null;
         }
-        return phrases;
     }
 
     private List<DatedPhrase> getDatedPhrases(final Query query, final TopFieldDocs searchResult) {

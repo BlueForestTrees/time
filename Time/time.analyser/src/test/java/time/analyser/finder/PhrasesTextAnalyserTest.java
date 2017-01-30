@@ -210,6 +210,11 @@ public class PhrasesTextAnalyserTest {
 	}
 
 	@Test
+	public void jc33() {
+		assertOnly(DateType.JC, yearIs(1929), "avant que celle-ci soit mise en évidence par l'astronome américain Edwin Hubble en 1929[4].");
+	}
+
+	@Test
 	public void precise10() {
 		assertOnly(DateType.PRECISE, dateIs(date(1, Month.FEBRUARY, 1919)), "La guerre soviéto-polonaise, ou guerre russo-polonaise (février 1919) est l'une des conséquences de la Première Guerre mondiale.");
 	}
@@ -430,6 +435,18 @@ public class PhrasesTextAnalyserTest {
 	public void testMilliard5() {
 		assertOnly(DateType.MILLIARD, milliardYearIs(25.49d), "Super il y a plus d'25,49 milliards d'années, à une autre époque.");
 	}
+
+	@Test
+	public void testMilliard6() {
+		assertOnly(DateType.MILLIARD, milliardYearIs(13.8d), "de qu’a connue l’Univers il y a 13,8 milliards d’années sans que cela préjuge de l’existence");
+	}
+
+	@Test
+	public void testMilliardd8() {
+		assertOnly(DateType.MILLIARD, milliardYearIs(13.8d), "de qu’a connue l’Univers il y a 13,8 milliards d’années sans que cela préjuge de " +
+				"l’existence");
+	}
+
 
 	@Test
 	public void testMillion1() {

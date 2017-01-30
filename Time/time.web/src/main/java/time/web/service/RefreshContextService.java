@@ -20,11 +20,11 @@ public class RefreshContextService {
     private Messager messager;
 
     public RefreshContextService() {
-        try {
-            messager = new Messager();
-        }catch(Exception e){
-            LOGGER.error("NO MESSAGER", e.getMessage());
-        }
+//        try {
+//            messager = new Messager();
+//        }catch(Exception e){
+//            LOGGER.error("NO MESSAGER", e.getMessage());
+//        }
     }
 
     @EventListener
@@ -32,16 +32,16 @@ public class RefreshContextService {
         LOGGER.info("onContextRefreshed");
         if(messager != null) {
             final AnnotationConfigWebApplicationContext webContext = (AnnotationConfigWebApplicationContext) contextStartedEvent.getApplicationContext();
-            //try {
-            //    messager.purge(Queue.TIME_WEB_REFRESH);
-            //} catch (IOException e) {
-            //    LOGGER.error("purge error", e);
+//            try {
+//                messager.purge(Queue.TIME_WEB_REFRESH);
+//            } catch (IOException e) {
+//                LOGGER.error("purge error", e);
             //}
-            try {
-                messager.when(Queue.TIME_WEB_REFRESH, webContext::refresh);
-            } catch (IOException e) {
-                LOGGER.error("when error", e);
-            }
+//            try {
+//                messager.when(Queue.TIME_WEB_REFRESH, webContext::refresh);
+//            } catch (IOException e) {
+//                LOGGER.error("when error", e);
+//            }
         }
     }
 

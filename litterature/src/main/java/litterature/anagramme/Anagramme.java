@@ -18,15 +18,18 @@ public class Anagramme {
 
     public static void main(String[] args) throws InterruptedException, ExecutionException, TimeoutException, IOException, URISyntaxException {
 
-        final String prefix = "";
-        final String mix = "SLIMANE IDA";
-        final String suffix = "";
+        final String prefix = "SL";
+        final String mix = "IMANE I";
+        final String suffix = "DA";
 
         ForkJoinPool.commonPool().submit(() -> {
             System.out.println("mixing " + mix);
             final Anagramme anagramme = Anagramme.with(prefix, mix, suffix);
             while(true){
-                anagramme.move().keepIfNew().printIfNew();
+                anagramme
+                        .move()
+                        .keepIfNew()
+                        .printIfNew();
             }
         }).get(30, TimeUnit.SECONDS);
 
@@ -73,18 +76,8 @@ public class Anagramme {
     }
 
 
-    private int randomIndex() {
-        int newInt;
-        do{
-            newInt = random.nextInt(base.length);
-        }while(newInt == last);
-
-        last = newInt;
-        return newInt;
-    }
-
     public Anagramme move(){
-        return move(randomIndex(), randomIndex());
+        return move(random.nextInt(base.length), random.nextInt(base.length));
     }
 
     public Anagramme move(int oldIndex, int newIndex){
@@ -104,10 +97,14 @@ public class Anagramme {
         for(String s : base) {
             builder.append(s);
         }
-        if(builder.toString().equals(initialBase)){
-            builder.append("   # # # # # # # # # # # # # # trouvé!!!!!!");
-        }
         return builder.toString();
     }
+
+    //void init(base)
+    //String mix()
+    //String getNew()(mix puis add jusqu'à nvle insertion, avec limite de temps)
+    //inputText, onChange = init,
+    //panel flexBox, oninit = empty()
+
 
 }

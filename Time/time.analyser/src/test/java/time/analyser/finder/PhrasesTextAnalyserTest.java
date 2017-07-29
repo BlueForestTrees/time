@@ -357,7 +357,7 @@ public class PhrasesTextAnalyserTest {
 
 	@Test
 	public void tiret2() {
-		assertNoDateIn("dont une édition populaire de la guerre franco allemande de 0870-1871.");
+		assertNone("dont une édition populaire de la guerre franco allemande de 0870-1871.");
 	}
 
 	@Test
@@ -443,10 +443,19 @@ public class PhrasesTextAnalyserTest {
 
 	@Test
 	public void testMilliardd8() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(13.8d), "de qu’a connue l’Univers il y a 13,8 milliards d’années sans que cela préjuge de " +
-				"l’existence");
+		assertOnly(DateType.MILLIARD, milliardYearIs(13.8d), "de qu’a connue l’Univers il y a 13,8 milliards d’années sans que cela préjuge de l’existence");
 	}
 
+	@Test
+	public void coucou(){
+    	assertNone("Il était l'un des ailiers les plus rapides du Top 14, chronométré (manuel) en 10,3 s, lorsqu'il pratiquait l'athlétisme.");
+	}
+
+	@Test
+	public void dodo(){
+		assertNone("Les années 10 sont le théâtre d'une mutation esthétique (le cinéma \"en tableaux\" laisse la place au découpage-montage du cinéma classique).");
+		//assertOnly(DateType.JC, yearIs(1990),"Les années 10 sont le théâtre d'une mutation esthétique (le cinéma \"en tableaux\" laisse la place au découpage-montage du cinéma classique).");
+	}
 
 	@Test
 	public void testMillion1() {
@@ -525,124 +534,124 @@ public class PhrasesTextAnalyserTest {
 
 	@Test
 	public void none1() {
-		assertNoDateIn("ISBN 978-27491216979 : La longueur du numéro ISBN devrait être 10 ou 13 et non 14 -- 27  2014 à 23:13 (CEST)");
+		assertNone("ISBN 978-27491216979 : La longueur du numéro ISBN devrait être 10 ou 13 et non 14 -- 27  2014 à 23:13 (CEST)");
 	}
 
 	@Test
 	public void none2() {
-		assertNoDateIn("Pépin II, roi d’Aquitaine, résiste durant un quart de siècle à Charles le Chauve, le roi de Francie occidentale.");
+		assertNone("Pépin II, roi d’Aquitaine, résiste durant un quart de siècle à Charles le Chauve, le roi de Francie occidentale.");
 	}
 
 	@Test
 	public void none3() {
-		assertNoDateIn("Pour justifier le privilège du chapitre et expliquerait son absence du cycle réalisé dans le premier quart de ce siècle.");
+		assertNone("Pour justifier le privilège du chapitre et expliquerait son absence du cycle réalisé dans le premier quart de ce siècle.");
 	}
 
 	@Test
 	public void none5() {
-		assertNoDateIn("Pépin II, roi d’Aquitaine, résiste durant un quart de siècle à Charles le Chauve, le roi de Francie occidentale.");
+		assertNone("Pépin II, roi d’Aquitaine, résiste durant un quart de siècle à Charles le Chauve, le roi de Francie occidentale.");
 	}
 
 	@Test
 	public void none6() {
-		assertNoDateIn("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
+		assertNone("en conciërgewoningRonseBlauwesteen 6550° 44′ 38″ Nord");
 	}
 
 	@Test
 	public void none7() {
-		assertNoDateIn("Leur système de base 6 nous a laissé plusieurs héritages importants, comme la division du jour en 24 heures et celle du cercle en 360 degrés.) L’autre type de signes représentait des hommes, des animaux, des marchandises, des territoires, des dates et ainsi de suite.");
+		assertNone("Leur système de base 6 nous a laissé plusieurs héritages importants, comme la division du jour en 24 heures et celle du cercle en 360 degrés.) L’autre type de signes représentait des hommes, des animaux, des marchandises, des territoires, des dates et ainsi de suite.");
 	}
 
 	@Test
 	public void none8() {
-		assertNoDateIn("mais c'est pas pour de suite, j'ai/nous avons d'abord environ 3500 autres articles à traduire avant d'arriver à celui-là !");
+		assertNone("mais c'est pas pour de suite, j'ai/nous avons d'abord environ 3500 autres articles à traduire avant d'arriver à celui-là !");
 	}
 
 	@Test
 	public void none9() {
-		assertNoDateIn("Il serait d'origine alsacienne et deux parties sont manquantes : les vers 5479 à 5624 et les vers 7524 à 7716");
+		assertNone("Il serait d'origine alsacienne et deux parties sont manquantes : les vers 5479 à 5624 et les vers 7524 à 7716");
 	}
 
 	@Test
 	public void none10() {
-		assertNoDateIn("Il pouvait accueillir environ 9000 spectateurs répartis dans une cavea sem");
+		assertNone("Il pouvait accueillir environ 9000 spectateurs répartis dans une cavea sem");
 	}
 
 	@Test
 	public void none13() {
-		assertNoDateIn("Il pouvait accueillir en 9000 spectateurs répartis dans une cavea sem");
+		assertNone("Il pouvait accueillir en 9000 spectateurs répartis dans une cavea sem");
 	}
 
 	@Test
 	public void none11() {
-		assertNoDateIn("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
+		assertNone("de Stefano Lonati et Italo Bettiol1965 : Martien 0001 - de");
 	}
 
 	@Test
 	public void none12() {
-		assertNoDateIn("Les chasseurs-cueilleurs du Kalahari – ne travaillent en moyenne que 35 à 45 heures par semaine.");
+		assertNone("Les chasseurs-cueilleurs du Kalahari – ne travaillent en moyenne que 35 à 45 heures par semaine.");
 	}
 
 	@Test
 	public void none14() {
-		assertNoDateIn(" briller pendant dix milliards d’années, plus de problèmes avec l’âge des dinosaures !");
+		assertNone(" briller pendant dix milliards d’années, plus de problèmes avec l’âge des dinosaures !");
 	}
 
 	@Test
 	public void none15() {
-		assertNoDateIn("Nous avons sous les yeux toutes les étapes de la vie de notre Soleil, son passé et son avenir, sans avoir à attendre les cinq milliards d’années de la fin de sa vie.");
+		assertNone("Nous avons sous les yeux toutes les étapes de la vie de notre Soleil, son passé et son avenir, sans avoir à attendre les cinq milliards d’années de la fin de sa vie.");
 	}
 
 	@Test
 	public void none16() {
-		assertNoDateIn("Une variété d’uranium, l’uranium-235, se casse en moyenne après un milliard d’années.");
+		assertNone("Une variété d’uranium, l’uranium-235, se casse en moyenne après un milliard d’années.");
 	}
 
 	@Test
 	public void none17() {
-		assertNoDateIn("Ce direct fermera exceptionnellement un peu après 20 heures, Didier Deschamps");
+		assertNone("Ce direct fermera exceptionnellement un peu après 20 heures, Didier Deschamps");
 	}
 
 	@Test
 	public void none18() {
-		assertNoDateIn("mur d'enceinte et poterne », au profit dudit comte, pour environ 3600 m² par an");
+		assertNone("mur d'enceinte et poterne », au profit dudit comte, pour environ 3600 m² par an");
 	}
 
 
 	@Test
 	public void none19() {
-		assertNoDateIn("Portail comptant entre 100 et 999 articlesPage de portail ou de projet thématique");
+		assertNone("Portail comptant entre 100 et 999 articlesPage de portail ou de projet thématique");
 	}
 
     @Test
     public void none20() {
-        assertNoDateIn("De la même manière, la grande majorité des vandalismes détectés avaient été corrigés après 15 révisions au plus.");
+        assertNone("De la même manière, la grande majorité des vandalismes détectés avaient été corrigés après 15 révisions au plus.");
     }
 
 
     @Test
     public void none21() {
-        assertNoDateIn("Le groupe BCC s'organise aujourd'hui en 16 fédérations sur le territoire italien.");
+        assertNone("Le groupe BCC s'organise aujourd'hui en 16 fédérations sur le territoire italien.");
     }
 
     @Test
     public void none22() {
-        assertNoDateIn("Après 18 jours de combats acharnés");
+        assertNone("Après 18 jours de combats acharnés");
     }
 
 	@Test
 	public void none23() {
-		assertNoDateIn("Sa fréquence d'horloge est ralentie de 25 à 12,5 MHz");
+		assertNone("Sa fréquence d'horloge est ralentie de 25 à 12,5 MHz");
 	}
 
 	@Test @Ignore
 	public void none24() {
-		assertNoDateIn("à un nouveau-né tous les un à six ans, après 10 à 17 mois de gestation");
+		assertNone("à un nouveau-né tous les un à six ans, après 10 à 17 mois de gestation");
 	}
 
 	@Test
 	public void none25() {
-		assertNoDateIn("a plus fréquentée, la ligne 50, relie Aix et Marseille en 30 à 65 minutes suivant");
+		assertNone("a plus fréquentée, la ligne 50, relie Aix et Marseille en 30 à 65 minutes suivant");
 	}
 
 
@@ -651,18 +660,18 @@ public class PhrasesTextAnalyserTest {
 		assertOnly(DateType.PRECISE, dateIs(date(10, Month.FEBRUARY, 1984)), "Slimane Médini est né le 10 Février 1984 à Gournay-en-bray");
 	}
 
-	private final void assertNoDateIn(String phrase) {
-		assertNoDateIn(phrase, finders);
+	private final void assertNone(String phrase) {
+		assertNone(phrase, finders);
 	}
 
-	private final void assertNoDateIn(String phrases, PhrasesAnalyser[] finders) {
+	private final void assertNone(String phrases, PhrasesAnalyser[] finders) {
 		Assertions.assertThat(finders).isNotEmpty().as("pas de finders");
 		for (PhrasesAnalyser finder : finders) {
-			assertNoDateIn(phrases, finder);
+			assertNone(phrases, finder);
 		}
 	}
 
-	private final void assertNoDateIn(String phrase, PhrasesAnalyser finder) {
+	private final void assertNone(String phrase, PhrasesAnalyser finder) {
 		assertThat(finder.findDatesInPhrases(phrase)).as("Ne devrait pas trouver de phrase: " + finder + " dans \"" + phrase + "\"").isEmpty();
 	}
 
@@ -671,7 +680,7 @@ public class PhrasesTextAnalyserTest {
 		assertThat(finder.findDatesInPhrases(phrase)).as("Devrait trouver des phrases: " + finder + " dans \"" + phrase + "\"").haveExactly(1, condition);
 
 		final PhrasesAnalyser[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new PhrasesAnalyser[size]);
-		assertNoDateIn(phrase, filteredFinders);
+		assertNone(phrase, filteredFinders);
 	}
 
 	private final void assertTwo(final DateType dateTypeName, Condition<? super DatedPhrase> condition1, Condition<? super DatedPhrase> condition2, String phrase) {
@@ -684,7 +693,7 @@ public class PhrasesTextAnalyserTest {
 		assertThat(actualPhrases.get(1)).as("deuxième date").has(condition2);
 
 		final PhrasesAnalyser[] filteredFinders = Arrays.stream(finders).filter(f -> f != finder).toArray(size -> new PhrasesAnalyser[size]);
-		assertNoDateIn(phrase, filteredFinders);
+		assertNone(phrase, filteredFinders);
 	}
 
     private final void assertTwoDifferents(final DateType type1, Condition<? super DatedPhrase> sameDate1, final DateType type2, Condition<? super DatedPhrase> sameDate2, String phrase) {
@@ -700,7 +709,7 @@ public class PhrasesTextAnalyserTest {
 
 
         final PhrasesAnalyser[] filteredFinders = Arrays.stream(finders).filter(f -> (f != finder1 && f != finder2)).toArray(size -> new PhrasesAnalyser[size]);
-        assertNoDateIn(phrase, filteredFinders);
+        assertNone(phrase, filteredFinders);
     }
 
 	private final Condition<? super DatedPhrase> milliardYearIs(double expectedAnnee) {

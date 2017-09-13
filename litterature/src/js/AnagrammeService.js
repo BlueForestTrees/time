@@ -3,10 +3,21 @@ class AnagrammeService {
     current: String[];
     results: String[];
 
-    init = (base: String): void => {
-        this.stopRequest = true;
+    start = (base: String): void => {
         this.current = base.split("");
         this.run();
+    };
+
+    run = () => {
+        setTimeout(0, () => {
+            while (!this.stopRequest) {
+                const found: String = this.mix();
+                if (!this.results.contains(found)) {
+                    this.results.push(found);
+                }
+            }
+            this.stopRequest = false;
+        });
     };
 
     mix = (): String => {
@@ -20,18 +31,6 @@ class AnagrammeService {
 
     rand = () => {
         return Math.floor(Math.random() * (current.length + 1));
-    };
-
-    run = () => {
-        setTimeout(0, () => {
-            while (!this.stopRequest) {
-                const found: String = this.mix();
-                if (!this.results.contains(found)) {
-                    this.results.push(found);
-                }
-            }
-            this.stopRequest = false;
-        });
     };
 
 }

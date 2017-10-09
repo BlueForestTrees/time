@@ -24,7 +24,7 @@
 		</dependency>
         <dependency>
 			<groupId>slim</groupId>
-			<artifactId>crawler</artifactId>
+			<artifactId>time.crawler4j</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>slim</groupId>

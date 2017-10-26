@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.UUID.randomUUID;
+import static time.web.bean.TermPeriodFilter.fromString;
 
 @Service
 public class PhraseService {
@@ -56,7 +57,7 @@ public class PhraseService {
     private CacheService cache;
 
     public Phrases find(final String request, String lastKey) throws IOException {
-        final TermPeriodFilter termPeriodFilter = TermPeriodFilter.fromString(request);
+        final TermPeriodFilter termPeriodFilter = fromString(request);
         // && lastKey == null car on fait une recherche en linkMode que pour le premier appel, les suivants sont une requête normale.
         if (termPeriodFilter.isLinkMode() && lastKey == null) {
             return linkModeSearch(termPeriodFilter);
@@ -188,7 +189,7 @@ public class PhraseService {
 
     private DatedPhrase findOne(final String term, final Sort sort) {
         DatedPhrase result = null;
-        final Query query = queryHelper.getQuery(TermPeriodFilter.fromString(term));
+        final Query query = queryHelper.getQuery(fromString(term));
         try {
             final TopFieldDocs searchResult = indexSearcher.search(query, 1, sort);
             if (searchResult.totalHits > 0) {
@@ -209,7 +210,7 @@ public class PhraseService {
 
     private Long findOneDate(final String term, final Sort sort) {
         Long date = null;
-        final Query query = queryHelper.getQuery(TermPeriodFilter.fromString(term));
+        final Query query = queryHelper.getQuery(fromString(term));
         try {
             final TopFieldDocs searchResult = indexSearcher.search(query, 1, sort);
             if (searchResult.totalHits > 0) {

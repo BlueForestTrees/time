@@ -441,21 +441,20 @@ public class PhrasesTextAnalyserTest {
 		assertOnly(DateType.MILLIARD, milliardYearIs(13.8d), "de qu’a connue l’Univers il y a 13,8 milliards d’années sans que cela préjuge de l’existence");
 	}
 
-	//TODO
-	@Test
-	public void testMilliardd8() {
-//		assertOnly(DateType.MILLIARD, milliardYearIs(13.8d), "de qu’a connue l’Univers il y a 13,8 milliards d’années sans que cela préjuge de l’existence");
-	}
-
 	@Test
 	public void coucou(){
 //    	assertNone("Il était l'un des ailiers les plus rapides du Top 14, chronométré (manuel) en 10,3 s, lorsqu'il pratiquait l'athlétisme.");
 	}
 
 	@Test
-	public void dodo(){
-//		assertNone("Les années 10 sont le théâtre d'une mutation esthétique (le cinéma \"en tableaux\" laisse la place au découpage-montage du cinéma classique).");
-		//assertOnly(DateType.JC, yearIs(1990),"Les années 10 sont le théâtre d'une mutation esthétique (le cinéma \"en tableaux\" laisse la place au découpage-montage du cinéma classique).");
+	public void jcPrev1(){
+		assertOnly(DateType.JC_PREV,yearIs(1910), "Les années 10 sont le théâtre");
+	}
+
+
+	@Test
+	public void jcPrev2(){
+		assertOnly(DateType.JC_PREV,yearIs(-10), "Les années 10 avant JC sont le théâtre");
 	}
 
 	@Test

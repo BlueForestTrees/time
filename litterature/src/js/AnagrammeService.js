@@ -1,38 +1,44 @@
-class AnagrammeService {
+exports.AnagrammeService = class AnagrammeService {
 
-    current: String[];
-    results: String[];
+    maxTries;
+    intermediateMixCount;
+    current = null;
+    results = null;
 
-    start = (base: String): void => {
+    init = (base, maxTries, intermediateMixCount) => {
         this.current = base.split("");
-        this.run();
+        this.results = [];
+        this.maxTries = maxTries || 10;
+        this.intermediateMixCount = intermediateMixCount || 3;
     };
 
-    run = () => {
-        setTimeout(0, () => {
-            while (!this.stopRequest) {
-                const found: String = this.mix();
-                if (!this.results.contains(found)) {
-                    this.results.push(found);
-                }
+    next = () => {
+
+        for(let i = 0; i < this.intermediateMixCount; i++){
+            this.mix();
+        }
+
+        for(let i = 0; i < this.maxTries; i++){
+            let value = this.mix();
+            if(!this.results.indexOf(value)>-1){
+                this.results.push(value);
+                return value;
             }
-            this.stopRequest = false;
-        });
+        }
     };
 
-    mix = (): String => {
-        const pos1: Number = this.rand();
-        const pos2: Number = this.rand();
-        const temp: String = this.current[pos1];
+    mix = () => {
+        const pos1 = this.rand();
+        const pos2 = this.rand();
+        const temp = this.current[pos1];
         this.current[pos1] = this.current[pos2];
         this.current[pos2] = temp;
-        return this.current.join();
+        return this.current.join("");
     };
 
     rand = () => {
         return Math.floor(Math.random() * (current.length + 1));
     };
 
-}
 
-export default new AnagrammeService();
+};

@@ -76,7 +76,7 @@ public class LuceneConfig {
                         new FieldComparatorSource() {
 
                             @Override
-                            public FieldComparator<Integer> newComparator(String fieldname, int numHits, int sortPos, boolean reversed) throws IOException {
+                            public FieldComparator<Integer> newComparator(String fieldname, int numHits, int sortPos, boolean reversed) {
                                 return new RandomComparator();
                             }
 

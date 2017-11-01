@@ -19,9 +19,10 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-// https://fr.wikipedia.org/wiki/Wikimedia_Foundation contient un tableau qui est mal crawlé
-// La période qui va des années 70 000 à 30 000 vit l’invention des bateaux
-// de communiquer, entre 70 000 et 30 000 ans, constitue
+
+// dans environ 7,5 milliards d'années
+// Dans plus de cinq milliards d’années
+
 
 public class PhrasesTextAnalyserTest {
 
@@ -31,6 +32,19 @@ public class PhrasesTextAnalyserTest {
 	public PhrasesTextAnalyserTest() {
 		datedPhraseDetector = new DatedPhraseDetector();
 		finders = datedPhraseDetector.getFindersArray();
+	}
+
+	@Test
+	public void testMilliards2() {
+		assertOnly(DateType.MILLIARD, milliardYearIs(50d), "Dans 50 milliards d'années dz dz");
+	}
+	@Test
+	public void testMilliards3() {
+		assertOnly(DateType.MILLIARD, milliardYearIs(7.5d), "dans environ 7,5 milliards d'années dzdzd ");
+	}
+	@Test
+	public void testMilliards4() {
+		assertOnly(DateType.MILLIARD, milliardYearIs(5d), "Dans plus de cinq milliards d’années zdz dz");
 	}
 
 	@Test

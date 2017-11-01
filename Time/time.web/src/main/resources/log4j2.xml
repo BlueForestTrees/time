@@ -7,7 +7,7 @@
 		<RollingRandomAccessFile name="StdFile"
 								 fileName="/var/log/time/time.web.log" filePattern="/var/log/time/time.web.log">
 			<PatternLayout>
-				<pattern>%d{HH:mm:ss.SSS} [%t] %-5level %c{1.} - %msg%n</pattern>
+				<pattern>%d{dd/MM/yyyy HH:mm:ss.SSS} [%t] %-5level %c{1.} - %msg%n</pattern>
 			</PatternLayout>
 			<SizeBasedTriggeringPolicy size="2 MB" />
 		</RollingRandomAccessFile>

@@ -52,7 +52,7 @@ public class DatedPhraseDetector {
 	private void build() {
 		build(DateType.APRES, START + APRES_START + "(" + NUMBER_FLAG + YEAR_LONG + NEG_REF_OPT + END2, new JCParser());
         build(DateType.ILYA, "(" + NEG_FLAG + IL_Y_A_ENVIRON + ") (" + NUMBER_FLAG + YEAR_BIG + ") ((?<mil>millénaires)|ans|dernières années)", new IlYAParser());
-		build(DateType.MILLIARD, "((" + NEG_FLAG + "[Dd]ans)|([Vv]oici|[Ii]l y a)) (plus (de |d'))?(environ )?(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s?\\sd['’]années", new MilliardParser());
+		build(DateType.MILLIARD, "(([Dd]ans)|(" + NEG_FLAG + "[Vv]oici|[Ii]l y a)) (plus (de |d'))?(environ )?(" + NUMBERS + "|" + TEXT_NUMBERS_ + ") milli(?<s>ard|on)s?\\sd['’]années", new MilliardParser());
 		build(DateType.JC_PREV, START + JC_PREV_START + "(" + NUMBER_FLAG + YEAR_LONG + NEG_REF_OPT, new JCOffsetParser());
 		build(DateType.JC, START + JC_START + "(l'an )?(" + NUMBER_FLAG + YEAR_LONG + NEG_REF_OPT + END, new JCParser());
 		build(DateType.JC_ENTRE, ENTRE_START + " (" + NUMBER_FLAG + YEAR_FOUR + ") " + ENTRE + " " + YEAR_FOUR + NEG_REF_OPT + END2, new JCParser());

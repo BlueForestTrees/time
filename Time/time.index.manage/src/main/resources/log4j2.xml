@@ -2,12 +2,12 @@
 <Configuration status="WARN">
 	<Appenders>
 		<Console name="Console" target="SYSTEM_OUT">
-			<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %c{1.} - %msg%n" />
+			<PatternLayout pattern="%d{dd/MM/yyyy HH:mm:ss.SSS} [%t] %-5level %c{1.} - %msg%n" />
 		</Console>
 		<RollingRandomAccessFile name="StdFile"
 								 fileName="/var/log/time/index.manage.log" filePattern="/var/log/time/index.manage.log">
 			<PatternLayout>
-				<pattern>%d{HH:mm:ss.SSS} [%t] %-5level %c{1.} - %msg%n</pattern>
+				<pattern>%d{dd/MM/yyyy HH:mm:ss.SSS} [%t] %-5level %c{1.} - %msg%n</pattern>
 			</PatternLayout>
 			<SizeBasedTriggeringPolicy size="2 MB" />
 		</RollingRandomAccessFile>

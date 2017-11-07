@@ -416,7 +416,7 @@ public class WebCrawler implements Runnable {
     } catch (RedirectException re) {
       logger.log(re.level, re.getMessage());
     } catch (NotAllowedContentException nace) {
-      logger.debug("Skipping: {} as it contains binary content which you configured not to crawl", curURL.getURL());
+        logger.debug("Skipping: {} as it contains binary content which you configured not to crawl", curURL.getURL());
     } catch (Exception e) {
       String urlStr = (curURL == null ? "NULL" : curURL.getURL());
       logger.error("{}, while processing: {}", e.getMessage(), urlStr);

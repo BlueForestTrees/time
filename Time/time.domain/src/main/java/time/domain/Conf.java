@@ -31,6 +31,7 @@ public class Conf {
 	private String txtOutputFile;
 	private String txtOutputDir;
 	private String crawlStorageDir;
+	private String dumpStorageDir;
 	private Integer pageCountPrevision;
 	private Long maxPhrasesToFetch;
 	private String sourcePath;
@@ -160,6 +161,9 @@ public class Conf {
 
 	public String getCrawlStorageDir() {
 		return crawlStorageDir;
+	}
+	public String getDumpStorageDir() {
+		return dumpStorageDir;
 	}
 
 	public Integer getPageCountPrevision() {

@@ -1,12 +1,14 @@
 package time.local.tika;
 
-import com.google.inject.Guice;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import time.messaging.Messager;
-import time.messaging.Queue;
 
 import java.io.IOException;
+
+import static com.google.inject.Guice.createInjector;
+import static time.messaging.Queue.LOCAL_TIKA;
+import static time.messaging.Queue.MERGE;
 
 public class FilesMain {
 
@@ -16,18 +18,18 @@ public class FilesMain {
 
         final Messager messager = new Messager();
 
-        final FilesRun filesRun = Guice.createInjector(new FilesModule(args)).getInstance(FilesRun.class);
+        final FilesRun filesRun = createInjector(new FilesModule(args)).getInstance(FilesRun.class);
 
-        messager.when(Queue.LOCAL_TIKA, () -> {
+        messager.when(LOCAL_TIKA, () -> {
             filesRun.run();
             try {
-                messager.signal(Queue.MERGE);
+                messager.signal(MERGE);
             } catch (IOException e) {
                 LOGGER.error(e);
             }
         });
 
-        messager.signal(Queue.LOCAL_TIKA);
+        messager.signal(LOCAL_TIKA);
     }
 
 }

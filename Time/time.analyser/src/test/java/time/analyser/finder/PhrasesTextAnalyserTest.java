@@ -422,37 +422,37 @@ public class PhrasesTextAnalyserTest {
 
 	@Test
 	public void testMilliard0() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(1), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(-1), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 1 milliard d'années.");
 	}
 
 	@Test
 	public void testMilliard1() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(2.4d), "La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(-2.4d), "La Grande Oxydation, également appelée catastrophe de l'oxygène ou crise de l'oxygène, est une crise écologique qui a eu lieu il y a environ 2,4 milliards d'années, au Paléoprotérozoïque, dans les océans et l'atmosphère terrestre.");
 	}
 
 	@Test
 	public void testMilliard2() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(25.4d), "Super il y a environ 25,4 milliards d'années, à une autre époque.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(-25.4d), "Super il y a environ 25,4 milliards d'années, à une autre époque.");
 	}
 
 	@Test
 	public void testMilliard3() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(25.49d), "Super il y a environ 25,49 milliards d'années, à une autre époque.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(-25.49d), "Super il y a environ 25,49 milliards d'années, à une autre époque.");
 	}
 
 	@Test
 	public void testMilliard4() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(25.49d), "Super il y a plus de 25,49 milliards d'années, à une autre époque.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(-25.49d), "Super il y a plus de 25,49 milliards d'années, à une autre époque.");
 	}
 
 	@Test
 	public void testMilliard5() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(25.49d), "Super il y a plus d'25,49 milliards d'années, à une autre époque.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(-25.49d), "Super il y a plus d'25,49 milliards d'années, à une autre époque.");
 	}
 
 	@Test
 	public void testMilliard6() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(13.8d), "de qu’a connue l’Univers il y a 13,8 milliards d’années sans que cela préjuge de l’existence");
+		assertOnly(DateType.MILLIARD, milliardYearIs(-13.8d), "de qu’a connue l’Univers il y a 13,8 milliards d’années sans que cela préjuge de l’existence");
 	}
 
 	@Test
@@ -473,47 +473,47 @@ public class PhrasesTextAnalyserTest {
 
 	@Test
 	public void testMillion1() {
-		assertOnly(DateType.MILLIARD, millionYearIs(65), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
+		assertOnly(DateType.MILLIARD, millionYearIs(-65), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, il y a environ 65 millions d'années.");
 	}
 
 	@Test
 	public void testMillion4() {
-		assertOnly(DateType.MILLIARD, millionYearIs(100), "Les abeilles sont apparues il y a 100 millions d'années.");
+		assertOnly(DateType.MILLIARD, millionYearIs(-100), "Les abeilles sont apparues il y a 100 millions d'années.");
 	}
 
 	@Test
 	public void testMillion2() {
-		assertOnly(DateType.MILLIARD, millionYearIs(2.5d), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
+		assertOnly(DateType.MILLIARD, millionYearIs(-2.5d), "Il débute par un événement bien connu : la limite Crétacé-Tertiaire, voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
 	}
 
 	@Test
 	public void testMillion3() {
-		assertOnly(DateType.MILLIARD, millionYearIs(2.5d), "Les humains sont apparus en Afrique de l’Est voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
+		assertOnly(DateType.MILLIARD, millionYearIs(-2.5d), "Les humains sont apparus en Afrique de l’Est voici environ 2,5 millions d'années, issus d’un genre antérieur de singe,");
 	}
 
 	@Test
 	public void testMillion5() {
-		assertOnly(DateType.MILLIARD, millionYearIs(3d), "Les humains sont apparus en Afrique de l’Est voici environ trois millions d’années, issus d’un genre antérieur de singe,");
+		assertOnly(DateType.MILLIARD, millionYearIs(-3d), "Les humains sont apparus en Afrique de l’Est voici environ trois millions d’années, issus d’un genre antérieur de singe,");
 	}
 
 	@Test
 	public void testMillion6() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(-5d), "Notre Soleil, selon nos calculs, va mourir dans environ cinq milliards d’années.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(5d), "Notre Soleil, selon nos calculs, va mourir dans environ cinq milliards d’années.");
 	}
 
 	@Test
 	public void testMillion7() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(-5d), "Jusqu’à la mort du Soleil dans cinq milliards d’années environ.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(5d), "Jusqu’à la mort du Soleil dans cinq milliards d’années environ.");
 	}
 
 	@Test
 	public void testMillion8() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(4.5d), "au moment de la naissance du Soleil, il y a 4,5 milliards d’années pendant le degel.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(-4.5d), "au moment de la naissance du Soleil, il y a 4,5 milliards d’années pendant le degel.");
 	}
 
 	@Test
 	public void testMillion9() {
-		assertOnly(DateType.MILLIARD, milliardYearIs(4.5d), "Par exemple, pour savoir comment était l’Univers au moment de la naissance du Soleil, il y a 4,5 milliards d’années, il suffit d’observer des astres qui sont à 5 milliards d’années-lumière de nous.");
+		assertOnly(DateType.MILLIARD, milliardYearIs(-4.5d), "Par exemple, pour savoir comment était l’Univers au moment de la naissance du Soleil, il y a 4,5 milliards d’années, il suffit d’observer des astres qui sont à 5 milliards d’années-lumière de nous.");
 	}
 
 	@Test

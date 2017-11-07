@@ -12,7 +12,7 @@
         <module>time.tika</module>
         <module>time.tool</module>
         <module>time.index.manage</module>
-        <module>time.web</module>
+        <module>time.api</module>
         <module>time.liveparse</module>
         <module>time.analyser</module>
         <module>time.transform</module>

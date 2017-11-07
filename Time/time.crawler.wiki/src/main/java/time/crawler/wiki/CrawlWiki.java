@@ -29,6 +29,8 @@ public class CrawlWiki extends Crawler {
     private long nbLog;
     private long pageCount;
     private long pageCountPrevision;
+    private String urlReplaceFrom = "localhost/mediawiki/index.php";
+    private String urlReplaceTo = "fr.wikipedia.org/wiki";
 
     @Inject
 	public CrawlWiki(final Conf conf, final TextHandler store, final TextFactory textFactory) {
@@ -67,10 +69,14 @@ public class CrawlWiki extends Crawler {
 
     private Text buildText(final Page page) {
         final HtmlParseData htmlData = (HtmlParseData) page.getParseData();
-        final String url = page.getWebURL().getURL();
-        final String title = htmlData.getTitle().substring(0, htmlData.getTitle().length()-(" — Wikipédia".length()));
+        final String url = buildUrl(page.getWebURL().getURL());
+        String title = htmlData.getTitle().substring(0, htmlData.getTitle().indexOf(" — "));
         final String textString = htmlData.getText();
         return textFactory.fromString(url, title, textString, Metadata.Type.WIKI);
+    }
+
+    private String buildUrl(final String url) {
+        return url.replace(urlReplaceFrom, urlReplaceTo);
     }
 
     private boolean notExcludedByContent(final Page page) {

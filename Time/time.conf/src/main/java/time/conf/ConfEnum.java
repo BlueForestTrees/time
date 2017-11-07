@@ -3,6 +3,7 @@ package time.conf;
 public enum ConfEnum {
     INDEX_MANAGE("${TIME_CONF_HOME}/index.manage.yml"),
     WIKICRAWL("${TIME_CONF_HOME}/wiki.crawl.yml"),
+    DUMPCRAWL("${TIME_CONF_HOME}/wiki.dump.yml"),
     TIMEWEB("${TIME_CONF_HOME}/wiki.web.yml"),
     LINKS("${TIME_CONF_HOME}/queueLinks.yml"),
     LOCAL_TIKA("${TIME_CONF_HOME}/local.tika.yml"),

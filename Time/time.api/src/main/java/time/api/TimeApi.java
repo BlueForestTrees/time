@@ -1,4 +1,4 @@
-package time.web;
+package time.api;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +13,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import time.conf.ConfEnum;
 import time.conf.ConfManager;
 import time.domain.TimeWebConf;
-import time.web.config.WebConfig;
+import time.api.config.WebConfig;
 import org.apache.logging.log4j.Level;
 import org.eclipse.jetty.util.log.AbstractLogger;
 
@@ -22,13 +22,13 @@ import java.io.IOException;
 /**
  * Java app with jetty + a spring context.
  */
-public class TimeWeb {
+public class TimeApi {
 
-    private static final Logger LOGGER = LogManager.getLogger(TimeWeb.class);
+    private static final Logger LOGGER = LogManager.getLogger(TimeApi.class);
 
     public static void main(String[] args) {
         try {
-            new TimeWeb().start();
+            new TimeApi().start();
         } catch (Exception e) {
             LOGGER.error(e);
             System.exit(-1);

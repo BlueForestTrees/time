@@ -1,4 +1,4 @@
-package time.web.bean;
+package time.api.bean;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

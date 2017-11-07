@@ -1,18 +1,11 @@
-package time.web.service;
+package time.api.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.lucene.search.*;
-import org.apache.lucene.search.highlight.Highlighter;
-import org.apache.lucene.search.highlight.NullFragmenter;
-import org.apache.lucene.search.highlight.QueryScorer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import time.domain.DatedPhrase;
 import time.domain.Metadata;
-import time.web.bean.TermPeriodFilter;
-
-import java.io.IOException;
 
 @Service
 public class SlackService

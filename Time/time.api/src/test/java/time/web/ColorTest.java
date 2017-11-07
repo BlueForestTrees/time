@@ -1,4 +1,4 @@
-package time.web;
+package time.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

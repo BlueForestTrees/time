@@ -1,4 +1,4 @@
-package time.web.service;
+package time.api.service;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.document.Document;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import time.domain.DatedPhrase;
 import time.domain.Metadata;
 import time.tool.reference.Fields;
-import time.web.bean.LucenePhrase;
+import time.api.bean.LucenePhrase;
 
 import java.io.IOException;
 

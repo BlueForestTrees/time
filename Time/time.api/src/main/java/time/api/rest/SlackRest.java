@@ -1,4 +1,4 @@
-package time.web.rest;
+package time.api.rest;
 
 import java.io.IOException;
 
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import time.web.service.SlackService;
+import time.api.service.SlackService;
 
 @RestController
 public class SlackRest {

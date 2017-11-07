@@ -1,4 +1,4 @@
-package time.web.service;
+package time.api.service;
 
 import java.io.FileInputStream;
 import java.io.InputStream;

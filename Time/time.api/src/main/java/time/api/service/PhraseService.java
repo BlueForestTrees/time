@@ -1,4 +1,4 @@
-package time.web.service;
+package time.api.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,9 +9,9 @@ import org.apache.lucene.search.highlight.QueryScorer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import time.domain.DatedPhrase;
-import time.web.bean.Last;
-import time.web.bean.Phrases;
-import time.web.bean.TermPeriodFilter;
+import time.api.bean.Last;
+import time.api.bean.Phrases;
+import time.api.bean.TermPeriodFilter;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.util.UUID.randomUUID;
-import static time.web.bean.TermPeriodFilter.fromString;
+import static time.api.bean.TermPeriodFilter.fromString;
 
 @Service
 public class PhraseService {

@@ -1,4 +1,4 @@
-package time.web.bean;
+package time.api.bean;
 
 import java.util.Comparator;
 

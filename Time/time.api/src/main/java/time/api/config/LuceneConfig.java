@@ -1,4 +1,4 @@
-package time.web.config;
+package time.api.config;
 
 import com.google.common.base.Optional;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 import time.conf.Resolver;
 import time.domain.TimeWebConf;
 import time.tool.reference.Fields;
-import time.web.lucene.RandomComparator;
+import time.api.lucene.RandomComparator;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;

@@ -1,4 +1,4 @@
-package time.web;
+package time.api;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.LongPoint;

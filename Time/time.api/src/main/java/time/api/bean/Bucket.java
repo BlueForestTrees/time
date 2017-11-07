@@ -1,4 +1,4 @@
-package time.web.bean;
+package time.api.bean;
 
 /**
  * Dans ce [bucket], il y a [count] phrases.

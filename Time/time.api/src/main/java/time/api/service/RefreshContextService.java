@@ -1,4 +1,4 @@
-package time.web.service;
+package time.api.service;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -8,9 +8,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import time.messaging.Messager;
-import time.messaging.Queue;
-
-import java.io.IOException;
 
 @Service
 public class RefreshContextService {

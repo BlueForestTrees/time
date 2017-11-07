@@ -1,8 +1,8 @@
-package time.web.service;
+package time.api.service;
 
 import org.apache.lucene.search.FieldDoc;
 import org.springframework.stereotype.Service;
-import time.web.bean.Last;
+import time.api.bean.Last;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

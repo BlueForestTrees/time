@@ -1,4 +1,4 @@
-package time.web.bean;
+package time.api.bean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

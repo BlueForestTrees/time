@@ -1,9 +1,9 @@
-package time.web.service;
+package time.api.service;
 
 import org.junit.Test;
 import time.domain.Scale;
 import time.tool.date.Dates;
-import time.web.bean.TermPeriodFilter;
+import time.api.bean.TermPeriodFilter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

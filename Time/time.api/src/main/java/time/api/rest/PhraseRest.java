@@ -1,4 +1,4 @@
-package time.web.rest;
+package time.api.rest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import time.web.bean.Phrases;
-import time.web.service.PhraseService;
+import time.api.bean.Phrases;
+import time.api.service.PhraseService;
 
 import java.io.IOException;
 

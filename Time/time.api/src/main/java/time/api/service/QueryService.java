@@ -1,4 +1,4 @@
-package time.web.service;
+package time.api.service;
 
 import org.apache.lucene.document.LongPoint;
 import org.apache.lucene.index.Term;
@@ -12,7 +12,7 @@ import org.apache.lucene.search.highlight.QueryScorer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import time.tool.reference.Fields;
-import time.web.bean.TermPeriodFilter;
+import time.api.bean.TermPeriodFilter;
 
 import java.util.Arrays;
 

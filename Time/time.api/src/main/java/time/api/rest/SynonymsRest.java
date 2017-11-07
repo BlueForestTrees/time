@@ -1,11 +1,11 @@
-package time.web.rest;
+package time.api.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import time.web.service.SynonymesService;
+import time.api.service.SynonymesService;
 
 import java.net.URISyntaxException;
 import java.util.List;

@@ -1,4 +1,4 @@
-package time.web.config;
+package time.api.config;
 
 import com.google.common.base.Optional;
 import org.springframework.context.annotation.Bean;
@@ -12,7 +12,7 @@ import time.domain.TimeWebConf;
 import java.io.IOException;
 
 @Configuration
-@ComponentScan({ "time.web.service" })
+@ComponentScan({ "time.api.service" })
 @Import({LuceneConfig.class})
 public class ServiceConfig {
 

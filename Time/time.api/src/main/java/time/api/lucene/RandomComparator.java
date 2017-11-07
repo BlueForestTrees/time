@@ -1,4 +1,4 @@
-package time.web.lucene;
+package time.api.lucene;
 
 import org.apache.lucene.index.LeafReaderContext;
 import org.apache.lucene.search.FieldComparator;

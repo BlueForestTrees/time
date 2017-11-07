@@ -1,4 +1,4 @@
-package time.web.bean;
+package time.api.bean;
 
 import org.apache.lucene.search.FieldDoc;
 

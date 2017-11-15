@@ -11,7 +11,6 @@ import java.util.stream.Stream;
 
 import static org.springframework.util.StringUtils.isEmpty;
 
-import lombok.ToString;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,7 +19,6 @@ import time.tool.date.Dates;
 /**
  * Convertit une requête histoire en mot+from+to
  */
-@ToString
 public class TermPeriodFilter {
 
     private static final Logger LOGGER = LogManager.getLogger(TermPeriodFilter.class);

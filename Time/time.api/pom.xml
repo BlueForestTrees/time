@@ -184,6 +184,9 @@
                     <repository>mousticrevette/time.api</repository>
                     <tag>latest</tag>
                     <verbose>true</verbose>
+                    <buildArgs>
+                        <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
                 </configuration>
             </plugin>
         </plugins>

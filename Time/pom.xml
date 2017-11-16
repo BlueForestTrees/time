@@ -52,7 +52,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.assembly.version>2.6</maven.assembly.version>
-        <maven.jar.version>3.0.0</maven.jar.version>
+        <maven.jar.version>3.0.2</maven.jar.version>
         <maven.dependency.version>3.0.0</maven.dependency.version>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

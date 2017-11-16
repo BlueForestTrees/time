@@ -158,6 +158,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
+                            <classpathLayoutType>simple</classpathLayoutType>
                             <mainClass>time.api.TimeApi</mainClass>
                         </manifest>
                     </archive>

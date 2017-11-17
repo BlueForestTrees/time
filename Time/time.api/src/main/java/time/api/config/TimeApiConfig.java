@@ -7,6 +7,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @ComponentScan({"time.api.rest"})
 @Import(ServiceConfig.class)
-public class WebConfig {
+public class TimeApiConfig {
 
 }

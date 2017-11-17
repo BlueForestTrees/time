@@ -375,6 +375,11 @@ public class PhrasesTextAnalyserTest {
 	}
 
 	@Test
+	public void secondes() {
+		assertNone("il court notamment le 100 mètres en 10,13 secondes");
+	}
+
+	@Test
 	public void entre() {
 		assertTwoDifferents(DateType.JC_ENTRE, yearIs(1909), DateType.JC_ENTRE_SUITE, yearIs(1910), "Entre 1909 et 1910, ma situation s'était modifiée et je n'avais plus à gagner ma vie comme manœuvre.");
 	}

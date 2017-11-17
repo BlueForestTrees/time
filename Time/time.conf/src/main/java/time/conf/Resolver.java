@@ -14,17 +14,10 @@ public class Resolver {
 
     final static Map<String, String> hardCodedEnv = new HashMap<>();
 
-    static {
-        hardCodedEnv.put("TIME_CONF_HOME", "./time.data/conf/dev");
-        hardCodedEnv.put("TIME_HOME", "./time.data");
-    }
-
-
     final static StrSubstitutor substitutor = new StrSubstitutor(new StrLookup<Object>() {
         @Override
         public String lookup(String key) {
-            return ofNullable(ofNullable(getenv(key))
-                    .orElseGet(() -> hardCodedEnv.get(key)))
+            return ofNullable(getenv(key))
                     .orElseThrow(() -> new RuntimeException("variable d'environnement manquante : " + key));
         }
     });

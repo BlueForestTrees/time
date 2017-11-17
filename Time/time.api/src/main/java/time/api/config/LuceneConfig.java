@@ -1,6 +1,5 @@
 package time.api.config;
 
-import com.google.common.base.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
@@ -9,13 +8,11 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import time.conf.Resolver;
-import time.domain.TimeWebConf;
-import time.tool.reference.Fields;
 import time.api.lucene.RandomComparator;
+import time.tool.reference.Fields;
 
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -25,8 +22,16 @@ public class LuceneConfig {
 
     private static final Logger LOGGER = LogManager.getLogger(LuceneConfig.class);
 
-    @Autowired
-    private TimeWebConf conf;
+    @Value("${indexDir:./time.data/indexes/mergeables/wiki}")
+    private String indexDir;
+
+    @Value("${searchPhrasePageSize:20}")
+    private Integer theSearchPhrasePageSize;
+
+    @Bean
+    protected Integer searchPhrasePageSize(){
+        return theSearchPhrasePageSize;
+    }
 
     @Bean
     public Analyzer analyzer() {
@@ -47,15 +52,9 @@ public class LuceneConfig {
 
     @Bean
     protected DirectoryReader directoryReader() throws IOException {
-        final String indexDir = Resolver.get(conf.getIndexDir());
         LOGGER.info("serving index {}", indexDir);
         final FSDirectory fsDirectory = FSDirectory.open(FileSystems.getDefault().getPath(indexDir));
         return DirectoryReader.open(fsDirectory);
-    }
-
-    @Bean
-    public Integer searchPhrasePageSize() throws IOException {
-        return Optional.fromNullable(conf.getSearchPhrasePageSize()).or(20);
     }
 
     @Bean

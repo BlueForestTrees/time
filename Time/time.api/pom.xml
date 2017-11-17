@@ -11,14 +11,7 @@
     <artifactId>time.api</artifactId>
 
     <dependencies>
-        <!--SPRING -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-dependencies</artifactId>
-            <version>1.5.8.RELEASE</version>
-            <type>pom</type>
-            <scope>import</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -68,8 +61,10 @@
 
         <!--TEST -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-test</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <version>1.5.8.RELEASE</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -102,15 +97,6 @@
 
     <build>
         <plugins>
-            <!-- Use Java 8 -->
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-
             <!-- Copy Maven dependencies into target/lib/ -->
             <plugin>
                 <artifactId>maven-dependency-plugin</artifactId>
@@ -156,12 +142,14 @@
                         <id>build</id>
                         <goals>
                             <goal>build</goal>
+                            <goal>tag</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>tag-image-latest</id>
+                        <id>push latest</id>
+                        <phase>deploy</phase>
                         <goals>
-                            <goal>tag</goal>
+                            <goal>push</goal>
                         </goals>
                     </execution>
                 </executions>
@@ -174,6 +162,9 @@
                     </buildArgs>
                 </configuration>
             </plugin>
+
+            <!-- Push Docker Image -->
+
         </plugins>
     </build>
 

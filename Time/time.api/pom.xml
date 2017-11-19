@@ -154,7 +154,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>mousticrevette/time.api</repository>
+                    <repository>mousticrevette/histoires-api</repository>
                     <tag>latest</tag>
                     <verbose>true</verbose>
                     <buildArgs>

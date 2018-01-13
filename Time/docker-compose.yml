@@ -1,0 +1,22 @@
+version: '3.3'
+services:
+
+  histoires-web:
+    image: "mousticrevette/histoires-web:latest"
+    ports:
+      - "8089:8089"
+    links:
+      - histoires-api
+
+  histoires-api:
+    image: "mousticrevette/histoires-api:latest"
+    expose:
+     - "8080"
+    environment:
+      - indexDir=/lucene
+      - port=8080
+      - searchPhrasePageSize=40
+    volumes:
+      - /var/log/time:/var/log/time
+      - /home/slimane/repos/time.data/indexes/mergeables/wiki
+#      - /var/lib/time/lucene:/lucene

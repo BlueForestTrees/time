@@ -36,10 +36,10 @@ p {
 	transform: translate(-50%, -50%);
 }
 
-.phraseHeader{
-	text-align: left;
-	font-size: small;
-	margin-top: 15px;
+.titles {
+	top: 30%;
+	position: absolute;
+	transform: translate(-50%, -15%);
 }
 
 .logo {
@@ -47,16 +47,34 @@ p {
 	height:130px;
 	width:376px;
 	position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -100%);
-    background: url(/img/logo.png) no-repeat;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, -100%);
+	background: url(/img/logo.png) no-repeat;
 }
-
 .search {
 	position: relative;
 	display: inline-block;
 	color: #aaa;
+	padding-bottom: 3em;
+}
+
+.subtitle {
+	color: #51598C;
+	font-weight: bold;
+	text-align: center;
+}
+
+.subtitle2{
+}
+.subtitle1{
+	padding-bottom: 2em;
+}
+
+.phraseHeader{
+	text-align: left;
+	font-size: small;
+	margin-top: 15px;
 }
 
 .search input {

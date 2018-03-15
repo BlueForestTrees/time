@@ -4,9 +4,10 @@ services:
   histoires-web:
     image: "mousticrevette/histoires-web:latest"
     ports:
-      - "8089:8089"
+      - "80:80"
     links:
       - histoires-api
+    restart: always
 
   histoires-api:
     image: "mousticrevette/histoires-api:latest"
@@ -15,8 +16,8 @@ services:
     environment:
       - indexDir=/lucene
       - port=8080
-      - searchPhrasePageSize=40
+      - searchPhrasePageSize=50
     volumes:
       - /var/log/time:/var/log/time
-      - /home/slimane/repos/time.data/indexes/mergeables/wiki
-#      - /var/lib/time/lucene:/lucene
+      - /var/lib/time/lucene:/lucene
+    restart: always

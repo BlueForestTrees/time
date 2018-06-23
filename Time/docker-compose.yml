@@ -2,7 +2,7 @@ version: '3.3'
 services:
 
   histoires-web:
-    image: "mousticrevette/histoires-web:latest"
+    image: "blueforest/histoires-web:latest"
     ports:
       - "80:80"
     links:
@@ -10,7 +10,7 @@ services:
     restart: always
 
   histoires-api:
-    image: "mousticrevette/histoires-api:latest"
+    image: "blueforest/histoires-api:latest"
     expose:
      - "8080"
     environment:

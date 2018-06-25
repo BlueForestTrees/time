@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean-install": "npm prune && npm install",
-    "build": "rimraf target && webpack --progress --profile",
+    "build": "rimraf dist && webpack --progress --profile",
     "build-dev": "rimraf target && webpack --progress --profile",
     "start": "webpack-dev-server --progress --profile"
   },

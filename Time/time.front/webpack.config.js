@@ -4,7 +4,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ENV = process.env.npm_lifecycle_event;
 var isProd = ENV === 'build';
 var srcDir = __dirname + "/src";
-var destDir = __dirname + '/target';
+var destDir = __dirname + '/dist/histoires.xyz/static';
 
 module.exports = {
 	debug: !isProd,
@@ -34,4 +34,5 @@ module.exports = {
 
 if(isProd){
     module.exports.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    module.exports.plugins.push(new CopyWebpackPlugin([{from: './nginx.conf', to: '../nginx'}]));
 }

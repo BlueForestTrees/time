@@ -1,23 +1,28 @@
-version: '3.3'
+version: '2'
 services:
-
-  histoires-web:
-    image: "blueforest/histoires-web:latest"
-    ports:
-      - "80:80"
-    links:
-      - histoires-api
-    restart: always
-
-  histoires-api:
-    image: "blueforest/histoires-api:latest"
-    expose:
-     - "8080"
+  time-api:
+    image: blueforest/histoires-api:latest
     environment:
-      - indexDir=/lucene
-      - port=8080
-      - searchPhrasePageSize=50
+      indexDir: /lucene
+      port: '8080'
+      searchPhrasePageSize: '50'
+    stdin_open: true
     volumes:
-      - /var/log/time:/var/log/time
-      - /var/lib/time/lucene:/lucene
-    restart: always
+    - /var/log/time:/var/log/time
+    - /var/lib/time/lucene:/lucene
+    tty: true
+    labels:
+      io.rancher.container.pull_image: always
+  time-web:
+    image: nginx:latest
+    environment:
+      PORT: '80'
+    stdin_open: true
+    volumes:
+    - /var/www/histoires.xyz/nginx:/etc/nginx:ro
+    - /var/www/histoires.xyz/static:/var/www:ro
+    tty: true
+    links:
+    - time-api:time-api
+    labels:
+      io.rancher.container.pull_image: always

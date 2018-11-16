@@ -1,16 +1,16 @@
-var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
-var ENV = process.env.npm_lifecycle_event;
-var isProd = ENV === 'build';
-var srcDir = __dirname + "/src";
-var destDir = __dirname + '/dist/histoires.xyz'
+var path = require('path')
 
-module.exports = {
-	debug: !isProd,
-    entry: srcDir + "/app.js",
+var NODE_ENV = process.env.NODE_ENV
+
+console.log("NODE_ENV === ", NODE_ENV)
+
+var conf = {
+	debug: NODE_ENV !== 'production',
+    entry: "./src/app.js",
     output: {
-        path: destDir + "/var/www/histoires.xyz",
+        path: path.resolve(__dirname, './dist/www'),
 		publicPath : '/',
 		filename : 'js/time.[hash].js'
 	},
@@ -20,9 +20,9 @@ module.exports = {
         ]
     },
 	plugins: [
-	    new CopyWebpackPlugin([{ from: srcDir + '/vendor', to: 'vendor'}]),
-	    new CopyWebpackPlugin([{ from: srcDir + '/img', to: 'img'}]),
-		new HtmlWebpackPlugin({template : srcDir + '/index.html',inject : 'body',hash : 'true'})
+	    new CopyWebpackPlugin([{ from: './src/vendor', to: 'vendor'}]),
+	    new CopyWebpackPlugin([{ from: './src/img', to: 'img'}]),
+		new HtmlWebpackPlugin({template : './src/index.html',inject : 'body',hash : 'true'})
 	],
     devServer: {
         port: 7072,
@@ -32,7 +32,12 @@ module.exports = {
     }
 };
 
-if(isProd){
-    module.exports.plugins.push(new webpack.optimize.UglifyJsPlugin());
-    module.exports.plugins.push(new CopyWebpackPlugin([{from: './nginx.conf', to: destDir + '/etc/nginx/histoires.xyz/'}]))
+if(NODE_ENV === 'production'){
+    conf.plugins.push(new CopyWebpackPlugin([
+        {from: 'nginx/mime.types', to: '../nginx'},
+        {from: 'nginx/nginx.conf', to: '../nginx'}
+    ]))
 }
+
+
+module.exports = conf

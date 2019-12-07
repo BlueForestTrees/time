@@ -14,13 +14,13 @@ services:
     labels:
       io.rancher.container.pull_image: always
   time-web:
-    image: nginx:latest
+    image: blueforest/time.front:1.0.1
     environment:
       PORT: '80'
+    ports:
+      - "1515:80"
+      - "1543:443"
     stdin_open: true
-    volumes:
-    - /var/www/histoires.xyz/nginx:/etc/nginx:ro
-    - /var/www/histoires.xyz/static:/var/www:ro
     tty: true
     links:
     - time-api:time-api

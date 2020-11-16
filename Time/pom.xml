@@ -45,7 +45,7 @@
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <jdbi.version>2.72</jdbi.version>
         <jdk.version>1.8</jdk.version>
-        <jetty.version>9.3.10.v20160621</jetty.version>
+        <jetty.version>9.4.34.v20201102</jetty.version>
         <joda.version>2.7</joda.version>
         <junit.version>4.11</junit.version>
         <log4j.version>2.5</log4j.version>

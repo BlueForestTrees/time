@@ -40,7 +40,7 @@
         <docker.version>1.3.6</docker.version>
         <fileupload.version>1.2</fileupload.version>
         <guice.version>4.0</guice.version>
-        <jackson.version>2.7.3</jackson.version>
+        <jackson.version>2.12.6.1</jackson.version>
         <java.version>1.8</java.version>
         <javax.servlet.version>3.1.0</javax.servlet.version>
         <jdbi.version>2.72</jdbi.version>
